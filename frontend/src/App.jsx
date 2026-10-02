@@ -1,4 +1,5 @@
 ﻿import { useEffect, useState } from "react";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 import {
   ArrowRight,
   CalendarDays,
@@ -119,7 +120,7 @@ function App() {
   }, [galleryLightboxOpen, filteredGallery.length]);
 
   useEffect(() => {
-    fetch("/api/home/")
+    fetch(`${API_BASE}/api/home/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("API unavailable");
@@ -158,7 +159,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/blog/")
+    fetch(`${API_BASE}/api/blog/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Blog API unavailable");
@@ -180,7 +181,7 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetch("/api/sermons/")
+    fetch(`${API_BASE}/api/sermons/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Sermons API unavailable");
@@ -201,7 +202,7 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetch("/api/videos/")
+    fetch(`${API_BASE}/api/videos/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Videos API unavailable");
@@ -223,7 +224,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/ebooks/")
+    fetch(`${API_BASE}/api/ebooks/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("E-books API unavailable");
@@ -262,7 +263,7 @@ function App() {
 
     setBlogLoading(true);
 
-    fetch(`/api/blog/${slug}/`)
+    fetch(`${API_BASE}/api/blog/${slug}/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Blog article unavailable");
