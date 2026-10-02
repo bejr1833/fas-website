@@ -3420,3 +3420,284 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   text-shadow: 0 1px 10px rgba(217, 163, 160, 0.18);
 }
 
+
+/* ============================================================
+   FAS MOBILE NAVIGATION + MOBILE POLISH
+   ============================================================ */
+
+@media (max-width: 850px) {
+
+  .navbar {
+    height: 72px;
+    padding: 0 18px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .brand img {
+    width: 82px;
+  }
+
+  .menuBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--ink);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .menuBtn:hover,
+  .menuBtn:focus-visible {
+    background: var(--ivory);
+    border-color: var(--red-soft);
+    outline: none;
+  }
+
+  .menuBtn:active {
+    transform: scale(0.94);
+  }
+
+  /* Hidden by default on mobile */
+  .navbar nav {
+    display: none;
+  }
+
+  /* Open mobile menu */
+  .navbar nav.mobileOpen {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    top: calc(100% + 10px);
+    left: 14px;
+    right: 14px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: 0 18px 45px rgba(23, 23, 22, 0.14);
+    backdrop-filter: blur(16px);
+    z-index: 1001;
+  }
+
+  .navbar nav.mobileOpen a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 16px;
+    border-radius: 12px;
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 700;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .navbar nav.mobileOpen a:hover,
+  .navbar nav.mobileOpen a:focus-visible {
+    background: var(--ivory);
+    color: var(--red);
+    outline: none;
+  }
+
+  /* Mobile hero */
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    padding: 52px 20px 48px;
+    text-align: center;
+  }
+
+  .heroCopy {
+    width: 100%;
+  }
+
+  .eyebrow {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+
+  .hero h1 {
+    max-width: 620px;
+    margin: 16px auto 20px;
+    font-size: clamp(42px, 11vw, 58px);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+  }
+
+  .hero p {
+    max-width: 620px;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .heroActions {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 26px;
+  }
+
+  .primaryBtn {
+    min-height: 50px;
+    padding: 0 22px;
+    font-size: 14px;
+  }
+
+  .textBtn {
+    min-height: 44px;
+    justify-content: center;
+    padding: 0 10px;
+  }
+
+  .heroMeta {
+    justify-content: center;
+    margin-top: 22px;
+    font-size: 12px;
+  }
+
+  .heroVisual {
+    min-height: 0;
+    padding: 0;
+    border-radius: 20px;
+  }
+
+  .heroVisual img {
+    width: 100%;
+    height: auto;
+    max-height: 360px;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+
+  /* General mobile section spacing */
+  .section {
+    padding: 64px 20px;
+  }
+
+  .sectionTop {
+    gap: 14px;
+  }
+
+  .sectionLabel {
+    font-size: 10px;
+    letter-spacing: 0.17em;
+  }
+
+  h2 {
+    font-size: clamp(30px, 8vw, 42px);
+    line-height: 1.08;
+  }
+
+  .introGrid,
+  .missionGrid {
+    gap: 30px;
+  }
+
+  /* Cards */
+  .pillars,
+  .storyGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 34px;
+  }
+
+  .pillars article,
+  .storyCard {
+    padding: 22px;
+  }
+
+  /* Gallery */
+  .galleryGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .galleryItem {
+    border-radius: 14px;
+  }
+
+  /* Connect */
+  .supportSection {
+    padding: 56px 20px;
+  }
+
+  .supportCard {
+    padding: 28px 22px;
+    border-radius: 20px;
+  }
+
+  /* Prevent accidental horizontal scrolling */
+  html,
+  body,
+  #root {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+/* Smaller phones */
+@media (max-width: 420px) {
+
+  .navbar {
+    padding: 0 15px;
+  }
+
+  .brand img {
+    width: 78px;
+  }
+
+  .hero {
+    padding: 46px 18px 42px;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 11vw, 48px);
+  }
+
+  .hero p {
+    font-size: 15px;
+    line-height: 1.68;
+  }
+
+  .heroActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryBtn,
+  .textBtn {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .heroMeta {
+    font-size: 11px;
+  }
+
+  .section {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .galleryGrid {
+    gap: 8px;
+  }
+}
+

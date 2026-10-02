@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 import {
   ArrowRight,
@@ -410,9 +410,19 @@ function App() {
 
               <div className="blogArticleBody">
                 {blogPost.content
-                  .split(/\n\s*\n/)
+                  ?.split(/\r?\n\s*\r?\n/)
+                  .filter((paragraph) => paragraph.trim())
                   .map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
+                    <p key={index}>
+                      {paragraph
+                        .split(/\r?\n/)
+                        .map((line, lineIndex, lines) => (
+                          <Fragment key={lineIndex}>
+                            {line}
+                            {lineIndex < lines.length - 1 && <br />}
+                          </Fragment>
+                        ))}
+                    </p>
                   ))}
               </div>
 
@@ -1683,37 +1693,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

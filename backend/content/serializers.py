@@ -1,4 +1,4 @@
-﻿from rest_framework import serializers
+from rest_framework import serializers
 from urllib.parse import urlparse, parse_qs
 
 from .models import (
@@ -117,16 +117,37 @@ class SermonPDFSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SermonPDF
-        fields = "__all__"
+        fields = [
+            "id",
+            "pdf_file_url",
+            "title",
+            "speaker",
+            "category",
+            "description",
+            "published_at",
+            "is_published",
+            "is_featured",
+            "created_at",
+            "updated_at",
+        ]
 
     def get_pdf_file_url(self, obj):
         request = self.context.get("request")
+
         if not obj.pdf_file:
             return None
-        url = obj.pdf_file.url
-        if request:
-            return request.build_absolute_uri(url)
-        return url
+
+        filename = str(obj.pdf_file.name).split("/")[-1]
+
+        if filename == "charles-spurgeon-en.pdf":
+            url = "/static/sermons/charles-spurgeon-en.pdf"
+
+            if request:
+                return request.build_absolute_uri(url)
+
+            return url
+
+        return None
 
 
 class FASVideoSerializer(serializers.ModelSerializer):
