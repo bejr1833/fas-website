@@ -1,4 +1,5 @@
-﻿from django.db import models
+from django.db import models
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 class SiteSettings(models.Model):
     organization_name = models.CharField(max_length=120, default="Faith Alone Saves")
@@ -176,7 +177,10 @@ class SermonPDF(models.Model):
         default="sermon",
     )
     description = models.TextField(blank=True)
-    pdf_file = models.FileField(upload_to="sermons/pdfs/")
+    pdf_file = models.FileField(
+        upload_to="sermons/pdfs/",
+        storage=RawMediaCloudinaryStorage(),
+    )
     published_at = models.DateTimeField(blank=True, null=True)
     is_published = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
