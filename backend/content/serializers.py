@@ -73,6 +73,13 @@ class GalleryImageSerializer(serializers.ModelSerializer):
 
 
 class TestimonySerializer(serializers.ModelSerializer):
+    photo = serializers.ImageField(
+        required=False,
+        allow_null=True,
+        max_length=255,
+        allow_empty_file=False,
+    )
+
     class Meta:
         model = Testimony
         fields = (
@@ -84,6 +91,20 @@ class TestimonySerializer(serializers.ModelSerializer):
             "photo",
             "submitted_at",
         )
+
+    def validate_photo(self, value):
+        max_size = 5 * 1024 * 1024
+        if value.size > max_size:
+            raise serializers.ValidationError("Photo must be 5 MB or smaller.")
+
+        allowed_types = {"image/jpeg", "image/png", "image/webp"}
+        content_type = getattr(value, "content_type", None)
+        if content_type and content_type not in allowed_types:
+            raise serializers.ValidationError(
+                "Only JPEG, PNG, or WebP images are allowed."
+            )
+
+        return value
 
 
 class ContactMessageSerializer(serializers.ModelSerializer):
