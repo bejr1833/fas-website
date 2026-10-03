@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fas-fellowship.org/sitemap.xml
