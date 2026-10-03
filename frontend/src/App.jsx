@@ -345,6 +345,87 @@ function App() {
           (image) => image.category === galleryCategory
         );
 
+  useEffect(() => {
+    const carousel = document.querySelector(".galleryGrid");
+
+    if (!carousel || filteredGallery.length <= 1) return;
+
+    const reduceMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+    if (reduceMotionQuery.matches) {
+      return;
+    }
+
+    let timer = null;
+    let paused = false;
+
+    const getStep = () => {
+      const card = carousel.querySelector(".galleryCard");
+
+      if (!card) return carousel.clientWidth;
+
+      const styles = window.getComputedStyle(carousel);
+      const gap = parseFloat(styles.columnGap || styles.gap || "0");
+
+      return card.getBoundingClientRect().width + gap;
+    };
+
+    const slideNext = () => {
+      if (paused) return;
+
+      const step = getStep();
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+
+      if (carousel.scrollLeft >= maxScroll - 10) {
+        carousel.scrollTo({
+          left: 0,
+          behavior: "smooth"
+        });
+      } else {
+        carousel.scrollBy({
+          left: step,
+          behavior: "smooth"
+        });
+      }
+    };
+
+    const startTimer = () => {
+      clearInterval(timer);
+      timer = setInterval(slideNext, 4500);
+    };
+
+    const pause = () => {
+      paused = true;
+      clearInterval(timer);
+    };
+
+    const resume = () => {
+      paused = false;
+      startTimer();
+    };
+
+    carousel.addEventListener("mouseenter", pause);
+    carousel.addEventListener("mouseleave", resume);
+    carousel.addEventListener("touchstart", pause, {
+      passive: true
+    });
+    carousel.addEventListener("touchend", resume, {
+      passive: true
+    });
+
+    startTimer();
+
+    return () => {
+      clearInterval(timer);
+      carousel.removeEventListener("mouseenter", pause);
+      carousel.removeEventListener("mouseleave", resume);
+      carousel.removeEventListener("touchstart", pause);
+      carousel.removeEventListener("touchend", resume);
+    };
+  }, [filteredGallery.length, galleryCategory]);
+
   const openGalleryLightbox = (index) => {
     setGalleryLightboxIndex(index);
     setGalleryLightboxOpen(true);
