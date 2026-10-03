@@ -2193,20 +2193,13 @@ function App() {
 
                     <div className="blogMeta">
                       <span>{post.author}</span>
-
-                      {post.demo ? (
-                        <span className="textBtn">
-                          Temporary introduction
-                        </span>
-                      ) : (
-                        <a
+                      <a
                           href={`/blog/${post.slug}`}
                           className="textBtn"
                         >
                           Read article
                           <ArrowRight size={16} />
                         </a>
-                      )}
                     </div>
                   </div>
                 </article>
