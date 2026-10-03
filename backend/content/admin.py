@@ -82,6 +82,7 @@ class TestimonyAdmin(admin.ModelAdmin):
     list_display = (
         "student_name",
         "college",
+        "impact_statement",
         "is_approved",
         "submitted_at",
     )
@@ -91,7 +92,41 @@ class TestimonyAdmin(admin.ModelAdmin):
     search_fields = (
         "student_name",
         "college",
+        "impact_statement",
         "testimony",
+    )
+    fieldsets = (
+        (
+            "Student",
+            {
+                "fields": (
+                    "student_name",
+                    "college",
+                    "photo",
+                )
+            },
+        ),
+        (
+            "Story",
+            {
+                "fields": (
+                    "impact_statement",
+                    "testimony",
+                )
+            },
+        ),
+        (
+            "Publishing",
+            {
+                "fields": (
+                    "is_approved",
+                    "submitted_at",
+                )
+            },
+        ),
+    )
+    readonly_fields = (
+        "submitted_at",
     )
 
 

@@ -105,6 +105,7 @@ class GalleryImage(models.Model):
 class Testimony(models.Model):
     student_name = models.CharField(max_length=120)
     college = models.CharField(max_length=160, blank=True)
+    impact_statement = models.CharField(max_length=180, blank=True)
     testimony = models.TextField()
     photo = models.ImageField(upload_to="testimonies/", blank=True, null=True)
     is_approved = models.BooleanField(default=False)

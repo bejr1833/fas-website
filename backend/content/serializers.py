@@ -79,6 +79,7 @@ class TestimonySerializer(serializers.ModelSerializer):
             "id",
             "student_name",
             "college",
+            "impact_statement",
             "testimony",
             "photo",
             "submitted_at",

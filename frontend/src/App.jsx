@@ -49,6 +49,100 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [blogPost, setBlogPost] = useState(null);
   const [blogLoading, setBlogLoading] = useState(false);
+  const [selectedStory, setSelectedStory] = useState(null);
+  useEffect(() => {
+    const carousel = document.querySelector(".storiesGrid");
+
+    if (!carousel) return;
+
+    let timer = null;
+    let paused = false;
+
+    const getStep = () => {
+      const card = carousel.querySelector(".storyCard");
+
+      if (!card) return carousel.clientWidth;
+
+      const styles = window.getComputedStyle(carousel);
+      const gap = parseFloat(styles.columnGap || styles.gap || "0");
+
+      return card.getBoundingClientRect().width + gap;
+    };
+
+    const slideNext = () => {
+      if (paused) return;
+
+      const step = getStep();
+      const maxScroll =
+        carousel.scrollWidth - carousel.clientWidth;
+
+      if (carousel.scrollLeft >= maxScroll - 10) {
+        carousel.scrollTo({
+          left: 0,
+          behavior: "smooth"
+        });
+      } else {
+        carousel.scrollBy({
+          left: step,
+          behavior: "smooth"
+        });
+      }
+    };
+
+    const startTimer = () => {
+      clearInterval(timer);
+      timer = setInterval(slideNext, 4500);
+    };
+
+    const pause = () => {
+      paused = true;
+      clearInterval(timer);
+    };
+
+    const resume = () => {
+      paused = false;
+      startTimer();
+    };
+
+    carousel.addEventListener("mouseenter", pause);
+    carousel.addEventListener("mouseleave", resume);
+    carousel.addEventListener("touchstart", pause, {
+      passive: true
+    });
+    carousel.addEventListener("touchend", resume, {
+      passive: true
+    });
+
+    startTimer();
+
+    return () => {
+      clearInterval(timer);
+      carousel.removeEventListener("mouseenter", pause);
+      carousel.removeEventListener("mouseleave", resume);
+      carousel.removeEventListener("touchstart", pause);
+      carousel.removeEventListener("touchend", resume);
+    };
+  }, [data.stories]);
+
+  useEffect(() => {
+    if (!selectedStory) return;
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setSelectedStory(null);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [selectedStory]);
   const [contactRequestType, setContactRequestType] = useState("prayer");
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
@@ -685,6 +779,16 @@ function App() {
           <a href="#gallery" onClick={closeMenu}>
             Gallery
           </a>
+
+          <a
+            href="#connect"
+            className="mobileConnectLink"
+            onClick={closeMenu}
+          >
+            <span>Connect with FAS</span>
+            <ArrowRight size={16} />
+          </a>
+
         </nav>
 
         <a
@@ -1085,7 +1189,7 @@ function App() {
 
                 <blockquote>
                   “Why don't we gather, even if it is only online,
-                  and pray for one another?”
+                  and pray for one another?”
                 </blockquote>
               </div>
             </article>
@@ -1097,7 +1201,7 @@ function App() {
 
               <div className="storyContent">
                 <div className="storyDate">
-                  OCTOBER 13, 2023 · 6–7 PM
+                  OCTOBER 13, 2023 Â· 6”“7 PM
                 </div>
 
                 <h3>The First Fellowship</h3>
@@ -1120,7 +1224,7 @@ function App() {
 
               <div className="storyContent">
                 <div className="storyDate">
-                  OCTOBER–NOVEMBER 2023
+                  OCTOBER”“NOVEMBER 2023
                 </div>
 
                 <h3>The Fellowship Grows</h3>
@@ -1179,6 +1283,196 @@ function App() {
             <em>It was, and always will be, God's story.</em>
           </div>
         </section>
+<section
+          id="stories"
+          className="section storiesSection reveal-section"
+        >
+          <div className="sectionTop">
+            <div>
+              <div className="sectionLabel">STUDENT STORIES</div>
+              <h2>Stories of <em>faith.</em></h2>
+              <p className="storiesIntro">
+                Real experiences from students growing in faith, fellowship, and life with Christ.
+              </p>
+            </div>
+          </div>
+
+          {data.stories.length === 0 ? (
+            <div className="emptyState">
+              <p>Student stories will appear here as FAS students share their experiences.</p>
+            </div>
+          ) : (
+            <><div className="storiesGrid">
+              {data.stories.map((story) => {
+                const preview = story.testimony
+                  ?.replace(/\s+/g, " ")
+                  .trim();
+
+                return (
+                  <article
+                    className="storyCard reveal-item"
+                    key={story.id}
+                  >
+                    <div className="storyPhoto">
+                      {story.photo ? (
+                        <img
+                          src={story.photo}
+                          alt={`${story.student_name} — FAS student story`}
+                        />
+                      ) : (
+                        <div className="storyPhotoFallback">
+                          <Quote size={34} />
+                        </div>
+                      )}
+
+                      <div className="storyPhotoBadge">
+                        FAS STORY
+                      </div>
+                    </div>
+
+                    <div className="storyCardBody">
+                      <div className="storyIdentity">
+                        <div className="storyEyebrow">
+                          STUDENT TESTIMONY
+                        </div>
+
+                        <h3>{story.student_name}</h3>
+
+                        {story.college && (
+                          <span>{story.college}</span>
+                        )}
+                      </div>
+
+                      {story.impact_statement && (
+                        <div className="storyImpact">
+                          <span>WHAT GOD DID</span>
+                          <strong>{story.impact_statement}</strong>
+                        </div>
+                      )}
+
+                      <div className="storyPreview">
+                        <div className="storyQuoteMark">“</div>
+
+                        <p>
+                          {preview?.length > 220
+                            ? `${preview.slice(0, 220).trim()}…`
+                            : preview}
+                        </p>
+                      </div>
+
+                      <button
+                        type="button"
+                        className="storyReadButton"
+                        onClick={() => setSelectedStory(story)}
+                      >
+                        <span>READ FULL STORY</span>
+                        <ArrowRight size={16} />
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          {data.stories.length > 1 && (
+            <div className="storiesCarouselControls">
+              <button
+                type="button"
+                className="storiesCarouselArrow"
+                aria-label="Previous student story"
+                onClick={() => {
+                  const carousel = document.querySelector(".storiesGrid");
+                  if (!carousel) return;
+
+                  const card = carousel.querySelector(".storyCard");
+                  if (!card) return;
+
+                  const styles = window.getComputedStyle(carousel);
+                  const gap = parseFloat(
+                    styles.columnGap || styles.gap || "0"
+                  );
+
+                  carousel.scrollBy({
+                    left: -(card.getBoundingClientRect().width + gap),
+                    behavior: "smooth"
+                  });
+                }}
+              >
+                ←
+              </button>
+
+              <div
+                className="storiesCarouselDots"
+                aria-label="Student story navigation"
+              >
+                {data.stories.map((story, index) => (
+                  <button
+                    key={story.id}
+                    type="button"
+                    className={`storiesCarouselDot ${
+                      index === 0 ? "active" : ""
+                    }`}
+                    aria-label={`Go to student story ${index + 1}`}
+                    onClick={() => {
+                      const carousel =
+                        document.querySelector(".storiesGrid");
+
+                      const cards =
+                        carousel?.querySelectorAll(".storyCard");
+
+                      if (!carousel || !cards?.[index]) return;
+
+                      carousel.scrollTo({
+                        left: cards[index].offsetLeft,
+                        behavior: "smooth"
+                      });
+                    }}
+                  />
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className="storiesCarouselArrow"
+                aria-label="Next student story"
+                onClick={() => {
+                  const carousel = document.querySelector(".storiesGrid");
+                  if (!carousel) return;
+
+                  const card = carousel.querySelector(".storyCard");
+                  if (!card) return;
+
+                  const styles = window.getComputedStyle(carousel);
+                  const gap = parseFloat(
+                    styles.columnGap || styles.gap || "0"
+                  );
+
+                  const step =
+                    card.getBoundingClientRect().width + gap;
+
+                  const maxScroll =
+                    carousel.scrollWidth - carousel.clientWidth;
+
+                  if (carousel.scrollLeft >= maxScroll - 10) {
+                    carousel.scrollTo({
+                      left: 0,
+                      behavior: "smooth"
+                    });
+                  } else {
+                    carousel.scrollBy({
+                      left: step,
+                      behavior: "smooth"
+                    });
+                  }
+                }}
+              >
+                →
+              </button>
+            </div>
+          )}
+          </>
+          )}
+        </section>
+
 <section className="homepageSlideshow reveal-section">
           <div className="slideshowHeader">
             <div>
@@ -1724,59 +2018,76 @@ function App() {
           )}
         </section>
 
-        <section
-          id="stories"
-          className="section storiesSection reveal-section"
-        >
-          <div className="sectionTop">
-            <div>
-              <div className="sectionLabel">STUDENT STORIES</div>
-              <h2>Stories of <em>faith.</em></h2>
-              <p className="storiesIntro">
-                Real experiences from students growing in faith, fellowship, and life with Christ.
-              </p>
+        
+        {selectedStory && (
+          <div
+            className="storyModalOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Student story from ${selectedStory.student_name}`}
+            onClick={() => setSelectedStory(null)}
+          >
+            <div
+              className="storyModal"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                type="button"
+                className="storyModalClose"
+                onClick={() => setSelectedStory(null)}
+                aria-label="Close student story"
+              >
+                <X size={22} />
+              </button>
+
+              <div className="storyModalMedia">
+                {selectedStory.photo ? (
+                  <img
+                    src={selectedStory.photo}
+                    alt={`${selectedStory.student_name} — FAS student story`}
+                  />
+                ) : (
+                  <div className="storyModalFallback">
+                    <Quote size={52} />
+                  </div>
+                )}
+              </div>
+
+              <div className="storyModalContent">
+                <div className="storyEyebrow">
+                  STUDENT TESTIMONY
+                </div>
+
+                <h2>{selectedStory.student_name}</h2>
+
+                {selectedStory.college && (
+                  <div className="storyModalCollege">
+                    {selectedStory.college}
+                  </div>
+                )}
+
+                {selectedStory.impact_statement && (
+                  <div className="storyModalImpact">
+                    <span>WHAT GOD DID</span>
+                    <strong>{selectedStory.impact_statement}</strong>
+                  </div>
+                )}
+
+                <div className="storyModalDivider" />
+
+                <div className="storyFullText">
+                  {selectedStory.testimony}
+                </div>
+
+                <div className="storyModalFooter">
+                  <span>FAS · STUDENT STORY</span>
+                  <span>TO GOD BE THE GLORY</span>
+                </div>
+              </div>
             </div>
           </div>
+        )}
 
-          {data.stories.length === 0 ? (
-            <div className="emptyState">
-              <p>Student stories will appear here as FAS students share their experiences.</p>
-            </div>
-          ) : (
-            <div className="storiesGrid">
-              {data.stories.map((story) => (
-                <article className="storyCard reveal-item" key={story.id}>
-                  <div className="storyCardTop">
-                    <div className="storyAvatar">
-                      {story.photo ? (
-                        <img src={story.photo} alt={story.student_name} />
-                      ) : (
-                        <span>
-                          {story.student_name?.charAt(0)?.toUpperCase() || "F"}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="storyIdentity">
-                      <h3>{story.student_name}</h3>
-                      {story.college && <span>{story.college}</span>}
-                    </div>
-                  </div>
-
-                  <div className="storyQuoteMark">“</div>
-
-                  <p className="storyText">
-                    {story.testimony}
-                  </p>
-
-                  <div className="storyCardFooter">
-                    <span>FAS Student Story</span>
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
-        </section>
         <section
           id="gallery"
           className="section gallerySection reveal-section"
@@ -2241,3 +2552,14 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
