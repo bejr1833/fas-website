@@ -96,11 +96,38 @@ const temporaryIntroContent = {
   ],
   gallery: [
     {
-      id: "intro-gallery",
+      id: "intro-gallery-1",
       category: "fellowship-gatherings",
       title: "Fellowship, Worship & Life Together",
       caption:
         "Temporary introduction card — real FAS moments can be added through the admin panel.",
+      image: "",
+      demo: true
+    },
+    {
+      id: "intro-gallery-2",
+      category: "worship-prayer",
+      title: "Worship & Prayer",
+      caption:
+        "A temporary gallery preview for worship, prayer, and shared fellowship moments.",
+      image: "",
+      demo: true
+    },
+    {
+      id: "intro-gallery-3",
+      category: "bible-study",
+      title: "Growing in God's Word",
+      caption:
+        "A temporary gallery preview for Bible study, learning, and discipleship.",
+      image: "",
+      demo: true
+    },
+    {
+      id: "intro-gallery-4",
+      category: "events",
+      title: "FAS Events & Gatherings",
+      caption:
+        "A temporary gallery preview for future FAS events and gatherings.",
       image: "",
       demo: true
     }
