@@ -14,6 +14,102 @@ import {
   X
 } from "lucide-react";
 
+const temporaryIntroContent = {
+  events: [
+    {
+      id: "intro-weekly-fellowship",
+      date: "2026-12-31",
+      title: "Weekly FAS Fellowship",
+      time: "Every Tuesday · 7:00 PM",
+      mode: "ONLINE FELLOWSHIP",
+      event_type: "fellowship",
+      description:
+        "A regular time to open God's Word, pray together, worship, ask honest questions, and encourage one another in the walk with Christ.",
+      demo: true
+    }
+  ],
+  blog: [
+    {
+      id: "intro-faith-fellowship-truth",
+      slug: "introduction-to-fas",
+      category: "FAS INTRODUCTION",
+      title: "Faith, Fellowship & Truth",
+      author: "FAS Fellowship",
+      excerpt:
+        "An introduction to the heart of FAS: growing together in Christ, being shaped by God's Word, and serving others with humility.",
+      demo: true
+    },
+    {
+      id: "intro-student-life",
+      slug: "following-christ-on-campus",
+      category: "STUDENT LIFE",
+      title: "Following Christ on Campus",
+      author: "FAS Fellowship",
+      excerpt:
+        "FAS encourages students to carry biblical faith into classrooms, friendships, decisions, leadership, and everyday campus life.",
+      demo: true
+    }
+  ],
+  sermons: [
+    {
+      id: "intro-sermon-word",
+      category: "INTRODUCTION",
+      title: "God's Word and the Student Life",
+      speaker: "FAS Fellowship",
+      description:
+        "A sample introduction to how Scripture can shape our thinking, character, relationships, and daily choices.",
+      demo: true
+    }
+  ],
+  videos: [
+    {
+      id: "intro-video-fas",
+      category: "INTRODUCTION",
+      title: "Welcome to FAS",
+      speaker: "FAS Fellowship",
+      description:
+        "A temporary introduction card for the future FAS video library. Teaching, worship, testimonies, and fellowship recordings can be added here.",
+      demo: true
+    }
+  ],
+  ebooks: [
+    {
+      id: "intro-ebook-word",
+      category: "INTRODUCTION",
+      title: "Growing in God's Word",
+      author: "FAS Fellowship",
+      description:
+        "A temporary introduction card for future FAS reading resources, study guides, and student discipleship material.",
+      demo: true
+    }
+  ],
+  stories: [
+    {
+      id: "intro-story",
+      student_name: "Student Stories",
+      college: "FAS Fellowship",
+      impact_statement: "God is still writing the story.",
+      testimony:
+        "This is a temporary introduction to the student stories section. As students share their experiences, testimonies can be added here to encourage others and give glory to God.",
+      demo: true
+    }
+  ],
+  gallery: [
+    {
+      id: "intro-gallery",
+      category: "fellowship-gatherings",
+      title: "Fellowship, Worship & Life Together",
+      caption:
+        "Temporary introduction card — real FAS moments can be added through the admin panel.",
+      image: "",
+      demo: true
+    }
+  ]
+};
+
+const getDisplayItems = (items, fallbackItems) =>
+  items.length > 0 ? items : fallbackItems;
+
 const fallback = {
   organization_name: "Faith Alone Saves",
   tagline: "LOVE IN FELLOWSHIP & TRUTH",
@@ -236,8 +332,8 @@ function App() {
 
   const filteredGallery =
     galleryCategory === "all"
-      ? data.gallery
-      : data.gallery.filter(
+      ? displayGallery
+      : displayGallery.filter(
           (image) => image.category === galleryCategory
         );
 
@@ -754,6 +850,14 @@ function App() {
     ...(data.settings || {})
   };
 
+  const displayEvents = getDisplayItems(data.upcoming_events, temporaryIntroContent.events);
+  const displayBlog = getDisplayItems(data.blog, temporaryIntroContent.blog);
+  const displaySermons = getDisplayItems(data.sermons, temporaryIntroContent.sermons);
+  const displayVideos = getDisplayItems(data.videos, temporaryIntroContent.videos);
+  const displayEbooks = getDisplayItems(data.ebooks, temporaryIntroContent.ebooks);
+  const displayStories = getDisplayItems(data.stories, temporaryIntroContent.stories);
+  const displayGallery = getDisplayItems(displayGallery, temporaryIntroContent.gallery);
+
   const shareStory = async (story) => {
     const url = `${window.location.origin}/#story-${story.id}`;
     const title = `${story.student_name} — FAS Student Testimony`;
@@ -1209,12 +1313,12 @@ function App() {
               <span className="heroNextDot"></span>
             </div>
 
-            {data.upcoming_events.length > 0 ? (
+            {displayEvents.length > 0 ? (
               <>
                 <div className="heroNextDate">
                   <strong>
                     {new Date(
-                      data.upcoming_events[0].date + "T00:00:00"
+                      displayEvents[0].date + "T00:00:00"
                     ).toLocaleDateString("en-US", {
                       day: "2-digit",
                     })}
@@ -1222,7 +1326,7 @@ function App() {
 
                   <span>
                     {new Date(
-                      data.upcoming_events[0].date + "T00:00:00"
+                      displayEvents[0].date + "T00:00:00"
                     ).toLocaleDateString("en-US", {
                       month: "short",
                     })}
@@ -1231,13 +1335,13 @@ function App() {
 
                 <div className="heroNextContent">
                   <span className="heroNextType">
-                    {data.upcoming_events[0].mode || "FAS GATHERING"}
+                    {displayEvents[0].mode || "FAS GATHERING"}
                   </span>
 
-                  <h2>{data.upcoming_events[0].title}</h2>
+                  <h2>{displayEvents[0].title}</h2>
 
                   <p>
-                    {data.upcoming_events[0].time ||
+                    {displayEvents[0].time ||
                       "Time to be announced"}
                   </p>
                 </div>
@@ -1269,7 +1373,7 @@ function App() {
             <div className="heroNextWatermark">FAS</div>
           </div>
         </section>
-        {(data.blog || []).length > 0 && (
+        {displayBlog.length > 0 && (
           <section className="latestBlogStrip reveal-section">
             <div className="latestBlogInner">
               <div className="latestBlogLabel">
@@ -1280,18 +1384,18 @@ function App() {
               <div className="latestBlogContent">
                 <div className="latestBlogCopy">
                   <span className="latestBlogCategory">
-                    {(data.blog[0].category || "FAS BLOG").replace("-", " ")}
+                    {(displayBlog[0].category || "FAS BLOG").replace("-", " ")}
                   </span>
 
-                  <h2>{data.blog[0].title}</h2>
+                  <h2>{displayBlog[0].title}</h2>
 
-                  {data.blog[0].excerpt && (
-                    <p>{data.blog[0].excerpt}</p>
+                  {displayBlog[0].excerpt && (
+                    <p>{displayBlog[0].excerpt}</p>
                   )}
                 </div>
 
                 <a
-                  href={`/blog/${data.blog[0].slug}`}
+                  href={`/blog/${displayBlog[0].slug}`}
                   className="latestBlogButton"
                 >
                   Read article
@@ -1657,13 +1761,13 @@ function App() {
             </div>
           </div>
 
-          {data.stories.length === 0 ? (
+          {displayStories.length === 0 ? (
             <div className="emptyState">
               <p>Student stories will appear here as FAS students share their experiences.</p>
             </div>
           ) : (
             <><div className="storiesGrid">
-              {data.stories.map((story) => {
+              {displayStories.map((story) => {
                 const preview = story.testimony
                   ?.replace(/\s+/g, " ")
                   .trim();
@@ -1742,7 +1846,7 @@ function App() {
                 );
               })}
             </div>
-          {data.stories.length > 1 && (
+          {displayStories.length > 1 && (
             <div className="storiesCarouselControls">
               <button
                 type="button"
@@ -1773,7 +1877,7 @@ function App() {
                 className="storiesCarouselDots"
                 aria-label="Student story navigation"
               >
-                {data.stories.map((story, index) => (
+                {displayStories.map((story, index) => (
                   <button
                     key={story.id}
                     type="button"
@@ -1999,7 +2103,7 @@ function App() {
             </div>
           ) : (
             <div className="eventGrid">
-              {data.upcoming_events.map((event) => (
+              {displayEvents.map((event) => (
                 <article
                   className="eventCard reveal-item"
                   key={event.id}
@@ -2084,13 +2188,13 @@ function App() {
             </div>
           </div>
 
-          {(data.blog || []).length === 0 ? (
+          {displayBlog.length === 0 ? (
             <div className="emptyState">
               <p>FAS blog posts will appear here.</p>
             </div>
           ) : (
             <div className="blogGrid">
-              {(data.blog || []).map((post) => (
+              {displayBlog.map((post) => (
                 <article
                   className="blogCard reveal-item"
                   key={post.id}
@@ -2149,13 +2253,13 @@ function App() {
             </div>
           </div>
 
-          {(data.sermons || []).length === 0 ? (
+          {(displaySermons.length === 0 ? (
             <div className="emptyState">
               <p>Sermons will appear here.</p>
             </div>
           ) : (
             <div className="sermonGrid">
-              {(data.sermons || []).map((sermon) => (
+              {displaySermons.map((sermon) => (
                 <article className="sermonCard reveal-item" key={sermon.id}>
                   <div className="sermonCardTop">
                     <span className="sermonCategory">
@@ -2219,13 +2323,13 @@ function App() {
             </div>
           </div>
 
-          {(data.videos || []).length === 0 ? (
+          {(displayVideos.length === 0 ? (
             <div className="emptyState">
               <p>Videos will appear here.</p>
             </div>
           ) : (
             <div className="videoGrid">
-              {(data.videos || []).map((video) => (
+              {displayVideos.map((video) => (
                 <article
                   className="videoCard reveal-item"
                   key={video.id}
@@ -2316,13 +2420,13 @@ function App() {
             </div>
           </div>
 
-          {(data.ebooks || []).length === 0 ? (
+          {(displayEbooks.length === 0 ? (
             <div className="emptyState">
               <p>E-books will appear here.</p>
             </div>
           ) : (
             <div className="ebookGrid">
-              {(data.ebooks || []).map((ebook) => (
+              {displayEbooks.map((ebook) => (
                 <article className="ebookCard reveal-item" key={ebook.id}>
                   <div className="ebookCover">
                     {ebook.cover_image_url ? (
@@ -2484,7 +2588,7 @@ function App() {
             </div>
           </div>
 
-          {data.gallery.length === 0 ? (
+          {displayGallery.length === 0 ? (
             <div className="emptyState">
               <p>
                 FAS gallery moments will appear here.
