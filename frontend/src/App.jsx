@@ -666,6 +666,50 @@ function App() {
       window.removeEventListener("hashchange", openStoryFromHash);
     };
   }, [data.stories]);
+  useEffect(() => {
+    if (window.location.pathname.startsWith("/blog/")) {
+      return;
+    }
+
+    document.title = "Faith Alone Saves | FAS Fellowship";
+
+    const schemaId = "fas-website-schema";
+    let schema = document.getElementById(schemaId);
+
+    if (!schema) {
+      schema = document.createElement("script");
+      schema.id = schemaId;
+      schema.type = "application/ld+json";
+      document.head.appendChild(schema);
+    }
+
+    schema.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://fas-fellowship.org/#website",
+          url: "https://fas-fellowship.org/",
+          name: "Faith Alone Saves",
+          alternateName: "FAS Fellowship",
+          description:
+            "Faith Alone Saves is a Christian student fellowship helping campus students grow in God's Word, worship, fellowship, mentorship, and service."
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://fas-fellowship.org/#organization",
+          name: "Faith Alone Saves",
+          alternateName: "FAS Fellowship",
+          url: "https://fas-fellowship.org/",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://fas-fellowship.org/branding/fas-logo.png"
+          }
+        }
+      ]
+    });
+  }, []);
+
   const settings = {
     ...fallback,
     ...(data.settings || {})
@@ -784,6 +828,14 @@ function App() {
               )}
 
               <div className="blogArticleBody">
+                <div className="articleIntro" aria-label="Article summary">
+                  <strong>In this article</strong>
+                  <p>
+                    {blogPost.excerpt ||
+                      "A reflection from Faith Alone Saves on faith, Scripture, and Christian life."}
+                  </p>
+                </div>
+
                 {blogPost.content
                   ?.split(/\r?\n\s*\r?\n/)
                   .filter((paragraph) => paragraph.trim())
