@@ -735,6 +735,14 @@ function App() {
             </div>
           ) : (
             <article className="blogArticleContent">
+              <nav className="blogBreadcrumbs" aria-label="Breadcrumb">
+                <a href="/">Faith Alone Saves</a>
+                <span aria-hidden="true">/</span>
+                <a href="/#blog">FAS Blog</a>
+                <span aria-hidden="true">/</span>
+                <span>{blogPost.title}</span>
+              </nav>
+
               <div className="blogArticleHeader">
                 <span className="blogCategory">
                   {(blogPost.category || "other").replace("-", " ")}
@@ -792,6 +800,30 @@ function App() {
                     </p>
                   ))}
               </div>
+
+              {(data.blog || []).filter((post) => String(post.slug) !== String(blogPost.slug)).length > 0 && (
+                <section className="relatedArticles" aria-labelledby="related-articles-title">
+                  <div className="sectionLabel">KEEP READING</div>
+                  <h2 id="related-articles-title">More from the FAS Blog</h2>
+                  <div className="relatedArticlesGrid">
+                    {(data.blog || [])
+                      .filter((post) => String(post.slug) !== String(blogPost.slug))
+                      .slice(0, 3)
+                      .map((post) => (
+                        <article className="relatedArticleCard" key={post.id}>
+                          <span className="blogCategory">
+                            {(post.category || "other").replace("-", " ")}
+                          </span>
+                          <h3>{post.title}</h3>
+                          {post.excerpt && <p>{post.excerpt}</p>}
+                          <a href={`/blog/${post.slug}`} className="textBtn">
+                            Read related article <ArrowRight size={16} />
+                          </a>
+                        </article>
+                      ))}
+                  </div>
+                </section>
+              )}
 
               <div className="blogArticleFooter">
                 <div className="blogShare">
