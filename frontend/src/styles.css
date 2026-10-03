@@ -6418,3 +6418,23 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
     grid-template-columns: 1fr;
   }
 }
+
+.articleIntro {
+  margin: 0 0 2rem;
+  padding: 1rem 1.15rem;
+  border-left: 3px solid currentColor;
+  background: rgba(15, 23, 42, 0.035);
+  border-radius: 0 12px 12px 0;
+}
+
+.articleIntro strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.articleIntro p {
+  margin: 0;
+}
