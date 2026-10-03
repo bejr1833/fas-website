@@ -6606,3 +6606,552 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
     bottom: 15px;
   }
 }
+
+/* =========================================================
+   FINAL MOBILE LAYOUT POLISH
+   ========================================================= */
+
+/*
+  Mobile goals:
+  - keep the header compact and easy to use
+  - prevent oversized hero/slider blocks
+  - make controls thumb-friendly
+  - keep cards readable without horizontal overflow
+  - stack dense desktop layouts cleanly
+*/
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (max-width: 850px) {
+  body {
+    overflow-x: clip;
+  }
+
+  .navbar {
+    height: 68px;
+    padding: 0 16px;
+  }
+
+  .brand img {
+    width: 78px;
+  }
+
+  .menuBtn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .navbar nav.mobileOpen {
+    left: 10px;
+    right: 10px;
+    top: calc(100% + 8px);
+    max-height: calc(100vh - 88px);
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .navbar nav.mobileOpen a {
+    min-height: 50px;
+    padding: 0 15px;
+  }
+
+  .hero {
+    padding: 54px 18px 42px !important;
+    gap: 30px !important;
+  }
+
+  .heroCopy {
+    max-width: 680px !important;
+  }
+
+  .hero h1 {
+    max-width: 620px !important;
+    font-size: clamp(42px, 12vw, 62px) !important;
+    line-height: .97 !important;
+  }
+
+  .hero p {
+    max-width: 560px !important;
+    font-size: 15px !important;
+    line-height: 1.72 !important;
+  }
+
+  .heroActions {
+    width: 100%;
+    gap: 10px !important;
+  }
+
+  .heroActions .primaryBtn,
+  .heroActions .textBtn {
+    min-height: 48px;
+  }
+
+  .heroNext {
+    width: 100% !important;
+    max-width: 430px !important;
+    min-height: 0 !important;
+    margin-top: 34px !important;
+    padding: 23px 21px !important;
+    border-radius: 18px !important;
+  }
+
+  .heroNextDate {
+    margin-top: 25px !important;
+  }
+
+  .heroNextDate strong {
+    font-size: 54px !important;
+  }
+
+  .heroNextContent h2,
+  .heroNextEmpty h2 {
+    font-size: 23px !important;
+  }
+
+  .heroNextWatermark {
+    font-size: 88px !important;
+  }
+
+  .section {
+    padding: 56px 18px !important;
+  }
+
+  .sectionTop {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .sectionTop h2,
+  .section h2 {
+    max-width: 100%;
+  }
+
+  .introGrid,
+  .missionGrid {
+    gap: 22px;
+  }
+
+  .pillars,
+  .storiesGrid {
+    gap: 14px;
+  }
+
+  .pillars article {
+    padding: 21px;
+  }
+
+  .missionGrid > div {
+    padding: 21px;
+  }
+
+  .eventGrid {
+    margin-top: 26px;
+  }
+
+  .eventCard {
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+    gap: 13px;
+    padding: 16px;
+    border-radius: 15px;
+  }
+
+  .eventDate {
+    width: 58px;
+    height: 58px;
+    border-radius: 12px;
+  }
+
+  .eventDate strong {
+    font-size: 20px;
+  }
+
+  .eventCard h3 {
+    font-size: 17px;
+    line-height: 1.3;
+  }
+
+  .eventCard p {
+    line-height: 1.55;
+  }
+
+  .emptyState {
+    padding: 28px 20px;
+    text-align: center;
+  }
+
+  .visionGrid {
+    margin-top: 32px;
+  }
+
+  .visionGrid .reveal-item {
+    padding: 22px 20px;
+  }
+
+  /* Highlights / slideshow */
+  .homepageSlideshow {
+    width: 100%;
+    padding: 16px 18px 54px;
+  }
+
+  .slideshowHeader {
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .slideshowCounter {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  .slideshowFrame {
+    min-height: 0 !important;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px;
+  }
+
+  .slideOverlay {
+    padding: 72px 17px 20px;
+  }
+
+  .slideOverlay h3 {
+    max-width: 85%;
+    font-size: 20px;
+    line-height: 1.18;
+  }
+
+  .slideOverlay p {
+    max-width: 90%;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .slideButton {
+    margin-top: 11px;
+  }
+
+  .slideArrow {
+    width: 38px;
+    height: 38px;
+  }
+
+  .slidePrevious {
+    left: 8px;
+  }
+
+  .slideNext {
+    right: 8px;
+  }
+
+  .slideDots {
+    bottom: 11px;
+  }
+
+  /* Gallery category controls become a touch-friendly horizontal strip. */
+  .galleryFilters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 2px 2px 7px;
+    margin: 22px 0 18px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .galleryFilters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .galleryFilter {
+    flex: 0 0 auto;
+    min-height: 42px;
+    padding: 9px 14px;
+  }
+
+  .galleryGrid {
+    gap: 12px;
+    padding: 3px 2px 13px;
+  }
+
+  .galleryCard {
+    flex-basis: 86%;
+  }
+
+  .galleryImageWrap {
+    aspect-ratio: 4 / 3;
+    border-radius: 16px;
+  }
+
+  .galleryCardOverlay {
+    padding: 54px 15px 15px;
+  }
+
+  /* Story of FAS timeline */
+  .storySection {
+    padding-top: 68px !important;
+    padding-bottom: 76px !important;
+  }
+
+  .storySection .storyIntro {
+    margin-bottom: 50px;
+  }
+
+  .storyTimeline::before {
+    left: 20px;
+  }
+
+  .storyMilestone {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 16px;
+    margin-bottom: 38px;
+  }
+
+  .storyMarker {
+    width: 42px;
+    height: 42px;
+  }
+
+  .storyContent h3 {
+    font-size: 25px;
+  }
+
+  .storyContent p {
+    font-size: 14.5px;
+    line-height: 1.72;
+  }
+
+  .storyMilestone:nth-child(3) .storyContent,
+  .storyMilestone:nth-child(5) .storyContent {
+    padding: 18px;
+  }
+
+  .storyRhythm {
+    gap: 10px;
+  }
+
+  .storyRhythm div {
+    padding: 18px;
+  }
+
+  .storyFinalCompact {
+    margin-top: 34px;
+    padding: 23px 18px;
+  }
+
+  /* Libraries */
+  .sermonCard,
+  .sermonFeatured {
+    padding: 22px;
+    border-radius: 17px;
+  }
+
+  .sermonCardFooter {
+    gap: 12px;
+  }
+
+  .sermonOpenBtn {
+    min-height: 46px;
+  }
+
+  .videoGrid,
+  .ebookGrid {
+    gap: 16px;
+  }
+
+  .videoCardBody {
+    padding: 18px;
+  }
+
+  .ebookCardBody {
+    padding: 19px;
+  }
+
+  /* Connect / forms */
+  .supportSection {
+    padding: 50px 18px !important;
+  }
+
+  .supportCard {
+    width: 100%;
+    padding: 24px 18px !important;
+    border-radius: 18px;
+  }
+
+  .supportLinks {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .supportLinks a {
+    min-height: 48px;
+    padding: 13px 15px;
+  }
+
+  .contactFormWrap {
+    margin-top: 28px;
+    padding-top: 24px;
+  }
+
+  .contactTypeSwitch {
+    margin-bottom: 18px;
+  }
+
+  .contactTypeBtn {
+    min-height: 44px;
+  }
+
+  .contactForm {
+    gap: 16px;
+  }
+
+  .contactForm input {
+    min-height: 50px;
+  }
+
+  .contactForm textarea {
+    min-height: 140px;
+  }
+
+  .contactSubmitBtn {
+    min-height: 50px;
+  }
+
+  /* Footer becomes a clean two-level mobile block. */
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 30px 18px;
+    gap: 22px;
+  }
+
+  footer div:last-child {
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.5;
+  }
+
+  footer img {
+    width: 72px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0 13px;
+  }
+
+  .brand img {
+    width: 74px;
+  }
+
+  .hero {
+    padding: 46px 16px 38px !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 12.5vw, 52px) !important;
+  }
+
+  .hero p {
+    font-size: 14.5px !important;
+  }
+
+  .heroNext {
+    max-width: none !important;
+    margin-top: 28px !important;
+    padding: 21px 18px !important;
+  }
+
+  .heroNextDate strong {
+    font-size: 50px !important;
+  }
+
+  .section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .homepageSlideshow {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .slideshowFrame {
+    aspect-ratio: 3 / 4;
+  }
+
+  .slideOverlay {
+    padding: 80px 15px 18px;
+  }
+
+  .slideOverlay h3 {
+    font-size: 18px;
+  }
+
+  .slideOverlay p {
+    font-size: 11.5px;
+  }
+
+  .slideArrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .galleryCard {
+    flex-basis: 90%;
+  }
+
+  .galleryCardOverlay strong {
+    font-size: .95rem;
+  }
+
+  .storyMilestone {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 13px;
+  }
+
+  .storyTimeline::before {
+    left: 18px;
+  }
+
+  .storyMarker {
+    width: 38px;
+    height: 38px;
+  }
+
+  .storyMarker span {
+    font-size: 8px;
+  }
+
+  .storyContent h3 {
+    font-size: 23px;
+  }
+
+  .storyContent p {
+    font-size: 14px;
+  }
+
+  .storyRetreatCard {
+    padding: 20px;
+  }
+
+  .contactTypeBtn {
+    font-size: 12px;
+    padding-inline: 8px;
+  }
+
+  .newBlogHighlightInner,
+  .latestBlogInner {
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galleryGrid {
+    scroll-behavior: auto;
+  }
+}
