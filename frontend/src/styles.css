@@ -6125,6 +6125,63 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 }
 
 /* =========================================================
+   FAS GALLERY — AUTOMATIC HORIZONTAL CAROUSEL
+   ========================================================= */
+
+.galleryGrid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 14px;
+  max-width: 1120px;
+  margin: 40px auto 0;
+  padding: 4px 4px 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.galleryGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.galleryGrid .galleryCard {
+  flex: 0 0 calc((100% - 42px) / 4);
+  width: calc((100% - 42px) / 4);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 1050px) {
+  .galleryGrid .galleryCard {
+    flex-basis: calc((100% - 14px) / 2);
+    width: calc((100% - 14px) / 2);
+  }
+}
+
+@media (max-width: 680px) {
+  .galleryGrid {
+    gap: 12px;
+    margin-top: 28px;
+    padding: 3px 3px 14px;
+  }
+
+  .galleryGrid .galleryCard {
+    flex: 0 0 min(310px, calc(100vw - 40px));
+    width: min(310px, calc(100vw - 40px));
+  }
+}
+
+@media (max-width: 380px) {
+  .galleryGrid .galleryCard {
+    flex-basis: min(290px, calc(100vw - 34px));
+    width: min(290px, calc(100vw - 34px));
+  }
+}
+
+/* =========================================================
    FAS STUDENT STORIES — AUTOMATIC HORIZONTAL CAROUSEL
    ========================================================= */
 
