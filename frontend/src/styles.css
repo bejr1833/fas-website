@@ -1199,7 +1199,6 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   }
 }
 
-
 /* FIX â€” NEXT GATHERING BUTTON TEXT */
 .heroNextLink {
   display: inline-flex !important;
@@ -2397,7 +2396,6 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   gap: 12px;
   margin-bottom: 12px;
 }
-
 .videoCategory {
   color: #171716;
   font-size: 11px;
@@ -3597,7 +3595,6 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
     font-size: 10px;
     letter-spacing: 0.17em;
   }
-
   h2 {
     font-size: clamp(30px, 8vw, 42px);
     line-height: 1.08;
@@ -4797,8 +4794,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border: 0;
-  border-top: 1px solid #ebe8e5;
+  border: 0;  border-top: 1px solid #ebe8e5;
   border-radius: 0;
   background: transparent;
   color: var(--black);
@@ -5997,7 +5993,6 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   .storyCardBody {
     padding: 15px 16px 14px;
   }
-
   .storyEyebrow {
     margin-bottom: 5px;
     font-size: 8px;
@@ -6513,4 +6508,101 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   margin: 1.8rem 0 0.6rem;
   font-size: 1.15rem;
   line-height: 1.35;
+}
+
+/* =========================================================
+   FAS STUDENT STORIES — PROFESSIONAL PHOTO FRAME
+   ========================================================= */
+
+.storyPhoto {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: #f4f1ec;
+  border: 1px solid #ddd7d0;
+  border-radius: 18px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+    0 8px 22px rgba(23, 23, 22, 0.06);
+}
+
+.storyPhoto::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.72),
+      rgba(244, 241, 236, 0.96)
+    );
+  pointer-events: none;
+}
+
+.storyPhoto::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(23, 23, 22, 0.08);
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.storyPhoto img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 35%;
+  border-radius: 11px;
+  box-shadow: 0 5px 16px rgba(23, 23, 22, 0.12);
+  transition:
+    transform 0.45s ease,
+    filter 0.45s ease;
+}
+
+.storyCard:hover .storyPhoto img {
+  transform: scale(1.025);
+}
+
+.storyPhotoBadge {
+  left: 18px;
+  bottom: 18px;
+  z-index: 3;
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(23, 23, 22, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 5px 14px rgba(23, 23, 22, 0.16);
+}
+
+@media (max-width: 680px) {
+  .storyPhoto {
+    aspect-ratio: 4 / 3;
+    padding: 7px;
+    border-radius: 16px;
+  }
+
+  .storyPhoto::after {
+    inset: 7px;
+    border-radius: 11px;
+  }
+
+  .storyPhoto img {
+    border-radius: 10px;
+  }
+
+  .storyPhotoBadge {
+    left: 15px;
+    bottom: 15px;
+  }
 }
