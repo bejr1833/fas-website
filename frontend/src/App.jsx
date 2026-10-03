@@ -2094,7 +2094,7 @@ function App() {
               <CalendarDays size={24} />
               <p>Loading upcoming events...</p>
             </div>
-          ) : data.upcoming_events.length === 0 ? (
+           ) : displayEvents.length === 0 ? (
             <div className="emptyState">
               <CalendarDays size={24} />
               <p>
@@ -2259,7 +2259,7 @@ function App() {
             </div>
           </div>
 
-          {(displaySermons.length === 0 ? (
+          {displaySermons.length === 0 ? (
             <div className="emptyState">
               <p>Sermons will appear here.</p>
             </div>
@@ -2329,7 +2329,7 @@ function App() {
             </div>
           </div>
 
-          {(displayVideos.length === 0 ? (
+          {displayVideos.length === 0 ? (
             <div className="emptyState">
               <p>Videos will appear here.</p>
             </div>
@@ -2441,7 +2441,7 @@ function App() {
             </div>
           </div>
 
-          {(displayEbooks.length === 0 ? (
+          {displayEbooks.length === 0 ? (
             <div className="emptyState">
               <p>E-books will appear here.</p>
             </div>
