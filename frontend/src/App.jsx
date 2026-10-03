@@ -55,6 +55,14 @@ function App() {
 
     if (!carousel) return;
 
+    const reduceMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+    if (reduceMotionQuery.matches) {
+      return;
+    }
+
     let timer = null;
     let paused = false;
 
@@ -1090,7 +1098,10 @@ function App() {
           />
         </a>
 
-        <nav className={menuOpen ? "mobileOpen" : ""}>
+        <nav
+          id="main-navigation"
+          className={menuOpen ? "mobileOpen" : ""}
+        >
           <a href="#about" onClick={closeMenu}>
             About
           </a>
@@ -1150,6 +1161,8 @@ function App() {
         <button
           className="menuBtn"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          aria-controls="main-navigation"
           onClick={() => setMenuOpen((value) => !value)}
         >
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -2692,7 +2705,7 @@ function App() {
                 <a
                   href={settings.whatsapp_url}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   <Users size={18} />
                   WhatsApp
@@ -2703,7 +2716,7 @@ function App() {
                 <a
                   href={settings.instagram_url}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   <Instagram size={18} />
                   Instagram
@@ -2714,7 +2727,7 @@ function App() {
                 <a
                   href={settings.youtube_url}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   <Youtube size={18} />
                   YouTube
@@ -2725,7 +2738,7 @@ function App() {
                 <a
                   href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(settings.email)}`}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   <Mail size={18} />
                   Email
