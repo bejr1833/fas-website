@@ -1,4 +1,4 @@
-from rest_framework import serializers
+﻿from rest_framework import serializers
 from urllib.parse import urlparse, parse_qs
 
 from .models import (
@@ -147,6 +147,7 @@ class SermonPDFSerializer(serializers.ModelSerializer):
 
         filename = str(obj.pdf_file.name).split("/")[-1]
 
+        # Keep the bundled Spurgeon PDF fallback.
         if filename == "charles-spurgeon-en.pdf":
             url = "/static/sermons/charles-spurgeon-en.pdf"
 
@@ -155,9 +156,16 @@ class SermonPDFSerializer(serializers.ModelSerializer):
 
             return url
 
-        return None
+        # Return the actual URL for uploaded sermon PDFs.
+        try:
+            url = obj.pdf_file.url
+        except Exception:
+            return None
 
+        if request and url.startswith("/"):
+            return request.build_absolute_uri(url)
 
+        return url
 class FASVideoSerializer(serializers.ModelSerializer):
     thumbnail_url = serializers.SerializerMethodField()
 
