@@ -853,6 +853,9 @@ function App() {
                 <div className="blogArticleCover">
                   <img
                     src={blogPost.cover_image_url}
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
                     alt={blogPost.title + " — Faith Alone Saves"}
                   />
                 </div>
@@ -1860,6 +1863,9 @@ function App() {
                   <img
                     src={slide.image_url}
                     alt={slide.title || "FAS update"}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                    decoding="async"
                   />
 
                   <div className="slideOverlay">
@@ -2394,6 +2400,8 @@ function App() {
                 {selectedStory.photo ? (
                   <img
                     src={selectedStory.photo}
+                    loading="lazy"
+                    decoding="async"
                     alt={`${selectedStory.student_name} — FAS student story`}
                   />
                 ) : (
@@ -2511,6 +2519,8 @@ function App() {
                       <div className="galleryImageWrap">
                         <img
                           src={image.image}
+                          loading="lazy"
+                          decoding="async"
                           alt={
                             image.title ||
                             "FAS fellowship moment"
@@ -2588,6 +2598,8 @@ function App() {
                           galleryLightboxIndex
                         ]?.image
                       }
+                      loading="lazy"
+                      decoding="async"
                       alt={
                         filteredGallery[
                           galleryLightboxIndex
