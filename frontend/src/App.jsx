@@ -2155,39 +2155,62 @@ function App() {
             </div>
           ) : (
             <div className="blogGrid">
-              {data.blog.map((post) => (
+              {data.blog.map((post, index) => (
                 <article
-                  className="blogCard reveal-item"
+                  className={`blogCard blogCardFeatured reveal-item${index === 0 ? " isFeatured" : ""}`}
                   key={post.id}
                 >
-                  {post.cover_image_url && (
-                    <img
-                      src={post.cover_image_url}
-                      alt={post.title}
-                    />
-                  )}
+                  <a
+                    href={`/blog/${post.slug}`}
+                    className="blogCardMedia"
+                    aria-label={`Read ${post.title}`}
+                  >
+                    {post.cover_image_url ? (
+                      <img
+                        src={post.cover_image_url}
+                        alt=""
+                        loading={index === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                      />
+                    ) : (
+                      <div className="blogCardMediaFallback" aria-hidden="true">
+                        <span>FAS</span>
+                      </div>
+                    )}
+                    <span className="blogCardReadBadge">
+                      Read article <ArrowRight size={15} />
+                    </span>
+                  </a>
 
                   <div className="blogCardContent">
-                    <span className="blogCategory">
-                      {(post.category || "other")
-                        .replace("-", " ")}
-                    </span>
+                    <div className="blogCardTopline">
+                      <span className="blogCategory">
+                        {(post.category || "other").replace(/-/g, " ")}
+                      </span>
+                      {post.published_at && (
+                        <time dateTime={post.published_at}>
+                          {new Date(post.published_at).toLocaleDateString("en-US", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric"
+                          })}
+                        </time>
+                      )}
+                    </div>
 
-                    <h3>{post.title}</h3>
+                    <h3>
+                      <a href={`/blog/${post.slug}`}>{post.title}</a>
+                    </h3>
 
-                    {post.excerpt && (
-                      <p>{post.excerpt}</p>
-                    )}
+                    {post.excerpt && <p>{post.excerpt}</p>}
 
                     <div className="blogMeta">
-                      <span>{post.author}</span>
-                      <a
-                          href={`/blog/${post.slug}`}
-                          className="textBtn"
-                        >
-                          Read article
-                          <ArrowRight size={16} />
-                        </a>
+                      <span className="blogAuthor">
+                        {post.author || "FAS"}
+                      </span>
+                      <a href={`/blog/${post.slug}`} className="blogReadLink">
+                        Continue reading <ArrowRight size={16} />
+                      </a>
                     </div>
                   </div>
                 </article>
