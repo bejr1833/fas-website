@@ -449,11 +449,11 @@ function App() {
     }
 
     const canonicalUrl = `https://fas-fellowship.org/blog/${encodeURIComponent(
-      blogPost.slug || window.location.pathname.replace("/blog/", "").replace(/\\/+$/, "")
+      blogPost.slug || window.location.pathname.replace("/blog/", "").replace(/\/+$/, "")
     )}`;
     const description =
       blogPost.excerpt ||
-      blogPost.content?.replace(/\\s+/g, " ").trim().slice(0, 160) ||
+      blogPost.content?.replace(/\s+/g, " ").trim().slice(0, 160) ||
       "Read Christian teaching, encouragement, and fellowship resources from Faith Alone Saves.";
 
     document.title = `${blogPost.title} | Faith Alone Saves`;
