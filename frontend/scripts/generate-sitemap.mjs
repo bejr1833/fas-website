@@ -84,10 +84,11 @@ try {
   posts = await fetchBlogs();
   console.log(`Sitemap: found ${posts.length} blog posts.`);
 } catch (error) {
-  console.warn(
-    "Sitemap: could not reach the blog API during build; using homepage-only fallback.",
+  console.error(
+    "Sitemap: could not reach the blog API during build.",
     error?.message || error
   );
+  process.exit(1);
 }
 
 await mkdir(join(process.cwd(), "public"), { recursive: true });
