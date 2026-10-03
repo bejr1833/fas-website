@@ -318,6 +318,14 @@ function App() {
   const [galleryLightboxOpen, setGalleryLightboxOpen] = useState(false);
   const [galleryLightboxIndex, setGalleryLightboxIndex] = useState(0);
 
+  const displayEvents = getDisplayItems(data.upcoming_events, temporaryIntroContent.events);
+  const displayBlog = getDisplayItems(data.blog, temporaryIntroContent.blog);
+  const displaySermons = getDisplayItems(data.sermons, temporaryIntroContent.sermons);
+  const displayVideos = getDisplayItems(data.videos, temporaryIntroContent.videos);
+  const displayEbooks = getDisplayItems(data.ebooks, temporaryIntroContent.ebooks);
+  const displayStories = getDisplayItems(data.stories, temporaryIntroContent.stories);
+  const displayGallery = getDisplayItems(data.gallery, temporaryIntroContent.gallery);
+
   const galleryCategories = [
     { value: "all", label: "All" },
     { value: "retreats", label: "Retreats" },
@@ -850,15 +858,7 @@ function App() {
     ...(data.settings || {})
   };
 
-  const displayEvents = getDisplayItems(data.upcoming_events, temporaryIntroContent.events);
-  const displayBlog = getDisplayItems(data.blog, temporaryIntroContent.blog);
-  const displaySermons = getDisplayItems(data.sermons, temporaryIntroContent.sermons);
-  const displayVideos = getDisplayItems(data.videos, temporaryIntroContent.videos);
-  const displayEbooks = getDisplayItems(data.ebooks, temporaryIntroContent.ebooks);
-  const displayStories = getDisplayItems(data.stories, temporaryIntroContent.stories);
-  const displayGallery = getDisplayItems(data.gallery, temporaryIntroContent.gallery);
-
-  const shareStory = async (story) => {
+    const shareStory = async (story) => {
     const url = `${window.location.origin}/#story-${story.id}`;
     const title = `${story.student_name} — FAS Student Testimony`;
     const text = story.impact_statement
