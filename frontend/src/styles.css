@@ -7155,3 +7155,39 @@ html {
     scroll-behavior: auto;
   }
 }
+
+/* TESTIMONY PHOTO VISIBILITY FIX */
+
+/* Keep the complete testimony photograph visible on every screen size. */
+.storyPhoto {
+  overflow: hidden;
+  background: #ebe8e4;
+}
+
+.storyPhoto img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  background: #171716;
+}
+
+/* On phones, give portrait photographs enough vertical room without cropping. */
+@media (max-width: 680px) {
+  .storyPhoto {
+    aspect-ratio: 4 / 3;
+    min-height: 240px;
+  }
+
+  .storyPhoto img {
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 420px) {
+  .storyPhoto {
+    min-height: 220px;
+  }
+}
