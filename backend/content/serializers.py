@@ -1,6 +1,19 @@
 ﻿from rest_framework import serializers
 from urllib.parse import urlparse, parse_qs
 
+
+
+def optimize_image_url(url, width=1200):
+    """Apply Cloudinary delivery optimizations when the URL is Cloudinary-hosted."""
+    if not url or "res.cloudinary.com/" not in url or "/image/upload/" not in url:
+        return url
+
+    marker = "/image/upload/"
+    prefix, suffix = url.split(marker, 1)
+    if suffix.startswith("f_auto,q_auto/") or "f_auto" in suffix.split("/", 1)[0]:
+        return url
+    return f"{prefix}{marker}f_auto,q_auto,w_{width},c_limit/{suffix}"
+
 from .models import (
     SiteSettings,
     Event,
@@ -32,7 +45,7 @@ class HomepageSlideSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         if not obj.image:
             return None
-        url = obj.image.url
+        url = optimize_image_url(obj.image.url, 1200)
         if request:
             return request.build_absolute_uri(url)
         return url
@@ -135,7 +148,7 @@ class BlogPostSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         if not obj.cover_image:
             return None
-        url = obj.cover_image.url
+        url = optimize_image_url(obj.cover_image.url, 1200)
         if request:
             return request.build_absolute_uri(url)
         return url
@@ -198,7 +211,7 @@ class FASVideoSerializer(serializers.ModelSerializer):
 
         # Prefer a manually uploaded thumbnail.
         if obj.thumbnail:
-            url = obj.thumbnail.url
+            url = optimize_image_url(obj.thumbnail.url, 800)
             if request:
                 return request.build_absolute_uri(url)
             return url
@@ -242,7 +255,7 @@ class EBookSerializer(serializers.ModelSerializer):
         if not obj.cover_image:
             return None
 
-        url = obj.cover_image.url
+        url = optimize_image_url(obj.cover_image.url, 800)
 
         if request:
             return request.build_absolute_uri(url)
