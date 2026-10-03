@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.db import models
 
-from rest_framework import generics
+from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -114,12 +114,25 @@ class TestimonyCreateView(generics.CreateAPIView):
 
     queryset = Testimony.objects.all()
     serializer_class = TestimonySerializer
+    permission_classes = [permissions.AllowAny]
+    http_method_names = ["post", "options"]
+
+    # Public submissions are accepted, but the endpoint has no read/list action.
+    # Global DRF throttling still limits anonymous abuse.
+    def get_queryset(self):
+        return Testimony.objects.none()
 
 
 class ContactMessageCreateView(generics.CreateAPIView):
 
     queryset = ContactMessage.objects.all()
     serializer_class = ContactMessageSerializer
+    permission_classes = [permissions.AllowAny]
+    http_method_names = ["post", "options"]
+
+    # Contact/prayer submissions are write-only through the public API.
+    def get_queryset(self):
+        return ContactMessage.objects.none()
 
 
 class BlogPostListView(generics.ListAPIView):
