@@ -484,6 +484,29 @@ function App() {
     return () => observer.disconnect();
   }, [data]);
 
+  useEffect(() => {
+    if (!data.stories.length) return;
+
+    const openStoryFromHash = () => {
+      const match = window.location.hash.match(/^#story-(.+)$/);
+      if (!match) return;
+
+      const story = data.stories.find(
+        (item) => String(item.id) === String(match[1])
+      );
+
+      if (story) {
+        setSelectedStory(story);
+      }
+    };
+
+    openStoryFromHash();
+    window.addEventListener("hashchange", openStoryFromHash);
+
+    return () => {
+      window.removeEventListener("hashchange", openStoryFromHash);
+    };
+  }, [data.stories]);
   const settings = {
     ...fallback,
     ...(data.settings || {})
