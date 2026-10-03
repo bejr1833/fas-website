@@ -1631,7 +1631,7 @@ function App() {
 
                 <blockquote>
                   “Why don't we gather, even if it is only online,
-                  and pray for one another?”
+                  and pray for one another?”
                 </blockquote>
               </div>
             </article>
@@ -1643,7 +1643,7 @@ function App() {
 
               <div className="storyContent">
                 <div className="storyDate">
-                  OCTOBER 13, 2023 Â· 6”“7 PM
+                  OCTOBER 13, 2023 · 6-7 PM
                 </div>
 
                 <h3>The First Fellowship</h3>
@@ -1666,7 +1666,7 @@ function App() {
 
               <div className="storyContent">
                 <div className="storyDate">
-                  OCTOBER”“NOVEMBER 2023
+                  OCTOBER-NOVEMBER 2023
                 </div>
 
                 <h3>The Fellowship Grows</h3>
@@ -3045,7 +3045,6 @@ function App() {
 }
 
 export default App;
-
 
 
 
