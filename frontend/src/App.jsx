@@ -18,7 +18,7 @@ const temporaryIntroContent = {
   events: [
     {
       id: "intro-weekly-fellowship",
-      date: "2026-12-31",
+      date: "2026-10-06",
       title: "Weekly FAS Fellowship",
       time: "Every Tuesday · 7:00 PM",
       mode: "ONLINE FELLOWSHIP",
@@ -856,7 +856,7 @@ function App() {
   const displayVideos = getDisplayItems(data.videos, temporaryIntroContent.videos);
   const displayEbooks = getDisplayItems(data.ebooks, temporaryIntroContent.ebooks);
   const displayStories = getDisplayItems(data.stories, temporaryIntroContent.stories);
-  const displayGallery = getDisplayItems(displayGallery, temporaryIntroContent.gallery);
+  const displayGallery = getDisplayItems(data.gallery, temporaryIntroContent.gallery);
 
   const shareStory = async (story) => {
     const url = `${window.location.origin}/#story-${story.id}`;
@@ -2221,13 +2221,19 @@ function App() {
                     <div className="blogMeta">
                       <span>{post.author}</span>
 
-                      <a
-                        href={`/blog/${post.slug}`}
-                        className="textBtn"
-                      >
-                        Read article
-                        <ArrowRight size={16} />
-                      </a>
+                      {post.demo ? (
+                        <span className="textBtn">
+                          Temporary introduction
+                        </span>
+                      ) : (
+                        <a
+                          href={`/blog/${post.slug}`}
+                          className="textBtn"
+                        >
+                          Read article
+                          <ArrowRight size={16} />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </article>
@@ -2290,7 +2296,7 @@ function App() {
                       </span>
                     )}
 
-                    {sermon.pdf_file_url && (
+                    {sermon.pdf_file_url && !sermon.demo && (
                       <a
                         href={sermon.pdf_file_url}
                         target="_blank"
@@ -2342,19 +2348,28 @@ function App() {
                       />
                     ) : (
                       <div className="videoThumbnailPlaceholder">
-                        <span>FAS</span>
+                        <span>{video.demo ? "INTRO" : "FAS"}</span>
                       </div>
                     )}
 
-                    <a
-                      href={video.video_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="videoPlayButton"
-                      aria-label={`Watch ${video.title}`}
-                    >
-                      <Play size={20} fill="currentColor" />
-                    </a>
+                    {video.demo ? (
+                      <span
+                        className="videoPlayButton"
+                        aria-label="Temporary introduction"
+                      >
+                        <Play size={20} />
+                      </span>
+                    ) : (
+                      <a
+                        href={video.video_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="videoPlayButton"
+                        aria-label={`Watch ${video.title}`}
+                      >
+                        <Play size={20} fill="currentColor" />
+                      </a>
+                    )}
 
                     {video.is_featured && (
                       <span className="videoFeaturedLabel">
@@ -2393,15 +2408,21 @@ function App() {
                       <p>{video.description}</p>
                     )}
 
-                    <a
-                      href={video.video_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="videoWatchLink"
-                    >
-                      Watch on YouTube
-                      <ArrowRight size={16} />
-                    </a>
+                    {video.demo ? (
+                      <span className="videoWatchLink">
+                        Video library coming soon
+                      </span>
+                    ) : (
+                      <a
+                        href={video.video_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="videoWatchLink"
+                      >
+                        Watch on YouTube
+                        <ArrowRight size={16} />
+                      </a>
+                    )}
                   </div>
                 </article>
               ))}
@@ -2479,14 +2500,20 @@ function App() {
                       <p>{ebook.description}</p>
                     )}
 
-                    <a
-                      href={ebook.ebook_file_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ebookReadLink"
-                    >
-                      Open E-book <ArrowRight size={16} />
-                    </a>
+                    {ebook.demo ? (
+                      <span className="ebookReadLink">
+                        Reading resources coming soon
+                      </span>
+                    ) : (
+                      <a
+                        href={ebook.ebook_file_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ebookReadLink"
+                      >
+                        Open E-book <ArrowRight size={16} />
+                      </a>
+                    )}
                   </div>
                 </article>
               ))}
@@ -2637,15 +2664,21 @@ function App() {
                       aria-label={`Open ${image.title || "FAS fellowship moment"}`}
                     >
                       <div className="galleryImageWrap">
-                        <img
-                          src={image.image}
-                          loading="lazy"
-                          decoding="async"
-                          alt={
-                            image.title ||
-                            "FAS fellowship moment"
-                          }
-                        />
+                        {image.image ? (
+                          <img
+                            src={image.image}
+                            loading="lazy"
+                            decoding="async"
+                            alt={
+                              image.title ||
+                              "FAS fellowship moment"
+                            }
+                          />
+                        ) : (
+                          <div className="galleryImagePlaceholder">
+                            <span>FAS</span>
+                          </div>
+                        )}
 
                         <div className="galleryCardOverlay">
                           <span className="galleryCardCategory">
