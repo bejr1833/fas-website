@@ -91,8 +91,15 @@ class ContactMessageSerializer(serializers.ModelSerializer):
         fields = (
             "name",
             "email",
+            "phone",
+            "request_type",
             "message",
         )
+        extra_kwargs = {
+            "request_type": {
+                "required": True,
+            },
+        }
 
 
 class BlogPostSerializer(serializers.ModelSerializer):

@@ -118,17 +118,40 @@ class Testimony(models.Model):
 
 
 class ContactMessage(models.Model):
+    REQUEST_TYPE_CHOICES = [
+        ("prayer", "Prayer Request"),
+        ("message", "Message"),
+    ]
+
+    STATUS_CHOICES = [
+        ("new", "New"),
+        ("read", "Read"),
+        ("responded", "Responded"),
+        ("archived", "Archived"),
+    ]
+
     name = models.CharField(max_length=120)
     email = models.EmailField()
-    message = models.TextField()
+    phone = models.CharField(max_length=30, blank=True)
+    request_type = models.CharField(
+        max_length=20,
+        choices=REQUEST_TYPE_CHOICES,
+        default="message",
+    )
+    message = models.TextField(max_length=5000)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="new",
+    )
+    admin_notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    is_read = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"{self.name} - {self.email}"
+        return f"{self.name} - {self.get_request_type_display()}"
 
 class BlogPost(models.Model):
     CATEGORY_CHOICES = [

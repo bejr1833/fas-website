@@ -8,6 +8,7 @@ import {
   Menu,
   Play,
   Quote,
+  Share2,
   Users,
   Youtube,
   X
@@ -48,6 +49,72 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [blogPost, setBlogPost] = useState(null);
   const [blogLoading, setBlogLoading] = useState(false);
+  const [contactRequestType, setContactRequestType] = useState("prayer");
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactFeedback, setContactFeedback] = useState(null);
+
+  const handleContactSubmit = async (event) => {
+    event.preventDefault();
+
+    if (contactSubmitting) {
+      return;
+    }
+
+    setContactSubmitting(true);
+    setContactFeedback(null);
+
+    try {
+      const response = await fetch(`${API_BASE}/api/contact/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: contactName.trim(),
+          email: contactEmail.trim(),
+          phone: contactPhone.trim(),
+          request_type: contactRequestType,
+          message: contactMessage.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const firstError = errorData
+          ? Object.values(errorData).flat()?.[0]
+          : null;
+        throw new Error(
+          firstError || "Unable to send your request right now."
+        );
+      }
+
+      setContactFeedback({
+        type: "success",
+        message:
+          contactRequestType === "prayer"
+            ? "Your prayer request has been received. We will keep it in prayer."
+            : "Your message has been received. Thank you for reaching out to FAS.",
+      });
+
+      setContactName("");
+      setContactEmail("");
+      setContactPhone("");
+      setContactMessage("");
+    } catch (error) {
+      setContactFeedback({
+        type: "error",
+        message:
+          error?.message ||
+          "Something went wrong. Please try again.",
+      });
+    } finally {
+      setContactSubmitting(false);
+    }
+  };
 
   const [galleryCategory, setGalleryCategory] = useState("all");
   const [galleryLightboxOpen, setGalleryLightboxOpen] = useState(false);
@@ -427,6 +494,132 @@ function App() {
               </div>
 
               <div className="blogArticleFooter">
+                <div className="blogShare">
+                  <div className="blogShareLabel">
+                    Share this article
+                  </div>
+
+                  <div className="blogShareActions">
+                    <button
+                      type="button"
+                      className="blogShareBtn"
+                      onClick={() => {
+                        const url = window.location.href;
+                        const text = `${blogPost.title} — ${url}`;
+                        window.open(
+                          `https://wa.me/?text=${encodeURIComponent(text)}`,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                    >
+                      WhatsApp
+                    </button>
+
+                    <button
+                      type="button"
+                      className="blogShareBtn"
+                      onClick={() => {
+                        const url = window.location.href;
+                        window.open(
+                          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                    >
+                      Facebook
+                    </button>
+
+                    <button
+                      type="button"
+                      className="blogShareBtn"
+                      onClick={() => {
+                        const url = window.location.href;
+                        window.open(
+                          `https://twitter.com/intent/tweet?text=${encodeURIComponent(blogPost.title)}&url=${encodeURIComponent(url)}`,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                    >
+                      X
+                    </button>
+
+                    <button
+                      type="button"
+                      className="blogShareBtn"
+                      onClick={() => {
+                        const url = window.location.href;
+                        window.open(
+                          `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(blogPost.title)}`,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                    >
+                      Telegram
+                    </button>
+
+                    <button
+                      type="button"
+                      className="blogShareBtn"
+                      onClick={() => {
+                        const url = window.location.href;
+                        window.open(
+                          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                    >
+                      LinkedIn
+                    </button>
+
+                    <button
+                      type="button"
+                      className="blogShareBtn"
+                      onClick={async () => {
+                        try {
+                          await navigator.clipboard.writeText(
+                            window.location.href
+                          );
+                          window.alert("Article link copied.");
+                        } catch {
+                          window.prompt(
+                            "Copy this article link:",
+                            window.location.href
+                          );
+                        }
+                      }}
+                    >
+                      Copy Link
+                    </button>
+
+                    {typeof navigator !== "undefined" &&
+                      navigator.share && (
+                        <button
+                          type="button"
+                          className="blogShareBtn blogNativeShare"
+                          onClick={async () => {
+                            try {
+                              await navigator.share({
+                                title: blogPost.title,
+                                text: blogPost.excerpt || blogPost.title,
+                                url: window.location.href
+                              });
+                            } catch {
+                              // User cancelled the native share sheet.
+                            }
+                          }}
+                        >
+                          <Share2 size={15} />
+                          Share
+                        </button>
+                      )}
+                  </div>
+                </div>
+
                 <a href="/" className="primaryBtn">
                   <ArrowRight
                     size={17}
@@ -645,7 +838,348 @@ function App() {
           </section>
         )}
 
-        <section className="homepageSlideshow reveal-section">
+        <section
+          id="about"
+          className="section introSection reveal-section"
+        >
+          <div className="sectionLabel">
+            WHY FAS
+          </div>
+
+          <div className="introGrid">
+            <h2>
+              A fellowship for students who want to{" "}
+              <em>know, grow and serve.</em>
+            </h2>
+
+            <p>
+              FAS exists to build a Christ-centered
+              student community where God's Word shapes
+              faith, worship, leadership and everyday
+              campus life.
+            </p>
+          </div>
+
+          <div className="pillars stagger-group">
+            <article className="reveal-item">
+              <span>01</span>
+              <h3>Enlighten</h3>
+              <p>
+                Ground students in God's Word and truth.
+              </p>
+            </article>
+
+            <article className="reveal-item">
+              <span>02</span>
+              <h3>Nourish</h3>
+              <p>
+                Nurture students through Scripture,
+                mentorship and fellowship.
+              </p>
+            </article>
+
+            <article className="reveal-item">
+              <span>03</span>
+              <h3>Encourage</h3>
+              <p>
+                Help students exercise spiritual gifts
+                and selflessly serve.
+              </p>
+            </article>
+          </div>
+        </section>
+
+                <section
+          id="vision"
+          className="darkSection reveal-section"
+        >
+          <div className="sectionLabel light">
+            OUR VISION
+          </div>
+
+          <div className="quoteLayout reveal-item reveal-up">
+            <Quote
+              className="quoteIcon"
+              size={42}
+            />
+
+            <div>
+              <h2>
+                Equipping campus students to{" "}
+                <em>know, grow and impact.</em>
+              </h2>
+
+              <p>{settings.vision}</p>
+            </div>
+          </div>
+
+          <div className="visionGrid stagger-group">
+            <div className="reveal-item">
+              <span>01</span>
+              <h3>Grounded in God's Word</h3>
+              <p>
+                Helping students understand biblical truth,
+                develop spiritual discernment, and allow
+                Scripture to shape their beliefs, decisions,
+                character and everyday lives.
+              </p>
+            </div>
+
+            <div className="reveal-item">
+              <span>02</span>
+              <h3>Growing in Worship</h3>
+              <p>
+                Encouraging students to worship God not only
+                through songs and gatherings, but through
+                their studies, relationships, choices,
+                service and daily walk with Christ.
+              </p>
+            </div>
+
+            <div className="reveal-item">
+              <span>03</span>
+              <h3>Exercising Spiritual Gifts</h3>
+              <p>
+                Creating opportunities for students to
+                discover, develop and use their God-given
+                gifts through teaching, worship, leadership,
+                testimony, service and fellowship.
+              </p>
+            </div>
+
+            <div className="reveal-item">
+              <span>04</span>
+              <h3>Impacting the Campus</h3>
+              <p>
+                Equipping students to carry their faith
+                beyond fellowship meetings into their
+                campuses, workplaces, families, churches
+                and communities, serving others and
+                expanding God's Kingdom.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="mission"
+          className="section missionSection reveal-section"
+        >
+          <div className="sectionLabel">
+            OUR MISSION
+          </div>
+
+          <h2>
+            Connect. Nurture. Equip.{" "}
+            <em>Impact.</em>
+          </h2>
+
+          <p className="lead">
+            {settings.mission}
+          </p>
+
+          <div className="missionGrid stagger-group">
+            <div className="reveal-item">
+              <Users size={20} />
+              <h3>Connect</h3>
+              <p>
+                Building meaningful Christ-centered
+                fellowship through online Bible studies,
+                in-person gatherings, worship, retreats
+                and opportunities for students to grow
+                together.
+              </p>
+            </div>
+
+            <div className="reveal-item">
+              <Play size={20} />
+              <h3>Nurture</h3>
+              <p>
+                Helping students grow through God's Word,
+                prayer, mentorship, meaningful discussion
+                and authentic fellowship, developing
+                biblical understanding and spiritual
+                discernment.
+              </p>
+            </div>
+
+            <div className="reveal-item">
+              <ArrowRight size={20} />
+              <h3>Equip</h3>
+              <p>
+                Preparing students to participate, lead
+                and serve by discovering and developing
+                their abilities and spiritual gifts through
+                Bible discussions, worship, testimony,
+                leadership and practical service.
+              </p>
+            </div>
+
+            <div className="reveal-item">
+              <CalendarDays size={20} />
+              <h3>Impact</h3>
+              <p>
+                Encouraging students to live out their
+                faith beyond FAS by serving selflessly,
+                sharing the hope of Christ and applying
+                biblical truth in their campuses,
+                workplaces, families and communities.
+              </p>
+            </div>
+          </div>
+        </section>
+                <section
+          id="story"
+          className="storySection reveal-section"
+        >
+          <div className="sectionLabel">
+            THE STORY OF FAS
+          </div>
+
+          <div className="storyIntro reveal-item reveal-up">
+            <h2>
+              From four students to a growing fellowship —
+              <em> a story written by God's grace.</em>
+            </h2>
+
+            <p>
+              What began in October 2023 as a simple desire to
+              pray, share God's Word and encourage one another
+              became the beginning of a growing student fellowship.
+            </p>
+          </div>
+
+          <div className="storyTimeline compactStoryTimeline">
+
+            <article className="storyMilestone reveal-item">
+              <div className="storyMarker">
+                <span>01</span>
+              </div>
+
+              <div className="storyContent">
+                <div className="storyDate">
+                  OCTOBER 2023
+                </div>
+
+                <h3>The Beginning</h3>
+
+                <p>
+                  A few struggling students longed for friends
+                  with whom they could share God's Word, pray
+                  and encourage one another in their walk with Christ.
+                </p>
+              </div>
+            </article>
+
+            <article className="storyMilestone reveal-item">
+              <div className="storyMarker">
+                <span>02</span>
+              </div>
+
+              <div className="storyContent">
+                <div className="storyDate">
+                  OCTOBER 9, 2023
+                </div>
+
+                <h3>A Simple Thought</h3>
+
+                <blockquote>
+                  “Why don't we gather, even if it is only online,
+                  and pray for one another?”
+                </blockquote>
+              </div>
+            </article>
+
+            <article className="storyMilestone reveal-item">
+              <div className="storyMarker">
+                <span>03</span>
+              </div>
+
+              <div className="storyContent">
+                <div className="storyDate">
+                  OCTOBER 13, 2023 · 6–7 PM
+                </div>
+
+                <h3>The First Fellowship</h3>
+
+                <p>
+                  Victor Paul, Anjali, Sushanth Paul, and Joy Susan
+                  gathered on Google Meet for the first FAS fellowship.
+                </p>
+
+                <div className="storyHighlight">
+                  What is True Worship?
+                </div>
+              </div>
+            </article>
+
+            <article className="storyMilestone reveal-item">
+              <div className="storyMarker">
+                <span>04</span>
+              </div>
+
+              <div className="storyContent">
+                <div className="storyDate">
+                  OCTOBER–NOVEMBER 2023
+                </div>
+
+                <h3>The Fellowship Grows</h3>
+
+                <p>
+                  With the encouragement and help of elders,
+                  Tuesday online fellowships and Friday gatherings
+                  began. More students joined, and the little
+                  gathering began to grow.
+                </p>
+
+                <div className="storyRhythm">
+                  <div>
+                    <strong>TUESDAYS</strong>
+                    <span>Online Fellowships</span>
+                  </div>
+
+                  <div>
+                    <strong>FRIDAYS</strong>
+                    <span>Offline Fellowships</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article className="storyMilestone reveal-item">
+              <div className="storyMarker">
+                <span>05</span>
+              </div>
+
+              <div className="storyContent">
+                <div className="storyDate">
+                  NOVEMBER 4, 2023
+                </div>
+
+                <h3>The First Retreat</h3>
+
+                <div className="storyRetreatCard">
+                  <span>WHO AM I?</span>
+                  <strong>You Are Not Your Own</strong>
+                  <small>13 members</small>
+                </div>
+
+                <p>
+                  Just a few weeks after the first fellowship,
+                  FAS held its first one-day retreat.
+                </p>
+              </div>
+            </article>
+
+          </div>
+
+          <div className="storyFinalCompact reveal-item reveal-up">
+            <strong>FAS began with four students.</strong>
+            <span>But it was never their story.</span>
+            <em>It was, and always will be, God's story.</em>
+          </div>
+        </section>
+<section className="homepageSlideshow reveal-section">
           <div className="slideshowHeader">
             <div>
               <div className="sectionLabel">
@@ -760,138 +1294,6 @@ function App() {
               )}
             </div>
           </section>
-
-        <section
-          id="about"
-          className="section introSection reveal-section"
-        >
-          <div className="sectionLabel">
-            WHY FAS
-          </div>
-
-          <div className="introGrid">
-            <h2>
-              A fellowship for students who want to{" "}
-              <em>know, grow and serve.</em>
-            </h2>
-
-            <p>
-              FAS exists to build a Christ-centered
-              student community where God's Word shapes
-              faith, worship, leadership and everyday
-              campus life.
-            </p>
-          </div>
-
-          <div className="pillars stagger-group">
-            <article className="reveal-item">
-              <span>01</span>
-              <h3>Enlighten</h3>
-              <p>
-                Ground students in God's Word and truth.
-              </p>
-            </article>
-
-            <article className="reveal-item">
-              <span>02</span>
-              <h3>Nourish</h3>
-              <p>
-                Nurture students through Scripture,
-                mentorship and fellowship.
-              </p>
-            </article>
-
-            <article className="reveal-item">
-              <span>03</span>
-              <h3>Encourage</h3>
-              <p>
-                Help students exercise spiritual gifts
-                and selflessly serve.
-              </p>
-            </article>
-          </div>
-        </section>
-
-        <section
-          id="vision"
-          className="darkSection reveal-section"
-        >
-          <div className="sectionLabel light">
-            OUR VISION
-          </div>
-
-          <div className="quoteLayout reveal-item reveal-up">
-            <Quote
-              className="quoteIcon"
-              size={42}
-            />
-
-            <div>
-              <h2>
-                Equipping campus students{" "}
-                <em>wholistically.</em>
-              </h2>
-
-              <p>{settings.vision}</p>
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="mission"
-          className="section reveal-section"
-        >
-          <div className="sectionLabel">
-            OUR MISSION
-          </div>
-
-          <h2>
-            Connect. Nurture. Equip.{" "}
-            <em>Impact.</em>
-          </h2>
-
-          <p className="lead">
-            {settings.mission}
-          </p>
-
-          <div className="missionGrid stagger-group">
-            <div className="reveal-item">
-              <Users size={20} />
-              <h3>Connect</h3>
-              <p>
-                Online meetings, in-person gatherings
-                and retreats.
-              </p>
-            </div>
-
-            <div className="reveal-item">
-              <Play size={20} />
-              <h3>Nurture</h3>
-              <p>
-                God's Word, mentorship and meaningful
-                fellowship.
-              </p>
-            </div>
-
-            <div className="reveal-item">
-              <ArrowRight size={20} />
-              <h3>Equip</h3>
-              <p>
-                Opportunities to lead, serve and
-                exercise spiritual gifts.
-              </p>
-            </div>
-
-            <div className="reveal-item">
-              <CalendarDays size={20} />
-              <h3>Impact</h3>
-              <p>
-                Students equipped to selflessly impact
-                their campuses.
-              </p>
-            </div>
-          </div>
-        </section>
 
         <section
           id="events"
@@ -1361,7 +1763,7 @@ function App() {
                     </div>
                   </div>
 
-                  <div className="storyQuoteMark">â€œ</div>
+                  <div className="storyQuoteMark">Ã¢â‚¬Å“</div>
 
                   <p className="storyText">
                     {story.testimony}
@@ -1593,7 +1995,7 @@ function App() {
           className="section supportSection reveal-section"
         >
           <div className="supportCard">
-            <div>
+            <div className="supportIntro">
               <div className="sectionLabel">
                 CONNECT WITH FAS
               </div>
@@ -1603,9 +2005,9 @@ function App() {
               </h2>
 
               <p>
-                Join our fellowship, participate in
-                Bible studies, connect with students
-                and discover opportunities to serve.
+                Whether you have a prayer request, a question,
+                a testimony, or simply want to know more about FAS,
+                we would love to hear from you.
               </p>
             </div>
 
@@ -1645,7 +2047,9 @@ function App() {
 
               {settings.email && (
                 <a
-                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(settings.email)}`} target="_blank" rel="noreferrer"
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(settings.email)}`}
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <Mail size={18} />
                   Email
@@ -1657,11 +2061,155 @@ function App() {
                 !settings.youtube_url &&
                 !settings.email && (
                   <p className="muted">
-                    Contact details will appear
-                    here once configured in the
-                    FAS admin panel.
+                    Contact details will appear here once configured
+                    in the FAS admin panel.
                   </p>
                 )}
+            </div>
+
+            <div className="contactFormWrap">
+              <div className="contactFormHeader">
+                <div>
+                  <div className="sectionLabel">
+                    REACH OUT
+                  </div>
+                  <h3>
+                    How can we hear from you?
+                  </h3>
+                </div>
+
+                {contactRequestType === "prayer" && (
+                  <span className="contactPrivacyNote">
+                    Prayer requests are handled privately.
+                  </span>
+                )}
+              </div>
+
+              <div className="contactTypeSwitch" role="tablist" aria-label="Contact type">
+                <button
+                  type="button"
+                  className={`contactTypeBtn ${
+                    contactRequestType === "prayer" ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    setContactRequestType("prayer");
+                    setContactFeedback(null);
+                  }}
+                  aria-selected={contactRequestType === "prayer"}
+                >
+                  Prayer Request
+                </button>
+
+                <button
+                  type="button"
+                  className={`contactTypeBtn ${
+                    contactRequestType === "message" ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    setContactRequestType("message");
+                    setContactFeedback(null);
+                  }}
+                  aria-selected={contactRequestType === "message"}
+                >
+                  Send a Message
+                </button>
+              </div>
+
+              <form
+                className="contactForm"
+                onSubmit={handleContactSubmit}
+              >
+                <div className="contactFormGrid">
+                  <label>
+            <span>Phone Number</span>
+            <input
+              type="tel"
+              value={contactPhone}
+              onChange={(event) =>
+                setContactPhone(event.target.value)
+              }
+              placeholder="+91 98765 43210"
+              maxLength={30}
+              autoComplete="tel"
+            />
+          </label>
+
+          <label>
+                    <span>Name</span>
+                    <input
+                      type="text"
+                      value={contactName}
+                      onChange={(event) =>
+                        setContactName(event.target.value)
+                      }
+                      placeholder="Your name"
+                      maxLength={120}
+                      required
+                    />
+                  </label>
+
+                  <label>
+                    <span>Email</span>
+                    <input
+                      type="email"
+                      value={contactEmail}
+                      onChange={(event) =>
+                        setContactEmail(event.target.value)
+                      }
+                      placeholder="you@example.com"
+                      required
+                    />
+                  </label>
+                </div>
+
+                <label>
+                  <span>
+                    {contactRequestType === "prayer"
+                      ? "Prayer Request"
+                      : "Message"}
+                  </span>
+                  <textarea
+                    value={contactMessage}
+                    onChange={(event) =>
+                      setContactMessage(event.target.value)
+                    }
+                    placeholder={
+                      contactRequestType === "prayer"
+                        ? "Share what you would like us to pray for..."
+                        : "Write your message to FAS..."
+                    }
+                    maxLength={5000}
+                    rows={6}
+                    required
+                  />
+                </label>
+
+                {contactFeedback && (
+                  <div
+                    className={`contactFeedback ${
+                      contactFeedback.type === "success"
+                        ? "success"
+                        : "error"
+                    }`}
+                    role="status"
+                  >
+                    {contactFeedback.message}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="primaryBtn contactSubmitBtn"
+                  disabled={contactSubmitting}
+                >
+                  {contactSubmitting
+                    ? "Sending..."
+                    : contactRequestType === "prayer"
+                      ? "Submit Prayer Request"
+                      : "Send Message"}
+                  <ArrowRight size={17} />
+                </button>
+              </form>
             </div>
           </div>
         </section>

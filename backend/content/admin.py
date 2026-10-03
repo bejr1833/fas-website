@@ -100,18 +100,56 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "email",
-        "is_read",
+        "phone",
+        "request_type",
+        "status",
         "created_at",
     )
     list_filter = (
-        "is_read",
+        "request_type",
+        "status",
+        "created_at",
     )
     search_fields = (
         "name",
         "email",
         "message",
+        "admin_notes",
     )
-
+    readonly_fields = (
+        "created_at",
+    )
+    fieldsets = (
+        (
+            "Contact",
+            {
+                "fields": (
+                    "name",
+                    "email",
+                    "phone",
+                    "request_type",
+                )
+            },
+        ),
+        (
+            "Message",
+            {
+                "fields": (
+                    "message",
+                )
+            },
+        ),
+        (
+            "Admin",
+            {
+                "fields": (
+                    "status",
+                    "admin_notes",
+                    "created_at",
+                )
+            },
+        ),
+    )
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
