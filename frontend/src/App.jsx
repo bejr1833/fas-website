@@ -590,6 +590,29 @@ function App() {
               blogPost.updated_at || blogPost.published_at
           }
         : {}),
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Faith Alone Saves",
+            item: "https://fas-fellowship.org/"
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "FAS Blog",
+            item: "https://fas-fellowship.org/#blog"
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: blogPost.title,
+            item: canonicalUrl
+          }
+        ]
+      },
       publisher: {
         "@type": "Organization",
         name: "Faith Alone Saves",
@@ -822,7 +845,7 @@ function App() {
                 <div className="blogArticleCover">
                   <img
                     src={blogPost.cover_image_url}
-                    alt={blogPost.title}
+                    alt={blogPost.title + " — Faith Alone Saves"}
                   />
                 </div>
               )}
