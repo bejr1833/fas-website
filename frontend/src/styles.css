@@ -92,8 +92,8 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 
 .reveal-section,
 .reveal-item {
-  opacity: 0;
-  transform: translate3d(0, 28px, 0);
+  opacity: 1;
+  transform: none;
   transition:
     opacity 700ms cubic-bezier(.22,1,.36,1),
     transform 700ms cubic-bezier(.22,1,.36,1);
