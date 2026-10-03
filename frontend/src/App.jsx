@@ -1738,6 +1738,11 @@ function App() {
                         <img
                           src={story.photo}
                           alt={`${story.student_name} — FAS student story`}
+                          loading="lazy"
+                          decoding="async"
+                          onError={(event) => {
+                            event.currentTarget.style.display = "none";
+                          }}
                         />
                       ) : (
                         <div className="storyPhotoFallback">
