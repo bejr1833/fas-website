@@ -1763,7 +1763,7 @@ function App() {
                     </div>
                   </div>
 
-                  <div className="storyQuoteMark">Ã¢â‚¬Å“</div>
+                  <div className="storyQuoteMark">“</div>
 
                   <p className="storyText">
                     {story.testimony}
