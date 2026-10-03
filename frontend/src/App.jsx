@@ -392,16 +392,11 @@ function App() {
         }));
       })
       .catch(() => {
+        // Keep the existing homepage data if the API is temporarily unavailable.
+        // This prevents valid content from disappearing during backend cold starts.
         setData((current) => ({
-          settings: fallback,
-          slides: [],
-          upcoming_events: [],
-          gallery: [],
-          stories: [],
-          blog: current.blog || [],
-          sermons: current.sermons || [],
-          videos: current.videos || [],
-          ebooks: current.ebooks || []
+          ...current,
+          settings: current.settings || fallback
         }));
       })
       .finally(() => {
