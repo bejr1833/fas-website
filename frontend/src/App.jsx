@@ -862,18 +862,38 @@ function App() {
                 {blogPost.content
                   ?.split(/\r?\n\s*\r?\n/)
                   .filter((paragraph) => paragraph.trim())
-                  .map((paragraph, index) => (
-                    <p key={index}>
-                      {paragraph
-                        .split(/\r?\n/)
-                        .map((line, lineIndex, lines) => (
-                          <Fragment key={lineIndex}>
-                            {line}
-                            {lineIndex < lines.length - 1 && <br />}
-                          </Fragment>
-                        ))}
-                    </p>
-                  ))}
+                  .map((paragraph, index) => {
+                    const cleanParagraph = paragraph.trim();
+
+                    if (cleanParagraph.startsWith("### ")) {
+                      return (
+                        <h3 key={index}>
+                          {cleanParagraph.replace(/^### /, "")}
+                        </h3>
+                      );
+                    }
+
+                    if (cleanParagraph.startsWith("## ")) {
+                      return (
+                        <h2 key={index}>
+                          {cleanParagraph.replace(/^## /, "")}
+                        </h2>
+                      );
+                    }
+
+                    return (
+                      <p key={index}>
+                        {paragraph
+                          .split(/\r?\n/)
+                          .map((line, lineIndex, lines) => (
+                            <Fragment key={lineIndex}>
+                              {line}
+                              {lineIndex < lines.length - 1 && <br />}
+                            </Fragment>
+                          ))}
+                      </p>
+                    );
+                  })}
               </div>
 
               {(data.blog || []).filter((post) => String(post.slug) !== String(blogPost.slug)).length > 0 && (
