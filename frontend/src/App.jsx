@@ -2262,7 +2262,7 @@ function App() {
                       </span>
                     )}
 
-                    {sermon.pdf_file_url && !sermon.demo && (
+                    {sermon.pdf_file_url && (
                       <a
                         href={sermon.pdf_file_url}
                         target="_blank"
@@ -2314,28 +2314,19 @@ function App() {
                       />
                     ) : (
                       <div className="videoThumbnailPlaceholder">
-                        <span>{video.demo ? "INTRO" : "FAS"}</span>
+                        <span>FAS</span>
                       </div>
                     )}
 
-                    {video.demo ? (
-                      <span
-                        className="videoPlayButton"
-                        aria-label="Temporary introduction"
-                      >
-                        <Play size={20} />
-                      </span>
-                    ) : (
-                      <a
-                        href={video.video_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="videoPlayButton"
-                        aria-label={`Watch ${video.title}`}
-                      >
-                        <Play size={20} fill="currentColor" />
-                      </a>
-                    )}
+                    <a
+                      href={video.video_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="videoPlayButton"
+                      aria-label={`Watch ${video.title}`}
+                    >
+                      <Play size={20} fill="currentColor" />
+                    </a>
 
                     {video.is_featured && (
                       <span className="videoFeaturedLabel">
@@ -2374,12 +2365,7 @@ function App() {
                       <p>{video.description}</p>
                     )}
 
-                    {video.demo ? (
-                      <span className="videoWatchLink">
-                        Video library coming soon
-                      </span>
-                    ) : (
-                      <a
+                    <a
                         href={video.video_url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -2388,7 +2374,6 @@ function App() {
                         Watch on YouTube
                         <ArrowRight size={16} />
                       </a>
-                    )}
                   </div>
                 </article>
               ))}
@@ -2466,12 +2451,7 @@ function App() {
                       <p>{ebook.description}</p>
                     )}
 
-                    {ebook.demo ? (
-                      <span className="ebookReadLink">
-                        Reading resources coming soon
-                      </span>
-                    ) : (
-                      <a
+                    <a
                         href={ebook.ebook_file_url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -2479,7 +2459,6 @@ function App() {
                       >
                         Open E-book <ArrowRight size={16} />
                       </a>
-                    )}
                   </div>
                 </article>
               ))}
