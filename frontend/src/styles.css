@@ -480,7 +480,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 
 
 /* =========================================================
-   FAS PREMIUM HERO â€” CENTER FOCAL + RIGHT GATHERING PANEL
+   FAS PREMIUM HERO — CENTER FOCAL + RIGHT GATHERING PANEL
    ========================================================= */
 
 .hero {
@@ -498,7 +498,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   text-align: center !important;
 }
 
-/* Main hero â€” visual focal point */
+/* Main hero — visual focal point */
 
 .heroCopy {
   width: 100% !important;
@@ -905,7 +905,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 
 
 /* =========================================================
-   FAS HERO â€” FINAL VIEWPORT-CENTERED LAYOUT
+   FAS HERO — FINAL VIEWPORT-CENTERED LAYOUT
    Main hero = exact viewport center
    Gathering panel = independent far-right panel
    ========================================================= */
@@ -1199,7 +1199,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   }
 }
 
-/* FIX â€” NEXT GATHERING BUTTON TEXT */
+/* FIX — NEXT GATHERING BUTTON TEXT */
 .heroNextLink {
   display: inline-flex !important;
   align-items: center !important;
@@ -1247,7 +1247,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 
 
 /* =========================================================
-   FAS BLOG â€” PROFESSIONAL ARTICLE PAGE
+   FAS BLOG — PROFESSIONAL ARTICLE PAGE
    ========================================================= */
 
 .blogArticlePage {
@@ -1351,7 +1351,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 }
 
 .blogArticleMeta span + span::before {
-  content: "â€¢";
+  content: "•";
   margin-right: 18px;
   color: #881212;
 }
@@ -1495,7 +1495,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 }
 
 /* =========================================================
-   FAS BLOG CARD â€” META LAYOUT FIX
+   FAS BLOG CARD — META LAYOUT FIX
    ========================================================= */
 
 .blogCard .blogMeta {
@@ -1538,7 +1538,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 }
 
 /* =========================================================
-   FAS â€” NEW BLOG HIGHLIGHT
+   FAS — NEW BLOG HIGHLIGHT
    ========================================================= */
 
 .newBlogHighlight {
@@ -3042,7 +3042,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
     right: 8px;
   }
 }
-/* FAS Gallery ï¿½ horizontal photo stack */
+/* FAS Gallery — horizontal photo stack */
 .galleryGrid {
   display: flex;
   gap: 18px;
@@ -3108,7 +3108,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 }
 
 /* =========================================================
-   FAS STORIES ï¿½ Student Testimonies
+   FAS STORIES — Student Testimonies
    ========================================================= */
 
 .storiesSection {
@@ -4098,7 +4098,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 }
 
 /* =========================================================
-   FAS STORY â€” EDITORIAL HEADER REFINEMENT
+   FAS STORY — EDITORIAL HEADER REFINEMENT
    ========================================================= */
 
 /* FAS STORY — keep historical timeline content visible */
@@ -4393,7 +4393,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   }
 }
 
-/* CONNECT â€” PRAYER REQUESTS & MESSAGES */
+/* CONNECT — PRAYER REQUESTS & MESSAGES */
 
 .supportIntro {
   max-width: 720px;
@@ -4599,7 +4599,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 
 
 /* =========================================================
-   FAS STUDENT STORIES â€” REFINED TESTIMONY CARDS
+   FAS STUDENT STORIES — REFINED TESTIMONY CARDS
    ========================================================= */
 
 .storiesSection {
@@ -4861,7 +4861,7 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
 
 
 /* =========================================================
-   FAS STUDENT STORY â€” FULL READING MODAL
+   FAS STUDENT STORY — FULL READING MODAL
    ========================================================= */
 
 .storyModalOverlay {
