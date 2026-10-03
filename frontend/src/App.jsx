@@ -1,5 +1,31 @@
 import { Fragment, useEffect, useState } from "react";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+
+async function fetchJsonWithRetry(path, attempts = 3) {
+  let lastError;
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      const response = await fetch(path);
+
+      if (!response.ok) {
+        throw new Error(`Request failed: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      if (attempt === attempts - 1) {
+        throw error;
+      }
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, 800 * (attempt + 1))
+      );
+    }
+  }
+
+  throw new Error("Request failed");
+}
 import {
   ArrowRight,
   CalendarDays,
@@ -371,7 +397,7 @@ function App() {
   }, [galleryLightboxOpen, filteredGallery.length]);
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/home/`)
+    fetchJsonWithRetry(`${API_BASE}/api/home/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("API unavailable");
@@ -405,7 +431,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/blog/`)
+    fetchJsonWithRetry(`${API_BASE}/api/blog/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Blog API unavailable");
@@ -418,16 +444,10 @@ function App() {
           blog: result || []
         }));
       })
-      .catch(() => {
-        setData((current) => ({
-          ...current,
-          blog: [],
-    
-        }));
-      });
+      .catch(() => {\n        // Preserve previously loaded content when the API is temporarily unavailable.\n      });
   }, []);
   useEffect(() => {
-    fetch(`${API_BASE}/api/sermons/`)
+    fetchJsonWithRetry(`${API_BASE}/api/sermons/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Sermons API unavailable");
@@ -440,15 +460,10 @@ function App() {
           sermons: result || []
         }));
       })
-      .catch(() => {
-        setData((current) => ({
-          ...current,
-          sermons: []
-        }));
-      });
+      .catch(() => {\n        // Preserve previously loaded content when the API is temporarily unavailable.\n      });
   }, []);
   useEffect(() => {
-    fetch(`${API_BASE}/api/videos/`)
+    fetchJsonWithRetry(`${API_BASE}/api/videos/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Videos API unavailable");
@@ -461,16 +476,11 @@ function App() {
           videos: result || []
         }));
       })
-      .catch(() => {
-        setData((current) => ({
-          ...current,
-          videos: []
-        }));
-      });
+      .catch(() => {\n        // Preserve previously loaded content when the API is temporarily unavailable.\n      });
   }, []);
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/ebooks/`)
+    fetchJsonWithRetry(`${API_BASE}/api/ebooks/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("E-books API unavailable");
@@ -483,12 +493,7 @@ function App() {
           ebooks: result
         }));
       })
-      .catch(() => {
-        setData((current) => ({
-          ...current,
-          ebooks: []
-        }));
-      });
+      .catch(() => {\n        // Preserve previously loaded content when the API is temporarily unavailable.\n      });
   }, []);
 
   useEffect(() => {
