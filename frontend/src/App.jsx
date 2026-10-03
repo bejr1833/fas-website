@@ -437,6 +437,14 @@ function App() {
       })
       .catch(() => {
         setBlogPost(null);
+
+        const robotsMeta = document.head.querySelector('meta[name="robots"]');
+        if (robotsMeta) {
+          robotsMeta.setAttribute(
+            "content",
+            "noindex, follow, max-image-preview:large"
+          );
+        }
       })
       .finally(() => {
         setBlogLoading(false);
