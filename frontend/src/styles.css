@@ -6310,3 +6310,53 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
     width: 18px;
   }
 }
+
+
+/* =========================================================
+   FAS STUDENT STORIES — INDIVIDUAL SHARE ACTION
+   ========================================================= */
+
+.storyShareButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 34px;
+  margin-top: 7px;
+  padding: 6px 0;
+  border: 0;
+  background: transparent;
+  color: #6b7471;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.storyShareButton svg {
+  flex-shrink: 0;
+}
+
+.storyShareButton:hover {
+  color: var(--red);
+  transform: translateY(-1px);
+}
+
+.storyShareButton:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+  border-radius: 7px;
+}
+
+@media (max-width: 680px) {
+  .storyShareButton {
+    min-height: 30px;
+    margin-top: 5px;
+    padding: 4px 0;
+  }
+
+  .storyShareButton svg {
+    width: 16px;
+    height: 16px;
+  }
+}
