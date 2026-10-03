@@ -1084,6 +1084,9 @@ function App() {
           <img
             src="/branding/fas-logo.png"
             alt="Faith Alone Saves"
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
           />
         </a>
 
