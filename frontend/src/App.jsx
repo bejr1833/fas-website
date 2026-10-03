@@ -444,6 +444,165 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!blogPost || !window.location.pathname.startsWith("/blog/")) {
+      return;
+    }
+
+    const canonicalUrl = `https://fas-fellowship.org/blog/${encodeURIComponent(
+      blogPost.slug || window.location.pathname.replace("/blog/", "").replace(/\\/+$/, "")
+    )}`;
+    const description =
+      blogPost.excerpt ||
+      blogPost.content?.replace(/\\s+/g, " ").trim().slice(0, 160) ||
+      "Read Christian teaching, encouragement, and fellowship resources from Faith Alone Saves.";
+
+    document.title = `${blogPost.title} | Faith Alone Saves`;
+
+    const setMeta = (selector, attributes) => {
+      let element = document.head.querySelector(selector);
+
+      if (!element) {
+        element = document.createElement("meta");
+        document.head.appendChild(element);
+      }
+
+      Object.entries(attributes).forEach(([key, value]) => {
+        element.setAttribute(key, value);
+      });
+    };
+
+    const setLink = (selector, attributes) => {
+      let element = document.head.querySelector(selector);
+
+      if (!element) {
+        element = document.createElement("link");
+        document.head.appendChild(element);
+      }
+
+      Object.entries(attributes).forEach(([key, value]) => {
+        element.setAttribute(key, value);
+      });
+    };
+
+    setMeta('meta[name="description"]', {
+      name: "description",
+      content: description
+    });
+    setMeta('meta[name="robots"]', {
+      name: "robots",
+      content: "index, follow, max-image-preview:large"
+    });
+
+    setMeta('meta[property="og:type"]', {
+      property: "og:type",
+      content: "article"
+    });
+    setMeta('meta[property="og:site_name"]', {
+      property: "og:site_name",
+      content: "Faith Alone Saves"
+    });
+    setMeta('meta[property="og:title"]', {
+      property: "og:title",
+      content: blogPost.title
+    });
+    setMeta('meta[property="og:description"]', {
+      property: "og:description",
+      content: description
+    });
+    setMeta('meta[property="og:url"]', {
+      property: "og:url",
+      content: canonicalUrl
+    });
+
+    if (blogPost.cover_image_url) {
+      setMeta('meta[property="og:image"]', {
+        property: "og:image",
+        content: blogPost.cover_image_url
+      });
+      setMeta('meta[property="og:image:alt"]', {
+        property: "og:image:alt",
+        content: blogPost.title
+      });
+    }
+
+    setMeta('meta[name="twitter:card"]', {
+      name: "twitter:card",
+      content: "summary_large_image"
+    });
+    setMeta('meta[name="twitter:title"]', {
+      name: "twitter:title",
+      content: blogPost.title
+    });
+    setMeta('meta[name="twitter:description"]', {
+      name: "twitter:description",
+      content: description
+    });
+
+    if (blogPost.cover_image_url) {
+      setMeta('meta[name="twitter:image"]', {
+        name: "twitter:image",
+        content: blogPost.cover_image_url
+      });
+    }
+
+    setLink('link[rel="canonical"]', {
+      rel: "canonical",
+      href: canonicalUrl
+    });
+
+    const schemaId = "fas-blog-article-schema";
+    let schema = document.getElementById(schemaId);
+
+    if (!schema) {
+      schema = document.createElement("script");
+      schema.id = schemaId;
+      schema.type = "application/ld+json";
+      document.head.appendChild(schema);
+    }
+
+    schema.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: blogPost.title,
+      description,
+      url: canonicalUrl,
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": canonicalUrl
+      },
+      ...(blogPost.cover_image_url
+        ? { image: [blogPost.cover_image_url] }
+        : {}),
+      ...(blogPost.author
+        ? {
+            author: {
+              "@type": "Person",
+              name: blogPost.author
+            }
+          }
+        : {}),
+      ...(blogPost.published_at
+        ? { datePublished: blogPost.published_at }
+        : {}),
+      ...(blogPost.updated_at || blogPost.published_at
+        ? {
+            dateModified:
+              blogPost.updated_at || blogPost.published_at
+          }
+        : {}),
+      publisher: {
+        "@type": "Organization",
+        name: "Faith Alone Saves",
+        url: "https://fas-fellowship.org/",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://fas-fellowship.org/branding/fas-logo.png"
+        }
+      }
+    });
+  }, [blogPost]);
+
+  useEffect(() => {
     const items = document.querySelectorAll(
       ".reveal-section, .reveal-item"
     );
