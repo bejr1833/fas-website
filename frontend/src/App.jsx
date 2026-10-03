@@ -489,6 +489,30 @@ function App() {
     ...(data.settings || {})
   };
 
+  const shareStory = async (story) => {
+    const url = `${window.location.origin}/#story-${story.id}`;
+    const title = `${story.student_name} — FAS Student Testimony`;
+    const text = story.impact_statement
+      ? `${story.impact_statement} — ${story.student_name}`
+      : `Read ${story.student_name}'s testimony on FAS.`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, text, url });
+        return;
+      }
+
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        window.alert("Testimony link copied.");
+        return;
+      }
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+    }
+
+    window.prompt("Copy this testimony link:", url);
+  };
   const closeMenu = () => {
     setMenuOpen(false);
   };
@@ -1367,6 +1391,15 @@ function App() {
                       >
                         <span>READ FULL STORY</span>
                         <ArrowRight size={16} />
+                      </button>
+                      <button
+                        type="button"
+                        className="storyShareButton"
+                        onClick={() => shareStory(story)}
+                        aria-label={`Share ${story.student_name}'s testimony`}
+                        title={`Share ${story.student_name}'s testimony`}
+                      >
+                        <Share2 size={17} />
                       </button>
                     </div>
                   </article>
