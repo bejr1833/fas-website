@@ -4104,6 +4104,15 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
    FAS STORY â€” EDITORIAL HEADER REFINEMENT
    ========================================================= */
 
+/* FAS STORY — keep historical timeline content visible */
+.storySection,
+.storySection .storyIntro,
+.storySection .storyMilestone,
+.storySection .storyFinalCompact {
+  opacity: 1;
+  transform: none;
+}
+
 .storySection > .sectionLabel {
   max-width: 1050px;
   margin: 0 auto 22px;
