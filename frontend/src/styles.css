@@ -12566,3 +12566,138 @@ html[data-theme="dark"] .blogArticleCoverFallback {
     bottom: 24px;
   }
 }
+
+/* =========================================================
+   BLOG ARTICLE — SINGLE SIGNATURE HERO COVER
+   ========================================================= */
+
+.blogArticleHeader {
+  width: min(980px, 100%);
+  margin: 0 auto 42px;
+}
+
+.blogArticleTopCover {
+  width: min(900px, 100%);
+  margin: 0 auto 42px;
+}
+
+.blogArticleTopCover .blogArticleCover {
+  width: 100%;
+  margin: 0;
+}
+
+.blogArticleTopCover .blogArticleCoverFallback {
+  min-height: 360px;
+  border-radius: 28px;
+  border-color: rgba(255,255,255,.18);
+  box-shadow:
+    0 34px 90px rgba(0,0,0,.22),
+    0 0 0 1px rgba(184,137,50,.10),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.blogArticleTopCover .blogArticleCoverFallback::before {
+  inset: 14px;
+  border-radius: 21px;
+}
+
+.blogArticleTopCover .blogArticleCoverTitle span {
+  font-size: clamp(78px, 9vw, 116px);
+}
+
+.blogArticleTopCover .blogArticleCoverTitle em {
+  font-size: clamp(58px, 7vw, 88px);
+}
+
+.blogArticleTopCover .blogArticleCoverEdition {
+  top: 35px;
+  left: 40px;
+}
+
+.blogArticleTopCover .blogArticleCoverVerse {
+  right: 40px;
+  bottom: 35px;
+}
+
+.blogArticleTopCover .blogArticleCoverLine {
+  left: 40px;
+  bottom: 37px;
+}
+
+.blogArticleTopCover .blogArticleCoverPhoto {
+  max-height: 560px;
+  overflow: hidden;
+}
+
+.blogArticleTopCover .blogArticleCoverPhoto img {
+  width: 100%;
+  max-height: 560px;
+  object-fit: cover;
+}
+
+.blogArticleTopCover .blogArticleCoverPhoto figcaption {
+  left: 22px;
+  bottom: 20px;
+}
+
+.blogArticleHeader .blogArticleExcerpt {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.blogArticleHeader .blogArticleMeta {
+  margin-top: 24px;
+}
+
+@media (max-width: 760px) {
+  .blogArticleHeader {
+    margin-bottom: 32px;
+  }
+
+  .blogArticleTopCover {
+    margin-bottom: 31px;
+  }
+
+  .blogArticleTopCover .blogArticleCoverFallback {
+    min-height: 270px;
+    border-radius: 21px;
+  }
+
+  .blogArticleTopCover .blogArticleCoverTitle span {
+    font-size: clamp(58px, 15vw, 82px);
+  }
+
+  .blogArticleTopCover .blogArticleCoverTitle em {
+    font-size: clamp(44px, 11vw, 62px);
+  }
+
+  .blogArticleTopCover .blogArticleCoverEdition {
+    top: 27px;
+    left: 27px;
+  }
+
+  .blogArticleTopCover .blogArticleCoverVerse {
+    right: 27px;
+    bottom: 27px;
+  }
+
+  .blogArticleTopCover .blogArticleCoverLine {
+    left: 27px;
+    bottom: 29px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blogArticleTopCover .blogArticleCoverFallback {
+    min-height: 235px;
+    border-radius: 18px;
+  }
+
+  .blogArticleTopCover .blogArticleCoverTitle span {
+    font-size: 53px;
+  }
+
+  .blogArticleTopCover .blogArticleCoverTitle em {
+    font-size: 40px;
+  }
+}
