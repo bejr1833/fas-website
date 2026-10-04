@@ -32,9 +32,11 @@ import {
   Instagram,
   Mail,
   Menu,
+  Moon,
   Play,
   Quote,
   Share2,
+  Sun,
   Users,
   Youtube,
   X
@@ -76,6 +78,33 @@ function App() {
   const [blogPost, setBlogPost] = useState(null);
   const [blogLoading, setBlogLoading] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
+  const [darkMode, setDarkMode] = useState(() => {
+    try {
+      const saved = localStorage.getItem("fas-theme");
+      if (saved === "dark" || saved === "light") {
+        return saved === "dark";
+      }
+    } catch (error) {
+      // Ignore storage access errors and use the system preference.
+    }
+
+    return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+  });
+
+  useEffect(() => {
+    const theme = darkMode ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", theme);
+
+    try {
+      localStorage.setItem("fas-theme", theme);
+    } catch (error) {
+      // Theme still works for the current session if storage is unavailable.
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    setDarkMode((value) => !value);
+  };
   useEffect(() => {
     const carousel = document.querySelector(".storiesGrid");
 
@@ -932,9 +961,20 @@ function App() {
             />
           </a>
 
-          <a href="/" className="textBtn">
-            Back to FAS <ArrowRight size={16} />
-          </a>
+          <div className="navActions">
+            <button
+              type="button"
+              className="themeToggle"
+              onClick={toggleDarkMode}
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <a href="/" className="textBtn">
+              Back to FAS <ArrowRight size={16} />
+            </a>
+          </div>
         </header>
 
         <main className="blogArticle">
@@ -1286,14 +1326,26 @@ function App() {
 
         </nav>
 
-        <a
-          className="navCta"
-          href="#connect"
-          onClick={closeMenu}
-        >
-          Connect
-          <ArrowRight size={16} />
-        </a>
+        <div className="navActions">
+          <button
+            type="button"
+            className="themeToggle"
+            onClick={toggleDarkMode}
+            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+
+          <a
+            className="navCta"
+            href="#connect"
+            onClick={closeMenu}
+          >
+            Connect
+            <ArrowRight size={16} />
+          </a>
+        </div>
 
         <button
           className="menuBtn"
