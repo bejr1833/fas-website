@@ -13291,3 +13291,183 @@ html:not([data-theme="dark"]) .blogArticlePage .blogArticleAuthor {
     font-size: 16px !important;
   }
 }
+
+/* =========================================================
+   FAS JOURNAL — COMPONENT-OWNED THEME CONTRACT
+   The article carries its own explicit theme class so its
+   readability never depends on document-theme timing/cascade.
+   ========================================================= */
+
+.blogArticlePage.blogArticleLight {
+  background: #faf9f6 !important;
+  color: #202321 !important;
+}
+.blogArticlePage.blogArticleLight .blogArticleBody { color: #303532 !important; }
+.blogArticlePage.blogArticleLight .blogArticleBody h2,
+.blogArticlePage.blogArticleLight .blogArticleBody h3,
+.blogArticlePage.blogArticleLight .relatedArticles h2,
+.blogArticlePage.blogArticleLight .relatedArticleCard h3 { color:#181a19 !important; }
+
+.blogArticlePage.blogArticleLight .articleIntro {
+  background:#f5f1e8 !important;
+  color:#303532 !important;
+  border-color:rgba(184,137,50,.30) !important;
+  border-left-color:#b88932 !important;
+}
+.blogArticlePage.blogArticleLight .articleIntro p { color:#3d433f !important; }
+
+.blogArticlePage.blogArticleLight .blogEngagement {
+  background:#ffffff !important;
+  color:#202321 !important;
+  border-color:#d5d6d2 !important;
+}
+.blogArticlePage.blogArticleLight .blogEngagementHeader { border-bottom-color:#deded9 !important; }
+.blogArticlePage.blogArticleLight .blogEngagementHeader h2 { color:#181a19 !important; }
+.blogArticlePage.blogArticleLight .blogEngagementHeader p,
+.blogArticlePage.blogArticleLight .blogReactionPrompt { color:#5b625e !important; }
+.blogArticlePage.blogArticleLight .blogEngagementCount {
+  background:#171918 !important;
+  color:#ffffff !important;
+}
+.blogArticlePage.blogArticleLight .blogReactionBtn {
+  background:#ffffff !important;
+  color:#252927 !important;
+  border-color:#d7d8d4 !important;
+}
+.blogArticlePage.blogArticleLight .blogReactionBtn:hover {
+  background:#f4efe5 !important;
+  border-color:#b88932 !important;
+}
+.blogArticlePage.blogArticleLight .blogReactionBtn.active {
+  background:#f2e6cb !important;
+  color:#5e461c !important;
+  border-color:#b88932 !important;
+}
+
+.blogArticlePage.blogArticleLight .blogCommentForm,
+.blogArticlePage.blogArticleLight .blogCommentsList {
+  background:#ffffff !important;
+  color:#252927 !important;
+  border-color:#d7d8d4 !important;
+}
+.blogArticlePage.blogArticleLight .blogCommentFormTop h3 { color:#181a19 !important; }
+.blogArticlePage.blogArticleLight .blogCommentForm label > span { color:#626863 !important; }
+.blogArticlePage.blogArticleLight .blogCommentForm input,
+.blogArticlePage.blogArticleLight .blogCommentForm textarea {
+  background:#ffffff !important;
+  color:#202321 !important;
+  border-color:#cfd1cc !important;
+}
+.blogArticlePage.blogArticleLight .blogCommentForm input::placeholder,
+.blogArticlePage.blogArticleLight .blogCommentForm textarea::placeholder {
+  color:#737a75 !important;
+  opacity:1 !important;
+}
+.blogArticlePage.blogArticleLight .blogCommentSubmitRow small,
+.blogArticlePage.blogArticleLight .blogCommentCard p,
+.blogArticlePage.blogArticleLight .blogCommentMeta time { color:#68706b !important; }
+.blogArticlePage.blogArticleLight .blogCommentMeta strong { color:#202321 !important; }
+.blogArticlePage.blogArticleLight .blogCommentCard { border-bottom-color:#e1e1dd !important; }
+.blogArticlePage.blogArticleLight .blogCommentsEmpty { color:#68706b !important; }
+
+.blogArticlePage.blogArticleLight .blogShareLabel { color:#8b1717 !important; }
+.blogArticlePage.blogArticleLight .blogShareBtn {
+  background:#ffffff !important;
+  color:#252927 !important;
+  border-color:#d3d5d1 !important;
+}
+
+
+/* DARK */
+.blogArticlePage.blogArticleDark {
+  background:#0d0f10 !important;
+  color:#f2f0eb !important;
+}
+.blogArticlePage.blogArticleDark .blogArticleBody { color:#deddd7 !important; }
+.blogArticlePage.blogArticleDark .blogArticleBody h2,
+.blogArticlePage.blogArticleDark .blogArticleBody h3,
+.blogArticlePage.blogArticleDark .relatedArticles h2,
+.blogArticlePage.blogArticleDark .relatedArticleCard h3 { color:#f4f1ea !important; }
+
+.blogArticlePage.blogArticleDark .articleIntro {
+  background:#151819 !important;
+  color:#deddd7 !important;
+  border-color:rgba(184,137,50,.30) !important;
+  border-left-color:#b88932 !important;
+}
+.blogArticlePage.blogArticleDark .articleIntro p { color:#deddd7 !important; }
+
+.blogArticlePage.blogArticleDark .blogEngagement {
+  background:#151719 !important;
+  color:#f1efea !important;
+  border-color:#4b4e4b !important;
+}
+.blogArticlePage.blogArticleDark .blogEngagementHeader { border-bottom-color:#383b39 !important; }
+.blogArticlePage.blogArticleDark .blogEngagementHeader h2 {
+  color:#f7f4ed !important;
+  text-shadow:none !important;
+}
+.blogArticlePage.blogArticleDark .blogEngagementHeader p,
+.blogArticlePage.blogArticleDark .blogReactionPrompt { color:#c8cbc7 !important; }
+.blogArticlePage.blogArticleDark .blogEngagementCount {
+  background:#101213 !important;
+  color:#f5f3ef !important;
+}
+.blogArticlePage.blogArticleDark .blogEngagementCount span { color:#aeb3ae !important; }
+.blogArticlePage.blogArticleDark .blogReactionBtn {
+  background:#1a1d1f !important;
+  color:#f5f3ef !important;
+  border-color:#4b4e4b !important;
+}
+.blogArticlePage.blogArticleDark .blogReactionBtn:hover {
+  background:#242728 !important;
+  color:#ffffff !important;
+  border-color:#c7a45c !important;
+}
+.blogArticlePage.blogArticleDark .blogReactionBtn.active {
+  background:#4b3a1c !important;
+  color:#ffe7ac !important;
+  border-color:#c79d4c !important;
+}
+
+.blogArticlePage.blogArticleDark .blogCommentForm,
+.blogArticlePage.blogArticleDark .blogCommentsList {
+  background:#17191b !important;
+  color:#f1efea !important;
+  border-color:#4b4e4b !important;
+}
+.blogArticlePage.blogArticleDark .blogCommentFormTop h3 { color:#f4f1ea !important; }
+.blogArticlePage.blogArticleDark .blogCommentForm label > span { color:#c0c4bf !important; }
+.blogArticlePage.blogArticleDark .blogCommentForm input,
+.blogArticlePage.blogArticleDark .blogCommentForm textarea {
+  background:#0f1112 !important;
+  color:#f5f3ef !important;
+  border-color:#4b4e4b !important;
+}
+.blogArticlePage.blogArticleDark .blogCommentForm input::placeholder,
+.blogArticlePage.blogArticleDark .blogCommentForm textarea::placeholder {
+  color:#9aa09b !important;
+  opacity:1 !important;
+}
+.blogArticlePage.blogArticleDark .blogCommentSubmitRow small,
+.blogArticlePage.blogArticleDark .blogCommentCard p,
+.blogArticlePage.blogArticleDark .blogCommentMeta time { color:#b8bcb8 !important; }
+.blogArticlePage.blogArticleDark .blogCommentMeta strong { color:#f4f1eb !important; }
+.blogArticlePage.blogArticleDark .blogCommentCard { border-bottom-color:#363a38 !important; }
+.blogArticlePage.blogArticleDark .blogCommentsEmpty { color:#b8bcb8 !important; }
+
+.blogArticlePage.blogArticleDark .blogShareLabel { color:#d0aa60 !important; }
+.blogArticlePage.blogArticleDark .blogShareBtn {
+  background:#1a1d1f !important;
+  color:#f4f2ed !important;
+  border-color:#4b4e4b !important;
+}
+
+@media (max-width:760px) {
+  .blogArticlePage.blogArticleLight .blogCommentForm input,
+  .blogArticlePage.blogArticleLight .blogCommentForm textarea,
+  .blogArticlePage.blogArticleDark .blogCommentForm input,
+  .blogArticlePage.blogArticleDark .blogCommentForm textarea {
+    font-size:16px !important;
+  }
+}

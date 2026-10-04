@@ -1107,7 +1107,7 @@ function App() {
 
   if (isBlogArticle) {
     return (
-      <div className="site blogArticlePage">
+      <div className={`site blogArticlePage ${darkMode ? "blogArticleDark" : "blogArticleLight"}`}>
         <header className="navbar">
           <a href="/" className="brand">
             <img
