@@ -1160,23 +1160,36 @@ function App() {
 
               <div className="blogArticleHeader">
                 <div className="blogArticleTopCover">
-                  <div className="blogArticleCover blogArticleCoverFallback" aria-label={blogPost.title}>
-                    <div className="blogArticleCoverGlow"></div>
-                    <div className="blogArticleCoverOrnament">
-                      <span></span>
-                      <i></i>
-                      <span></span>
+                  {blogPost.cover_image_url ? (
+                    <figure className="blogArticleCover blogArticleCoverPhoto">
+                      <img
+                        src={blogPost.cover_image_url}
+                        loading="eager"
+                        fetchPriority="high"
+                        decoding="async"
+                        alt={blogPost.title + " — Faith Alone Saves"}
+                      />
+                      <figcaption>Faith Alone Saves · FAS Journal</figcaption>
+                    </figure>
+                  ) : (
+                    <div className="blogArticleCover blogArticleCoverFallback" aria-label={blogPost.title}>
+                      <div className="blogArticleCoverGlow"></div>
+                      <div className="blogArticleCoverOrnament">
+                        <span></span>
+                        <i></i>
+                        <span></span>
+                      </div>
+                      <div className="blogArticleCoverEdition">
+                        FAS JOURNAL · {(blogPost.category || "REFLECTION").replace("-", " ").toUpperCase()}
+                      </div>
+                      <div className="blogArticleCoverTitle">
+                        <span>{blogPost.title.split(" ").slice(0, 1).join(" ")}</span>
+                        <em>{blogPost.title.split(" ").slice(1).join(" ")}</em>
+                      </div>
+                      <div className="blogArticleCoverVerse">JOHN 1:46</div>
+                      <div className="blogArticleCoverLine"></div>
                     </div>
-                    <div className="blogArticleCoverEdition">
-                      FAS JOURNAL · {(blogPost.category || "REFLECTION").replace("-", " ").toUpperCase()}
-                    </div>
-                    <div className="blogArticleCoverTitle">
-                      <span>{blogPost.title.split(" ").slice(0, 1).join(" ")}</span>
-                      <em>{blogPost.title.split(" ").slice(1).join(" ")}</em>
-                    </div>
-                    <div className="blogArticleCoverVerse">JOHN 1:46</div>
-                    <div className="blogArticleCoverLine"></div>
-                  </div>
+                  )}
                 </div>
 
                 {blogPost.excerpt && (
