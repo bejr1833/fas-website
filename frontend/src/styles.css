@@ -8921,3 +8921,71 @@ html[data-theme="dark"] .storyModalClose:focus-visible {
     height: 22px !important;
   }
 }
+
+/* =========================================================
+   FINAL STORY CONTROLS VISIBILITY FIX
+   ========================================================= */
+
+/* "FAS STORY" badge: the legacy --white token is remapped in
+   dark mode, so explicitly keep this badge high-contrast. */
+html[data-theme="dark"] .storyPhotoBadge {
+  background: rgba(8,9,11,.92) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  box-shadow:
+    0 6px 18px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.08) !important;
+  text-shadow: none !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] .storyPhotoBadge::before,
+html[data-theme="dark"] .storyPhotoBadge::after {
+  color: #FFFFFF !important;
+}
+
+/* Testimony modal close button: force every part of the Lucide
+   X to remain visible above the photograph. */
+html[data-theme="dark"] .storyModalClose,
+html[data-theme="dark"] button.storyModalClose {
+  z-index: 20 !important;
+  width: 44px !important;
+  height: 44px !important;
+  background: rgba(8,9,11,.90) !important;
+  border: 1px solid rgba(255,255,255,.48) !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  box-shadow:
+    0 8px 26px rgba(0,0,0,.42),
+    inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+
+html[data-theme="dark"] .storyModalClose svg,
+html[data-theme="dark"] .storyModalClose svg *,
+html[data-theme="dark"] .storyModalClose svg line,
+html[data-theme="dark"] .storyModalClose svg path,
+html[data-theme="dark"] .storyModalClose svg circle {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+  stroke-width: 2.4 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  fill: none !important;
+}
+
+html[data-theme="dark"] .storyModalClose:hover,
+html[data-theme="dark"] .storyModalClose:focus-visible {
+  background: #B52A2A !important;
+  border-color: #F0B7B4 !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] .storyModalClose:hover svg,
+html[data-theme="dark"] .storyModalClose:focus-visible svg,
+html[data-theme="dark"] .storyModalClose:hover svg *,
+html[data-theme="dark"] .storyModalClose:focus-visible svg * {
+  stroke: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
