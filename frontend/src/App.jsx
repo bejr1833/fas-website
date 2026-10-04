@@ -1159,17 +1159,38 @@ function App() {
               </nav>
 
               <div className="blogArticleHeader">
-                <div className="blogArticleKicker" aria-label="FAS Journal">
-                  <span>FAS JOURNAL</span>
-                  <i aria-hidden="true"></i>
-                  <span>FAITH · FELLOWSHIP · TRUTH</span>
+                <div className="blogArticleTopCover">
+                  {blogPost.cover_image_url ? (
+                    <figure className="blogArticleCover blogArticleCoverPhoto">
+                      <img
+                        src={blogPost.cover_image_url}
+                        loading="eager"
+                        fetchPriority="high"
+                        decoding="async"
+                        alt={blogPost.title + " — Faith Alone Saves"}
+                      />
+                      <figcaption>Faith Alone Saves · FAS Journal</figcaption>
+                    </figure>
+                  ) : (
+                    <div className="blogArticleCover blogArticleCoverFallback" aria-label={blogPost.title}>
+                      <div className="blogArticleCoverGlow"></div>
+                      <div className="blogArticleCoverOrnament">
+                        <span></span>
+                        <i></i>
+                        <span></span>
+                      </div>
+                      <div className="blogArticleCoverEdition">
+                        FAS JOURNAL · {(blogPost.category || "REFLECTION").replace("-", " ").toUpperCase()}
+                      </div>
+                      <div className="blogArticleCoverTitle">
+                        <span>{blogPost.title.split(" ").slice(0, 1).join(" ")}</span>
+                        <em>{blogPost.title.split(" ").slice(1).join(" ")}</em>
+                      </div>
+                      <div className="blogArticleCoverVerse">JOHN 1:46</div>
+                      <div className="blogArticleCoverLine"></div>
+                    </div>
+                  )}
                 </div>
-
-                <span className="blogCategory">
-                  {(blogPost.category || "other").replace("-", " ")}
-                </span>
-
-                <h1>{blogPost.title}</h1>
 
                 {blogPost.excerpt && (
                   <p className="blogArticleExcerpt">
@@ -1179,7 +1200,6 @@ function App() {
 
                 <div className="blogArticleMeta">
                   <span>{blogPost.author}</span>
-
                   {blogPost.published_at && (
                     <span>
                       {new Date(blogPost.published_at).toLocaleDateString(
@@ -1198,35 +1218,6 @@ function App() {
                   <span></span>
                 </div>
               </div>
-
-              {blogPost.cover_image_url ? (
-                <figure className="blogArticleCover">
-                  <img
-                    src={blogPost.cover_image_url}
-                    loading="eager"
-                    fetchPriority="high"
-                    decoding="async"
-                    alt={blogPost.title + " — Faith Alone Saves"}
-                  />
-                  <figcaption>Faith Alone Saves · FAS Journal</figcaption>
-                </figure>
-              ) : (
-                <div className="blogArticleCover blogArticleCoverFallback" aria-hidden="true">
-                  <div className="blogArticleCoverGlow"></div>
-                  <div className="blogArticleCoverOrnament">
-                    <span></span>
-                    <i></i>
-                    <span></span>
-                  </div>
-                  <div className="blogArticleCoverEdition">FAS JOURNAL · REFLECTION</div>
-                  <div className="blogArticleCoverTitle">
-                    <span>Come</span>
-                    <em>and See</em>
-                  </div>
-                  <div className="blogArticleCoverVerse">JOHN 1:46</div>
-                  <div className="blogArticleCoverLine"></div>
-                </div>
-              )}
 
               <div className="blogArticleBody">
                 <div className="articleIntro" aria-label="Article summary">
