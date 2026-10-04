@@ -48,7 +48,9 @@ class EventAdmin(admin.ModelAdmin):
         "title",
         "event_type",
         "date",
+        "time",
         "mode",
+        "speaker_name",
         "is_published",
     )
     list_filter = (
@@ -59,7 +61,14 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = (
         "title",
         "description",
+        "speaker_name",
     )
+    fieldsets = (
+        ("Event", {"fields": ("title", "event_type", "date", "time", "mode", "location", "description")}),
+        ("Online Meeting", {"fields": ("meeting_url", "speaker_name", "registration_url")}),
+        ("Publishing", {"fields": ("is_published", "created_at")}),
+    )
+    readonly_fields = ("created_at",)
     date_hierarchy = "date"
 
 
