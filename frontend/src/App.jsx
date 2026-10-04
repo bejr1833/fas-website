@@ -3113,11 +3113,13 @@ function App() {
                   className="primaryBtn contactSubmitBtn"
                   disabled={contactSubmitting}
                 >
-                  {contactSubmitting
-                    ? "Sending..."
-                    : contactRequestType === "prayer"
-                      ? "Submit Prayer Request"
-                      : "Send Message"}
+                  <span className="contactSubmitLabel">
+                    {contactSubmitting
+                      ? "Sending..."
+                      : contactRequestType === "prayer"
+                        ? "Submit Prayer Request"
+                        : "Send Message"}
+                  </span>
                   <ArrowRight size={17} />
                 </button>
               </form>
