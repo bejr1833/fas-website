@@ -18,6 +18,7 @@ from .models import (
     SermonPDF,
     FASVideo,
     EBook,
+    BlogReaction,
 )
 
 from .serializers import (
