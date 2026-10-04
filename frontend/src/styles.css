@@ -11027,3 +11027,42 @@ html[data-theme="dark"] .eventTimeChip {
 html[data-theme="dark"] .eventTimeChip strong {
   color: #F5F3EF;
 }
+
+
+/* Final dark-mode refinement for the premium blog artwork */
+html[data-theme="dark"] .blogSection {
+  background: #111214 !important;
+}
+
+html[data-theme="dark"] .blogSectionHeading p {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .blogSectionSeal {
+  background:
+    radial-gradient(circle at 35% 25%, rgba(184, 137, 50, .13), transparent 45%),
+    #17191c !important;
+  border-color: rgba(217, 163, 160, .24) !important;
+}
+
+html[data-theme="dark"] .blogCardMediaFallback {
+  color: #F5F3EF !important;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(184, 137, 50, .20), transparent 26%),
+    radial-gradient(circle at 15% 90%, rgba(136, 18, 18, .34), transparent 32%),
+    linear-gradient(145deg, #111214 0%, #1a1d21 58%, #0d0e10 100%) !important;
+}
+
+html[data-theme="dark"] .blogFallbackArtwork strong {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .blogFallbackKicker {
+  color: #D7B875 !important;
+  background: rgba(184, 137, 50, .08) !important;
+  border-color: rgba(184, 137, 50, .34) !important;
+}
+
+html[data-theme="dark"] .blogFallbackFooter {
+  color: rgba(245, 243, 239, .56) !important;
+}
