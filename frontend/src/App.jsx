@@ -2268,6 +2268,18 @@ function App() {
                   className="eventCard eventCardPremium reveal-item"
                   key={event.id}
                 >
+                  {event.image_url && (
+                    <div className="eventCardPoster">
+                      <img
+                        src={event.image_url}
+                        loading="lazy"
+                        decoding="async"
+                        alt={event.title}
+                      />
+                      <span>FAS GATHERING</span>
+                    </div>
+                  )}
+
                   <div className="eventDate">
                     <span className="eventDateMonth">
                       {new Date(
