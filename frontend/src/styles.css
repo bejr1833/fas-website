@@ -13471,3 +13471,62 @@ html:not([data-theme="dark"]) .blogArticlePage .blogArticleAuthor {
     font-size:16px !important;
   }
 }
+
+
+/* =========================================================
+   FAS EVENTS PAGE — dedicated route
+   ========================================================= */
+.eventsPage {
+  min-height: 100vh;
+  background: var(--bg, #f7f4f0);
+}
+.eventsPageMain {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 72px 0 96px;
+}
+.eventsPageHero {
+  max-width: 820px;
+  margin: 0 auto 52px;
+  text-align: center;
+}
+.eventsPageHero h1 {
+  margin: 12px 0 18px;
+  font-size: clamp(46px, 7vw, 78px);
+  line-height: .98;
+}
+.eventsPageHero h1 em {
+  color: var(--accent, #8d1f2d);
+}
+.eventsPageHero p {
+  margin: 0 auto;
+  max-width: 760px;
+  font-size: 20px;
+  line-height: 1.7;
+  color: var(--muted, #666);
+}
+.eventsPageGrid {
+  grid-template-columns: 1fr;
+}
+.eventsPageDark {
+  background: #101112;
+  color: #f7f4f0;
+}
+.eventsPageDark .eventsPageHero p {
+  color: #b9b9b9;
+}
+@media (max-width: 700px) {
+  .eventsPageMain {
+    width: min(100% - 24px, 1180px);
+    padding: 48px 0 64px;
+  }
+  .eventsPageHero {
+    margin-bottom: 34px;
+  }
+  .eventsPageHero h1 {
+    font-size: clamp(42px, 14vw, 62px);
+  }
+  .eventsPageHero p {
+    font-size: 17px;
+  }
+}
