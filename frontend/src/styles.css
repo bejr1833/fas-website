@@ -9253,3 +9253,376 @@ html[data-theme="dark"] .supportLinks a:hover {
     margin-top: 30px;
   }
 }
+
+
+/* =========================================================
+   PREMIUM EVENTS — editorial FAS event cards
+   ========================================================= */
+
+.eventsSection {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 8% 18%, rgba(181,42,42,.055), transparent 28%),
+    linear-gradient(180deg, var(--ivory) 0%, var(--soft) 100%);
+}
+
+.eventsSection::before {
+  content: "FAS";
+  position: absolute;
+  right: -3vw;
+  top: 80px;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(150px, 22vw, 320px);
+  line-height: .8;
+  color: rgba(23,23,22,.025);
+  pointer-events: none;
+}
+
+.eventGrid {
+  position: relative;
+  z-index: 1;
+  gap: 18px;
+}
+
+.eventCardPremium {
+  grid-template-columns: 96px minmax(0,1fr) auto;
+  gap: 28px;
+  min-height: 190px;
+  padding: 24px;
+  border-radius: 22px;
+  background: rgba(255,255,255,.86);
+  border: 1px solid rgba(23,23,22,.10);
+  box-shadow:
+    0 18px 50px rgba(23,23,22,.055),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.eventCardPremium:hover {
+  border-color: rgba(181,42,42,.28);
+  box-shadow:
+    0 24px 60px rgba(23,23,22,.09),
+    0 0 0 1px rgba(181,42,42,.04);
+}
+
+.eventCardPremium .eventDate {
+  width: 92px;
+  height: 118px;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(145deg, var(--black), #2a2b2d);
+  color: #fff;
+  box-shadow: 0 12px 26px rgba(23,23,22,.16);
+  position: relative;
+  overflow: hidden;
+}
+
+.eventCardPremium .eventDate::after {
+  content: "";
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  right: -38px;
+  top: -38px;
+  border: 1px solid rgba(217,163,160,.28);
+  border-radius: 50%;
+}
+
+.eventDateMonth {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #D9A3A0;
+}
+
+.eventCardPremium .eventDate strong {
+  margin: 2px 0;
+  font-family: "Playfair Display", serif;
+  font-size: 38px;
+  line-height: 1;
+  color: #fff;
+}
+
+.eventDateDay {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.58);
+}
+
+.eventCardMain {
+  min-width: 0;
+  align-self: center;
+}
+
+.eventCardTopline {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.eventCardPremium .eventType {
+  font-size: 10px;
+  letter-spacing: .16em;
+}
+
+.eventModeBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 9px;
+  border: 1px solid rgba(181,42,42,.16);
+  border-radius: 999px;
+  background: rgba(181,42,42,.055);
+  color: var(--red);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.eventCardPremium h3 {
+  margin: 9px 0 8px;
+  max-width: 700px;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+}
+
+.eventMetaRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px 14px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.eventMetaRow span + span::before {
+  content: "•";
+  margin-right: 14px;
+  color: var(--red-soft);
+}
+
+.eventSpeaker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.eventSpeakerIcon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(181,42,42,.08);
+  color: var(--red);
+}
+
+.eventSpeaker span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.eventSpeaker small {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.eventSpeaker strong {
+  color: var(--black);
+  font-size: 12px;
+}
+
+.eventCardPremium .muted {
+  max-width: 680px;
+  margin-top: 13px;
+  line-height: 1.55;
+}
+
+.eventCardAction {
+  align-self: end;
+  min-width: 166px;
+}
+
+.eventJoinBtn {
+  min-height: 48px;
+  padding: 0 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-radius: 999px;
+  background: var(--black);
+  color: #fff !important;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(23,23,22,.14);
+  transition: transform 220ms ease, background 220ms ease, box-shadow 220ms ease;
+}
+
+.eventJoinBtn:hover {
+  transform: translateY(-2px);
+  background: var(--red);
+  box-shadow: 0 14px 28px rgba(181,42,42,.20);
+}
+
+.eventRegisterBtn {
+  background: transparent;
+  color: var(--black) !important;
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.eventRegisterBtn:hover {
+  background: var(--black);
+  color: #fff !important;
+}
+
+.eventNoLink {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+html[data-theme="dark"] .eventsSection {
+  background:
+    radial-gradient(circle at 8% 18%, rgba(181,42,42,.10), transparent 30%),
+    linear-gradient(180deg, #151719 0%, #101214 100%);
+}
+
+html[data-theme="dark"] .eventsSection::before {
+  color: rgba(255,255,255,.025);
+}
+
+html[data-theme="dark"] .eventCardPremium {
+  background: rgba(29,32,36,.88);
+  border-color: #30343A;
+  box-shadow:
+    0 20px 55px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+html[data-theme="dark"] .eventCardPremium:hover {
+  border-color: #714344;
+  box-shadow:
+    0 24px 62px rgba(0,0,0,.30),
+    0 0 0 1px rgba(181,42,42,.06);
+}
+
+html[data-theme="dark"] .eventCardPremium h3,
+html[data-theme="dark"] .eventSpeaker strong {
+  color: #F5F3EF;
+}
+
+html[data-theme="dark"] .eventModeBadge {
+  background: rgba(181,42,42,.10);
+  border-color: #5E3839;
+}
+
+html[data-theme="dark"] .eventSpeakerIcon {
+  background: rgba(217,163,160,.10);
+  color: #D9A3A0;
+}
+
+html[data-theme="dark"] .eventJoinBtn {
+  background: #F5F3EF;
+  color: #171716 !important;
+}
+
+html[data-theme="dark"] .eventJoinBtn:hover {
+  background: #B52A2A;
+  color: #fff !important;
+}
+
+html[data-theme="dark"] .eventRegisterBtn {
+  background: transparent;
+  color: #F5F3EF !important;
+  border-color: #3E444B;
+}
+
+html[data-theme="dark"] .eventRegisterBtn:hover {
+  background: #F5F3EF;
+  color: #171716 !important;
+}
+
+/* Premium hero event details + direct meeting CTA */
+.heroNextSpeaker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.heroNextSpeaker svg {
+  color: var(--red-soft);
+}
+
+.heroNextLink {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 850px) {
+  .eventCardPremium {
+    grid-template-columns: 76px minmax(0,1fr);
+    gap: 18px;
+    padding: 18px;
+  }
+
+  .eventCardPremium .eventDate {
+    width: 76px;
+    height: 102px;
+  }
+
+  .eventCardPremium .eventDate strong {
+    font-size: 32px;
+  }
+
+  .eventCardAction {
+    grid-column: 2;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .eventJoinBtn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .eventCardPremium {
+    grid-template-columns: 1fr;
+  }
+
+  .eventCardPremium .eventDate {
+    width: 86px;
+    height: 94px;
+  }
+
+  .eventCardAction {
+    grid-column: auto;
+  }
+
+  .eventCardPremium h3 {
+    font-size: 25px;
+  }
+}
