@@ -1159,6 +1159,12 @@ function App() {
               </nav>
 
               <div className="blogArticleHeader">
+                <div className="blogArticleKicker" aria-label="FAS Journal">
+                  <span>FAS JOURNAL</span>
+                  <i aria-hidden="true"></i>
+                  <span>FAITH · FELLOWSHIP · TRUTH</span>
+                </div>
+
                 <span className="blogCategory">
                   {(blogPost.category || "other").replace("-", " ")}
                 </span>
@@ -1187,10 +1193,14 @@ function App() {
                     </span>
                   )}
                 </div>
+
+                <div className="blogArticleHeaderRule" aria-hidden="true">
+                  <span></span>
+                </div>
               </div>
 
-              {blogPost.cover_image_url && (
-                <div className="blogArticleCover">
+              {blogPost.cover_image_url ? (
+                <figure className="blogArticleCover">
                   <img
                     src={blogPost.cover_image_url}
                     loading="eager"
@@ -1198,12 +1208,19 @@ function App() {
                     decoding="async"
                     alt={blogPost.title + " — Faith Alone Saves"}
                   />
+                  <figcaption>Faith Alone Saves · FAS Journal</figcaption>
+                </figure>
+              ) : (
+                <div className="blogArticleCover blogArticleCoverFallback" aria-hidden="true">
+                  <div className="blogArticleCoverGlow"></div>
+                  <div className="blogArticleCoverMonogram">FAS</div>
+                  <div className="blogArticleCoverCaption">FAITH ALONE SAVES</div>
                 </div>
               )}
 
               <div className="blogArticleBody">
                 <div className="articleIntro" aria-label="Article summary">
-                  <strong>In this article</strong>
+                  <span className="articleIntroEyebrow">IN THIS ARTICLE</span>
                   <p>
                     {blogPost.excerpt ||
                       "A reflection from Faith Alone Saves on faith, Scripture, and Christian life."}
