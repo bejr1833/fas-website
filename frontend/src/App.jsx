@@ -2268,18 +2268,6 @@ function App() {
                   className="eventCard eventCardPremium reveal-item"
                   key={event.id}
                 >
-                  {event.image_url && (
-                    <div className="eventCardPoster">
-                      <img
-                        src={event.image_url}
-                        loading="lazy"
-                        decoding="async"
-                        alt={event.title}
-                      />
-                      <span>FAS GATHERING</span>
-                    </div>
-                  )}
-
                   <div className="eventDate">
                     <span className="eventDateMonth">
                       {new Date(
@@ -2322,12 +2310,21 @@ function App() {
 
                     <h3>{event.title}</h3>
 
-                    <div className="eventMetaRow">
+                    <div className="eventMetaRow eventMetaPremium">
                       {event.time && (
-                        <span>{event.time}</span>
+                        <span className="eventTimeChip">
+                          <Clock3 size={14} />
+                          <span>
+                            <small>TIME</small>
+                            <strong>{event.time}</strong>
+                          </span>
+                        </span>
                       )}
                       {event.location && (
-                        <span>{event.location}</span>
+                        <span className="eventLocationChip">
+                          <MapPin size={14} />
+                          <span>{event.location}</span>
+                        </span>
                       )}
                     </div>
 
