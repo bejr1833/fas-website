@@ -994,6 +994,114 @@ function App() {
     setMenuOpen(false);
   };
 
+  const getVisitorKey = () => {
+    const storageKey = "fas-blog-visitor-key";
+    try {
+      let key = localStorage.getItem(storageKey);
+      if (key) {
+        key = key.replace(/[^a-zA-Z0-9]/g, "");
+        if (key.length < 16) key = "";
+      }
+
+      if (!key) {
+        key = typeof crypto !== "undefined" && crypto.randomUUID
+          ? crypto.randomUUID().replace(/-/g, "")
+          : Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem(storageKey, key);
+      }
+
+      return key;
+    } catch {
+      return "guest" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    }
+  };
+
+  const loadBlogEngagement = async (slug) => {
+    try {
+      const result = await fetchJsonWithRetry(
+        `${API_BASE}/api/blog/${encodeURIComponent(slug)}/engagement/`
+      );
+      setBlogEngagement(result);
+    } catch {
+      setBlogEngagement({
+        comments: [],
+        reaction_counts: { like: 0, amen: 0, encouraged: 0 },
+        total_reactions: 0,
+        active_reaction: null
+      });
+    }
+  };
+
+  const submitBlogComment = async (event) => {
+    event.preventDefault();
+    if (commentSubmitting || !commentName.trim() || !commentText.trim()) return;
+
+    setCommentSubmitting(true);
+    setCommentFeedback("");
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/blog/${encodeURIComponent(blogPost.slug)}/engagement/`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: commentName.trim(),
+            email: commentEmail.trim(),
+            comment: commentText.trim()
+          })
+        }
+      );
+
+      const result = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(result?.comment?.[0] || "Unable to post your comment.");
+      }
+
+      setBlogEngagement((current) => ({
+        ...current,
+        comments: [result, ...(current.comments || [])]
+      }));
+      setCommentName("");
+      setCommentEmail("");
+      setCommentText("");
+      setCommentFeedback("Your comment has been posted. Thank you for joining the conversation.");
+    } catch (error) {
+      setCommentFeedback(error?.message || "Unable to post your comment right now.");
+    } finally {
+      setCommentSubmitting(false);
+    }
+  };
+
+  const reactToBlog = async (reaction) => {
+    if (reactionSubmitting || !blogPost) return;
+    setReactionSubmitting(true);
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/blog/${encodeURIComponent(blogPost.slug)}/react/`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            reaction,
+            visitor_key: getVisitorKey()
+          })
+        }
+      );
+      const result = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(result?.detail || "Unable to save reaction.");
+      setBlogEngagement((current) => ({ ...current, ...result }));
+    } catch {
+      // Keep the article usable if engagement is temporarily unavailable.
+    } finally {
+      setReactionSubmitting(false);
+    }
+  };
+
+
+
+
   const isBlogArticle = window.location.pathname.startsWith("/blog/");
 
   if (isBlogArticle) {
@@ -1419,113 +1527,6 @@ function App() {
       </div>
     );
   }
-
-
-  const getVisitorKey = () => {
-    const storageKey = "fas-blog-visitor-key";
-    try {
-      let key = localStorage.getItem(storageKey);
-      if (key) {
-        key = key.replace(/[^a-zA-Z0-9]/g, "");
-        if (key.length < 16) key = "";
-      }
-
-      if (!key) {
-        key = typeof crypto !== "undefined" && crypto.randomUUID
-          ? crypto.randomUUID().replace(/-/g, "")
-          : Math.random().toString(36).slice(2) + Date.now().toString(36);
-        localStorage.setItem(storageKey, key);
-      }
-
-      return key;
-    } catch {
-      return "guest" + Math.random().toString(36).slice(2) + Date.now().toString(36);
-    }
-  };
-
-  const loadBlogEngagement = async (slug) => {
-    try {
-      const result = await fetchJsonWithRetry(
-        `${API_BASE}/api/blog/${encodeURIComponent(slug)}/engagement/`
-      );
-      setBlogEngagement(result);
-    } catch {
-      setBlogEngagement({
-        comments: [],
-        reaction_counts: { like: 0, amen: 0, encouraged: 0 },
-        total_reactions: 0,
-        active_reaction: null
-      });
-    }
-  };
-
-  const submitBlogComment = async (event) => {
-    event.preventDefault();
-    if (commentSubmitting || !commentName.trim() || !commentText.trim()) return;
-
-    setCommentSubmitting(true);
-    setCommentFeedback("");
-
-    try {
-      const response = await fetch(
-        `${API_BASE}/api/blog/${encodeURIComponent(blogPost.slug)}/engagement/`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: commentName.trim(),
-            email: commentEmail.trim(),
-            comment: commentText.trim()
-          })
-        }
-      );
-
-      const result = await response.json().catch(() => null);
-      if (!response.ok) {
-        throw new Error(result?.comment?.[0] || "Unable to post your comment.");
-      }
-
-      setBlogEngagement((current) => ({
-        ...current,
-        comments: [result, ...(current.comments || [])]
-      }));
-      setCommentName("");
-      setCommentEmail("");
-      setCommentText("");
-      setCommentFeedback("Your comment has been posted. Thank you for joining the conversation.");
-    } catch (error) {
-      setCommentFeedback(error?.message || "Unable to post your comment right now.");
-    } finally {
-      setCommentSubmitting(false);
-    }
-  };
-
-  const reactToBlog = async (reaction) => {
-    if (reactionSubmitting || !blogPost) return;
-    setReactionSubmitting(true);
-
-    try {
-      const response = await fetch(
-        `${API_BASE}/api/blog/${encodeURIComponent(blogPost.slug)}/react/`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            reaction,
-            visitor_key: getVisitorKey()
-          })
-        }
-      );
-      const result = await response.json().catch(() => null);
-      if (!response.ok) throw new Error(result?.detail || "Unable to save reaction.");
-      setBlogEngagement((current) => ({ ...current, ...result }));
-    } catch {
-      // Keep the article usable if engagement is temporarily unavailable.
-    } finally {
-      setReactionSubmitting(false);
-    }
-  };
-
 
 
 
