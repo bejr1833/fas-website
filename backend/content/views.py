@@ -136,6 +136,23 @@ class ContactMessageCreateView(generics.CreateAPIView):
     def get_queryset(self):
         return ContactMessage.objects.none()
 
+    def perform_create(self, serializer):
+        contact_message = serializer.save()
+
+        # Keep Django/Postgres as the source of truth. Google Sheets is a
+        # secondary delivery channel, so a Sheets outage never loses a request.
+        from .google_sheets import is_configured, sync_contact_message
+
+        if is_configured():
+            try:
+                sync_contact_message(contact_message)
+            except Exception:
+                import logging
+                logging.getLogger(__name__).exception(
+                    "Google Sheets sync failed for ContactMessage #%s",
+                    contact_message.pk,
+                )
+
 
 class BlogPostListView(generics.ListAPIView):
 
