@@ -12701,3 +12701,242 @@ html[data-theme="dark"] .blogArticleCoverFallback {
     font-size: 40px;
   }
 }
+
+/* =========================================================
+   FAS JOURNAL — FINAL ARTICLE OVERRIDES
+   Canonical rules intentionally placed last so older
+   iterations cannot visually override the final design.
+   ========================================================= */
+
+/* One clear editorial hierarchy: banner → byline → article intro. */
+.blogArticleHeader {
+  width: min(900px, 100%);
+  margin: 0 auto 46px;
+  text-align: center;
+}
+
+.blogArticleTopCover {
+  width: 100%;
+  margin: 0 auto 30px;
+}
+
+.blogArticleTopCover .blogArticleCover {
+  width: 100%;
+  margin: 0;
+}
+
+/* Keep the signature cover as the only visual title treatment. */
+.blogArticleTopCover .blogArticleCoverFallback {
+  min-height: 340px;
+  border-radius: 26px;
+  box-shadow:
+    0 30px 75px rgba(0,0,0,.20),
+    0 0 0 1px rgba(184,137,50,.08),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.blogArticleHeader .blogArticleExcerpt {
+  display: none !important;
+}
+
+/* Author is deliberately prominent; date remains secondary. */
+.blogArticleMeta {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto !important;
+  padding: 7px 9px 7px 7px;
+  border: 1px solid rgba(184,137,50,.24);
+  border-radius: 999px;
+  background: rgba(255,255,255,.045);
+  box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
+
+.blogArticleAuthor {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 7px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(184,137,50,.16), rgba(181,42,42,.08));
+  border: 1px solid rgba(184,137,50,.22);
+  color: #e7d09d;
+}
+
+.blogArticleAuthorLabel {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #b88932;
+  color: #151515;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 7px;
+  font-weight: 1000;
+  letter-spacing: .08em;
+}
+
+.blogArticleAuthor strong {
+  color: inherit;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+
+.blogArticleMeta > span:not(.blogArticleAuthor) {
+  color: #9ea39f;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* The intro is the sole place where the article summary appears. */
+.blogArticleBody {
+  width: min(760px, 100%);
+}
+
+.articleIntro {
+  margin-top: 0;
+  margin-bottom: 42px;
+}
+
+/* Remove the oversized watermark that competes with the reading column. */
+.blogArticleBody::before {
+  display: none !important;
+}
+
+/* Keep the opening paragraph refined instead of visually colliding
+   with the summary card. */
+.blogArticleBody > p:first-of-type::first-letter {
+  color: #c8a45d;
+}
+
+/* Headings have a single consistent editorial accent. */
+.blogArticleBody h2::before {
+  width: 34px;
+  height: 2px;
+  background: linear-gradient(90deg, #881212, #b88932);
+}
+
+/* Premium dark reading surface; preserve light theme too. */
+.blogArticlePage {
+  background:
+    radial-gradient(circle at 50% -12%, rgba(184,137,50,.055), transparent 30%),
+    #0d0f10;
+}
+
+.blogArticlePage::before {
+  opacity: .45;
+}
+
+.blogArticlePage .blogArticleBody {
+  color: #d2d3cf;
+}
+
+.blogArticlePage .articleIntro {
+  background:
+    radial-gradient(circle at 92% 0%, rgba(184,137,50,.10), transparent 31%),
+    linear-gradient(135deg, rgba(255,255,255,.035), rgba(255,255,255,.018));
+  border-color: rgba(184,137,50,.20);
+  box-shadow: 0 24px 55px rgba(0,0,0,.18);
+}
+
+.blogArticlePage .articleIntro p {
+  color: #d0d0cc;
+}
+
+.blogArticlePage .articleIntro::after {
+  color: rgba(184,137,50,.08);
+}
+
+/* If the article has a real cover image, it uses the exact same
+   single hero slot and never creates a second cover. */
+.blogArticleTopCover .blogArticleCoverPhoto {
+  min-height: 0;
+  max-height: 560px;
+  border-radius: 26px;
+}
+
+.blogArticleTopCover .blogArticleCoverPhoto img {
+  display: block;
+  width: 100%;
+  max-height: 560px;
+  object-fit: cover;
+}
+
+/* Mobile: compact, balanced and touch-friendly. */
+@media (max-width: 760px) {
+  .blogArticleHeader {
+    margin-bottom: 34px;
+  }
+
+  .blogArticleTopCover {
+    margin-bottom: 25px;
+  }
+
+  .blogArticleTopCover .blogArticleCoverFallback {
+    min-height: 255px;
+    border-radius: 20px;
+  }
+
+  .blogArticleMeta {
+    max-width: 100%;
+    gap: 6px;
+  }
+
+  .blogArticleAuthor {
+    padding: 4px 8px 4px 6px;
+  }
+
+  .blogArticleAuthorLabel {
+    width: 20px;
+    height: 20px;
+  }
+
+  .blogArticleMeta > span:not(.blogArticleAuthor) {
+    font-size: 8px;
+  }
+
+  .articleIntro {
+    margin-bottom: 34px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blogArticleTopCover .blogArticleCoverFallback {
+    min-height: 220px;
+    border-radius: 17px;
+  }
+
+  .blogArticleMeta {
+    padding: 6px;
+  }
+
+  .blogArticleAuthor strong {
+    font-size: 9px;
+  }
+
+  .blogArticleMeta > span:not(.blogArticleAuthor) {
+    font-size: 7.5px;
+  }
+}
+
+/* Dark-mode compatibility regardless of how the app toggles its theme. */
+html[data-theme="dark"] .blogArticleAuthor,
+html.dark .blogArticleAuthor,
+.dark .blogArticleAuthor {
+  color: #ead5a4;
+}
+
+html[data-theme="dark"] .blogArticlePage,
+html.dark .blogArticlePage,
+.dark .blogArticlePage {
+  background:
+    radial-gradient(circle at 50% -12%, rgba(184,137,50,.075), transparent 30%),
+    #0d0f10;
+}
+
