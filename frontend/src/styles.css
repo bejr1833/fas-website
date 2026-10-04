@@ -7530,92 +7530,660 @@ html {
   }
 }
 
-
 /* =========================================================
-   FAS DARK MODE — STORY / TESTIMONY CONTRAST FIX
+   FAS DARK MODE — SINGLE CANONICAL THEME LAYER
+   Keep this block at the very end of the stylesheet.
+   It intentionally replaces legacy light-theme overrides so
+   every homepage/library/story/blog component follows the
+   same night-mode surface, text, border and control system.
    ========================================================= */
+
+:root {
+  color-scheme: light;
+  --page-bg: #ffffff;
+  --surface: #ffffff;
+  --surface-soft: #FAF9F6;
+  --surface-raised: #ffffff;
+  --text-primary: #171716;
+  --text-secondary: #5A5A5A;
+  --border-color: #E4E1DE;
+  --nav-bg: rgba(255,255,255,.94);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --page-bg: #0f1012;
+  --surface: #17191c;
+  --surface-soft: #111214;
+  --surface-raised: #1d2024;
+
+  --text-primary: #F5F3EF;
+  --text-secondary: #B8B5B0;
+  --border-color: #34383D;
+  --nav-bg: rgba(15,16,18,.94);
+
+  /* Re-map the legacy palette too, so old component rules
+     using --black/--white/--ivory/--soft automatically follow. */
+  --black: #F5F3EF;
+  --charcoal: #E6E2DC;
+  --ink: #F5F3EF;
+  --muted: #B8B5B0;
+  --white: #17191C;
+  --ivory: #111214;
+  --line: #34383D;
+  --soft: #1D2024;
+  --red: #B52A2A;
+  --red-soft: #D9A3A0;
+}
+
+html[data-theme="dark"],
+html[data-theme="dark"] body,
+html[data-theme="dark"] #root,
+html[data-theme="dark"] .site {
+  background: var(--page-bg) !important;
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Navigation ---------- */
+
+html[data-theme="dark"] .navbar {
+  background: var(--nav-bg) !important;
+  border-bottom-color: var(--border-color) !important;
+  box-shadow: 0 8px 28px rgba(0,0,0,.18);
+}
+
+html[data-theme="dark"] .navbar nav,
+html[data-theme="dark"] .navbar nav a,
+html[data-theme="dark"] .textBtn,
+html[data-theme="dark"] .menuBtn {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .navbar nav a:hover {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .menuBtn {
+  background: var(--surface-raised) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .navbar nav.mobileOpen {
+  background: rgba(23,25,28,.98) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,.38);
+}
+
+html[data-theme="dark"] .navbar nav.mobileOpen a {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .navbar nav.mobileOpen a:hover,
+html[data-theme="dark"] .navbar nav.mobileOpen a:focus-visible {
+  background: #24282D !important;
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .themeToggle {
+  background: #202328 !important;
+  border-color: #454A50 !important;
+  color: #F5F3EF !important;
+}
+
+/* ---------- Global typography ---------- */
+
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] strong {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] p,
+html[data-theme="dark"] .lead,
+html[data-theme="dark"] .muted {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .eyebrow,
+html[data-theme="dark"] .sectionLabel,
+html[data-theme="dark"] .sectionLabel.light {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] h1 em,
+html[data-theme="dark"] h2 em {
+  color: #C83A3A !important;
+}
+
+/* ---------- Main sections ---------- */
+
+html[data-theme="dark"] .section,
+html[data-theme="dark"] .introSection,
+html[data-theme="dark"] .gallerySection,
+html[data-theme="dark"] .sermonSection,
+html[data-theme="dark"] .ebookSection {
+  background: var(--page-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .softSection,
+html[data-theme="dark"] .storiesSection,
+html[data-theme="dark"] .eventsSection,
+html[data-theme="dark"] .videoSection,
+html[data-theme="dark"] .blogSection {
+  background: var(--surface-soft) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .darkSection {
+  background: #090a0c !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .supportSection {
+  background: #08090b !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .supportSection h2,
+html[data-theme="dark"] .supportIntro h2,
+html[data-theme="dark"] .supportIntro p,
+html[data-theme="dark"] .supportSection p {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .supportSection p,
+html[data-theme="dark"] .supportLinks a {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .supportLinks a {
+  border-color: #3B4046 !important;
+}
+
+html[data-theme="dark"] .supportLinks a:hover {
+  color: #D9A3A0 !important;
+  border-color: #B52A2A !important;
+}
+
+/* ---------- Why FAS / pillars / mission ---------- */
+
+html[data-theme="dark"] .introSection h2,
+html[data-theme="dark"] .introGrid h2,
+html[data-theme="dark"] .introSection .lead,
+html[data-theme="dark"] .introSection .introGrid p {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .introSection p,
+html[data-theme="dark"] .introGrid p,
+html[data-theme="dark"] .introSection .lead {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .pillars article,
+html[data-theme="dark"] .missionGrid > div {
+  background: var(--surface) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .pillars h3,
+html[data-theme="dark"] .missionGrid h3,
+html[data-theme="dark"] .pillars p,
+html[data-theme="dark"] .missionGrid p {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .pillars p,
+html[data-theme="dark"] .missionGrid p {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .visionGrid {
+  background: #2A2D31 !important;
+  border-color: #34383D !important;
+}
+
+html[data-theme="dark"] .visionGrid .reveal-item {
+  background: #17191c !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .visionGrid h3 {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .visionGrid p {
+  color: var(--text-secondary) !important;
+}
+
+/* ---------- Hero ---------- */
+
+html[data-theme="dark"] .hero {
+  background: var(--page-bg) !important;
+}
+
+html[data-theme="dark"] .hero h1,
+html[data-theme="dark"] .hero p,
+html[data-theme="dark"] .heroMeta {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .hero p,
+html[data-theme="dark"] .heroMeta {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .heroNext {
+  background: linear-gradient(155deg, #17191c 0%, #20242A 100%) !important;
+  border-color: #34383D !important;
+  border-top-color: #B52A2A !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.30) !important;
+}
+
+html[data-theme="dark"] .heroNextTop {
+  border-bottom-color: #34383D !important;
+}
+
+html[data-theme="dark"] .heroNextLabel {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .heroNextDate strong,
+html[data-theme="dark"] .heroNextContent h2,
+html[data-theme="dark"] .heroNextEmpty h2 {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .heroNextDate span {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .heroNextContent p,
+html[data-theme="dark"] .heroNextEmpty p {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .heroNextType {
+  background: #24282D !important;
+  border-color: #454A50 !important;
+  color: #EDE9E4 !important;
+}
+
+html[data-theme="dark"] .heroNextLink {
+  background: #F5F3EF !important;
+  border-color: #F5F3EF !important;
+  color: #171716 !important;
+}
+
+html[data-theme="dark"] .heroNextWatermark {
+  color: rgba(245,243,239,.055) !important;
+}
+
+/* ---------- Highlights / slideshow ---------- */
+
+html[data-theme="dark"] .slideshowCounter {
+  background: #202328 !important;
+  border-color: #3B4046 !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .slideshowFrame,
+html[data-theme="dark"] .slide {
+  background: #111317 !important;
+  border-color: #34383D !important;
+}
+
+html[data-theme="dark"] .slideArrow {
+  background: rgba(29,32,36,.94) !important;
+  border-color: #50555C !important;
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .slideArrow:hover {
+  background: #2A2E34 !important;
+}
+
+html[data-theme="dark"] .slideDots button {
+  background: rgba(245,243,239,.38) !important;
+}
+
+html[data-theme="dark"] .slideDots button.active {
+  background: #C83A3A !important;
+}
+
+/* ---------- Events ---------- */
+
+html[data-theme="dark"] .eventCard {
+  background: var(--surface) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .eventDate {
+  color: var(--text-primary) !important;
+  border-color: #7A3333 !important;
+}
+
+html[data-theme="dark"] .eventDate span,
+html[data-theme="dark"] .eventType {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .eventCard h3 {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .eventCard p,
+html[data-theme="dark"] .emptyState {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .circleArrow {
+  background: #202328 !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ---------- Latest / new blog highlight strips ---------- */
+
+html[data-theme="dark"] .newBlogHighlightInner,
+html[data-theme="dark"] .latestBlogInner {
+  background: linear-gradient(135deg, #17191c 0%, #20242A 100%) !important;
+  border-color: #34383D !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,.28) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .newBlogHighlightLabel,
+html[data-theme="dark"] .latestBlogLabel {
+  color: #D9B979 !important;
+}
+
+html[data-theme="dark"] .newBlogCategory,
+html[data-theme="dark"] .latestBlogCategory {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .newBlogHighlightContent h2,
+html[data-theme="dark"] .latestBlogCopy h2 {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .newBlogHighlightContent p,
+html[data-theme="dark"] .latestBlogCopy p {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .newBlogHighlightInner::after,
+html[data-theme="dark"] .latestBlogInner::after {
+  color: rgba(245,243,239,.055) !important;
+}
+
+html[data-theme="dark"] .newBlogReadBtn,
+html[data-theme="dark"] .latestBlogButton {
+  background: #F5F3EF !important;
+  border-color: #F5F3EF !important;
+  color: #171716 !important;
+}
+
+/* ---------- Blog library ---------- */
+
+html[data-theme="dark"] .blogSection {
+  background:
+    radial-gradient(circle at 92% 8%, rgba(181,42,42,.10), transparent 28%),
+    linear-gradient(180deg, #111214 0%, #0f1012 100%) !important;
+}
+
+html[data-theme="dark"] .blogCard {
+  background: #17191c !important;
+  border-color: #34383D !important;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25) !important;
+}
+
+html[data-theme="dark"] .blogCardMedia {
+  background: #20242A !important;
+}
+
+html[data-theme="dark"] .blogCardMediaFallback {
+  background: linear-gradient(135deg, #20242A 0%, #17191c 100%) !important;
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .blogCategory {
+  background: #2A2021 !important;
+  color: #E0A3A3 !important;
+}
+
+html[data-theme="dark"] .blogCardTopline time,
+html[data-theme="dark"] .blogCardContent > p,
+html[data-theme="dark"] .blogAuthor {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .blogCard h3,
+html[data-theme="dark"] .blogReadLink {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .blogCard:hover h3 a,
+html[data-theme="dark"] .blogReadLink:hover {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .blogMeta {
+  border-top-color: #34383D !important;
+}
+
+html[data-theme="dark"] .blogCardReadBadge {
+  background: rgba(15,16,18,.84) !important;
+  color: #F5F3EF !important;
+}
+
+/* ---------- Sermons ---------- */
+
+html[data-theme="dark"] .sermonCard,
+html[data-theme="dark"] .sermonFeatured {
+  background: linear-gradient(145deg, #17191c 0%, #1e2227 100%) !important;
+  border-color: #34383D !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .sermonCard::after {
+  color: rgba(245,243,239,.045) !important;
+}
+
+html[data-theme="dark"] .sermonCategory {
+  color: #F0ECE6 !important;
+  background: #25292E !important;
+}
+
+html[data-theme="dark"] .sermonFeaturedLabel {
+  color: #D9B979 !important;
+  background: rgba(184,137,50,.13) !important;
+}
+
+html[data-theme="dark"] .sermonCardIcon {
+  color: #D9A3A0 !important;
+  background: rgba(184,137,50,.12) !important;
+}
+
+html[data-theme="dark"] .sermonCard h3,
+html[data-theme="dark"] .sermonSpeaker strong {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .sermonSpeaker span,
+html[data-theme="dark"] .sermonCard > p,
+html[data-theme="dark"] .sermonCardFooter > span {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .sermonCardFooter {
+  border-top-color: #34383D !important;
+}
+
+/* ---------- Videos ---------- */
+
+html[data-theme="dark"] .videoSection {
+  background: #111214 !important;
+}
+
+html[data-theme="dark"] .videoCard {
+  background: #17191c !important;
+  border-color: #34383D !important;
+  box-shadow: 0 12px 34px rgba(0,0,0,.25) !important;
+}
+
+html[data-theme="dark"] .videoThumbnail,
+html[data-theme="dark"] .videoThumbnailPlaceholder {
+  background: #0d0f12 !important;
+}
+
+html[data-theme="dark"] .videoThumbnailPlaceholder span {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .videoCategory,
+html[data-theme="dark"] .videoWatchLink {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .videoDate,
+html[data-theme="dark"] .videoSpeaker span,
+html[data-theme="dark"] .videoCardBody p {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .videoCardBody h3,
+html[data-theme="dark"] .videoSpeaker strong {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .videoSpeaker {
+  border-bottom-color: #34383D !important;
+}
+
+html[data-theme="dark"] .videoPlayButton:hover {
+  background: #F5F3EF !important;
+  color: #171716 !important;
+}
+
+/* ---------- E-books ---------- */
+
+html[data-theme="dark"] .ebookCard {
+  background: #17191c !important;
+  border-color: #34383D !important;
+  box-shadow: 0 14px 38px rgba(0,0,0,.24) !important;
+}
+
+html[data-theme="dark"] .ebookCover,
+html[data-theme="dark"] .ebookCoverPlaceholder {
+  background: linear-gradient(145deg, #24282D 0%, #17191c 100%) !important;
+}
+
+html[data-theme="dark"] .ebookCoverPlaceholder {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .ebookCoverPlaceholder small,
+html[data-theme="dark"] .ebookCategory,
+html[data-theme="dark"] .ebookReadLink {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .ebookDate,
+html[data-theme="dark"] .ebookAuthor span,
+html[data-theme="dark"] .ebookCardBody p {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .ebookCardBody h3,
+html[data-theme="dark"] .ebookAuthor strong {
+  color: #F5F3EF !important;
+}
+
+/* ---------- Student stories ---------- */
+
+html[data-theme="dark"] .storiesSection {
+  background: #111214 !important;
+}
+
+html[data-theme="dark"] .storiesIntro {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .storyCard {
+  background: #17191c !important;
+  border-color: #34383D !important;
+  box-shadow: 0 16px 40px rgba(0,0,0,.28) !important;
+}
+
+html[data-theme="dark"] .storyPhoto {
+  background: #24282D !important;
+  border-color: #41464D !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    0 8px 22px rgba(0,0,0,.25) !important;
+}
+
+html[data-theme="dark"] .storyPhoto::before {
+  background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(36,40,45,.92)) !important;
+}
+
+html[data-theme="dark"] .storyPhoto::after {
+  border-color: rgba(245,243,239,.12) !important;
+}
+
+html[data-theme="dark"] .storyPhotoFallback {
+  background: #20242A !important;
+}
+
+html[data-theme="dark"] .storyIdentity h3,
+html[data-theme="dark"] .storyImpact strong,
+html[data-theme="dark"] .storyPreview p,
+html[data-theme="dark"] .storyReadButton {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .storyIdentity > span,
+html[data-theme="dark"] .storyImpact span,
+html[data-theme="dark"] .storyShareButton {
+  color: #B8B5B0 !important;
+}
 
 html[data-theme="dark"] .storyImpact {
-  background: #202020 !important;
-  border-color: #8f1c1c !important;
-  color: var(--text-primary);
+  background: #20242A !important;
+  border-left-color: #B52A2A !important;
 }
 
-html[data-theme="dark"] .storyImpact span {
-  color: #B8B5B0 !important;
+html[data-theme="dark"] .storyQuoteMark,
+html[data-theme="dark"] .storyEyebrow {
+  color: #D9A3A0 !important;
 }
 
-html[data-theme="dark"] .storyImpact strong {
-  color: #F5F3EF !important;
+html[data-theme="dark"] .storyReadButton {
+  border-top-color: #34383D !important;
+  background: transparent !important;
 }
 
-html[data-theme="dark"] .storyPreview p {
-  color: #F5F3EF !important;
+html[data-theme="dark"] .storyReadButton:hover,
+html[data-theme="dark"] .storyShareButton:hover {
+  color: #D9A3A0 !important;
 }
 
-html[data-theme="dark"] .storyQuoteMark {
-  color: #B21B1B !important;
-}
-
-html[data-theme="dark"] .storiesGrid .storyCardBody {
-  color: var(--text-primary);
-}
-
-/* =========================================================
-   FAS DARK MODE — FULL STORY MODAL CONTRAST FIX
-   ========================================================= */
-
-html[data-theme="dark"] .storyModal {
-  background: #181818 !important;
-  color: #F5F3EF !important;
-}
-
-html[data-theme="dark"] .storyModalContent {
-  background: #181818 !important;
-  color: #F5F3EF !important;
-  scrollbar-color: #5a5a5a transparent;
-}
-
-html[data-theme="dark"] .storyModalContent h2 {
-  color: #F5F3EF !important;
-}
-
-html[data-theme="dark"] .storyModalCollege {
-  color: #B8B5B0 !important;
-}
-
-html[data-theme="dark"] .storyModalImpact {
-  background: #202020 !important;
-  border-color: #B21B1B !important;
-}
-
-html[data-theme="dark"] .storyModalImpact span {
-  color: #B8B5B0 !important;
-}
-
-html[data-theme="dark"] .storyModalImpact strong {
-  color: #F5F3EF !important;
-}
-
-html[data-theme="dark"] .storyFullText {
-  color: #F0EEEA !important;
-}
-
-html[data-theme="dark"] .storyModalDivider {
-  background: #B21B1B !important;
-}
-
-html[data-theme="dark"] .storyModalFooter {
-  color: #A9A59F !important;
-  border-top-color: #363636 !important;
-}
-
-/* =========================================================
-   FAS DARK MODE — STORY OF FAS CONTRAST FIX
-   ========================================================= */
+/* ---------- Story of FAS timeline ---------- */
 
 html[data-theme="dark"] .storySection {
-  background: #111111 !important;
+  background: #0f1012 !important;
   color: #F5F3EF !important;
 }
 
@@ -7632,22 +8200,16 @@ html[data-theme="dark"] .storySection .storyClosing > p {
 }
 
 html[data-theme="dark"] .storySection .storyClosing > p:first-of-type {
-  color: #F0EEEA !important;
+  color: #F0ECE6 !important;
 }
 
 html[data-theme="dark"] .storyTimeline::before {
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    #6f2424 8%,
-    #6f2424 92%,
-    transparent
-  ) !important;
+  background: linear-gradient(to bottom, transparent, #6f2424 8%, #6f2424 92%, transparent) !important;
 }
 
 html[data-theme="dark"] .storyMarker {
-  background: #181818 !important;
-  border-color: #7a3333 !important;
+  background: #17191c !important;
+  border-color: #7A3333 !important;
 }
 
 html[data-theme="dark"] .storyMarker span,
@@ -7657,476 +8219,284 @@ html[data-theme="dark"] .storyDate {
 
 html[data-theme="dark"] .storyMilestone:nth-child(3) .storyContent,
 html[data-theme="dark"] .storyMilestone:nth-child(5) .storyContent {
-  background: #181818 !important;
-  border-color: #363636 !important;
+  background: #17191c !important;
+  border-color: #34383D !important;
 }
 
 html[data-theme="dark"] .storyContent blockquote {
-  background: #202020 !important;
+  background: #20242A !important;
   color: #F5F3EF !important;
-  border-left-color: #B21B1B !important;
+  border-left-color: #B52A2A !important;
 }
 
 html[data-theme="dark"] .storyRhythm div {
-  background: #181818 !important;
-  border-color: #363636 !important;
+  background: #17191c !important;
+  border-color: #34383D !important;
 }
 
 html[data-theme="dark"] .storyRhythm span {
-  color: #F0EEEA !important;
+  color: #F0ECE6 !important;
 }
 
+html[data-theme="dark"] .storyRetreatCard,
 html[data-theme="dark"] .storyFinalCompact,
 html[data-theme="dark"] .storyFinal {
-  background: #181818 !important;
+  background: #17191c !important;
   color: #F5F3EF !important;
-  border: 1px solid #363636;
+  border: 1px solid #34383D !important;
 }
 
+html[data-theme="dark"] .storyRetreatCard small,
 html[data-theme="dark"] .storyFinalCompact span,
 html[data-theme="dark"] .storyFinal span {
   color: #B8B5B0 !important;
 }
 
-html[data-theme="dark"] .storyFinalCompact strong,
-html[data-theme="dark"] .storyFinal strong {
+/* ---------- Story reading modal ---------- */
+
+html[data-theme="dark"] .storyModalOverlay {
+  background: rgba(4,5,6,.86) !important;
+}
+
+html[data-theme="dark"] .storyModal {
+  background: #17191c !important;
+  box-shadow: 0 35px 90px rgba(0,0,0,.52) !important;
+}
+
+html[data-theme="dark"] .storyModalMedia {
+  background: #101215 !important;
+}
+
+html[data-theme="dark"] .storyModalFallback {
+  background: #20242A !important;
+}
+
+html[data-theme="dark"] .storyModalContent {
+  background: #17191c !important;
+  color: #F5F3EF !important;
+  scrollbar-color: #555B62 transparent;
+}
+
+html[data-theme="dark"] .storyModalContent h2,
+html[data-theme="dark"] .storyModalImpact strong {
   color: #F5F3EF !important;
 }
 
-/* =========================================================
-   FAS DARK MODE — HERO / FEATURED PANEL CONTRAST FIX
-   ========================================================= */
-
-html[data-theme="dark"] .heroNext {
-  background: linear-gradient(155deg, #181818 0%, #202020 100%) !important;
-  border-color: #363636 !important;
-  border-top-color: #B21B1B !important;
-  box-shadow: 0 18px 45px rgba(0,0,0,.28) !important;
-}
-
-html[data-theme="dark"] .heroNextTop {
-  border-bottom-color: #363636 !important;
-}
-
-html[data-theme="dark"] .heroNextLabel {
-  color: #D9A3A0 !important;
-}
-
-html[data-theme="dark"] .heroNextDate strong,
-html[data-theme="dark"] .heroNextContent h2,
-html[data-theme="dark"] .heroNextEmpty h2 {
-  color: #F5F3EF !important;
-}
-
-html[data-theme="dark"] .heroNextContent p,
-html[data-theme="dark"] .heroNextEmpty p {
+html[data-theme="dark"] .storyModalCollege,
+html[data-theme="dark"] .storyModalImpact span,
+html[data-theme="dark"] .storyModalFooter {
   color: #B8B5B0 !important;
 }
 
-html[data-theme="dark"] .heroNextType {
-  background: #242424 !important;
-  border-color: #414141 !important;
-  color: #E7E3DE !important;
+html[data-theme="dark"] .storyModalImpact {
+  background: #20242A !important;
+  border-left-color: #B52A2A !important;
 }
 
-html[data-theme="dark"] .heroNextLink {
+html[data-theme="dark"] .storyFullText {
+  color: #F0ECE6 !important;
+}
+
+html[data-theme="dark"] .storyModalFooter {
+  border-top-color: #34383D !important;
+}
+
+/* ---------- Gallery ---------- */
+
+html[data-theme="dark"] .galleryIntro {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .galleryFilter {
+  background: #17191c !important;
+  border-color: #34383D !important;
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .galleryFilter:hover {
+  border-color: #B52A2A !important;
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .galleryFilter.active {
+  background: #B52A2A !important;
+  border-color: #B52A2A !important;
+  color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] .galleryImageWrap {
+  background: #17191c !important;
+}
+
+html[data-theme="dark"] .galleryCardOverlay {
+  color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] .galleryCardCategory,
+html[data-theme="dark"] .galleryLightboxCategory {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .galleryLightbox {
+  background: rgba(4,5,6,.96) !important;
+}
+
+/* ---------- Blog article / sharing / related ---------- */
+
+html[data-theme="dark"] .blogArticlePage,
+html[data-theme="dark"] .blogArticle {
+  background: #0f1012 !important;
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .navbar {
+  background: rgba(15,16,18,.96) !important;
+  border-bottom-color: #34383D !important;
+}
+
+html[data-theme="dark"] .blogArticleHeader h1,
+html[data-theme="dark"] .blogArticleBody h2,
+html[data-theme="dark"] .blogArticleBody h3,
+html[data-theme="dark"] .blogArticleBody strong,
+html[data-theme="dark"] .blogArticleState h1 {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .blogArticleExcerpt,
+html[data-theme="dark"] .blogArticleMeta,
+html[data-theme="dark"] .blogBreadcrumbs,
+html[data-theme="dark"] .blogArticleBody,
+html[data-theme="dark"] .blogArticleBody p,
+html[data-theme="dark"] .blogArticleState p {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .blogArticleCover {
+  background: #17191c !important;
+}
+
+html[data-theme="dark"] .blogArticleFooter,
+html[data-theme="dark"] .blogShare,
+html[data-theme="dark"] .relatedArticles {
+  border-color: #34383D !important;
+}
+
+html[data-theme="dark"] .blogArticleState,
+html[data-theme="dark"] .relatedArticleCard {
+  background: #17191c !important;
+  border-color: #34383D !important;
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .relatedArticleCard p {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .articleIntro {
+  background: #20242A !important;
+  border-color: #3B4046 !important;
+  color: #F0ECE6 !important;
+}
+
+html[data-theme="dark"] .blogShareBtn {
+  background: #17191c !important;
+  border-color: #34383D !important;
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .blogShareBtn:hover {
   background: #F5F3EF !important;
   border-color: #F5F3EF !important;
   color: #171716 !important;
 }
 
-html[data-theme="dark"] .heroNextWatermark {
-  color: rgba(245,243,239,.055) !important;
-}
-
-html[data-theme="dark"] .newBlogHighlightInner {
-  background:
-    radial-gradient(
-      circle at 88% 15%,
-      rgba(184,137,50,.10),
-      transparent 28%
-    ),
-    linear-gradient(135deg, #181818 0%, #202020 100%) !important;
-  border-color: #363636 !important;
-  box-shadow: 0 18px 48px rgba(0,0,0,.28) !important;
-}
-
-html[data-theme="dark"] .newBlogHighlightInner::after {
-  color: rgba(245,243,239,.055) !important;
-}
-
-html[data-theme="dark"] .newBlogHighlightLabel {
-  color: #D9B979 !important;
-}
-
-html[data-theme="dark"] .newBlogCategory {
-  color: #B8B5B0 !important;
-}
-
-html[data-theme="dark"] .newBlogHighlightContent h2 {
-  color: #F5F3EF !important;
-}
-
-html[data-theme="dark"] .newBlogHighlightContent p {
-  color: #B8B5B0 !important;
-}
-
-/* =========================================================
-   FAS DARK MODE — WHY FAS / BLOG CONTRAST FIX
-   ========================================================= */
-
-html[data-theme="dark"] .introSection {
-  color: #F5F3EF !important;
-}
-
-html[data-theme="dark"] .introSection h2,
-html[data-theme="dark"] .introSection .introGrid h2 {
-  color: #F5F3EF !important;
-}
-
-html[data-theme="dark"] .introSection .introGrid p,
-html[data-theme="dark"] .introSection p,
-html[data-theme="dark"] .introSection .lead {
-  color: #C4C1BC !important;
-}
-
-html[data-theme="dark"] .introSection .sectionLabel {
-  color: #D9A3A0 !important;
-}
-
-/* =========================================================
-   FAS DARK MODE
-   ========================================================= */
-
-:root {
-  color-scheme: light;
-  --page-bg: #ffffff;
-  --surface: #ffffff;
-  --surface-soft: #FAF9F6;
-  --text-primary: #171716;
-  --text-secondary: #5A5A5A;
-  --border-color: #E4E1DE;
-  --nav-bg: rgba(255,255,255,.94);
-}
-
-html[data-theme="dark"] {
-  color-scheme: dark;
-  --page-bg: #111111;
-  --surface: #181818;
-  --surface-soft: #202020;
-  --text-primary: #F5F3EF;
-  --text-secondary: #B8B5B0;
-  --border-color: #363636;
-  --nav-bg: rgba(17,17,17,.94);
-}
-
-html[data-theme="dark"] body,
-html[data-theme="dark"] .site {
-  background: var(--page-bg);
-  color: var(--text-primary);
-}
-
-html[data-theme="dark"] .navbar {
-  background: var(--nav-bg);
-  border-bottom-color: var(--border-color);
-}
-
-.navActions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.themeToggle {
-  width: 42px;
-  height: 42px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  display: inline-grid;
-  place-items: center;
-  background: var(--surface);
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: background .2s ease, border-color .2s ease, transform .2s ease;
-}
-
-.themeToggle:hover {
-  transform: translateY(-1px);
-  border-color: var(--red-soft);
-}
-
-html[data-theme="dark"] .themeToggle {
-  --line: #454545;
-  background: #202020;
-  color: #F5F3EF;
-}
-
-html[data-theme="dark"] .brand img {
-  filter: brightness(1.08);
-}
-
-html[data-theme="dark"] .hero,
-html[data-theme="dark"] .section {
-  color: var(--text-primary);
-}
-
-html[data-theme="dark"] h1,
-html[data-theme="dark"] h2,
-html[data-theme="dark"] h3,
-html[data-theme="dark"] h4,
-html[data-theme="dark"] strong,
-html[data-theme="dark"] .textBtn,
-html[data-theme="dark"] .navbar nav a,
-html[data-theme="dark"] .videoCategory,
-html[data-theme="dark"] .videoSpeaker strong,
-html[data-theme="dark"] .ebookAuthor strong,
-html[data-theme="dark"] .ebookCategory,
-html[data-theme="dark"] .sermonSpeaker strong,
-html[data-theme="dark"] .eventCard h3,
-html[data-theme="dark"] .storyCard p,
-html[data-theme="dark"] .galleryCardOverlay strong {
-  color: var(--text-primary);
-}
-
-html[data-theme="dark"] p,
-html[data-theme="dark"] .hero p,
-html[data-theme="dark"] .introGrid p,
-html[data-theme="dark"] .lead,
-html[data-theme="dark"] .pillars p,
-html[data-theme="dark"] .missionGrid p,
-html[data-theme="dark"] .eventCard p,
-html[data-theme="dark"] .storyCard span,
-html[data-theme="dark"] .videoCardBody p,
-html[data-theme="dark"] .videoDate,
-html[data-theme="dark"] .videoSpeaker span,
-html[data-theme="dark"] .ebookCardBody p,
-html[data-theme="dark"] .ebookDate,
-html[data-theme="dark"] .sermonCardFooter > span,
-html[data-theme="dark"] .galleryIntro {
-  color: var(--text-secondary);
-}
-
-html[data-theme="dark"] .softSection,
-html[data-theme="dark"] .eventsSection,
-html[data-theme="dark"] .videoSection,
-html[data-theme="dark"] .ebookSection {
-  background: var(--surface-soft);
-}
-
-html[data-theme="dark"] .pillars article,
-html[data-theme="dark"] .missionGrid > div,
-html[data-theme="dark"] .eventCard,
-html[data-theme="dark"] .storyCard,
-html[data-theme="dark"] .videoCard,
-html[data-theme="dark"] .ebookCard,
-html[data-theme="dark"] .sermonCard,
-html[data-theme="dark"] .galleryCard,
-html[data-theme="dark"] .emptyState,
-html[data-theme="dark"] .blogCard,
-html[data-theme="dark"] .blogArticleState,
-html[data-theme="dark"] .articleIntro {
-  background: var(--surface);
-  border-color: var(--border-color);
-}
-
-html[data-theme="dark"] .emptyState,
-html[data-theme="dark"] .muted {
-  color: var(--text-secondary);
-}
-
-html[data-theme="dark"] .circleArrow {
-  background: #202020;
-  color: var(--text-primary);
-  border-color: var(--border-color);
-}
-
-html[data-theme="dark"] footer {
-  background: #111111;
-  border-top-color: var(--border-color);
-}
-
-html[data-theme="dark"] footer strong,
-html[data-theme="dark"] footer span {
-  color: var(--text-primary);
-}
-
-html[data-theme="dark"] footer p {
-  color: var(--red-soft);
-}
-
-html[data-theme="dark"] .supportSection {
-  background: #0B0B0B;
-}
-
-html[data-theme="dark"] .supportLinks a {
-  border-color: #3A3A3A;
-}
-
-html[data-theme="dark"] .galleryFilters .galleryFilter,
-html[data-theme="dark"] .contactTypeBtn {
-  background: #202020;
-  color: var(--text-secondary);
-  border-color: var(--border-color);
-}
-
-html[data-theme="dark"] .galleryFilters .galleryFilter.active,
-html[data-theme="dark"] .contactTypeBtn.active {
-  color: #ffffff;
-  border-color: var(--red);
-  background: var(--red);
-}
+/* ---------- Forms / controls ---------- */
 
 html[data-theme="dark"] input,
 html[data-theme="dark"] textarea,
 html[data-theme="dark"] select {
-  background: #202020;
-  color: var(--text-primary);
-  border-color: var(--border-color);
+  background: #20242A !important;
+  color: #F5F3EF !important;
+  border-color: #3B4046 !important;
 }
 
 html[data-theme="dark"] input::placeholder,
 html[data-theme="dark"] textarea::placeholder {
-  color: #88837C;
+  color: #888E95 !important;
 }
 
-html[data-theme="dark"] .mobileConnectLink {
-  color: var(--text-primary);
+html[data-theme="dark"] .contactForm label > span,
+html[data-theme="dark"] .contactPrivacyNote {
+  color: #C6C2BC !important;
 }
 
-html[data-theme="dark"] .mobileOpen {
-  background: #151515;
-  border-color: var(--border-color);
+html[data-theme="dark"] .contactTypeSwitch {
+  background: rgba(255,255,255,.06) !important;
+  border-color: #3B4046 !important;
 }
 
-html[data-theme="dark"] .blogArticlePage,
-html[data-theme="dark"] .blogArticle {
-  background: var(--page-bg);
+html[data-theme="dark"] .contactTypeBtn {
+  background: transparent !important;
+  color: #B8B5B0 !important;
+  border-color: transparent !important;
 }
 
-html[data-theme="dark"] .blogArticleContent,
-html[data-theme="dark"] .blogArticleHeader,
-html[data-theme="dark"] .blogArticleBody {
-  color: var(--text-primary);
+html[data-theme="dark"] .contactTypeBtn.active {
+  background: #F5F3EF !important;
+  color: #171716 !important;
 }
 
-html[data-theme="dark"] .blogArticleBody p,
-html[data-theme="dark"] .blogArticleExcerpt,
-html[data-theme="dark"] .blogArticleMeta,
-html[data-theme="dark"] .blogBreadcrumbs {
-  color: var(--text-secondary);
+html[data-theme="dark"] .contactFeedback.success {
+  background: rgba(217,163,160,.10) !important;
 }
 
-html[data-theme="dark"] .blogArticleBody h2,
-html[data-theme="dark"] .blogArticleBody h3,
-html[data-theme="dark"] .blogArticleBody strong {
-  color: var(--text-primary);
+html[data-theme="dark"] footer {
+  background: #0b0c0e !important;
+  border-top-color: #34383D !important;
 }
 
-html[data-theme="dark"] .articleIntro {
-  background: #202020;
-  border-color: var(--border-color);
-}
-
-html[data-theme="dark"] .slideshowCounter {
-  background: #202020;
-  color: var(--text-primary);
-  border-color: var(--border-color);
-}
-
-html[data-theme="dark"] .slideshowFrame {
-  border-color: #383838;
-  background: #151515;
-}
-
-html[data-theme="dark"] .slide {
-  background: #151515;
-}
-
-@media (max-width: 850px) {
-  .navActions {
-    gap: 7px;
-  }
-
-  .themeToggle {
-    width: 38px;
-    height: 38px;
-  }
-}
-
-
-/* =========================================================
-   FAS DARK MODE — FINAL OVERRIDES
-   These rules intentionally live at the end of the stylesheet
-   so they win over all legacy/light-theme component styles.
-   ========================================================= */
-
-html[data-theme="dark"] .heroNext,
-html[data-theme="dark"] .newBlogHighlightInner,
-html[data-theme="dark"] .latestBlogInner {
-  background: #181818 !important;
-  color: #F5F3EF !important;
-  border-color: #363636 !important;
-}
-
-html[data-theme="dark"] .heroNextTop,
-html[data-theme="dark"] .latestBlogInner {
-  border-color: #363636 !important;
-}
-
-html[data-theme="dark"] .heroNextDate strong,
-html[data-theme="dark"] .heroNextContent h2,
-html[data-theme="dark"] .heroNextEmpty h2,
-html[data-theme="dark"] .newBlogHighlightContent h2,
-html[data-theme="dark"] .latestBlogContent h2,
-html[data-theme="dark"] .introSection h2,
-html[data-theme="dark"] .introGrid h2 {
+html[data-theme="dark"] footer strong,
+html[data-theme="dark"] footer span {
   color: #F5F3EF !important;
 }
 
-html[data-theme="dark"] .heroNextContent p,
-html[data-theme="dark"] .heroNextEmpty p,
-html[data-theme="dark"] .newBlogHighlightContent p,
-html[data-theme="dark"] .latestBlogContent p,
-html[data-theme="dark"] .introSection p,
-html[data-theme="dark"] .introGrid p,
-html[data-theme="dark"] .introSection .lead {
-  color: #C8C5C0 !important;
-}
-
-html[data-theme="dark"] .heroNextLabel,
-html[data-theme="dark"] .newBlogHighlightLabel,
-html[data-theme="dark"] .latestBlogLabel,
-html[data-theme="dark"] .newBlogCategory,
-html[data-theme="dark"] .latestBlogCategory,
-html[data-theme="dark"] .introSection .sectionLabel {
+html[data-theme="dark"] footer p {
   color: #D9A3A0 !important;
 }
 
-html[data-theme="dark"] .heroNextType {
-  background: #242424 !important;
-  color: #EDE9E4 !important;
-  border-color: #444 !important;
+/* ---------- Legacy hard-coded white/light surfaces ----------
+   These selectors are deliberately explicit. They are the
+   components that previously escaped the theme because their
+   original rules used literal white/ivory colors. */
+
+html[data-theme="dark"] .blogCard,
+html[data-theme="dark"] .storyCard,
+html[data-theme="dark"] .videoCard,
+html[data-theme="dark"] .ebookCard,
+html[data-theme="dark"] .sermonCard,
+html[data-theme="dark"] .eventCard,
+html[data-theme="dark"] .pillars article,
+html[data-theme="dark"] .missionGrid > div,
+html[data-theme="dark"] .relatedArticleCard,
+html[data-theme="dark"] .blogArticleState,
+html[data-theme="dark"] .articleIntro {
+  background-color: var(--surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
 }
 
-html[data-theme="dark"] .heroNextLink,
-html[data-theme="dark"] .newBlogReadBtn,
-html[data-theme="dark"] .latestBlogReadBtn {
-  background: #F5F3EF !important;
-  color: #171716 !important;
-  border-color: #F5F3EF !important;
-}
-
-html[data-theme="dark"] .heroNextWatermark,
-html[data-theme="dark"] .newBlogHighlightInner::after,
-html[data-theme="dark"] .latestBlogInner::after {
-  color: rgba(245,243,239,.06) !important;
-}
-
-html[data-theme="dark"] .introSection {
-  background: #111111 !important;
+html[data-theme="dark"] .blogCardMediaFallback,
+html[data-theme="dark"] .ebookCoverPlaceholder,
+html[data-theme="dark"] .storyPhotoFallback {
   color: #F5F3EF !important;
 }
 
-html[data-theme="dark"] .introSection em {
-  color: #B21B1B !important;
+/* Reduced motion should not accidentally restore light colors. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="dark"] .storyCard,
+  html[data-theme="dark"] .eventCard,
+  html[data-theme="dark"] .videoCard,
+  html[data-theme="dark"] .ebookCard {
+    transform: none !important;
+  }
 }
