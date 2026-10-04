@@ -233,6 +233,71 @@ function App() {
   }, [data.stories]);
 
   useEffect(() => {
+    const carousel = document.querySelector(".blogCarousel");
+
+    if (!carousel || data.blog.length <= 1) return;
+
+    const reduceMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+    if (reduceMotionQuery.matches) return;
+
+    let timer = null;
+    let paused = false;
+
+    const getStep = () => {
+      const card = carousel.querySelector(".blogCard");
+      if (!card) return carousel.clientWidth;
+
+      const styles = window.getComputedStyle(carousel);
+      const gap = parseFloat(styles.columnGap || styles.gap || "0");
+      return card.getBoundingClientRect().width + gap;
+    };
+
+    const slideNext = () => {
+      if (paused) return;
+
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      if (carousel.scrollLeft >= maxScroll - 10) {
+        carousel.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        carousel.scrollBy({ left: getStep(), behavior: "smooth" });
+      }
+    };
+
+    const startTimer = () => {
+      clearInterval(timer);
+      timer = window.setInterval(slideNext, 5000);
+    };
+
+    const pause = () => {
+      paused = true;
+      clearInterval(timer);
+    };
+
+    const resume = () => {
+      paused = false;
+      startTimer();
+    };
+
+    carousel.addEventListener("mouseenter", pause);
+    carousel.addEventListener("mouseleave", resume);
+    carousel.addEventListener("touchstart", pause, { passive: true });
+    carousel.addEventListener("touchend", resume, { passive: true });
+
+    startTimer();
+
+    return () => {
+      clearInterval(timer);
+      carousel.removeEventListener("mouseenter", pause);
+      carousel.removeEventListener("mouseleave", resume);
+      carousel.removeEventListener("touchstart", pause);
+      carousel.removeEventListener("touchend", resume);
+    };
+  }, [data.blog]);
+
+  useEffect(() => {
     if (!selectedStory) return;
 
     const handleEscape = (event) => {
@@ -2782,7 +2847,7 @@ function App() {
               <p>FAS blog posts will appear here.</p>
             </div>
           ) : (
-            <div className="blogGrid">
+            <div className="blogGrid blogCarousel">
               {data.blog.map((post, index) => (
                 <article
                   className={`blogCard blogCardFeatured reveal-item${index === 0 ? " isFeatured" : ""}${!post.cover_image_url ? " isFallback" : ""}`}
