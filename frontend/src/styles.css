@@ -8052,3 +8052,81 @@ html[data-theme="dark"] .slide {
     height: 38px;
   }
 }
+
+
+/* =========================================================
+   FAS DARK MODE — FINAL OVERRIDES
+   These rules intentionally live at the end of the stylesheet
+   so they win over all legacy/light-theme component styles.
+   ========================================================= */
+
+html[data-theme="dark"] .heroNext,
+html[data-theme="dark"] .newBlogHighlightInner,
+html[data-theme="dark"] .latestBlogInner {
+  background: #181818 !important;
+  color: #F5F3EF !important;
+  border-color: #363636 !important;
+}
+
+html[data-theme="dark"] .heroNextTop,
+html[data-theme="dark"] .latestBlogInner {
+  border-color: #363636 !important;
+}
+
+html[data-theme="dark"] .heroNextDate strong,
+html[data-theme="dark"] .heroNextContent h2,
+html[data-theme="dark"] .heroNextEmpty h2,
+html[data-theme="dark"] .newBlogHighlightContent h2,
+html[data-theme="dark"] .latestBlogContent h2,
+html[data-theme="dark"] .introSection h2,
+html[data-theme="dark"] .introGrid h2 {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .heroNextContent p,
+html[data-theme="dark"] .heroNextEmpty p,
+html[data-theme="dark"] .newBlogHighlightContent p,
+html[data-theme="dark"] .latestBlogContent p,
+html[data-theme="dark"] .introSection p,
+html[data-theme="dark"] .introGrid p,
+html[data-theme="dark"] .introSection .lead {
+  color: #C8C5C0 !important;
+}
+
+html[data-theme="dark"] .heroNextLabel,
+html[data-theme="dark"] .newBlogHighlightLabel,
+html[data-theme="dark"] .latestBlogLabel,
+html[data-theme="dark"] .newBlogCategory,
+html[data-theme="dark"] .latestBlogCategory,
+html[data-theme="dark"] .introSection .sectionLabel {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .heroNextType {
+  background: #242424 !important;
+  color: #EDE9E4 !important;
+  border-color: #444 !important;
+}
+
+html[data-theme="dark"] .heroNextLink,
+html[data-theme="dark"] .newBlogReadBtn,
+html[data-theme="dark"] .latestBlogReadBtn {
+  background: #F5F3EF !important;
+  color: #171716 !important;
+  border-color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .heroNextWatermark,
+html[data-theme="dark"] .newBlogHighlightInner::after,
+html[data-theme="dark"] .latestBlogInner::after {
+  color: rgba(245,243,239,.06) !important;
+}
+
+html[data-theme="dark"] .introSection {
+  background: #111111 !important;
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .introSection em {
+  color: #B21B1B !important;
+}
