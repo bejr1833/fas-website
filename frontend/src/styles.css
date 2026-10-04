@@ -9236,3 +9236,15 @@ html[data-theme="dark"] .supportLinks a:hover {
     margin-bottom: 14px !important;
   }
 }
+
+
+/* Usability spacing fix: keep the social panel comfortably separated from the contact submit action */
+.supportLinksHeader {
+  margin-top: 34px;
+}
+
+@media (max-width: 640px) {
+  .supportLinksHeader {
+    margin-top: 30px;
+  }
+}
