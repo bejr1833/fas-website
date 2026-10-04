@@ -7562,6 +7562,55 @@ html[data-theme="dark"] .storiesGrid .storyCardBody {
 }
 
 /* =========================================================
+   FAS DARK MODE — FULL STORY MODAL CONTRAST FIX
+   ========================================================= */
+
+html[data-theme="dark"] .storyModal {
+  background: #181818 !important;
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .storyModalContent {
+  background: #181818 !important;
+  color: #F5F3EF !important;
+  scrollbar-color: #5a5a5a transparent;
+}
+
+html[data-theme="dark"] .storyModalContent h2 {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .storyModalCollege {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .storyModalImpact {
+  background: #202020 !important;
+  border-color: #B21B1B !important;
+}
+
+html[data-theme="dark"] .storyModalImpact span {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .storyModalImpact strong {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .storyFullText {
+  color: #F0EEEA !important;
+}
+
+html[data-theme="dark"] .storyModalDivider {
+  background: #B21B1B !important;
+}
+
+html[data-theme="dark"] .storyModalFooter {
+  color: #A9A59F !important;
+  border-top-color: #363636 !important;
+}
+
+/* =========================================================
    FAS DARK MODE
    ========================================================= */
 
