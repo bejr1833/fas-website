@@ -7532,6 +7532,36 @@ html {
 
 
 /* =========================================================
+   FAS DARK MODE — STORY / TESTIMONY CONTRAST FIX
+   ========================================================= */
+
+html[data-theme="dark"] .storyImpact {
+  background: #202020 !important;
+  border-color: #8f1c1c !important;
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .storyImpact span {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .storyImpact strong {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .storyPreview p {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .storyQuoteMark {
+  color: #B21B1B !important;
+}
+
+html[data-theme="dark"] .storiesGrid .storyCardBody {
+  color: var(--text-primary);
+}
+
+/* =========================================================
    FAS DARK MODE
    ========================================================= */
 
