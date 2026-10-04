@@ -38,6 +38,10 @@ import {
   Play,
   Quote,
   Share2,
+  Heart,
+  MessageCircle,
+  Sparkles,
+  Send,
   UserRound,
   Sun,
   Users,
@@ -80,6 +84,18 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [blogPost, setBlogPost] = useState(null);
   const [blogLoading, setBlogLoading] = useState(false);
+  const [blogEngagement, setBlogEngagement] = useState({
+    comments: [],
+    reaction_counts: { like: 0, amen: 0, encouraged: 0 },
+    total_reactions: 0,
+    active_reaction: null
+  });
+  const [commentName, setCommentName] = useState("");
+  const [commentEmail, setCommentEmail] = useState("");
+  const [commentText, setCommentText] = useState("");
+  const [commentSubmitting, setCommentSubmitting] = useState(false);
+  const [commentFeedback, setCommentFeedback] = useState("");
+  const [reactionSubmitting, setReactionSubmitting] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [darkMode, setDarkMode] = useState(() => {
@@ -626,6 +642,7 @@ function App() {
     }
 
     setBlogLoading(true);
+    loadBlogEngagement(slug);
 
     fetch(`${API_BASE}/api/blog/${slug}/`)
       .then((response) => {
@@ -1120,6 +1137,122 @@ function App() {
                     );
                   })}
               </div>
+
+              <section className="blogEngagement" aria-labelledby="blog-engagement-title">
+                <div className="blogEngagementHeader">
+                  <div>
+                    <span className="blogEngagementEyebrow">JOIN THE CONVERSATION</span>
+                    <h2 id="blog-engagement-title">What did this reflection stir in you?</h2>
+                    <p>Share a thought, encouragement, or a Scripture that spoke to you.</p>
+                  </div>
+                  <div className="blogEngagementCount">
+                    <strong>{blogEngagement.comments.length}</strong>
+                    <span>COMMENTS</span>
+                  </div>
+                </div>
+
+                <div className="blogReactionBar">
+                  <span className="blogReactionPrompt">Respond with a little love</span>
+                  <div className="blogReactionActions">
+                    {[
+                      ["like", "Like", Heart],
+                      ["amen", "Amen", Sparkles],
+                      ["encouraged", "Encouraged", MessageCircle]
+                    ].map(([key, label, Icon]) => (
+                      <button
+                        key={key}
+                        type="button"
+                        className={`blogReactionBtn ${blogEngagement.active_reaction === key ? "active" : ""}`}
+                        onClick={() => reactToBlog(key)}
+                        disabled={reactionSubmitting}
+                        aria-pressed={blogEngagement.active_reaction === key}
+                      >
+                        <Icon size={17} />
+                        <span>{label}</span>
+                        <strong>{blogEngagement.reaction_counts?.[key] || 0}</strong>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="blogCommentsLayout">
+                  <form className="blogCommentForm" onSubmit={submitBlogComment}>
+                    <div className="blogCommentFormTop">
+                      <div>
+                        <span className="blogFormKicker">LEAVE A THOUGHT</span>
+                        <h3>Join the FAS community</h3>
+                      </div>
+                      <MessageCircle size={23} />
+                    </div>
+                    <div className="blogFormGrid">
+                      <label>
+                        <span>Name</span>
+                        <input
+                          value={commentName}
+                          onChange={(event) => setCommentName(event.target.value)}
+                          maxLength={80}
+                          required
+                          placeholder="Your name"
+                        />
+                      </label>
+                      <label>
+                        <span>Email <small>(optional)</small></span>
+                        <input
+                          type="email"
+                          value={commentEmail}
+                          onChange={(event) => setCommentEmail(event.target.value)}
+                          placeholder="you@example.com"
+                        />
+                      </label>
+                    </div>
+                    <label>
+                      <span>Your comment</span>
+                      <textarea
+                        value={commentText}
+                        onChange={(event) => setCommentText(event.target.value)}
+                        maxLength={2000}
+                        required
+                        rows={5}
+                        placeholder="Share your reflection, encouragement, or Scripture..."
+                      />
+                    </label>
+                    <div className="blogCommentSubmitRow">
+                      <small>Your email stays private and is never displayed publicly.</small>
+                      <button className="primaryBtn" type="submit" disabled={commentSubmitting}>
+                        {commentSubmitting ? "Posting..." : "Post Comment"}
+                        <Send size={16} />
+                      </button>
+                    </div>
+                    {commentFeedback && <p className="blogCommentFeedback" role="status">{commentFeedback}</p>}
+                  </form>
+
+                  <div className="blogCommentsList">
+                    {blogEngagement.comments.length === 0 ? (
+                      <div className="blogCommentsEmpty">
+                        <Quote size={20} />
+                        <p>Be the first to share a thought on this article.</p>
+                      </div>
+                    ) : (
+                      blogEngagement.comments.map((comment) => (
+                        <article className="blogCommentCard" key={comment.id}>
+                          <div className="blogCommentAvatar">{comment.name.charAt(0).toUpperCase()}</div>
+                          <div>
+                            <div className="blogCommentMeta">
+                              <strong>{comment.name}</strong>
+                              <time dateTime={comment.created_at}>
+                                {new Date(comment.created_at).toLocaleDateString("en-US", {
+                                  day: "numeric", month: "short", year: "numeric"
+                                })}
+                              </time>
+                            </div>
+                            <p>{comment.comment}</p>
+                          </div>
+                        </article>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </section>
 
               {(data.blog || []).filter((post) => String(post.slug) !== String(blogPost.slug)).length > 0 && (
                 <section className="relatedArticles" aria-labelledby="related-articles-title">
@@ -3470,5 +3603,104 @@ export default App;
 
 
 
+
+  const getVisitorKey = () => {
+    const storageKey = "fas-blog-visitor-key";
+    try {
+      let key = localStorage.getItem(storageKey);
+      if (!key) {
+        key = typeof crypto !== "undefined" && crypto.randomUUID
+          ? crypto.randomUUID().replace(/-/g, "")
+          : Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem(storageKey, key);
+      }
+      return key;
+    } catch {
+      return "guest" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    }
+  };
+
+  const loadBlogEngagement = async (slug) => {
+    try {
+      const result = await fetchJsonWithRetry(
+        `${API_BASE}/api/blog/${encodeURIComponent(slug)}/engagement/`
+      );
+      setBlogEngagement(result);
+    } catch {
+      setBlogEngagement({
+        comments: [],
+        reaction_counts: { like: 0, amen: 0, encouraged: 0 },
+        total_reactions: 0,
+        active_reaction: null
+      });
+    }
+  };
+
+  const submitBlogComment = async (event) => {
+    event.preventDefault();
+    if (commentSubmitting || !commentName.trim() || !commentText.trim()) return;
+
+    setCommentSubmitting(true);
+    setCommentFeedback("");
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/blog/${encodeURIComponent(blogPost.slug)}/engagement/`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: commentName.trim(),
+            email: commentEmail.trim(),
+            comment: commentText.trim()
+          })
+        }
+      );
+
+      const result = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(result?.comment?.[0] || "Unable to post your comment.");
+      }
+
+      setBlogEngagement((current) => ({
+        ...current,
+        comments: [result, ...(current.comments || [])]
+      }));
+      setCommentName("");
+      setCommentEmail("");
+      setCommentText("");
+      setCommentFeedback("Your comment has been posted. Thank you for joining the conversation.");
+    } catch (error) {
+      setCommentFeedback(error?.message || "Unable to post your comment right now.");
+    } finally {
+      setCommentSubmitting(false);
+    }
+  };
+
+  const reactToBlog = async (reaction) => {
+    if (reactionSubmitting || !blogPost) return;
+    setReactionSubmitting(true);
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/blog/${encodeURIComponent(blogPost.slug)}/react/`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            reaction,
+            visitor_key: getVisitorKey()
+          })
+        }
+      );
+      const result = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(result?.detail || "Unable to save reaction.");
+      setBlogEngagement((current) => ({ ...current, ...result }));
+    } catch {
+      // Keep the article usable if engagement is temporarily unavailable.
+    } finally {
+      setReactionSubmitting(false);
+    }
+  };
 
 
