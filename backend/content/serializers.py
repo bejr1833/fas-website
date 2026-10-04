@@ -280,7 +280,7 @@ class EBookSerializer(serializers.ModelSerializer):
 class BlogCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogComment
-        fields = ("id", "name", "comment", "created_at")
+        fields = ("id", "name", "email", "comment", "created_at")
         read_only_fields = ("id", "created_at")
         extra_kwargs = {"email": {"write_only": True, "required": False}}
 
