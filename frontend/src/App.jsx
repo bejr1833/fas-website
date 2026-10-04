@@ -2786,7 +2786,7 @@ function App() {
             <div className="blogGrid">
               {data.blog.map((post, index) => (
                 <article
-                  className={`blogCard blogCardFeatured reveal-item${index === 0 ? " isFeatured" : ""}`}
+                  className={`blogCard blogCardFeatured reveal-item${index === 0 ? " isFeatured" : ""}${!post.cover_image_url ? " isFallback" : ""}`}
                   key={post.id}
                 >
                   <a
