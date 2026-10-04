@@ -12940,3 +12940,354 @@ html.dark .blogArticlePage,
     #0d0f10;
 }
 
+
+/* =========================================================
+   FAS JOURNAL — FINAL CONTRAST / THEME SAFETY LAYER
+   Explicitly defines foreground/background colors for every
+   article-reading and community element in BOTH themes.
+   This intentionally comes last to neutralize older overrides.
+   ========================================================= */
+
+/* ---------- LIGHT MODE ---------- */
+html:not([data-theme="dark"]) .blogArticlePage {
+  background: #faf9f6;
+  color: #202321;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogArticleBody {
+  color: #303532;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogArticleBody h2,
+html:not([data-theme="dark"]) .blogArticlePage .blogArticleBody h3,
+html:not([data-theme="dark"]) .blogArticlePage .relatedArticles h2,
+html:not([data-theme="dark"]) .blogArticlePage .relatedArticleCard h3 {
+  color: #181a19;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .articleIntro {
+  background: #f5f1e8;
+  border-color: rgba(184,137,50,.30);
+  border-left-color: #b88932;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .articleIntro p {
+  color: #3d433f;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .articleIntroEyebrow,
+html:not([data-theme="dark"]) .blogArticlePage .blogEngagementEyebrow,
+html:not([data-theme="dark"]) .blogArticlePage .blogFormKicker,
+html:not([data-theme="dark"]) .blogArticlePage .blogShareLabel {
+  color: #8b1717;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogEngagement {
+  background:
+    radial-gradient(circle at 92% 4%, rgba(184,137,50,.10), transparent 28%),
+    #ffffff;
+  border-color: #d9d8d3;
+  color: #202321;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogEngagementHeader {
+  border-bottom-color: #deded9;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogEngagementHeader h2 {
+  color: #181a19;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogEngagementHeader p,
+html:not([data-theme="dark"]) .blogArticlePage .blogReactionPrompt {
+  color: #5b625e;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogEngagementCount {
+  background: #171918;
+  color: #ffffff;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogReactionBtn {
+  background: #ffffff;
+  color: #252927;
+  border-color: #d7d8d4;
+  box-shadow: 0 5px 16px rgba(23,25,24,.07);
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogReactionBtn:hover {
+  background: #f4efe5;
+  color: #181a19;
+  border-color: rgba(184,137,50,.45);
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogReactionBtn.active {
+  background: #f2e6cb;
+  color: #5e461c;
+  border-color: #b88932;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentForm,
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentsList {
+  background: #ffffff;
+  border-color: #d7d8d4;
+  color: #252927;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentFormTop h3 {
+  color: #181a19;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentForm label > span {
+  color: #626863;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentForm input,
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentForm textarea {
+  background: #ffffff;
+  color: #202321;
+  border-color: #cfd1cc;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentForm input::placeholder,
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentForm textarea::placeholder {
+  color: #7a807b;
+  opacity: 1;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentSubmitRow small,
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentCard p,
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentMeta time {
+  color: #68706b;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentMeta strong {
+  color: #202321;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentCard {
+  border-bottom-color: #e1e1dd;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentFeedback {
+  color: #8b1717;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogCommentsEmpty {
+  color: #68706b;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogShare {
+  border-top-color: #deded9;
+  border-bottom-color: #deded9;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogShareBtn {
+  background: #ffffff;
+  color: #252927;
+  border-color: #d3d5d1;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogShareBtn:hover {
+  background: #171918;
+  color: #ffffff;
+  border-color: #171918;
+}
+
+
+/* ---------- DARK MODE ---------- */
+html[data-theme="dark"] .blogArticlePage {
+  background:
+    radial-gradient(circle at 50% -10%, rgba(184,137,50,.07), transparent 31%),
+    #0d0f10 !important;
+  color: #f2f0eb;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogArticleBody {
+  color: #d7d6d1 !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogArticleBody h2,
+html[data-theme="dark"] .blogArticlePage .blogArticleBody h3,
+html[data-theme="dark"] .blogArticlePage .relatedArticles h2,
+html[data-theme="dark"] .blogArticlePage .relatedArticleCard h3 {
+  color: #f3f1eb !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .articleIntro {
+  background:
+    radial-gradient(circle at 92% 0%, rgba(184,137,50,.10), transparent 31%),
+    #151819 !important;
+  border-color: rgba(184,137,50,.28) !important;
+  border-left-color: #b88932 !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .articleIntro p {
+  color: #deddd7 !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .articleIntroEyebrow,
+html[data-theme="dark"] .blogArticlePage .blogEngagementEyebrow,
+html[data-theme="dark"] .blogArticlePage .blogFormKicker,
+html[data-theme="dark"] .blogArticlePage .blogShareLabel {
+  color: #d0aa60 !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogEngagement {
+  background:
+    radial-gradient(circle at 92% 4%, rgba(184,137,50,.12), transparent 28%),
+    #151719 !important;
+  border-color: #454844 !important;
+  color: #f1efea !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogEngagementHeader {
+  border-bottom-color: #383b39 !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogEngagementHeader h2 {
+  color: #f3f1eb !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogEngagementHeader p,
+html[data-theme="dark"] .blogArticlePage .blogReactionPrompt {
+  color: #bfc1bd !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogEngagementCount {
+  background: #101213 !important;
+  color: #f5f3ef !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogEngagementCount span {
+  color: #9da19d !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogReactionBtn {
+  background: #1a1d1f !important;
+  color: #f4f2ed !important;
+  border-color: #454947 !important;
+  box-shadow: 0 7px 20px rgba(0,0,0,.20);
+}
+
+html[data-theme="dark"] .blogArticlePage .blogReactionBtn:hover {
+  background: #242728 !important;
+  color: #ffffff !important;
+  border-color: rgba(216,189,130,.65) !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogReactionBtn.active {
+  background: #4b3a1c !important;
+  color: #ffe7ac !important;
+  border-color: #c79d4c !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogCommentForm,
+html[data-theme="dark"] .blogArticlePage .blogCommentsList {
+  background: #17191b !important;
+  border-color: #4b4e4b !important;
+  color: #f1efea !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogCommentFormTop h3 {
+  color: #f3f1eb !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogCommentForm label > span {
+  color: #b8bbb7 !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogCommentForm input,
+html[data-theme="dark"] .blogArticlePage .blogCommentForm textarea {
+  background: #0f1112 !important;
+  color: #f4f2ed !important;
+  border-color: #4b4e4b !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogCommentForm input::placeholder,
+html[data-theme="dark"] .blogArticlePage .blogCommentForm textarea::placeholder {
+  color: #8f9490 !important;
+  opacity: 1;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogCommentSubmitRow small,
+html[data-theme="dark"] .blogArticlePage .blogCommentCard p,
+html[data-theme="dark"] .blogArticlePage .blogCommentMeta time {
+  color: #aeb2ae !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogCommentMeta strong {
+  color: #f2f0eb !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogCommentCard {
+  border-bottom-color: #363a38 !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogCommentFeedback {
+  color: #ef9b9b !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogCommentsEmpty {
+  color: #aeb2ae !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogShare {
+  border-top-color: #3b3e3c !important;
+  border-bottom-color: #3b3e3c !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogShareBtn {
+  background: #1a1d1f !important;
+  color: #f4f2ed !important;
+  border-color: #4b4e4b !important;
+}
+
+html[data-theme="dark"] .blogArticlePage .blogShareBtn:hover {
+  background: #f4f2ed !important;
+  color: #151719 !important;
+  border-color: #f4f2ed !important;
+}
+
+/* Article cover text and byline stay legible in both themes. */
+html[data-theme="dark"] .blogArticlePage .blogArticleAuthor {
+  color: #ead39c !important;
+}
+
+html:not([data-theme="dark"]) .blogArticlePage .blogArticleAuthor {
+  color: #6d521e !important;
+}
+
+/* Prevent inherited global rules from dimming disabled reaction buttons. */
+.blogArticlePage .blogReactionBtn:disabled {
+  opacity: .82;
+}
+
+@media (max-width: 760px) {
+  .blogArticlePage .blogEngagement {
+    padding: 22px !important;
+  }
+
+  .blogArticlePage .blogEngagementHeader h2 {
+    font-size: clamp(30px, 8vw, 40px) !important;
+    line-height: 1.08 !important;
+  }
+
+  .blogArticlePage .blogReactionActions {
+    gap: 9px !important;
+  }
+
+  .blogArticlePage .blogReactionBtn {
+    min-height: 48px !important;
+  }
+
+  .blogArticlePage .blogCommentForm,
+  .blogArticlePage .blogCommentsList {
+    border-radius: 20px !important;
+  }
+
+  .blogArticlePage .blogCommentForm input,
+  .blogArticlePage .blogCommentForm textarea {
+    font-size: 16px !important;
+  }
+}
