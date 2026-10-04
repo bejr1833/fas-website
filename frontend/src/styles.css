@@ -8631,162 +8631,76 @@ html[data-theme="dark"] button.primaryBtn.contactSubmitBtn:disabled svg {
 
 /* =========================================================
    FAS THEME TRANSITION
-   Smoothly animate the visual change between light and dark.
+   Animate only while the theme is actually switching.
+   This avoids forcing transitions onto every hover/focus
+   interaction while giving the whole page a polished fade.
    ========================================================= */
 
-html[data-theme="light"],
-html[data-theme="dark"] {
-  transition: background-color 280ms ease, color 280ms ease;
-}
-
-html[data-theme="light"] body,
-html[data-theme="dark"] body,
-html[data-theme="light"] #root,
-html[data-theme="dark"] #root,
-html[data-theme="light"] .site,
-html[data-theme="dark"] .site {
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
   transition:
-    background-color 280ms ease,
-    color 280ms ease;
+    background-color 360ms ease,
+    color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 360ms ease,
+    fill 300ms ease,
+    stroke 300ms ease !important;
 }
 
-html[data-theme="light"] *,
-html[data-theme="dark"] * {
-  transition:
-    background-color 280ms ease,
-    color 220ms ease,
-    border-color 220ms ease,
-    box-shadow 280ms ease,
-    fill 220ms ease,
-    stroke 220ms ease;
+/* A full-page fade masks hard-coded gradients/background
+   images that cannot interpolate smoothly between themes. */
+html.theme-transitioning::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(.22, 1, .36, 1);
+  animation-fill-mode: forwards;
 }
 
-/* Keep image/media/layout animation-free while the theme changes. */
-html[data-theme="light"] img,
-html[data-theme="dark"] img,
-html[data-theme="light"] video,
-html[data-theme="dark"] video,
-html[data-theme="light"] iframe,
-html[data-theme="dark"] iframe,
-html[data-theme="light"] svg,
-html[data-theme="dark"] svg {
-  transition:
-    fill 220ms ease,
-    stroke 220ms ease,
-    opacity 220ms ease,
-    transform 220ms ease;
+html.theme-transition-to-dark::after {
+  background: #0f1012;
+  animation-name: fasThemeFadeOut;
 }
 
-/* A subtle icon rotation makes the theme toggle feel intentional. */
+html.theme-transition-to-light::after {
+  background: #ffffff;
+  animation-name: fasThemeFadeOut;
+}
+
+@keyframes fasThemeFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Keep the theme icon itself smooth without affecting layout. */
 .themeToggle svg {
-  transition: transform 280ms cubic-bezier(.2,.8,.2,1), opacity 180ms ease;
+  transition:
+    transform 280ms cubic-bezier(.2,.8,.2,1),
+    opacity 180ms ease;
 }
 
 .themeToggle:active svg {
   transform: rotate(22deg) scale(.9);
 }
 
-/* Don't animate if the visitor has requested reduced motion. */
+/* Respect accessibility preferences. */
 @media (prefers-reduced-motion: reduce) {
-  html[data-theme="light"],
-  html[data-theme="dark"],
-  html[data-theme="light"] *,
-  html[data-theme="dark"] * {
+  html.theme-transitioning *,
+  html.theme-transitioning *::before,
+  html.theme-transitioning *::after {
     transition: none !important;
   }
-}
 
-/* =========================================================
-   FAS THEME TRANSITION
-   Smooth light <-> dark mode transition without affecting
-   carousels, image motion, or reduced-motion users.
-   ========================================================= */
-
-html[data-theme],
-html[data-theme] body,
-html[data-theme] .site,
-html[data-theme] .navbar,
-html[data-theme] .section,
-html[data-theme] .softSection,
-html[data-theme] .darkSection,
-html[data-theme] .introSection,
-html[data-theme] .storiesSection,
-html[data-theme] .eventsSection,
-html[data-theme] .videoSection,
-html[data-theme] .blogSection,
-html[data-theme] .gallerySection,
-html[data-theme] .sermonSection,
-html[data-theme] .ebookSection,
-html[data-theme] .supportSection,
-html[data-theme] .storyCard,
-html[data-theme] .eventCard,
-html[data-theme] .videoCard,
-html[data-theme] .ebookCard,
-html[data-theme] .sermonCard,
-html[data-theme] .blogCard,
-html[data-theme] .latestBlogInner,
-html[data-theme] .newBlogHighlightInner,
-html[data-theme] .heroNext,
-html[data-theme] input,
-html[data-theme] textarea,
-html[data-theme] select,
-html[data-theme] button {
-  transition:
-    background-color 320ms ease,
-    border-color 320ms ease,
-    color 240ms ease,
-    box-shadow 320ms ease,
-    fill 240ms ease,
-    stroke 240ms ease;
-}
-
-/* Keep the theme toggle itself especially smooth. */
-html[data-theme] .themeToggle {
-  transition:
-    background-color 240ms ease,
-    border-color 240ms ease,
-    color 200ms ease,
-    transform 220ms ease,
-    box-shadow 240ms ease;
-}
-
-html[data-theme] .themeToggle:active {
-  transform: scale(.92);
-}
-
-/* Prevent the transition from interfering with motion-sensitive
-   users or the initial page theme application. */
-@media (prefers-reduced-motion: reduce) {
-  html[data-theme],
-  html[data-theme] body,
-  html[data-theme] .site,
-  html[data-theme] .navbar,
-  html[data-theme] .section,
-  html[data-theme] .softSection,
-  html[data-theme] .darkSection,
-  html[data-theme] .introSection,
-  html[data-theme] .storiesSection,
-  html[data-theme] .eventsSection,
-  html[data-theme] .videoSection,
-  html[data-theme] .blogSection,
-  html[data-theme] .gallerySection,
-  html[data-theme] .sermonSection,
-  html[data-theme] .ebookSection,
-  html[data-theme] .supportSection,
-  html[data-theme] .storyCard,
-  html[data-theme] .eventCard,
-  html[data-theme] .videoCard,
-  html[data-theme] .ebookCard,
-  html[data-theme] .sermonCard,
-  html[data-theme] .blogCard,
-  html[data-theme] .latestBlogInner,
-  html[data-theme] .newBlogHighlightInner,
-  html[data-theme] .heroNext,
-  html[data-theme] input,
-  html[data-theme] textarea,
-  html[data-theme] select,
-  html[data-theme] button,
-  html[data-theme] .themeToggle {
-    transition: none !important;
+  html.theme-transitioning::after {
+    animation: none !important;
+    opacity: 0 !important;
   }
 }
