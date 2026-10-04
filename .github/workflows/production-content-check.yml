@@ -1,0 +1,57 @@
+name: FAS Production Content Check
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  production-content-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Render deployment
+        if: github.event_name == 'push'
+        run: sleep 60
+
+      - name: Check production API and content
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          URL="https://fas-backend-xnhy.onrender.com/api/health/"
+          echo "Checking $URL"
+
+          for i in {1..12}; do
+            BODY="$(curl -fsS --max-time 20 "$URL" || true)"
+            if echo "$BODY" | grep -q '"status":"ok"'; then
+              echo "$BODY"
+              break
+            fi
+
+            echo "Production API not ready yet (attempt $i/12)."
+            sleep 20
+          done
+
+          BODY="$(curl -fsS --max-time 20 "$URL")"
+          echo "$BODY"
+
+          python - <<'PY'
+          import json, os
+          body = os.environ.get("BODY")
+          if not body:
+              raise SystemExit("Health endpoint returned no response.")
+
+          data = json.loads(body)
+          if data.get("status") != "ok":
+              raise SystemExit("Production health check failed.")
+
+          content = data.get("content", {})
+          if int(content.get("settings", 0)) < 1:
+              raise SystemExit("CRITICAL: SiteSettings content is missing.")
+          if int(content.get("published_slides", 0)) < 1:
+              raise SystemExit("CRITICAL: published homepage content is missing.")
+
+          print("FAS production content check passed.")
+          PY
