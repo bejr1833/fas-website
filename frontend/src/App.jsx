@@ -1445,9 +1445,17 @@ function App() {
                 </div>
 
                 <div className="heroNextContent">
-                  <span className="heroNextType">
-                    {data.upcoming_events[0].mode || "FAS GATHERING"}
-                  </span>
+                  <div className="heroNextTypeRow">
+                    <span className="heroNextType">
+                      {data.upcoming_events[0].mode || "FAS GATHERING"}
+                    </span>
+                    {data.upcoming_events[0].meeting_url && (
+                      <span className="heroNextLiveBadge">
+                        <span className="eventLiveDot"></span>
+                        LIVE LINK
+                      </span>
+                    )}
+                  </div>
 
                   <h2>{data.upcoming_events[0].title}</h2>
 
@@ -1458,8 +1466,13 @@ function App() {
 
                   {data.upcoming_events[0].speaker_name && (
                     <div className="heroNextSpeaker">
-                      <UserRound size={15} />
-                      <span>{data.upcoming_events[0].speaker_name}</span>
+                      <span className="heroNextSpeakerIcon">
+                        <UserRound size={14} />
+                      </span>
+                      <span>
+                        <small>Speaker</small>
+                        <strong>{data.upcoming_events[0].speaker_name}</strong>
+                      </span>
                     </div>
                   )}
                 </div>
@@ -2205,7 +2218,7 @@ function App() {
           className="section eventsSection reveal-section"
         >
           <div className="sectionTop">
-            <div>
+            <div className="eventsSectionHeading">
               <div className="sectionLabel">
                 WHAT'S NEXT
               </div>
@@ -2213,15 +2226,26 @@ function App() {
               <h2>
                 Upcoming <em>Events</em>
               </h2>
+
+              <p className="eventsSectionLead">
+                Gather with FAS for Scripture, worship, fellowship and conversations that point us back to Christ.
+              </p>
             </div>
 
-            <a
-              className="textBtn"
-              href="/events"
-            >
-              View all events
-              <ArrowRight size={16} />
-            </a>
+            <div className="eventsSectionAside">
+              <span className="eventsSectionAsideLabel">
+                WEEKLY RHYTHM
+              </span>
+              <strong>{settings.tuesday_time}</strong>
+              <span>Online and in-person gatherings</span>
+              <a
+                className="textBtn"
+                href="/events"
+              >
+                View all events
+                <ArrowRight size={16} />
+              </a>
+            </div>
           </div>
 
           {loading ? (
@@ -2275,6 +2299,12 @@ function App() {
                       {event.mode && (
                         <span className="eventModeBadge">{event.mode}</span>
                       )}
+                      {event.meeting_url && (
+                        <span className="eventLiveBadge">
+                          <span className="eventLiveDot"></span>
+                          Google Meet
+                        </span>
+                      )}
                     </div>
 
                     <h3>{event.title}</h3>
@@ -2307,15 +2337,19 @@ function App() {
 
                   <div className="eventCardAction">
                     {event.meeting_url ? (
-                      <a
-                        className="eventJoinBtn"
-                        href={event.meeting_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Join Google Meet
-                        <ArrowRight size={16} />
-                      </a>
+                      <div className="eventActionStack">
+                        <span className="eventActionHint">NEXT STEP</span>
+                        <a
+                          className="eventJoinBtn"
+                          href={event.meeting_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Join Google Meet for ${event.title}`}
+                        >
+                          Join Google Meet
+                          <ArrowRight size={16} />
+                        </a>
+                      </div>
                     ) : event.registration_url ? (
                       <a
                         className="eventJoinBtn eventRegisterBtn"
