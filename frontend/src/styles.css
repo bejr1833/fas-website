@@ -11151,3 +11151,19 @@ html[data-theme="dark"] .blogFallbackFooter {
     max-height: none !important;
   }
 }
+
+
+/* =========================================================
+   PERFORMANCE — defer rendering of below-the-fold sections
+   ========================================================= */
+.site > section:not(.hero) {
+  content-visibility: auto;
+  contain-intrinsic-size: 760px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site > section:not(.hero) {
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
+  }
+}
