@@ -2783,12 +2783,23 @@ function App() {
 
               <div className="eventDetailsModalMedia">
                 {selectedEvent.image_url ? (
-                  <img
-                    src={selectedEvent.image_url}
-                    loading="eager"
-                    decoding="async"
-                    alt={selectedEvent.title}
-                  />
+                  <>
+                    <img
+                      className="eventDetailsModalMediaBackdrop"
+                      src={selectedEvent.image_url}
+                      aria-hidden="true"
+                      loading="eager"
+                      decoding="async"
+                      alt=""
+                    />
+                    <img
+                      className="eventDetailsModalMediaImage"
+                      src={selectedEvent.image_url}
+                      loading="eager"
+                      decoding="async"
+                      alt={selectedEvent.title}
+                    />
+                  </>
                 ) : (
                   <div className="eventDetailsPosterFallback">
                     <span>FAS</span>
