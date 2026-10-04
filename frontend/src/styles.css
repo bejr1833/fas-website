@@ -7772,6 +7772,29 @@ html[data-theme="dark"] .newBlogHighlightContent p {
 }
 
 /* =========================================================
+   FAS DARK MODE — WHY FAS / BLOG CONTRAST FIX
+   ========================================================= */
+
+html[data-theme="dark"] .introSection {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .introSection h2,
+html[data-theme="dark"] .introSection .introGrid h2 {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .introSection .introGrid p,
+html[data-theme="dark"] .introSection p,
+html[data-theme="dark"] .introSection .lead {
+  color: #C4C1BC !important;
+}
+
+html[data-theme="dark"] .introSection .sectionLabel {
+  color: #D9A3A0 !important;
+}
+
+/* =========================================================
    FAS DARK MODE
    ========================================================= */
 
