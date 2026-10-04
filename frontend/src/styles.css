@@ -7694,6 +7694,84 @@ html[data-theme="dark"] .storyFinal strong {
 }
 
 /* =========================================================
+   FAS DARK MODE — HERO / FEATURED PANEL CONTRAST FIX
+   ========================================================= */
+
+html[data-theme="dark"] .heroNext {
+  background: linear-gradient(155deg, #181818 0%, #202020 100%) !important;
+  border-color: #363636 !important;
+  border-top-color: #B21B1B !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.28) !important;
+}
+
+html[data-theme="dark"] .heroNextTop {
+  border-bottom-color: #363636 !important;
+}
+
+html[data-theme="dark"] .heroNextLabel {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .heroNextDate strong,
+html[data-theme="dark"] .heroNextContent h2,
+html[data-theme="dark"] .heroNextEmpty h2 {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .heroNextContent p,
+html[data-theme="dark"] .heroNextEmpty p {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .heroNextType {
+  background: #242424 !important;
+  border-color: #414141 !important;
+  color: #E7E3DE !important;
+}
+
+html[data-theme="dark"] .heroNextLink {
+  background: #F5F3EF !important;
+  border-color: #F5F3EF !important;
+  color: #171716 !important;
+}
+
+html[data-theme="dark"] .heroNextWatermark {
+  color: rgba(245,243,239,.055) !important;
+}
+
+html[data-theme="dark"] .newBlogHighlightInner {
+  background:
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(184,137,50,.10),
+      transparent 28%
+    ),
+    linear-gradient(135deg, #181818 0%, #202020 100%) !important;
+  border-color: #363636 !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,.28) !important;
+}
+
+html[data-theme="dark"] .newBlogHighlightInner::after {
+  color: rgba(245,243,239,.055) !important;
+}
+
+html[data-theme="dark"] .newBlogHighlightLabel {
+  color: #D9B979 !important;
+}
+
+html[data-theme="dark"] .newBlogCategory {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .newBlogHighlightContent h2 {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .newBlogHighlightContent p {
+  color: #B8B5B0 !important;
+}
+
+/* =========================================================
    FAS DARK MODE
    ========================================================= */
 
