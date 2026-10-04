@@ -2121,7 +2121,7 @@ function App() {
                         className="primaryBtn slideButton"
                         href={slide.button_url}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                       >
                         {slide.button_text || "Learn More"}
                         <ArrowRight size={16} />
@@ -2275,7 +2275,7 @@ function App() {
                       className="circleArrow"
                       href={event.registration_url}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       aria-label={`Register for ${event.title}`}
                     >
                       <ArrowRight size={18} />
@@ -2976,6 +2976,7 @@ function App() {
                     setContactFeedback(null);
                   }}
                   aria-selected={contactRequestType === "prayer"}
+                  role="tab"
                 >
                   Prayer Request
                 </button>
@@ -2990,6 +2991,7 @@ function App() {
                     setContactFeedback(null);
                   }}
                   aria-selected={contactRequestType === "message"}
+                  role="tab"
                 >
                   Send a Message
                 </button>
@@ -3018,6 +3020,9 @@ function App() {
                     <span>Name</span>
                     <input
                       type="text"
+                      id="contact-name"
+                      name="name"
+                      autoComplete="name"
                       value={contactName}
                       onChange={(event) =>
                         setContactName(event.target.value)
@@ -3072,6 +3077,8 @@ function App() {
                         : "error"
                     }`}
                     role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
                   >
                     {contactFeedback.message}
                   </div>
