@@ -1104,7 +1104,6 @@ function App() {
 
 
   const isEventsPage = window.location.pathname === "/events" || window.location.pathname === "/events/";
-  const isEventsPage = window.location.pathname === "/events" || window.location.pathname === "/events/";
   const isBlogArticle = window.location.pathname.startsWith("/blog/");
   const coverWords = (blogPost?.title || "Faith Alone Saves").trim().split(/\s+/);
   const coverSplit = Math.max(1, Math.ceil(coverWords.length / 2));
