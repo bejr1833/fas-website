@@ -19,6 +19,7 @@ from .models import (
     FASVideo,
     EBook,
     BlogReaction,
+    BlogComment,
 )
 
 from .serializers import (
