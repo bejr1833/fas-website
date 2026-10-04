@@ -11,6 +11,8 @@ from .models import (
     SermonPDF,
     FASVideo,
     EBook,
+    BlogComment,
+    BlogReaction,
 )
 
 
@@ -292,3 +294,19 @@ class EBookAdmin(admin.ModelAdmin):
     date_hierarchy = "published_at"
 
 admin.site.register(SiteSettings, SiteSettingsAdmin)
+
+
+@admin.register(BlogComment)
+class BlogCommentAdmin(admin.ModelAdmin):
+    list_display = ("name", "blog_post", "is_approved", "created_at")
+    list_filter = ("is_approved", "created_at")
+    search_fields = ("name", "email", "comment", "blog_post__title")
+    readonly_fields = ("created_at",)
+
+
+@admin.register(BlogReaction)
+class BlogReactionAdmin(admin.ModelAdmin):
+    list_display = ("blog_post", "reaction", "visitor_key", "created_at")
+    list_filter = ("reaction", "created_at")
+    search_fields = ("blog_post__title", "visitor_key")
+    readonly_fields = ("created_at",)

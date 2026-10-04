@@ -18,6 +18,8 @@ from .models import (
     SermonPDF,
     FASVideo,
     EBook,
+    BlogReaction,
+    BlogComment,
 )
 
 from .serializers import (
@@ -31,6 +33,8 @@ from .serializers import (
     SermonPDFSerializer,
     FASVideoSerializer,
     EBookSerializer,
+    BlogCommentSerializer,
+    BlogReactionSerializer,
 )
 
 
@@ -214,3 +218,88 @@ class EBookListView(generics.ListAPIView):
             "-created_at"
         )
 
+
+
+class BlogEngagementView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get_blog(self, slug):
+        return BlogPost.objects.filter(is_published=True, slug=slug).first()
+
+    def get(self, request, slug):
+        blog = self.get_blog(slug)
+        if not blog:
+            return Response({"detail": "Blog article not found."}, status=404)
+
+        comments = blog.comments.filter(is_approved=True)
+        reaction_counts = {
+            key: blog.reactions.filter(reaction=key).count()
+            for key, _ in BlogReaction.REACTION_CHOICES
+        }
+
+        return Response({
+            "comments": BlogCommentSerializer(comments, many=True).data,
+            "reaction_counts": reaction_counts,
+            "total_reactions": sum(reaction_counts.values()),
+        })
+
+    def post(self, request, slug):
+        blog = self.get_blog(slug)
+        if not blog:
+            return Response({"detail": "Blog article not found."}, status=404)
+
+        serializer = BlogCommentSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=400)
+
+        comment = serializer.save(blog_post=blog)
+        return Response(
+            BlogCommentSerializer(comment).data,
+            status=201,
+        )
+
+
+class BlogReactionView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, slug):
+        blog = BlogPost.objects.filter(is_published=True, slug=slug).first()
+        if not blog:
+            return Response({"detail": "Blog article not found."}, status=404)
+
+        serializer = BlogReactionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        reaction = serializer.validated_data["reaction"]
+        visitor_key = serializer.validated_data["visitor_key"]
+
+        existing = BlogReaction.objects.filter(
+            blog_post=blog,
+            visitor_key=visitor_key,
+        ).first()
+
+        if existing and existing.reaction == reaction:
+            existing.delete()
+            active_reaction = None
+        elif existing:
+            existing.reaction = reaction
+            existing.save(update_fields=["reaction"])
+            active_reaction = reaction
+        else:
+            BlogReaction.objects.create(
+                blog_post=blog,
+                reaction=reaction,
+                visitor_key=visitor_key,
+            )
+            active_reaction = reaction
+
+        reaction_counts = {
+            key: blog.reactions.filter(reaction=key).count()
+            for key, _ in BlogReaction.REACTION_CHOICES
+        }
+
+        return Response({
+            "reaction_counts": reaction_counts,
+            "total_reactions": sum(reaction_counts.values()),
+            "active_reaction": active_reaction,
+        })
