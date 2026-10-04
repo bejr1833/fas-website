@@ -10444,3 +10444,196 @@ html[data-theme="dark"] .eventCardPoster {
 html[data-theme="dark"] .eventCardPremium .eventDetailsBtn {
   background: rgba(255,255,255,.02);
 }
+
+/* =========================================================
+   EVENTS V5 — refined date + time treatment
+   Posters intentionally live only inside More Details.
+   ========================================================= */
+
+.eventMetaPremium {
+  gap: 9px;
+  margin-top: 13px;
+}
+
+.eventMetaPremium > span::before {
+  content: none !important;
+}
+
+.eventTimeChip,
+.eventLocationChip {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 9px;
+  min-height: 45px;
+  box-sizing: border-box;
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: rgba(255,255,255,.62);
+}
+
+.eventTimeChip svg {
+  color: var(--red);
+  flex: 0 0 auto;
+}
+
+.eventTimeChip span {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.eventTimeChip small {
+  color: var(--muted);
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.eventTimeChip strong {
+  color: var(--black);
+  font-size: 12px;
+  line-height: 1.15;
+  letter-spacing: .01em;
+}
+
+.eventLocationChip {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.eventLocationChip svg {
+  color: var(--red-soft);
+  flex: 0 0 auto;
+}
+
+/* Premium calendar tile */
+.eventCardPremium .eventDate {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  justify-items: center;
+  padding: 13px 10px 11px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(circle at 85% 12%, rgba(217,163,160,.20), transparent 31%),
+    linear-gradient(145deg, #111315 0%, #292c30 100%);
+  border: 1px solid rgba(255,255,255,.09);
+}
+
+.eventCardPremium .eventDate::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(217,163,160,.12);
+  border-radius: 13px;
+  pointer-events: none;
+}
+
+.eventCardPremium .eventDateMonth {
+  position: relative;
+  z-index: 1;
+  font-size: 9px;
+  letter-spacing: .22em;
+}
+
+.eventCardPremium .eventDate strong {
+  position: relative;
+  z-index: 1;
+  font-size: 43px;
+  letter-spacing: -.04em;
+}
+
+.eventCardPremium .eventDateDay {
+  position: relative;
+  z-index: 1;
+  font-size: 8px;
+  letter-spacing: .18em;
+  color: rgba(255,255,255,.68);
+}
+
+@media (max-width: 700px) {
+  .eventCardPremium .eventDate {
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr;
+    justify-items: center;
+    height: 78px !important;
+    min-height: 78px;
+    padding: 10px 17px;
+    margin-bottom: 16px;
+    border-radius: 17px !important;
+  }
+
+  .eventCardPremium .eventDateMonth {
+    justify-self: start;
+    font-size: 9px;
+  }
+
+  .eventCardPremium .eventDate strong {
+    justify-self: center;
+    font-size: 34px !important;
+  }
+
+  .eventCardPremium .eventDateDay {
+    justify-self: end;
+  }
+
+  .eventMetaPremium {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .eventTimeChip,
+  .eventLocationChip {
+    width: 100%;
+  }
+
+  .eventTimeChip {
+    min-height: 50px;
+    padding-inline: 14px;
+    border-radius: 14px;
+    background:
+      linear-gradient(135deg, rgba(181,42,42,.055), rgba(255,255,255,.70));
+    border-color: rgba(181,42,42,.14);
+  }
+
+  .eventTimeChip strong {
+    font-size: 13px;
+  }
+
+  .eventLocationChip {
+    min-height: 40px;
+    padding-inline: 12px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .eventCardPremium .eventDate {
+    height: 70px !important;
+    min-height: 70px;
+    border-radius: 15px !important;
+  }
+
+  .eventCardPremium .eventDate strong {
+    font-size: 31px !important;
+  }
+}
+
+html[data-theme="dark"] .eventTimeChip,
+html[data-theme="dark"] .eventLocationChip {
+  background: rgba(255,255,255,.035);
+  border-color: #3E444B;
+}
+
+html[data-theme="dark"] .eventTimeChip {
+  background:
+    linear-gradient(135deg, rgba(181,42,42,.10), rgba(255,255,255,.025));
+  border-color: #613A3B;
+}
+
+html[data-theme="dark"] .eventTimeChip strong {
+  color: #F5F3EF;
+}
