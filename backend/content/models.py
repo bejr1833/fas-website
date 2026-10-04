@@ -65,6 +65,8 @@ class Event(models.Model):
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to="events/", blank=True, null=True)
     registration_url = models.URLField(blank=True)
+    meeting_url = models.URLField(blank=True)
+    speaker_name = models.CharField(max_length=120, blank=True)
     is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
