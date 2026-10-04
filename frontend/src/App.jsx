@@ -98,23 +98,23 @@ const fallback = {
 };
 
 function App() {
-  const [data, setData] = useState({
-    settings: fallback,
-    slides: [],
-    upcoming_events: [],
-    gallery: [],
-    stories: [],
-    blog: [],
-    sermons: [],
-    videos: [],
-    ebooks: cachedEbooks || []
-  });
-
   const cachedHome = readContentCache("home");
   const cachedBlog = readContentCache("blog");
   const cachedSermons = readContentCache("sermons");
   const cachedVideos = readContentCache("videos");
   const cachedEbooks = readContentCache("ebooks");
+
+  const [data, setData] = useState({
+    settings: cachedHome?.settings || fallback,
+    slides: cachedHome?.slides || [],
+    upcoming_events: cachedHome?.upcoming_events || [],
+    gallery: cachedHome?.gallery || [],
+    stories: cachedHome?.stories || [],
+    blog: cachedBlog || [],
+    sermons: cachedSermons || [],
+    videos: cachedVideos || [],
+    ebooks: cachedEbooks || []
+  });
 
   const [loading, setLoading] = useState(!cachedHome);
   const [menuOpen, setMenuOpen] = useState(false);
