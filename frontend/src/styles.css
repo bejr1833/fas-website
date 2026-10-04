@@ -7530,6 +7530,396 @@ html {
   }
 }
 
+
+/* =========================================================
+   FAS BLOG — PREMIUM EDITORIAL HOMEPAGE TREATMENT
+   ========================================================= */
+
+.blogSection {
+  position: relative;
+  overflow: hidden;
+  padding-top: clamp(70px, 8vw, 110px);
+  padding-bottom: clamp(70px, 8vw, 110px);
+}
+
+.blogSection::before {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  top: 4%;
+  right: -180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(136, 18, 18, 0.10), transparent 68%);
+  pointer-events: none;
+}
+
+.blogSectionHeader {
+  position: relative;
+  z-index: 1;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 42px;
+}
+
+.blogSectionHeading {
+  min-width: 0;
+  max-width: 760px;
+}
+
+.blogSectionEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  color: #8c6726;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .20em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.blogSectionEyebrowLine {
+  width: 28px;
+  height: 1px;
+  background: #881212;
+}
+
+.blogSectionHeading h2 {
+  margin: 0;
+  max-width: 760px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(42px, 5.5vw, 76px);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -.045em;
+  color: var(--black);
+}
+
+.blogSectionHeading h2 em {
+  color: var(--red);
+  font-weight: 500;
+}
+
+.blogSectionHeading p {
+  max-width: 660px;
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.blogSectionSeal {
+  flex: 0 0 auto;
+  width: 112px;
+  height: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 1px solid rgba(136, 18, 18, .20);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 25%, rgba(184, 137, 50, .12), transparent 45%),
+    var(--surface);
+  box-shadow: 0 16px 40px rgba(23, 23, 22, .07);
+  color: var(--muted);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .20em;
+}
+
+.blogSectionSeal strong {
+  color: var(--red);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.blogGrid {
+  position: relative;
+  z-index: 1;
+  max-width: 1120px;
+  margin-top: 48px;
+  gap: 26px;
+}
+
+.blogCard {
+  border-color: rgba(23, 23, 22, .12);
+  border-radius: 26px;
+  background: var(--surface);
+  box-shadow:
+    0 22px 55px rgba(23, 23, 22, .08),
+    0 2px 8px rgba(23, 23, 22, .025);
+}
+
+.blogCard:hover {
+  transform: translateY(-7px);
+  border-color: rgba(136, 18, 18, .22);
+  box-shadow:
+    0 30px 70px rgba(23, 23, 22, .12),
+    0 5px 15px rgba(23, 23, 22, .04);
+}
+
+.blogCard.isFeatured {
+  grid-template-columns: minmax(0, 1.22fr) minmax(340px, .78fr);
+}
+
+.blogCard.isFeatured .blogCardMedia {
+  min-height: 410px;
+}
+
+.blogCardMedia {
+  background: #17191c;
+}
+
+.blogCardMediaFallback {
+  position: relative;
+  place-items: stretch;
+  overflow: hidden;
+  padding: 34px;
+  color: #f5f3ef;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(184, 137, 50, .20), transparent 26%),
+    radial-gradient(circle at 15% 90%, rgba(136, 18, 18, .34), transparent 32%),
+    linear-gradient(145deg, #111214 0%, #1a1d21 58%, #0d0e10 100%);
+}
+
+.blogCardMediaFallback::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(245, 243, 239, .16);
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+.blogCardMediaFallback::after {
+  content: "";
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  right: -80px;
+  bottom: -90px;
+  border-radius: 50%;
+  border: 1px solid rgba(184, 137, 50, .22);
+  box-shadow:
+    0 0 0 28px rgba(184, 137, 50, .035),
+    0 0 0 56px rgba(184, 137, 50, .025);
+  pointer-events: none;
+}
+
+.blogFallbackArtwork {
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 22px;
+}
+
+.blogFallbackKicker {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: auto;
+  padding: 7px 10px;
+  border: 1px solid rgba(184, 137, 50, .34);
+  border-radius: 999px;
+  color: #d7b875;
+  background: rgba(184, 137, 50, .08);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.blogFallbackQuote {
+  margin-top: 24px;
+  color: #c43a3a;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 74px;
+  line-height: .55;
+}
+
+.blogFallbackArtwork strong {
+  max-width: 560px;
+  margin-top: 10px;
+  color: #f5f3ef;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(30px, 4vw, 52px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -.035em;
+}
+
+.blogFallbackRule {
+  width: 58px;
+  height: 2px;
+  margin-top: 22px;
+  background: #b88932;
+}
+
+.blogFallbackFooter {
+  margin-top: 16px;
+  color: rgba(245, 243, 239, .56);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .18em;
+}
+
+.blogCardReadBadge {
+  right: 20px;
+  bottom: 20px;
+  padding: 10px 14px;
+  border-color: rgba(255,255,255,.28);
+  background: rgba(10, 11, 12, .72);
+  box-shadow: 0 8px 22px rgba(0,0,0,.20);
+}
+
+.blogCardContent {
+  padding: clamp(28px, 4vw, 48px);
+}
+
+.blogCardTopline {
+  margin-bottom: 4px;
+}
+
+.blogCategory {
+  padding: 7px 10px;
+  background: rgba(136, 18, 18, .08);
+  border: 1px solid rgba(136, 18, 18, .10);
+}
+
+.blogCard h3 {
+  margin-top: 18px;
+}
+
+.blogCard.isFeatured .blogCardContent h3 {
+  font-size: clamp(32px, 4.3vw, 52px);
+}
+
+.blogCardContent > p {
+  max-width: 580px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.blogMeta {
+  padding-top: 22px;
+  border-top-color: rgba(23, 23, 22, .09);
+}
+
+@media (max-width: 850px) {
+  .blogSectionHeader {
+    align-items: flex-start;
+  }
+
+  .blogSectionSeal {
+    width: 86px;
+    height: 86px;
+  }
+
+  .blogCard.isFeatured {
+    grid-template-columns: 1fr;
+  }
+
+  .blogCard.isFeatured .blogCardMedia {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+}
+
+@media (max-width: 600px) {
+  .blogSection {
+    padding-top: 62px;
+    padding-bottom: 68px;
+  }
+
+  .blogSectionHeader {
+    display: block;
+  }
+
+  .blogSectionEyebrow {
+    margin-bottom: 13px;
+    font-size: 9px;
+  }
+
+  .blogSectionHeading h2 {
+    font-size: clamp(38px, 12vw, 52px);
+    line-height: 1.02;
+  }
+
+  .blogSectionHeading p {
+    margin-top: 16px;
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+
+  .blogSectionSeal {
+    display: none;
+  }
+
+  .blogGrid {
+    margin-top: 30px;
+  }
+
+  .blogCard {
+    border-radius: 21px;
+  }
+
+  .blogCard.isFeatured .blogCardMedia {
+    aspect-ratio: 4 / 3;
+  }
+
+  .blogCardMediaFallback {
+    padding: 18px;
+  }
+
+  .blogCardMediaFallback::before {
+    inset: 12px;
+    border-radius: 14px;
+  }
+
+  .blogFallbackArtwork {
+    padding: 16px;
+  }
+
+  .blogFallbackArtwork strong {
+    font-size: clamp(28px, 8vw, 38px);
+  }
+
+  .blogFallbackQuote {
+    font-size: 60px;
+  }
+
+  .blogFallbackFooter {
+    font-size: 7px;
+  }
+
+  .blogCardReadBadge {
+    right: 12px;
+    bottom: 12px;
+    padding: 8px 11px;
+    font-size: 9px;
+  }
+
+  .blogCardContent,
+  .blogCard.isFeatured .blogCardContent {
+    padding: 24px 20px 22px;
+  }
+
+  .blogCard.isFeatured .blogCardContent h3 {
+    font-size: 30px;
+  }
+}
+
 /* =========================================================
    FAS DARK MODE — SINGLE CANONICAL THEME LAYER
    Keep this block at the very end of the stylesheet.
