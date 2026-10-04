@@ -9037,7 +9037,8 @@ html[data-theme="dark"] .storyModalClose:focus-visible svg * {
    ========================================================= */
 
 .supportLinksHeader {
-  margin-bottom: 14px;
+  margin-top: 34px;
+  margin-bottom: 18px;
 }
 
 .supportLinksEyebrow {
@@ -9135,7 +9136,7 @@ html[data-theme="dark"] .supportLinks a:hover {
 
 @media (max-width: 760px) {
   .supportLinksHeader {
-    margin-top: 4px;
+    margin-top: 26px;
     margin-bottom: 13px;
   }
 
