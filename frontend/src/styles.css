@@ -12339,3 +12339,230 @@ html[data-theme="dark"] .blogEngagement {
     transition: none;
   }
 }
+
+/* =========================================================
+   FAS JOURNAL — SIGNATURE ARTICLE COVER
+   Replaces the generic FAS monogram fallback with a
+   distinctive editorial title plate.
+   ========================================================= */
+
+.blogArticleCoverFallback {
+  min-height: 285px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(190,150,76,.19), transparent 24%),
+    radial-gradient(circle at 12% 84%, rgba(136,18,18,.25), transparent 31%),
+    linear-gradient(125deg, #111315 0%, #191b1d 47%, #0d0f11 100%);
+}
+
+.blogArticleCoverFallback::before {
+  content: "";
+  position: absolute;
+  inset: 13px;
+  z-index: 0;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 20px;
+  background:
+    linear-gradient(115deg, transparent 0 45%, rgba(255,255,255,.025) 50%, transparent 55%),
+    radial-gradient(circle at 50% 52%, rgba(255,255,255,.035), transparent 42%);
+}
+
+.blogArticleCoverFallback::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .32;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 78px,
+      rgba(255,255,255,.018) 79px,
+      transparent 80px
+    );
+  pointer-events: none;
+}
+
+.blogArticleCoverGlow {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(214,173,96,.12), transparent 68%);
+  filter: blur(3px);
+}
+
+.blogArticleCoverEdition {
+  position: absolute;
+  top: 32px;
+  left: 38px;
+  z-index: 2;
+  color: rgba(232,217,184,.72);
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.blogArticleCoverTitle {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  color: #f5f2eb;
+  font-family: Georgia, "Times New Roman", serif;
+  text-align: center;
+  line-height: .86;
+  letter-spacing: -.055em;
+}
+
+.blogArticleCoverTitle span {
+  font-size: clamp(62px, 9vw, 104px);
+  font-weight: 500;
+}
+
+.blogArticleCoverTitle em {
+  margin-left: 44px;
+  color: #d8bd82;
+  font-size: clamp(48px, 7vw, 78px);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.blogArticleCoverOrnament {
+  position: absolute;
+  top: 31px;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.blogArticleCoverOrnament span {
+  width: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(216,189,130,.7));
+}
+
+.blogArticleCoverOrnament span:last-child {
+  background: linear-gradient(90deg, rgba(216,189,130,.7), transparent);
+}
+
+.blogArticleCoverOrnament i {
+  width: 6px;
+  height: 6px;
+  border: 1px solid #d8bd82;
+  transform: rotate(45deg);
+}
+
+.blogArticleCoverVerse {
+  position: absolute;
+  right: 38px;
+  bottom: 32px;
+  z-index: 2;
+  color: rgba(255,255,255,.58);
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .22em;
+}
+
+.blogArticleCoverLine {
+  position: absolute;
+  left: 38px;
+  bottom: 34px;
+  width: 72px;
+  height: 1px;
+  z-index: 2;
+  background: linear-gradient(90deg, #a9823c, transparent);
+}
+
+html[data-theme="dark"] .blogArticleCoverFallback {
+  background:
+    radial-gradient(circle at 78% 18%, rgba(190,150,76,.16), transparent 24%),
+    radial-gradient(circle at 12% 84%, rgba(136,18,18,.25), transparent 31%),
+    linear-gradient(125deg, #0a0c0e 0%, #151719 47%, #080a0c 100%);
+}
+
+@media (max-width: 760px) {
+  .blogArticleCoverFallback {
+    min-height: 230px;
+  }
+
+  .blogArticleCoverEdition {
+    top: 24px;
+    left: 25px;
+    font-size: 6.5px;
+    letter-spacing: .18em;
+  }
+
+  .blogArticleCoverOrnament {
+    top: 24px;
+  }
+
+  .blogArticleCoverTitle span {
+    font-size: clamp(50px, 14vw, 72px);
+  }
+
+  .blogArticleCoverTitle em {
+    margin-left: 28px;
+    font-size: clamp(38px, 10vw, 55px);
+  }
+
+  .blogArticleCoverVerse {
+    right: 25px;
+    bottom: 25px;
+    font-size: 7px;
+  }
+
+  .blogArticleCoverLine {
+    left: 25px;
+    bottom: 27px;
+    width: 52px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blogArticleCoverFallback {
+    min-height: 205px;
+  }
+
+  .blogArticleCoverEdition {
+    left: 21px;
+    top: 21px;
+  }
+
+  .blogArticleCoverOrnament {
+    top: 22px;
+  }
+
+  .blogArticleCoverTitle span {
+    font-size: 48px;
+  }
+
+  .blogArticleCoverTitle em {
+    margin-left: 22px;
+    font-size: 37px;
+  }
+
+  .blogArticleCoverVerse {
+    right: 21px;
+    bottom: 22px;
+  }
+
+  .blogArticleCoverLine {
+    left: 21px;
+    bottom: 24px;
+  }
+}
