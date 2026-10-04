@@ -8567,3 +8567,32 @@ html[data-theme="dark"] .contactSubmitBtn:disabled {
   -webkit-text-fill-color: #F0ECE6 !important;
   opacity: 1 !important;
 }
+
+/* ---------- Contact submit button — dark-mode contrast ---------- */
+
+html[data-theme="dark"] .contactSubmitBtn,
+html[data-theme="dark"] .contactSubmitBtn:disabled {
+  background: #F5F3EF !important;
+  color: #171716 !important;
+  border: 1px solid #F5F3EF !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #171716 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="dark"] .contactSubmitBtn svg,
+html[data-theme="dark"] .contactSubmitBtn svg * {
+  color: #171716 !important;
+  stroke: #171716 !important;
+}
+
+html[data-theme="dark"] .contactSubmitBtn:hover:not(:disabled) {
+  background: #FFFFFF !important;
+  color: #171716 !important;
+  border-color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] .contactSubmitBtn:disabled {
+  cursor: not-allowed;
+  box-shadow: none !important;
+}
