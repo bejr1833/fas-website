@@ -1018,8 +1018,9 @@ function App() {
 
   const loadBlogEngagement = async (slug) => {
     try {
+      const visitorKey = getVisitorKey();
       const result = await fetchJsonWithRetry(
-        `${API_BASE}/api/blog/${encodeURIComponent(slug)}/engagement/`
+        `${API_BASE}/api/blog/${encodeURIComponent(slug)}/engagement/?visitor_key=${encodeURIComponent(visitorKey)}`
       );
       setBlogEngagement(result);
     } catch {
