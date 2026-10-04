@@ -51,6 +51,7 @@ class EventAdmin(admin.ModelAdmin):
         "time",
         "mode",
         "speaker_name",
+        "location",
         "is_published",
     )
     list_filter = (
@@ -62,9 +63,10 @@ class EventAdmin(admin.ModelAdmin):
         "title",
         "description",
         "speaker_name",
+        "location",
     )
     fieldsets = (
-        ("Event", {"fields": ("title", "event_type", "date", "time", "mode", "location", "description")}),
+        ("Event Details", {"fields": ("title", "event_type", "date", "time", "mode", "location", "description", "image")}),
         ("Online Meeting", {"fields": ("meeting_url", "speaker_name", "registration_url")}),
         ("Publishing", {"fields": ("is_published", "created_at")}),
     )
