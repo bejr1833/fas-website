@@ -282,6 +282,7 @@ class BlogCommentSerializer(serializers.ModelSerializer):
         model = BlogComment
         fields = ("id", "name", "comment", "created_at")
         read_only_fields = ("id", "created_at")
+        extra_kwargs = {"email": {"write_only": True, "required": False}}
 
 
 class BlogReactionSerializer(serializers.Serializer):
