@@ -9210,3 +9210,28 @@ html[data-theme="dark"] .supportLinks a:hover {
     margin-left: auto;
   }
 }
+
+
+/* =========================================================
+   CONNECT SECTION — SEPARATE SUBMIT BUTTON FROM SOCIAL PANEL
+   Keep the "STAY CONNECTED" heading visually clear of the
+   prayer/message submit control at all desktop widths.
+   ========================================================= */
+.supportLinksHeader {
+  margin-top: 30px !important;
+  margin-bottom: 16px !important;
+}
+
+@media (max-width: 760px) {
+  .supportLinksHeader {
+    margin-top: 26px !important;
+    margin-bottom: 14px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .supportLinksHeader {
+    margin-top: 24px !important;
+    margin-bottom: 14px !important;
+  }
+}
