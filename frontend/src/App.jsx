@@ -2727,37 +2727,39 @@ function App() {
                     </span>
                   </a>
 
-                  <div className="blogCardContent">
-                    <div className="blogCardTopline">
-                      <span className="blogCategory">
-                        {(post.category || "other").replace(/-/g, " ")}
-                      </span>
-                      {post.published_at && (
-                        <time dateTime={post.published_at}>
-                          {new Date(post.published_at).toLocaleDateString("en-US", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric"
-                          })}
-                        </time>
-                      )}
+                  {post.cover_image_url && (
+                    <div className="blogCardContent">
+                      <div className="blogCardTopline">
+                        <div className="blogCategory">
+                          {(post.category || "other").replace(/-/g, " ")}
+                        </div>
+                        {post.published_at && (
+                          <time dateTime={post.published_at}>
+                            {new Date(post.published_at).toLocaleDateString("en-US", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric"
+                            })}
+                          </time>
+                        )}
+                      </div>
+
+                      <h3>
+                        <a href={`/blog/${post.slug}`}>{post.title}</a>
+                      </h3>
+
+                      {post.excerpt && <p>{post.excerpt}</p>}
+
+                      <div className="blogMeta">
+                        <span className="blogAuthor">
+                          {post.author || "FAS"}
+                        </span>
+                        <a href={`/blog/${post.slug}`} className="blogReadLink">
+                          Continue reading <ArrowRight size={16} />
+                        </a>
+                      </div>
                     </div>
-
-                    <h3>
-                      <a href={`/blog/${post.slug}`}>{post.title}</a>
-                    </h3>
-
-                    {post.excerpt && <p>{post.excerpt}</p>}
-
-                    <div className="blogMeta">
-                      <span className="blogAuthor">
-                        {post.author || "FAS"}
-                      </span>
-                      <a href={`/blog/${post.slug}`} className="blogReadLink">
-                        Continue reading <ArrowRight size={16} />
-                      </a>
-                    </div>
-                  </div>
+                  )}
                 </article>
               ))}
             </div>
@@ -3726,7 +3728,6 @@ function App() {
 
 
 export default App;
-
 
 
 
