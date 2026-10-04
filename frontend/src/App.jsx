@@ -2604,6 +2604,8 @@ function App() {
                       <img
                         src={video.thumbnail_url}
                         alt={video.title}
+                        loading="lazy"
+                        decoding="async"
                       />
                     ) : (
                       <div className="videoThumbnailPlaceholder">
@@ -2698,6 +2700,8 @@ function App() {
                       <img
                         src={ebook.cover_image_url}
                         alt={ebook.title}
+                        loading="lazy"
+                        decoding="async"
                       />
                     ) : (
                       <div className="ebookCoverPlaceholder">
