@@ -13530,3 +13530,19 @@ html:not([data-theme="dark"]) .blogArticlePage .blogArticleAuthor {
     font-size: 17px;
   }
 }
+
+
+/* FAS Journal: fallback-only cards have no second content column. */
+.blogCard.isFeatured.isFallback {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.blogCard.isFeatured.isFallback .blogCardMedia {
+  min-height: 410px;
+}
+
+@media (max-width: 850px) {
+  .blogCard.isFeatured.isFallback {
+    grid-template-columns: 1fr;
+  }
+}
