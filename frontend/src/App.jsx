@@ -79,6 +79,7 @@ function App() {
   const [blogPost, setBlogPost] = useState(null);
   const [blogLoading, setBlogLoading] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [darkMode, setDarkMode] = useState(() => {
     try {
       const saved = localStorage.getItem("fas-theme");
@@ -2336,9 +2337,19 @@ function App() {
                   </div>
 
                   <div className="eventCardAction">
-                    {event.meeting_url ? (
-                      <div className="eventActionStack">
-                        <span className="eventActionHint">NEXT STEP</span>
+                    <div className="eventActionStack">
+                      <span className="eventActionHint">EVENT DETAILS</span>
+                      <button
+                        type="button"
+                        className="eventDetailsBtn"
+                        onClick={() => setSelectedEvent(event)}
+                        aria-label={`View details for ${event.title}`}
+                      >
+                        More Details
+                        <ArrowRight size={16} />
+                      </button>
+
+                      {event.meeting_url && (
                         <a
                           className="eventJoinBtn"
                           href={event.meeting_url}
@@ -2349,20 +2360,20 @@ function App() {
                           Join Google Meet
                           <ArrowRight size={16} />
                         </a>
-                      </div>
-                    ) : event.registration_url ? (
-                      <a
-                        className="eventJoinBtn eventRegisterBtn"
-                        href={event.registration_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View Event
-                        <ArrowRight size={16} />
-                      </a>
-                    ) : (
-                      <span className="eventNoLink">Details soon</span>
-                    )}
+                      )}
+
+                      {!event.meeting_url && event.registration_url && (
+                        <a
+                          className="eventJoinBtn eventRegisterBtn"
+                          href={event.registration_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Register / View
+                          <ArrowRight size={16} />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </article>
               ))}
@@ -2715,6 +2726,133 @@ function App() {
         </section>
 
         
+        {selectedEvent && (
+          <div
+            className="eventDetailsModalOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Event details for ${selectedEvent.title}`}
+            onClick={() => setSelectedEvent(null)}
+          >
+            <div
+              className="eventDetailsModal"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                type="button"
+                className="eventDetailsModalClose"
+                onClick={() => setSelectedEvent(null)}
+                aria-label="Close event details"
+              >
+                <X size={22} />
+              </button>
+
+              <div className="eventDetailsModalMedia">
+                {selectedEvent.image_url ? (
+                  <img
+                    src={selectedEvent.image_url}
+                    loading="eager"
+                    decoding="async"
+                    alt={selectedEvent.title}
+                  />
+                ) : (
+                  <div className="eventDetailsPosterFallback">
+                    <span>FAS</span>
+                    <small>EVENT POSTER</small>
+                  </div>
+                )}
+                <div className="eventDetailsModalMediaOverlay">
+                  <span>{(selectedEvent.event_type || "event").replace(/-/g, " ")}</span>
+                  {selectedEvent.mode && <strong>{selectedEvent.mode}</strong>}
+                </div>
+              </div>
+
+              <div className="eventDetailsModalBody">
+                <div className="eventDetailsModalEyebrow">FAS GATHERING</div>
+                <h2>{selectedEvent.title}</h2>
+
+                <div className="eventDetailsModalMeta">
+                  <div>
+                    <CalendarDays size={17} />
+                    <span>
+                      {new Date(selectedEvent.date + "T00:00:00").toLocaleDateString("en-US", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                      })}
+                    </span>
+                  </div>
+
+                  {selectedEvent.time && (
+                    <div>
+                      <span className="eventMetaBullet">TIME</span>
+                      <span>{selectedEvent.time}</span>
+                    </div>
+                  )}
+
+                  {selectedEvent.location && (
+                    <div>
+                      <span className="eventMetaBullet">LOCATION</span>
+                      <span>{selectedEvent.location}</span>
+                    </div>
+                  )}
+                </div>
+
+                {selectedEvent.speaker_name && (
+                  <div className="eventDetailsSpeaker">
+                    <span className="eventDetailsSpeakerIcon">
+                      <UserRound size={17} />
+                    </span>
+                    <span>
+                      <small>SPEAKER</small>
+                      <strong>{selectedEvent.speaker_name}</strong>
+                    </span>
+                  </div>
+                )}
+
+                {selectedEvent.description && (
+                  <div className="eventDetailsDescription">
+                    <span className="eventDetailsLabel">ABOUT THIS GATHERING</span>
+                    <p>{selectedEvent.description}</p>
+                  </div>
+                )}
+
+                <div className="eventDetailsActions">
+                  {selectedEvent.meeting_url && (
+                    <a
+                      className="eventDetailsPrimary"
+                      href={selectedEvent.meeting_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Join Google Meet
+                      <ArrowRight size={17} />
+                    </a>
+                  )}
+
+                  {selectedEvent.registration_url && (
+                    <a
+                      className="eventDetailsSecondary"
+                      href={selectedEvent.registration_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Register / More Information
+                      <ArrowRight size={17} />
+                    </a>
+                  )}
+                </div>
+
+                <div className="eventDetailsFooter">
+                  <span>FAITH · FELLOWSHIP · TRUTH</span>
+                  <span>FAS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {selectedStory && (
           <div
             className="storyModalOverlay"
