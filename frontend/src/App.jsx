@@ -1,7 +1,36 @@
 import { Fragment, useEffect, useState } from "react";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
-async function fetchJsonWithRetry(path, attempts = 3) {
+const CONTENT_CACHE_TTL = 5 * 60 * 1000;
+
+function readContentCache(key) {
+  try {
+    const raw = localStorage.getItem(`fas-content-cache:${key}`);
+    if (!raw) return null;
+
+    const cached = JSON.parse(raw);
+    if (!cached || !cached.data || Date.now() - cached.timestamp > CONTENT_CACHE_TTL) {
+      return null;
+    }
+
+    return cached.data;
+  } catch {
+    return null;
+  }
+}
+
+function writeContentCache(key, data) {
+  try {
+    localStorage.setItem(
+      `fas-content-cache:${key}`,
+      JSON.stringify({ data, timestamp: Date.now() })
+    );
+  } catch {
+    // Ignore storage quota/privacy errors.
+  }
+}
+
+async function fetchJsonWithRetry(path, attempts = 3, cacheKey = null) {
   let lastError;
 
   for (let attempt = 0; attempt < attempts; attempt += 1) {
@@ -12,7 +41,9 @@ async function fetchJsonWithRetry(path, attempts = 3) {
         throw new Error(`Request failed: ${response.status}`);
       }
 
-      return await response.json();
+      const data = await response.json();
+      if (cacheKey) writeContentCache(cacheKey, data);
+      return data;
     } catch (error) {
       if (attempt === attempts - 1) {
         throw error;
@@ -76,10 +107,16 @@ function App() {
     blog: [],
     sermons: [],
     videos: [],
-    ebooks: []
+    ebooks: cachedEbooks || []
   });
 
-  const [loading, setLoading] = useState(true);
+  const cachedHome = readContentCache("home");
+  const cachedBlog = readContentCache("blog");
+  const cachedSermons = readContentCache("sermons");
+  const cachedVideos = readContentCache("videos");
+  const cachedEbooks = readContentCache("ebooks");
+
+  const [loading, setLoading] = useState(!cachedHome);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [blogPost, setBlogPost] = useState(null);
@@ -613,7 +650,7 @@ function App() {
   }, [galleryLightboxOpen, filteredGallery.length]);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/home/`)
+    fetchJsonWithRetry(`${API_BASE}/api/home/`, 3, "home")
       .then((result) => {
         setData((current) => ({
           settings: result.settings || fallback,
@@ -641,7 +678,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/blog/`)
+    fetchJsonWithRetry(`${API_BASE}/api/blog/`, 3, "blog")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -653,7 +690,7 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/sermons/`)
+    fetchJsonWithRetry(`${API_BASE}/api/sermons/`, 3, "sermons")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -665,7 +702,7 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/videos/`)
+    fetchJsonWithRetry(`${API_BASE}/api/videos/`, 3, "videos")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -678,7 +715,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/ebooks/`)
+    fetchJsonWithRetry(`${API_BASE}/api/ebooks/`, 3, "ebooks")
       .then((result) => {
         setData((current) => ({
           ...current,
