@@ -7611,6 +7611,89 @@ html[data-theme="dark"] .storyModalFooter {
 }
 
 /* =========================================================
+   FAS DARK MODE — STORY OF FAS CONTRAST FIX
+   ========================================================= */
+
+html[data-theme="dark"] .storySection {
+  background: #111111 !important;
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .storySection .storyIntro h2,
+html[data-theme="dark"] .storySection .storyContent h3,
+html[data-theme="dark"] .storySection .storyClosing h3 {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .storySection .storyIntro p,
+html[data-theme="dark"] .storySection .storyContent p,
+html[data-theme="dark"] .storySection .storyClosing > p {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .storySection .storyClosing > p:first-of-type {
+  color: #F0EEEA !important;
+}
+
+html[data-theme="dark"] .storyTimeline::before {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    #6f2424 8%,
+    #6f2424 92%,
+    transparent
+  ) !important;
+}
+
+html[data-theme="dark"] .storyMarker {
+  background: #181818 !important;
+  border-color: #7a3333 !important;
+}
+
+html[data-theme="dark"] .storyMarker span,
+html[data-theme="dark"] .storyDate {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .storyMilestone:nth-child(3) .storyContent,
+html[data-theme="dark"] .storyMilestone:nth-child(5) .storyContent {
+  background: #181818 !important;
+  border-color: #363636 !important;
+}
+
+html[data-theme="dark"] .storyContent blockquote {
+  background: #202020 !important;
+  color: #F5F3EF !important;
+  border-left-color: #B21B1B !important;
+}
+
+html[data-theme="dark"] .storyRhythm div {
+  background: #181818 !important;
+  border-color: #363636 !important;
+}
+
+html[data-theme="dark"] .storyRhythm span {
+  color: #F0EEEA !important;
+}
+
+html[data-theme="dark"] .storyFinalCompact,
+html[data-theme="dark"] .storyFinal {
+  background: #181818 !important;
+  color: #F5F3EF !important;
+  border: 1px solid #363636;
+}
+
+html[data-theme="dark"] .storyFinalCompact span,
+html[data-theme="dark"] .storyFinal span {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .storyFinalCompact strong,
+html[data-theme="dark"] .storyFinal strong {
+  color: #F5F3EF !important;
+}
+
+/* =========================================================
    FAS DARK MODE
    ========================================================= */
 
