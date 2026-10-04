@@ -9031,3 +9031,137 @@ html[data-theme="dark"] .storyModalClose:focus-visible svg * {
     color: #FFFFFF !important;
   }
 }
+
+/* =========================================================
+   CONNECT LINKS — REFINED SOCIAL MEDIA PANEL
+   ========================================================= */
+
+.supportLinksHeader {
+  margin-bottom: 14px;
+}
+
+.supportLinksEyebrow {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--red-soft);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.supportLinksHeader h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.15;
+  letter-spacing: -.02em;
+}
+
+.supportLinksHeader p {
+  margin: 7px 0 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.supportLinks {
+  gap: 11px !important;
+}
+
+.supportLinks a {
+  min-height: 54px;
+  padding: 0 17px !important;
+  border-color: rgba(255,255,255,.18) !important;
+  background: rgba(255,255,255,.025);
+  color: #F5F3EF !important;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.supportLinks a svg {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  color: #D9A3A0;
+  transition: transform 220ms ease, color 220ms ease;
+}
+
+.supportLinks a:hover {
+  transform: translateY(-2px);
+  background: rgba(181,42,42,.08) !important;
+  border-color: #B52A2A !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 8px 22px rgba(0,0,0,.18);
+}
+
+.supportLinks a:hover svg {
+  color: #F0B7B4;
+  transform: scale(1.08);
+}
+
+/* Dark mode */
+html[data-theme="dark"] .supportLinksHeader h3 {
+  color: #F5F3EF !important;
+}
+
+html[data-theme="dark"] .supportLinksHeader p {
+  color: #B8B5B0 !important;
+}
+
+html[data-theme="dark"] .supportLinksEyebrow {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .supportLinks a {
+  background: rgba(255,255,255,.018) !important;
+  border-color: #34383D !important;
+  color: #F0ECE6 !important;
+}
+
+html[data-theme="dark"] .supportLinks a svg {
+  color: #D9A3A0 !important;
+}
+
+html[data-theme="dark"] .supportLinks a:hover {
+  background: rgba(181,42,42,.10) !important;
+  border-color: #B52A2A !important;
+  color: #FFFFFF !important;
+}
+
+@media (max-width: 760px) {
+  .supportLinksHeader {
+    margin-top: 4px;
+    margin-bottom: 13px;
+  }
+
+  .supportLinksHeader h3 {
+    font-size: 21px;
+  }
+
+  .supportLinksHeader p {
+    font-size: 13px;
+    max-width: 330px;
+  }
+
+  .supportLinks {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .supportLinks a {
+    min-height: 58px;
+    border-radius: 14px !important;
+    padding-inline: 18px !important;
+    font-size: 14px !important;
+  }
+
+  .supportLinks a svg {
+    width: 20px;
+    height: 20px;
+  }
+}
