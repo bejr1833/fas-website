@@ -1192,14 +1192,11 @@ function App() {
                   )}
                 </div>
 
-                {blogPost.excerpt && (
-                  <p className="blogArticleExcerpt">
-                    {blogPost.excerpt}
-                  </p>
-                )}
-
                 <div className="blogArticleMeta">
-                  <span>{blogPost.author}</span>
+                  <span className="blogArticleAuthor">
+                    <span className="blogArticleAuthorLabel">BY</span>
+                    <strong>{blogPost.author}</strong>
+                  </span>
                   {blogPost.published_at && (
                     <span>
                       {new Date(blogPost.published_at).toLocaleDateString(
