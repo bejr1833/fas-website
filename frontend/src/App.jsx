@@ -29,8 +29,10 @@ async function fetchJsonWithRetry(path, attempts = 3) {
 import {
   ArrowRight,
   CalendarDays,
+  Clock3,
   Instagram,
   Mail,
+  MapPin,
   Menu,
   Moon,
   Play,
