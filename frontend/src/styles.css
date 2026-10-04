@@ -8596,3 +8596,35 @@ html[data-theme="dark"] .contactSubmitBtn:disabled {
   cursor: not-allowed;
   box-shadow: none !important;
 }
+
+/* ---------- FINAL FIX: contact submit button label visibility ---------- */
+html[data-theme="dark"] button.primaryBtn.contactSubmitBtn,
+html[data-theme="dark"] button.primaryBtn.contactSubmitBtn:disabled,
+html[data-theme="dark"] button.primaryBtn.contactSubmitBtn:hover:not(:disabled),
+html[data-theme="dark"] button.primaryBtn.contactSubmitBtn:focus-visible {
+  background: #F5F3EF !important;
+  border: 1px solid #F5F3EF !important;
+  color: #111214 !important;
+  -webkit-text-fill-color: #111214 !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="dark"] button.primaryBtn.contactSubmitBtn .contactSubmitLabel,
+html[data-theme="dark"] button.primaryBtn.contactSubmitBtn:disabled .contactSubmitLabel,
+html[data-theme="dark"] button.primaryBtn.contactSubmitBtn:hover:not(:disabled) .contactSubmitLabel {
+  color: #111214 !important;
+  -webkit-text-fill-color: #111214 !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="dark"] button.primaryBtn.contactSubmitBtn svg,
+html[data-theme="dark"] button.primaryBtn.contactSubmitBtn svg *,
+html[data-theme="dark"] button.primaryBtn.contactSubmitBtn:disabled svg {
+  color: #111214 !important;
+  stroke: #111214 !important;
+  fill: none !important;
+  opacity: 1 !important;
+}
