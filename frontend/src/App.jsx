@@ -1103,11 +1103,105 @@ function App() {
 
 
 
+  const isEventsPage = window.location.pathname === "/events" || window.location.pathname === "/events/";
+  const isEventsPage = window.location.pathname === "/events" || window.location.pathname === "/events/";
   const isBlogArticle = window.location.pathname.startsWith("/blog/");
   const coverWords = (blogPost?.title || "Faith Alone Saves").trim().split(/\s+/);
   const coverSplit = Math.max(1, Math.ceil(coverWords.length / 2));
   const coverLead = coverWords.slice(0, coverSplit).join(" ");
   const coverAccent = coverWords.slice(coverSplit).join(" ");
+
+  if (isEventsPage) {
+    return (
+      <div className={`site eventsPage ${darkMode ? "eventsPageDark" : "eventsPageLight"}`}>
+        <header className="navbar">
+          <a href="/" className="brand" aria-label="Faith Alone Saves home">
+            <img src="/branding/fas-logo.png" alt="Faith Alone Saves" />
+          </a>
+          <div className="navActions">
+            <button type="button" className="themeToggle" onClick={toggleDarkMode}
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              title={darkMode ? "Switch to light mode" : "Switch to dark mode"}>
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <a href="/#events" className="textBtn">Back to FAS <ArrowRight size={16} /></a>
+          </div>
+        </header>
+        <main className="eventsPageMain">
+          <div className="eventsPageHero">
+            <span className="sectionLabel">WHAT'S NEXT</span>
+            <h1>Upcoming <em>Events</em></h1>
+            <p>Gather with FAS for Scripture, worship, fellowship and conversations that point us back to Christ.</p>
+          </div>
+          {loading ? (
+            <div className="emptyState"><CalendarDays size={24} /><p>Loading upcoming events...</p></div>
+          ) : data.upcoming_events.length === 0 ? (
+            <div className="emptyState"><CalendarDays size={24} /><p>No upcoming FAS events are currently scheduled.</p></div>
+          ) : (
+            <div className="eventGrid eventsPageGrid">
+              {data.upcoming_events.map((event) => (
+                <article className="eventCard eventCardPremium reveal-item" key={event.id}>
+                  <div className="eventDate">
+                    <span className="eventDateMonth">{new Date(event.date + "T00:00:00").toLocaleDateString("en-US", { month: "short" })}</span>
+                    <strong>{new Date(event.date + "T00:00:00").toLocaleDateString("en-US", { day: "2-digit" })}</strong>
+                    <span className="eventDateDay">{new Date(event.date + "T00:00:00").toLocaleDateString("en-US", { weekday: "short" })}</span>
+                  </div>
+                  <div className="eventCardMain">
+                    <div className="eventCardTopline">
+                      <span className="eventType">{(event.event_type || "event").replace(/-/g, " ")}</span>
+                      {event.mode && <span className="eventModeBadge">{event.mode}</span>}
+                      {event.meeting_url && <span className="eventLiveBadge"><span className="eventLiveDot"></span>Google Meet</span>}
+                    </div>
+                    <h2>{event.title}</h2>
+                    <div className="eventMetaRow eventMetaPremium">
+                      {event.time && <span className="eventTimeChip"><Clock3 size={14} /><span><small>TIME</small><strong>{event.time}</strong></span></span>}
+                      {event.location && <span className="eventLocationChip"><MapPin size={14} /><span>{event.location}</span></span>}
+                    </div>
+                    {event.speaker_name && <div className="eventSpeaker"><span className="eventSpeakerIcon"><UserRound size={14} /></span><span><small>Speaker</small><strong>{event.speaker_name}</strong></span></div>}
+                    {event.description && <p className="muted">{event.description}</p>}
+                  </div>
+                  <div className="eventCardAction">
+                    <div className="eventActionStack">
+                      <span className="eventActionHint">EVENT DETAILS</span>
+                      <button type="button" className="eventDetailsBtn" onClick={() => setSelectedEvent(event)}>More Details <ArrowRight size={16} /></button>
+                      {event.meeting_url && <a className="eventJoinBtn" href={event.meeting_url} target="_blank" rel="noopener noreferrer">Join Google Meet <ArrowRight size={16} /></a>}
+                      {!event.meeting_url && event.registration_url && <a className="eventJoinBtn eventRegisterBtn" href={event.registration_url} target="_blank" rel="noopener noreferrer">Register / View <ArrowRight size={16} /></a>}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </main>
+        {selectedEvent && (
+          <div className="eventDetailsModalOverlay" role="dialog" aria-modal="true" aria-label={`Event details for ${selectedEvent.title}`} onClick={() => setSelectedEvent(null)}>
+            <div className="eventDetailsModal" onClick={(event) => event.stopPropagation()}>
+              <button type="button" className="eventDetailsModalClose" onClick={() => setSelectedEvent(null)} aria-label="Close event details"><X size={22} /></button>
+              <div className="eventDetailsModalMedia">
+                {selectedEvent.image_url ? <><img className="eventDetailsModalMediaBackdrop" src={selectedEvent.image_url} aria-hidden="true" loading="eager" decoding="async" alt="" /><img className="eventDetailsModalMediaImage" src={selectedEvent.image_url} loading="eager" decoding="async" alt={selectedEvent.title} /></> : <div className="eventDetailsPosterFallback"><span>FAS</span><small>EVENT POSTER</small></div>}
+                <div className="eventDetailsModalMediaOverlay"><span>{(selectedEvent.event_type || "event").replace(/-/g, " ")}</span>{selectedEvent.mode && <strong>{selectedEvent.mode}</strong>}</div>
+              </div>
+              <div className="eventDetailsModalBody">
+                <div className="eventDetailsModalEyebrow">FAS GATHERING</div><h2>{selectedEvent.title}</h2>
+                <div className="eventDetailsModalMeta">
+                  <div><CalendarDays size={17} /><span>{new Date(selectedEvent.date + "T00:00:00").toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</span></div>
+                  {selectedEvent.time && <div><span className="eventMetaBullet">TIME</span><span>{selectedEvent.time}</span></div>}
+                  {selectedEvent.location && <div><span className="eventMetaBullet">LOCATION</span><span>{selectedEvent.location}</span></div>}
+                </div>
+                {selectedEvent.speaker_name && <div className="eventDetailsSpeaker"><span className="eventDetailsSpeakerIcon"><UserRound size={17} /></span><span><small>SPEAKER</small><strong>{selectedEvent.speaker_name}</strong></span></div>}
+                {selectedEvent.description && <div className="eventDetailsDescription"><span className="eventDetailsLabel">ABOUT THIS GATHERING</span><p>{selectedEvent.description}</p></div>}
+                <div className="eventDetailsActions">
+                  {selectedEvent.meeting_url && <a className="eventDetailsPrimary" href={selectedEvent.meeting_url} target="_blank" rel="noopener noreferrer">Join Google Meet <ArrowRight size={17} /></a>}
+                  {selectedEvent.registration_url && <a className="eventDetailsSecondary" href={selectedEvent.registration_url} target="_blank" rel="noopener noreferrer">Register / More Information <ArrowRight size={17} /></a>}
+                </div>
+                <div className="eventDetailsFooter"><span>FAITH · FELLOWSHIP · TRUTH</span><span>FAS</span></div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   if (isBlogArticle) {
     return (
@@ -3728,8 +3822,6 @@ function App() {
 
 
 export default App;
-
-
 
 
 
