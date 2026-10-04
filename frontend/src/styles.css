@@ -8695,3 +8695,98 @@ html[data-theme="dark"] svg {
     transition: none !important;
   }
 }
+
+/* =========================================================
+   FAS THEME TRANSITION
+   Smooth light <-> dark mode transition without affecting
+   carousels, image motion, or reduced-motion users.
+   ========================================================= */
+
+html[data-theme],
+html[data-theme] body,
+html[data-theme] .site,
+html[data-theme] .navbar,
+html[data-theme] .section,
+html[data-theme] .softSection,
+html[data-theme] .darkSection,
+html[data-theme] .introSection,
+html[data-theme] .storiesSection,
+html[data-theme] .eventsSection,
+html[data-theme] .videoSection,
+html[data-theme] .blogSection,
+html[data-theme] .gallerySection,
+html[data-theme] .sermonSection,
+html[data-theme] .ebookSection,
+html[data-theme] .supportSection,
+html[data-theme] .storyCard,
+html[data-theme] .eventCard,
+html[data-theme] .videoCard,
+html[data-theme] .ebookCard,
+html[data-theme] .sermonCard,
+html[data-theme] .blogCard,
+html[data-theme] .latestBlogInner,
+html[data-theme] .newBlogHighlightInner,
+html[data-theme] .heroNext,
+html[data-theme] input,
+html[data-theme] textarea,
+html[data-theme] select,
+html[data-theme] button {
+  transition:
+    background-color 320ms ease,
+    border-color 320ms ease,
+    color 240ms ease,
+    box-shadow 320ms ease,
+    fill 240ms ease,
+    stroke 240ms ease;
+}
+
+/* Keep the theme toggle itself especially smooth. */
+html[data-theme] .themeToggle {
+  transition:
+    background-color 240ms ease,
+    border-color 240ms ease,
+    color 200ms ease,
+    transform 220ms ease,
+    box-shadow 240ms ease;
+}
+
+html[data-theme] .themeToggle:active {
+  transform: scale(.92);
+}
+
+/* Prevent the transition from interfering with motion-sensitive
+   users or the initial page theme application. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme],
+  html[data-theme] body,
+  html[data-theme] .site,
+  html[data-theme] .navbar,
+  html[data-theme] .section,
+  html[data-theme] .softSection,
+  html[data-theme] .darkSection,
+  html[data-theme] .introSection,
+  html[data-theme] .storiesSection,
+  html[data-theme] .eventsSection,
+  html[data-theme] .videoSection,
+  html[data-theme] .blogSection,
+  html[data-theme] .gallerySection,
+  html[data-theme] .sermonSection,
+  html[data-theme] .ebookSection,
+  html[data-theme] .supportSection,
+  html[data-theme] .storyCard,
+  html[data-theme] .eventCard,
+  html[data-theme] .videoCard,
+  html[data-theme] .ebookCard,
+  html[data-theme] .sermonCard,
+  html[data-theme] .blogCard,
+  html[data-theme] .latestBlogInner,
+  html[data-theme] .newBlogHighlightInner,
+  html[data-theme] .heroNext,
+  html[data-theme] input,
+  html[data-theme] textarea,
+  html[data-theme] select,
+  html[data-theme] button,
+  html[data-theme] .themeToggle {
+    transition: none !important;
+  }
+}
