@@ -13546,3 +13546,69 @@ html:not([data-theme="dark"]) .blogArticlePage .blogArticleAuthor {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   FAS JOURNAL — desktop full-width + automatic horizontal slider
+   ========================================================= */
+.blogCarousel {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: stretch;
+  gap: 26px;
+  max-width: 1120px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 6px;
+}
+
+.blogCarousel::-webkit-scrollbar {
+  display: none;
+}
+
+.blogCarousel > .blogCard {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  scroll-snap-align: start;
+  box-sizing: border-box;
+}
+
+.blogCarousel > .blogCard.isFallback,
+.blogCarousel > .blogCard.isFeatured.isFallback {
+  grid-template-columns: 1fr !important;
+}
+
+.blogCarousel > .blogCard.isFallback .blogCardMedia {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 850px) {
+  .blogCarousel {
+    display: flex !important;
+    gap: 16px;
+    margin-top: 30px;
+    padding-bottom: 2px;
+  }
+
+  .blogCarousel > .blogCard,
+  .blogCarousel > .blogCard.isFallback,
+  .blogCarousel > .blogCard.isFeatured.isFallback {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 100%;
+    grid-template-columns: 1fr !important;
+  }
+
+  .blogCarousel > .blogCard.isFeatured .blogCardMedia {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+}
