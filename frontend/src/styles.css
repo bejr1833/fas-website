@@ -8628,3 +8628,70 @@ html[data-theme="dark"] button.primaryBtn.contactSubmitBtn:disabled svg {
   fill: none !important;
   opacity: 1 !important;
 }
+
+/* =========================================================
+   FAS THEME TRANSITION
+   Smoothly animate the visual change between light and dark.
+   ========================================================= */
+
+html[data-theme="light"],
+html[data-theme="dark"] {
+  transition: background-color 280ms ease, color 280ms ease;
+}
+
+html[data-theme="light"] body,
+html[data-theme="dark"] body,
+html[data-theme="light"] #root,
+html[data-theme="dark"] #root,
+html[data-theme="light"] .site,
+html[data-theme="dark"] .site {
+  transition:
+    background-color 280ms ease,
+    color 280ms ease;
+}
+
+html[data-theme="light"] *,
+html[data-theme="dark"] * {
+  transition:
+    background-color 280ms ease,
+    color 220ms ease,
+    border-color 220ms ease,
+    box-shadow 280ms ease,
+    fill 220ms ease,
+    stroke 220ms ease;
+}
+
+/* Keep image/media/layout animation-free while the theme changes. */
+html[data-theme="light"] img,
+html[data-theme="dark"] img,
+html[data-theme="light"] video,
+html[data-theme="dark"] video,
+html[data-theme="light"] iframe,
+html[data-theme="dark"] iframe,
+html[data-theme="light"] svg,
+html[data-theme="dark"] svg {
+  transition:
+    fill 220ms ease,
+    stroke 220ms ease,
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+/* A subtle icon rotation makes the theme toggle feel intentional. */
+.themeToggle svg {
+  transition: transform 280ms cubic-bezier(.2,.8,.2,1), opacity 180ms ease;
+}
+
+.themeToggle:active svg {
+  transform: rotate(22deg) scale(.9);
+}
+
+/* Don't animate if the visitor has requested reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="light"],
+  html[data-theme="dark"],
+  html[data-theme="light"] *,
+  html[data-theme="dark"] * {
+    transition: none !important;
+  }
+}
