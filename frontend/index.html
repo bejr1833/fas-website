@@ -2,6 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("fas-theme");
+          var dark = saved === "dark" ||
+            (saved !== "light" &&
+              window.matchMedia &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+        } catch (error) {}
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#173A32" />
     <link rel="preload" as="image" href="/branding/fas-logo.png" fetchpriority="high" />
