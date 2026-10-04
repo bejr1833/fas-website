@@ -237,10 +237,17 @@ class BlogEngagementView(APIView):
             for key, _ in BlogReaction.REACTION_CHOICES
         }
 
+        visitor_key = request.query_params.get("visitor_key", "")
+        active_reaction = None
+        if visitor_key:
+            active = blog.reactions.filter(visitor_key=visitor_key).first()
+            active_reaction = active.reaction if active else None
+
         return Response({
             "comments": BlogCommentSerializer(comments, many=True).data,
             "reaction_counts": reaction_counts,
             "total_reactions": sum(reaction_counts.values()),
+            "active_reaction": active_reaction,
         })
 
     def post(self, request, slug):
