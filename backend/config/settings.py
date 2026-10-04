@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -70,6 +71,10 @@ if DATABASE_URL:
         )
     }
 else:
+    if not DEBUG:
+        raise ImproperlyConfigured(
+            "DATABASE_URL is required when DEBUG=False. Refusing to use ephemeral SQLite in production."
+        )
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -123,6 +128,10 @@ if os.getenv("CLOUDINARY_URL"):
         "MEDIA_TAG": "fas-media",
         "INVALID_VIDEO_ERROR": True,
     }
+elif not DEBUG:
+    raise ImproperlyConfigured(
+        "CLOUDINARY_URL is required when DEBUG=False. Refusing to store uploaded media on ephemeral disk."
+    )
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
