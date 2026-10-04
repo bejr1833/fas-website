@@ -49,6 +49,10 @@ class HomepageSlide(models.Model):
 
 class Event(models.Model):
     EVENT_TYPES = [
+        ("online-tuesday-meetings", "Online Tuesday Meetings"),
+        ("glow", "GLOW"),
+        ("blaze", "BLAZE"),
+        ("intercessory-prayers", "Intercessory Prayers"),
         ("bible-study", "Bible Study"),
         ("discussion", "Discussion"),
         ("retreat", "Retreat"),
