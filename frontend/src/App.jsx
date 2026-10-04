@@ -36,6 +36,7 @@ import {
   Play,
   Quote,
   Share2,
+  UserRound,
   Sun,
   Users,
   Youtube,
@@ -1450,19 +1451,38 @@ function App() {
 
                   <h2>{data.upcoming_events[0].title}</h2>
 
-                  <p>
+                  <p className="heroNextTime">
                     {data.upcoming_events[0].time ||
                       "Time to be announced"}
                   </p>
+
+                  {data.upcoming_events[0].speaker_name && (
+                    <div className="heroNextSpeaker">
+                      <UserRound size={15} />
+                      <span>{data.upcoming_events[0].speaker_name}</span>
+                    </div>
+                  )}
                 </div>
 
-                <a
-                  className="heroNextLink"
-                  href="#events"
-                >
-                  View Event
-                  <ArrowRight size={16} />
-                </a>
+                {data.upcoming_events[0].meeting_url ? (
+                  <a
+                    className="heroNextLink"
+                    href={data.upcoming_events[0].meeting_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Join Google Meet
+                    <ArrowRight size={16} />
+                  </a>
+                ) : (
+                  <a
+                    className="heroNextLink"
+                    href="#events"
+                  >
+                    View Event
+                    <ArrowRight size={16} />
+                  </a>
+                )}
               </>
             ) : (
               <div className="heroNextEmpty">
@@ -2220,67 +2240,96 @@ function App() {
             <div className="eventGrid">
               {data.upcoming_events.map((event) => (
                 <article
-                  className="eventCard reveal-item"
+                  className="eventCard eventCardPremium reveal-item"
                   key={event.id}
                 >
                   <div className="eventDate">
+                    <span className="eventDateMonth">
+                      {new Date(
+                        event.date + "T00:00:00"
+                      ).toLocaleDateString("en-US", {
+                        month: "short"
+                      })}
+                    </span>
                     <strong>
                       {new Date(
                         event.date + "T00:00:00"
-                      ).toLocaleDateString(
-                        "en-US",
-                        {
-                          day: "2-digit"
-                        }
-                      )}
+                      ).toLocaleDateString("en-US", {
+                        day: "2-digit"
+                      })}
                     </strong>
-
-                    <span>
+                    <span className="eventDateDay">
                       {new Date(
                         event.date + "T00:00:00"
-                      ).toLocaleDateString(
-                        "en-US",
-                        {
-                          month: "short"
-                        }
-                      )}
+                      ).toLocaleDateString("en-US", {
+                        weekday: "short"
+                      })}
                     </span>
                   </div>
 
-                  <div>
-                    <span className="eventType">
-                      {(event.event_type || "event")
-                        .replace("-", " ")}
-                    </span>
+                  <div className="eventCardMain">
+                    <div className="eventCardTopline">
+                      <span className="eventType">
+                        {(event.event_type || "event").replace(/-/g, " ")}
+                      </span>
+                      {event.mode && (
+                        <span className="eventModeBadge">{event.mode}</span>
+                      )}
+                    </div>
 
                     <h3>{event.title}</h3>
 
-                    <p>
-                      {event.time ||
-                        "Time to be announced"}
-                      {" - "}
-                      {event.mode ||
-                        "Details to be announced"}
-                    </p>
+                    <div className="eventMetaRow">
+                      {event.time && (
+                        <span>{event.time}</span>
+                      )}
+                      {event.location && (
+                        <span>{event.location}</span>
+                      )}
+                    </div>
+
+                    {event.speaker_name && (
+                      <div className="eventSpeaker">
+                        <span className="eventSpeakerIcon">
+                          <UserRound size={14} />
+                        </span>
+                        <span>
+                          <small>Speaker</small>
+                          <strong>{event.speaker_name}</strong>
+                        </span>
+                      </div>
+                    )}
 
                     {event.description && (
-                      <p className="muted">
-                        {event.description}
-                      </p>
+                      <p className="muted">{event.description}</p>
                     )}
                   </div>
 
-                  {event.registration_url && (
-                    <a
-                      className="circleArrow"
-                      href={event.registration_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Register for ${event.title}`}
-                    >
-                      <ArrowRight size={18} />
-                    </a>
-                  )}
+                  <div className="eventCardAction">
+                    {event.meeting_url ? (
+                      <a
+                        className="eventJoinBtn"
+                        href={event.meeting_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Join Google Meet
+                        <ArrowRight size={16} />
+                      </a>
+                    ) : event.registration_url ? (
+                      <a
+                        className="eventJoinBtn eventRegisterBtn"
+                        href={event.registration_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Event
+                        <ArrowRight size={16} />
+                      </a>
+                    ) : (
+                      <span className="eventNoLink">Details soon</span>
+                    )}
+                  </div>
                 </article>
               ))}
             </div>
