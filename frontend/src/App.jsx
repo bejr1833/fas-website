@@ -1104,6 +1104,10 @@ function App() {
 
 
   const isBlogArticle = window.location.pathname.startsWith("/blog/");
+  const coverWords = (blogPost?.title || "Faith Alone Saves").trim().split(/\s+/);
+  const coverSplit = Math.max(1, Math.ceil(coverWords.length / 2));
+  const coverLead = coverWords.slice(0, coverSplit).join(" ");
+  const coverAccent = coverWords.slice(coverSplit).join(" ");
 
   if (isBlogArticle) {
     return (
@@ -1183,10 +1187,10 @@ function App() {
                         FAS JOURNAL · {(blogPost.category || "REFLECTION").replace("-", " ").toUpperCase()}
                       </div>
                       <div className="blogArticleCoverTitle">
-                        <span>{blogPost.title.split(" ").slice(0, 1).join(" ")}</span>
-                        <em>{blogPost.title.split(" ").slice(1).join(" ")}</em>
+                        <span>{coverLead}</span>
+                        {coverAccent && <em>{coverAccent}</em>}
                       </div>
-                      <div className="blogArticleCoverVerse">JOHN 1:46</div>
+                      <div className="blogArticleCoverVerse">FAITH · FELLOWSHIP · TRUTH</div>
                       <div className="blogArticleCoverLine"></div>
                     </div>
                   )}
