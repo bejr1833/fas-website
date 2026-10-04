@@ -8539,3 +8539,31 @@ html[data-theme="dark"] .navCta:hover {
   color: #171716 !important;
   border-color: #FFFFFF !important;
 }
+
+/* ---------- Final submit-button text contrast ---------- */
+
+html[data-theme="dark"] .contactSubmitBtn:not(:disabled) .contactSubmitLabel {
+  color: #171716 !important;
+  -webkit-text-fill-color: #171716 !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="dark"] .contactSubmitBtn:not(:disabled) svg {
+  color: #171716 !important;
+  stroke: #171716 !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="dark"] .contactSubmitBtn:disabled .contactSubmitLabel {
+  color: #F0ECE6 !important;
+  -webkit-text-fill-color: #F0ECE6 !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="dark"] .contactSubmitBtn:disabled {
+  background: #2A2E34 !important;
+  border-color: #454A50 !important;
+  color: #F0ECE6 !important;
+  -webkit-text-fill-color: #F0ECE6 !important;
+  opacity: 1 !important;
+}
