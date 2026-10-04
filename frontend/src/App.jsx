@@ -2947,62 +2947,6 @@ function App() {
               </p>
             </div>
 
-            <div className="supportLinks">
-              {settings.whatsapp_url && (
-                <a
-                  href={settings.whatsapp_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Users size={18} />
-                  WhatsApp
-                </a>
-              )}
-
-              {settings.instagram_url && (
-                <a
-                  href={settings.instagram_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Instagram size={18} />
-                  Instagram
-                </a>
-              )}
-
-              {settings.youtube_url && (
-                <a
-                  href={settings.youtube_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Youtube size={18} />
-                  YouTube
-                </a>
-              )}
-
-              {settings.email && (
-                <a
-                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(settings.email)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Mail size={18} />
-                  Email
-                </a>
-              )}
-
-              {!settings.whatsapp_url &&
-                !settings.instagram_url &&
-                !settings.youtube_url &&
-                !settings.email && (
-                  <p className="muted">
-                    Contact details will appear here once configured
-                    in the FAS admin panel.
-                  </p>
-                )}
-            </div>
-
             <div className="contactFormWrap">
               <div className="contactFormHeader">
                 <div>
@@ -3148,6 +3092,62 @@ function App() {
                   <ArrowRight size={17} />
                 </button>
               </form>
+            </div>
+
+            <div className="supportLinks">
+              {settings.whatsapp_url && (
+                <a
+                  href={settings.whatsapp_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Users size={18} />
+                  WhatsApp
+                </a>
+              )}
+
+              {settings.instagram_url && (
+                <a
+                  href={settings.instagram_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Instagram size={18} />
+                  Instagram
+                </a>
+              )}
+
+              {settings.youtube_url && (
+                <a
+                  href={settings.youtube_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Youtube size={18} />
+                  YouTube
+                </a>
+              )}
+
+              {settings.email && (
+                <a
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(settings.email)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Mail size={18} />
+                  Email
+                </a>
+              )}
+
+              {!settings.whatsapp_url &&
+                !settings.instagram_url &&
+                !settings.youtube_url &&
+                !settings.email && (
+                  <p className="muted">
+                    Contact details will appear here once configured
+                    in the FAS admin panel.
+                  </p>
+                )}
             </div>
           </div>
         </section>
