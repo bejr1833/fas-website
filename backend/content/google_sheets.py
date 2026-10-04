@@ -1,99 +1,79 @@
 """
-Google Sheets integration for FAS contact and prayer requests.
+Google Apps Script integration for FAS contact and prayer requests.
 
-The integration is intentionally server-side. Google credentials are never sent
-to the React frontend. The Django ContactMessage is always saved first; Sheets
-sync is a secondary delivery channel.
+Django/Postgres remains the source of truth. Google Sheets is a secondary
+delivery channel. The React frontend never talks to Google directly.
 """
 
-import base64
 import json
 import logging
 import os
-from functools import lru_cache
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 logger = logging.getLogger(__name__)
-
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-DEFAULT_WORKSHEET = "Contact Requests"
-HEADERS = [
-    "Submitted At",
-    "Name",
-    "Email",
-    "Phone",
-    "Request Type",
-    "Message",
-    "Status",
-]
 
 
 def is_configured():
     return bool(
-        os.getenv("FAS_GOOGLE_SHEETS_SPREADSHEET_ID")
-        and os.getenv("FAS_GOOGLE_SERVICE_ACCOUNT_JSON_BASE64")
+        os.getenv("FAS_GOOGLE_APPS_SCRIPT_URL")
+        and os.getenv("FAS_GOOGLE_APPS_SCRIPT_TOKEN")
     )
-
-
-@lru_cache(maxsize=1)
-def _get_client():
-    import gspread
-    from google.oauth2.service_account import Credentials
-
-    encoded = os.environ["FAS_GOOGLE_SERVICE_ACCOUNT_JSON_BASE64"]
-    credentials_info = json.loads(
-        base64.b64decode(encoded).decode("utf-8")
-    )
-    credentials = Credentials.from_service_account_info(
-        credentials_info,
-        scopes=SCOPES,
-    )
-    return gspread.authorize(credentials)
-
-
-def _get_worksheet(client):
-    spreadsheet_id = os.environ["FAS_GOOGLE_SHEETS_SPREADSHEET_ID"]
-    spreadsheet = client.open_by_key(spreadsheet_id)
-
-    try:
-        worksheet = spreadsheet.worksheet(DEFAULT_WORKSHEET)
-    except Exception:
-        worksheet = spreadsheet.add_worksheet(
-            title=DEFAULT_WORKSHEET,
-            rows=1000,
-            cols=len(HEADERS),
-        )
-
-    first_row = worksheet.row_values(1)
-    if first_row != HEADERS:
-        worksheet.update("A1:G1", [HEADERS])
-
-    return worksheet
 
 
 def sync_contact_message(contact_message):
-    """Append a ContactMessage to the FAS Google Sheet.
+    """Send a ContactMessage to the FAS Google Apps Script web app.
 
-    Returns True when a row was written. Raises on configuration/API errors so
-    callers can log the failure without losing the Django database record.
+    The Apps Script owns the Sheet and appends the row. Django/Postgres is
+    always written first, so a Sheets outage cannot lose the request.
     """
     if not is_configured():
         return False
 
-    client = _get_client()
-    worksheet = _get_worksheet(client)
+    payload = {
+        "token": os.environ["FAS_GOOGLE_APPS_SCRIPT_TOKEN"],
+        "submitted_at": (
+            contact_message.created_at.isoformat()
+            if contact_message.created_at
+            else ""
+        ),
+        "name": contact_message.name,
+        "email": contact_message.email,
+        "phone": contact_message.phone or "",
+        "request_type": contact_message.get_request_type_display(),
+        "message": contact_message.message,
+        "status": contact_message.get_status_display(),
+    }
 
-    submitted_at = contact_message.created_at.isoformat() if contact_message.created_at else ""
-
-    worksheet.append_row(
-        [
-            submitted_at,
-            contact_message.name,
-            contact_message.email,
-            contact_message.phone or "",
-            contact_message.get_request_type_display(),
-            contact_message.message,
-            contact_message.get_status_display(),
-        ],
-        value_input_option="USER_ENTERED",
+    body = json.dumps(payload).encode("utf-8")
+    request = Request(
+        os.environ["FAS_GOOGLE_APPS_SCRIPT_URL"],
+        data=body,
+        headers={"Content-Type": "application/json"},
+        method="POST",
     )
-    return True
+
+    try:
+        with urlopen(request, timeout=20) as response:
+            response_body = response.read().decode("utf-8")
+            if response.status < 200 or response.status >= 300:
+                raise RuntimeError(
+                    f"Google Apps Script returned HTTP {response.status}"
+                )
+
+            try:
+                result = json.loads(response_body)
+            except json.JSONDecodeError:
+                result = {}
+
+            if result.get("ok") is not True:
+                raise RuntimeError(
+                    result.get("error", "Google Apps Script sync failed")
+                )
+
+        return True
+
+    except (HTTPError, URLError, TimeoutError) as exc:
+        raise RuntimeError(
+            f"Google Apps Script request failed: {exc}"
+        ) from exc
