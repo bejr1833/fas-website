@@ -25,6 +25,8 @@ from .models import (
     SermonPDF,
     FASVideo,
     EBook,
+    BlogComment,
+    BlogReaction,
 )
 
 
@@ -273,3 +275,20 @@ class EBookSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(url)
 
         return url
+
+
+class BlogCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogComment
+        fields = ("id", "name", "comment", "created_at")
+        read_only_fields = ("id", "created_at")
+
+
+class BlogReactionSerializer(serializers.Serializer):
+    reaction = serializers.ChoiceField(choices=["like", "amen", "encouraged"])
+    visitor_key = serializers.CharField(min_length=16, max_length=64)
+
+    def validate_visitor_key(self, value):
+        if not value.isalnum():
+            raise serializers.ValidationError("Invalid visitor key.")
+        return value
