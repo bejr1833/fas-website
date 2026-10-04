@@ -9200,15 +9200,20 @@ html[data-theme="dark"] .supportLinks a:hover {
   }
 
   .navActions {
-    gap: 10px;
-    margin-left: 12px;
+    gap: 14px;
+    margin-left: 16px;
   }
 }
 
 @media (max-width: 850px) {
   .navActions {
-    gap: 9px;
+    gap: 14px;
     margin-left: auto;
+  }
+
+  .menuBtn {
+    margin-left: 4px;
+    flex: 0 0 44px;
   }
 }
 
@@ -9219,21 +9224,21 @@ html[data-theme="dark"] .supportLinks a:hover {
    prayer/message submit control at all desktop widths.
    ========================================================= */
 .supportLinksHeader {
-  margin-top: 30px !important;
-  margin-bottom: 16px !important;
+  margin-top: 42px !important;
+  margin-bottom: 18px !important;
 }
 
 @media (max-width: 760px) {
   .supportLinksHeader {
-    margin-top: 26px !important;
-    margin-bottom: 14px !important;
+    margin-top: 34px !important;
+    margin-bottom: 15px !important;
   }
 }
 
 @media (max-width: 420px) {
   .supportLinksHeader {
-    margin-top: 24px !important;
-    margin-bottom: 14px !important;
+    margin-top: 30px !important;
+    margin-bottom: 15px !important;
   }
 }
 
