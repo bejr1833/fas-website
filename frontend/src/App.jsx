@@ -2396,15 +2396,28 @@ function App() {
           id="blog"
           className="section blogSection reveal-section"
         >
-          <div className="sectionTop">
-            <div>
-              <div className="sectionLabel">
-                FAS BLOG
+          <div className="blogSectionHeader">
+            <div className="blogSectionHeading">
+              <div className="blogSectionEyebrow">
+                <span className="blogSectionEyebrowLine"></span>
+                FAS JOURNAL
               </div>
 
               <h2>
                 Reflections on <em>faith and life.</em>
               </h2>
+
+              <p>
+                Thoughtful reflections, biblical encouragement, and stories
+                from the FAS journey — written to help us know Christ,
+                grow in truth, and live faithfully.
+              </p>
+            </div>
+
+            <div className="blogSectionSeal" aria-hidden="true">
+              <span>FAITH</span>
+              <strong>&amp;</strong>
+              <span>TRUTH</span>
             </div>
           </div>
 
@@ -2433,7 +2446,17 @@ function App() {
                       />
                     ) : (
                       <div className="blogCardMediaFallback" aria-hidden="true">
-                        <span>FAS</span>
+                        <div className="blogFallbackArtwork">
+                          <span className="blogFallbackKicker">
+                            {(post.category || "FAS JOURNAL").replace(/-/g, " ")}
+                          </span>
+                          <span className="blogFallbackQuote">“</span>
+                          <strong>{post.title}</strong>
+                          <span className="blogFallbackRule"></span>
+                          <span className="blogFallbackFooter">
+                            FAITH · FELLOWSHIP · TRUTH
+                          </span>
+                        </div>
                       </div>
                     )}
                     <span className="blogCardReadBadge">
