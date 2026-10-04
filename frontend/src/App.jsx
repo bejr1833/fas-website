@@ -1219,19 +1219,6 @@ function App() {
                 </div>
               </div>
 
-              {blogPost.cover_image_url && (
-                <figure className="blogArticleCover blogArticleCoverPhoto">
-                  <img
-                    src={blogPost.cover_image_url}
-                    loading="eager"
-                    fetchPriority="high"
-                    decoding="async"
-                    alt={blogPost.title + " — Faith Alone Saves"}
-                  />
-                  <figcaption>Faith Alone Saves · FAS Journal</figcaption>
-                </figure>
-              )}
-
               <div className="blogArticleBody">
                 <div className="articleIntro" aria-label="Article summary">
                   <span className="articleIntroEyebrow">IN THIS ARTICLE</span>
