@@ -103,7 +103,32 @@ function App() {
   }, [darkMode]);
 
   const toggleDarkMode = () => {
-    setDarkMode((value) => !value);
+    setDarkMode((value) => {
+      const nextThemeIsDark = !value;
+      const root = document.documentElement;
+
+      root.classList.remove(
+        "theme-transitioning",
+        "theme-transition-to-dark",
+        "theme-transition-to-light"
+      );
+      root.classList.add(
+        "theme-transitioning",
+        nextThemeIsDark
+          ? "theme-transition-to-dark"
+          : "theme-transition-to-light"
+      );
+
+      window.setTimeout(() => {
+        root.classList.remove(
+          "theme-transitioning",
+          "theme-transition-to-dark",
+          "theme-transition-to-light"
+        );
+      }, 450);
+
+      return nextThemeIsDark;
+    });
   };
   useEffect(() => {
     const carousel = document.querySelector(".storiesGrid");
