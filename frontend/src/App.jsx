@@ -2786,7 +2786,7 @@ function App() {
             <div className="blogGrid">
               {data.blog.map((post, index) => (
                 <article
-                  className={`blogCard blogCardFeatured reveal-item${index === 0 ? " isFeatured" : ""}`}
+                  className={`blogCard blogCardFeatured reveal-item${index === 0 ? " isFeatured" : ""}${!post.cover_image_url ? " isFallback" : ""}`}
                   key={post.id}
                 >
                   <a
@@ -3734,96 +3734,3 @@ function App() {
               <span className="supportLinksEyebrow">STAY CONNECTED</span>
               <h3>Find us online.</h3>
               <p>Follow FAS and stay connected with our fellowship.</p>
-            </div>
-
-            <div className="supportLinks">
-              {settings.whatsapp_url && (
-                <a
-                  href={settings.whatsapp_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Users size={18} />
-                  WhatsApp
-                </a>
-              )}
-
-              {settings.instagram_url && (
-                <a
-                  href={settings.instagram_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Instagram size={18} />
-                  Instagram
-                </a>
-              )}
-
-              {settings.youtube_url && (
-                <a
-                  href={settings.youtube_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Youtube size={18} />
-                  YouTube
-                </a>
-              )}
-
-              {settings.email && (
-                <a
-                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(settings.email)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Mail size={18} />
-                  Email
-                </a>
-              )}
-
-              {!settings.whatsapp_url &&
-                !settings.instagram_url &&
-                !settings.youtube_url &&
-                !settings.email && (
-                  <p className="muted">
-                    Contact details will appear here once configured
-                    in the FAS admin panel.
-                  </p>
-                )}
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer>
-        <div>
-          <img
-            src="/branding/fas-logo.png"
-            alt="FAS"
-          />
-
-          <p>{settings.tagline}</p>
-        </div>
-
-        <div>
-          <strong>
-            Faith Alone Saves
-          </strong>
-
-          <span>
-            Copyright {new Date().getFullYear()} FAS.
-            All rights reserved.
-          </span>
-        </div>
-      </footer>
-    </div>
-  );
-}
-
-
-export default App;
-
-
-
-
-
