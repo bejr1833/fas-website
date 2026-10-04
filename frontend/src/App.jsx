@@ -3608,12 +3608,18 @@ export default App;
     const storageKey = "fas-blog-visitor-key";
     try {
       let key = localStorage.getItem(storageKey);
+      if (key) {
+        key = key.replace(/[^a-zA-Z0-9]/g, "");
+        if (key.length < 16) key = "";
+      }
+
       if (!key) {
         key = typeof crypto !== "undefined" && crypto.randomUUID
           ? crypto.randomUUID().replace(/-/g, "")
           : Math.random().toString(36).slice(2) + Date.now().toString(36);
         localStorage.setItem(storageKey, key);
       }
+
       return key;
     } catch {
       return "guest" + Math.random().toString(36).slice(2) + Date.now().toString(36);
