@@ -11,6 +11,3 @@ whitenoise>=6.8,<7.0
 
 cloudinary>=1.44,<2.0
 django-cloudinary-storage>=0.3,<0.4
-
-gspread>=6.1,<7.0
-google-auth>=2.35,<3.0
