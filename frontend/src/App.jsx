@@ -3094,6 +3094,12 @@ function App() {
               </form>
             </div>
 
+            <div className="supportLinksHeader">
+              <span className="supportLinksEyebrow">STAY CONNECTED</span>
+              <h3>Find us online.</h3>
+              <p>Follow FAS and stay connected with our fellowship.</p>
+            </div>
+
             <div className="supportLinks">
               {settings.whatsapp_url && (
                 <a
