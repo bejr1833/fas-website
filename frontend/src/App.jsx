@@ -1213,8 +1213,18 @@ function App() {
               ) : (
                 <div className="blogArticleCover blogArticleCoverFallback" aria-hidden="true">
                   <div className="blogArticleCoverGlow"></div>
-                  <div className="blogArticleCoverMonogram">FAS</div>
-                  <div className="blogArticleCoverCaption">FAITH ALONE SAVES</div>
+                  <div className="blogArticleCoverOrnament">
+                    <span></span>
+                    <i></i>
+                    <span></span>
+                  </div>
+                  <div className="blogArticleCoverEdition">FAS JOURNAL · REFLECTION</div>
+                  <div className="blogArticleCoverTitle">
+                    <span>Come</span>
+                    <em>and See</em>
+                  </div>
+                  <div className="blogArticleCoverVerse">JOHN 1:46</div>
+                  <div className="blogArticleCoverLine"></div>
                 </div>
               )}
 
