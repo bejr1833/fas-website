@@ -301,3 +301,56 @@ class EBook(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class BlogComment(models.Model):
+    blog_post = models.ForeignKey(
+        BlogPost,
+        on_delete=models.CASCADE,
+        related_name="comments",
+    )
+    name = models.CharField(max_length=80)
+    email = models.EmailField(blank=True)
+    comment = models.TextField(max_length=2000)
+    is_approved = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["blog_post", "-created_at"]),
+        ]
+
+    def __str__(self):
+        return f"{self.name} on {self.blog_post.title}"
+
+
+class BlogReaction(models.Model):
+    REACTION_CHOICES = [
+        ("like", "Like"),
+        ("amen", "Amen"),
+        ("encouraged", "Encouraged"),
+    ]
+
+    blog_post = models.ForeignKey(
+        BlogPost,
+        on_delete=models.CASCADE,
+        related_name="reactions",
+    )
+    reaction = models.CharField(max_length=20, choices=REACTION_CHOICES, default="like")
+    visitor_key = models.CharField(max_length=64)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["blog_post", "visitor_key"],
+                name="unique_blog_reaction_per_visitor",
+            )
+        ]
+        indexes = [
+            models.Index(fields=["blog_post", "reaction"]),
+        ]
+
+    def __str__(self):
+        return f"{self.reaction} on {self.blog_post.title}"
