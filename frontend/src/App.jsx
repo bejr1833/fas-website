@@ -117,6 +117,81 @@ function scrollToSection(id) {
   return true;
 }
 
+function useAutoCarousel(selector, itemSelector, dependency, interval = 4500) {
+  useEffect(() => {
+    const carousel = document.querySelector(selector);
+    if (!carousel) return;
+
+    const reduceMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+    if (reduceMotionQuery.matches) return;
+
+    let timer = null;
+    let paused = false;
+
+    const getItems = () => Array.from(carousel.querySelectorAll(itemSelector));
+
+    const slideNext = () => {
+      if (paused) return;
+
+      const items = getItems();
+      if (items.length <= 1) return;
+
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      if (maxScroll <= 2) return;
+
+      const currentLeft = carousel.scrollLeft;
+      const nextItem = items.find(
+        (item) => item.offsetLeft > currentLeft + 8
+      );
+
+      if (!nextItem || currentLeft >= maxScroll - 10) {
+        carousel.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        carousel.scrollTo({
+          left: Math.min(nextItem.offsetLeft, maxScroll),
+          behavior: "smooth"
+        });
+      }
+    };
+
+    const startTimer = () => {
+      window.clearInterval(timer);
+      timer = window.setInterval(slideNext, interval);
+    };
+
+    const pause = () => {
+      paused = true;
+      window.clearInterval(timer);
+    };
+
+    const resume = () => {
+      paused = false;
+      startTimer();
+    };
+
+    carousel.addEventListener("mouseenter", pause);
+    carousel.addEventListener("mouseleave", resume);
+    carousel.addEventListener("touchstart", pause, { passive: true });
+    carousel.addEventListener("touchend", resume, { passive: true });
+    carousel.addEventListener("focusin", pause);
+    carousel.addEventListener("focusout", resume);
+
+    startTimer();
+
+    return () => {
+      window.clearInterval(timer);
+      carousel.removeEventListener("mouseenter", pause);
+      carousel.removeEventListener("mouseleave", resume);
+      carousel.removeEventListener("touchstart", pause);
+      carousel.removeEventListener("touchend", resume);
+      carousel.removeEventListener("focusin", pause);
+      carousel.removeEventListener("focusout", resume);
+    };
+  }, [selector, itemSelector, dependency, interval]);
+}
+
 function App() {
   const cachedHome = readContentCache("home");
   const cachedBlog = readContentCache("blog");
@@ -155,6 +230,13 @@ function App() {
   const [reactionSubmitting, setReactionSubmitting] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  useAutoCarousel("#about .pillars", ":scope > article", 0, 5200);
+  useAutoCarousel("#vision .visionGrid", ":scope > .reveal-item", 0, 5200);
+  useAutoCarousel("#mission .missionGrid", ":scope > .reveal-item", 0, 5200);
+  useAutoCarousel("#story .storyTimeline", ":scope > .storyMilestone", 0, 5600);
+  useAutoCarousel("#events .eventGrid", ":scope > .eventCard", data.upcoming_events.length, 4800);
+  useAutoCarousel("#sermons .sermonGrid", ":scope > .sermonCard", data.sermons.length, 5000);
+  useAutoCarousel("#ebooks .ebookGrid", ":scope > .ebookCard", data.ebooks.length, 5000);
   const [darkMode, setDarkMode] = useState(() => {
     try {
       const saved = localStorage.getItem("fas-theme");
@@ -178,6 +260,64 @@ function App() {
 
     return () => window.clearTimeout(timer);
   }, [loading, data.slides.length]);
+
+  // Automatically rotate Highlights & Updates while preserving manual controls.
+  useEffect(() => {
+    if (data.slides.length <= 1) return;
+
+    const frame = document.querySelector(".slideshowFrame");
+    if (!frame) return;
+
+    const reduceMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+    if (reduceMotionQuery.matches) return;
+
+    let paused = false;
+    let timer = null;
+
+    const advance = () => {
+      if (!paused) {
+        setCurrentSlide((current) =>
+          (current + 1) % data.slides.length
+        );
+      }
+    };
+
+    const start = () => {
+      window.clearInterval(timer);
+      timer = window.setInterval(advance, 5200);
+    };
+
+    const pause = () => {
+      paused = true;
+      window.clearInterval(timer);
+    };
+
+    const resume = () => {
+      paused = false;
+      start();
+    };
+
+    frame.addEventListener("mouseenter", pause);
+    frame.addEventListener("mouseleave", resume);
+    frame.addEventListener("touchstart", pause, { passive: true });
+    frame.addEventListener("touchend", resume, { passive: true });
+    frame.addEventListener("focusin", pause);
+    frame.addEventListener("focusout", resume);
+
+    start();
+
+    return () => {
+      window.clearInterval(timer);
+      frame.removeEventListener("mouseenter", pause);
+      frame.removeEventListener("mouseleave", resume);
+      frame.removeEventListener("touchstart", pause);
+      frame.removeEventListener("touchend", resume);
+      frame.removeEventListener("focusin", pause);
+      frame.removeEventListener("focusout", resume);
+    };
+  }, [data.slides.length]);
 
   useEffect(() => {
     const theme = darkMode ? "dark" : "light";
