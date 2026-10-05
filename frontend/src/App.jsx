@@ -104,6 +104,19 @@ const fallback = {
   email: ""
 };
 
+function scrollToSection(id) {
+  const element = document.getElementById(id);
+  if (!element) return false;
+
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  return true;
+}
+
 function App() {
   const cachedHome = readContentCache("home");
   const cachedBlog = readContentCache("blog");
@@ -154,6 +167,17 @@ function App() {
 
     return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
   });
+
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, "");
+    if (!hash) return;
+
+    const timer = window.setTimeout(() => {
+      scrollToSection(hash);
+    }, 150);
+
+    return () => window.clearTimeout(timer);
+  }, [loading, data.slides.length]);
 
   useEffect(() => {
     const theme = darkMode ? "dark" : "light";
@@ -1867,6 +1891,11 @@ function App() {
               <a
                 className="primaryBtn"
                 href="#events"
+                onClick={(event) => {
+                  event.preventDefault();
+                  window.history.replaceState(null, "", "#events");
+                  scrollToSection("events");
+                }}
               >
                 Explore Events
                 <ArrowRight size={17} />
