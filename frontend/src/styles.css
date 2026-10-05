@@ -13612,3 +13612,129 @@ html:not([data-theme="dark"]) .blogArticlePage .blogArticleAuthor {
     aspect-ratio: 4 / 3;
   }
 }
+
+
+/* =========================================================
+   AUTOMATIC HORIZONTAL CAROUSELS — remaining sections
+   Existing Stories, Journal, Videos and Gallery carousels are
+   intentionally left on their current implementations.
+   ========================================================= */
+
+#about .pillars,
+#vision .visionGrid,
+#mission .missionGrid,
+#events .eventGrid,
+#sermons .sermonGrid,
+#ebooks .ebookGrid {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch;
+  gap: 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 10px;
+}
+
+#about .pillars::-webkit-scrollbar,
+#vision .visionGrid::-webkit-scrollbar,
+#mission .missionGrid::-webkit-scrollbar,
+#events .eventGrid::-webkit-scrollbar,
+#sermons .sermonGrid::-webkit-scrollbar,
+#ebooks .ebookGrid::-webkit-scrollbar {
+  display: none;
+}
+
+#about .pillars > article,
+#vision .visionGrid > .reveal-item,
+#mission .missionGrid > .reveal-item,
+#events .eventGrid > .eventCard,
+#sermons .sermonGrid > .sermonCard,
+#ebooks .ebookGrid > .ebookCard {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-width: 0;
+}
+
+/* Keep enough of the next card visible to make horizontal movement obvious. */
+#about .pillars > article {
+  flex: 0 0 calc((100% - 20px) / 2.25);
+}
+
+#vision .visionGrid {
+  background: transparent;
+  border: 0;
+}
+
+#vision .visionGrid > .reveal-item {
+  flex: 0 0 calc((100% - 20px) / 2.15);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+#mission .missionGrid > .reveal-item {
+  flex: 0 0 calc((100% - 40px) / 2.45);
+}
+
+#events .eventGrid > .eventCard {
+  flex: 0 0 min(860px, 82%);
+}
+
+#sermons .sermonGrid {
+  margin-top: 34px;
+}
+
+#sermons .sermonGrid > .sermonCard {
+  flex: 0 0 calc((100% - 20px) / 1.65);
+}
+
+#ebooks .ebookGrid > .ebookCard {
+  flex: 0 0 calc((100% - 40px) / 2.45);
+}
+
+@media (max-width: 850px) {
+  #about .pillars,
+  #vision .visionGrid,
+  #mission .missionGrid,
+  #events .eventGrid,
+  #sermons .sermonGrid,
+  #ebooks .ebookGrid {
+    gap: 14px;
+    padding-right: 12px;
+  }
+
+  #about .pillars > article,
+  #vision .visionGrid > .reveal-item,
+  #mission .missionGrid > .reveal-item,
+  #events .eventGrid > .eventCard,
+  #sermons .sermonGrid > .sermonCard,
+  #ebooks .ebookGrid > .ebookCard {
+    flex: 0 0 min(88%, 360px);
+    width: min(88%, 360px);
+  }
+
+  #events .eventGrid > .eventCard {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  #events .eventGrid > .eventCard .eventCardAction {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #about .pillars,
+  #vision .visionGrid,
+  #mission .missionGrid,
+  #events .eventGrid,
+  #sermons .sermonGrid,
+  #ebooks .ebookGrid {
+    scroll-behavior: auto;
+  }
+}
