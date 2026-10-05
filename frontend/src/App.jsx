@@ -230,9 +230,6 @@ function App() {
   const [reactionSubmitting, setReactionSubmitting] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  useAutoCarousel("#about .pillars", ":scope > article", 0, 5200);
-  useAutoCarousel("#vision .visionGrid", ":scope > .reveal-item", 0, 5200);
-  useAutoCarousel("#mission .missionGrid", ":scope > .reveal-item", 0, 5200);
   useAutoCarousel("#story .storyTimeline", ":scope > .storyMilestone", 0, 5600);
   useAutoCarousel("#events .eventGrid", ":scope > .eventCard", data.upcoming_events.length, 4800);
   useAutoCarousel("#sermons .sermonGrid", ":scope > .sermonCard", data.sermons.length, 5000);
