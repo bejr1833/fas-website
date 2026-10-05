@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
-const CONTENT_CACHE_TTL = 5 * 60 * 1000;
+const CONTENT_CACHE_TTL = 24 * 60 * 60 * 1000;
 
 function readContentCache(key) {
   try {
@@ -30,12 +30,12 @@ function writeContentCache(key, data) {
   }
 }
 
-async function fetchJsonWithRetry(path, attempts = 3, cacheKey = null) {
+async function fetchJsonWithRetry(path, attempts = 8, cacheKey = null) {
   let lastError;
 
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     try {
-      const response = await fetch(path);
+      const response = await fetch(path, { cache: "no-store" });
 
       if (!response.ok) {
         throw new Error(`Request failed: ${response.status}`);
@@ -45,17 +45,24 @@ async function fetchJsonWithRetry(path, attempts = 3, cacheKey = null) {
       if (cacheKey) writeContentCache(cacheKey, data);
       return data;
     } catch (error) {
+      lastError = error;
+
       if (attempt === attempts - 1) {
-        throw error;
+        break;
       }
 
+      const retryDelay = Math.min(
+        1000 * Math.pow(1.5, attempt),
+        5000
+      );
+
       await new Promise((resolve) =>
-        setTimeout(resolve, 800 * (attempt + 1))
+        setTimeout(resolve, retryDelay)
       );
     }
   }
 
-  throw new Error("Request failed");
+  throw lastError || new Error("Request failed");
 }
 import {
   ArrowRight,
@@ -650,7 +657,7 @@ function App() {
   }, [galleryLightboxOpen, filteredGallery.length]);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/home/`, 3, "home")
+    fetchJsonWithRetry(`${API_BASE}/api/home/`, 8, "home")
       .then((result) => {
         setData((current) => ({
           settings: result.settings || fallback,
@@ -678,7 +685,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/blog/`, 3, "blog")
+    fetchJsonWithRetry(`${API_BASE}/api/blog/`, 8, "blog")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -690,7 +697,7 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/sermons/`, 3, "sermons")
+    fetchJsonWithRetry(`${API_BASE}/api/sermons/`, 8, "sermons")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -702,7 +709,7 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/videos/`, 3, "videos")
+    fetchJsonWithRetry(`${API_BASE}/api/videos/`, 8, "videos")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -715,7 +722,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/ebooks/`, 3, "ebooks")
+    fetchJsonWithRetry(`${API_BASE}/api/ebooks/`, 8, "ebooks")
       .then((result) => {
         setData((current) => ({
           ...current,
