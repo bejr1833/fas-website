@@ -56,7 +56,7 @@ h2{font-size:clamp(32px,4vw,52px);line-height:1.08;letter-spacing:-.035em;margin
 .missionGrid>div{background:var(--ivory);border:1px solid var(--line);border-radius:16px;padding:25px}
 .missionGrid svg{color:var(--red)}
 .missionGrid h3{color:var(--black);margin:20px 0 8px}
-.eventsSection{background:var(--ivory);max-width:none;padding-left:6vw;padding-right:6vw}
+.eventsSection{background:var(--ivory);max-width:none;padding-left:6vw;padding-right:6vw;scroll-margin-top:96px}
 .sectionTop{max-width:1120px;margin:auto;display:flex;justify-content:space-between;align-items:end;gap:25px}
 .eventGrid{max-width:1120px;margin:38px auto 0;display:grid;gap:12px}
 .eventCard{display:grid;grid-template-columns:90px 1fr auto;gap:22px;align-items:center;background:white;border:1px solid var(--line);border-radius:16px;padding:22px}
