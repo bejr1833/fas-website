@@ -20,6 +20,7 @@ from .models import (
     EBook,
     BlogReaction,
     BlogComment,
+    Devotional,
 )
 
 from .serializers import (
@@ -35,6 +36,7 @@ from .serializers import (
     EBookSerializer,
     BlogCommentSerializer,
     BlogReactionSerializer,
+    DevotionalSerializer,
 )
 
 
@@ -70,6 +72,11 @@ class HomeDataView(APIView):
             is_approved=True
         ).order_by("-submitted_at")[:6]
 
+        devotional = Devotional.objects.filter(
+            is_published=True,
+            date__lte=today,
+        ).order_by("-date", "-created_at").first()
+
         return Response({
             "settings": (
                 SiteSettingsSerializer(
@@ -103,6 +110,15 @@ class HomeDataView(APIView):
                 many=True,
                 context={"request": request}
             ).data,
+
+            "devotional": (
+                DevotionalSerializer(
+                    devotional,
+                    context={"request": request}
+                ).data
+                if devotional
+                else None
+            ),
         })
 
 
@@ -179,6 +195,27 @@ class BlogPostDetailView(generics.RetrieveAPIView):
     def get_queryset(self):
         return BlogPost.objects.filter(
             is_published=True
+        )
+
+
+class DevotionalListView(generics.ListAPIView):
+    serializer_class = DevotionalSerializer
+
+    def get_queryset(self):
+        return Devotional.objects.filter(
+            is_published=True,
+            date__lte=timezone.localdate(),
+        ).order_by("-date", "-created_at")
+
+
+class DevotionalDetailView(generics.RetrieveAPIView):
+    serializer_class = DevotionalSerializer
+    lookup_field = "slug"
+
+    def get_queryset(self):
+        return Devotional.objects.filter(
+            is_published=True,
+            date__lte=timezone.localdate(),
         )
 
 
