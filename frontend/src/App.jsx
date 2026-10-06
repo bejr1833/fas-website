@@ -2799,8 +2799,8 @@ function App() {
                 <h2>Our next gathering is coming soon.</h2>
 
                 <p>
-                  Thank you for being part of FAS! We'll update you here
-                  as soon as the next gathering is announced.
+                  Thank you for being part of FAS. We will update you here
+                  as soon as the details of our next gathering are announced.
                 </p>
                 <a className="heroNextLink" href="#events">
                   Explore Events
