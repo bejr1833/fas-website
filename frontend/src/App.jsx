@@ -208,13 +208,16 @@ function App() {
     blog: cachedBlog || [],
     sermons: cachedSermons || [],
     videos: cachedVideos || [],
-    ebooks: cachedEbooks || []
+    ebooks: cachedEbooks || [],
+    devotional: cachedHome?.devotional || null
   });
 
   const [loading, setLoading] = useState(!cachedHome);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [blogPost, setBlogPost] = useState(null);
+  const [devotionalPost, setDevotionalPost] = useState(null);
+  const [devotionalLoading, setDevotionalLoading] = useState(false);
   const [blogLoading, setBlogLoading] = useState(false);
   const [blogEngagement, setBlogEngagement] = useState({
     comments: [],
@@ -829,7 +832,8 @@ function App() {
           blog: current.blog || [],
           sermons: current.sermons || [],
           videos: current.videos || [],
-          ebooks: current.ebooks || []
+          ebooks: current.ebooks || [],
+          devotional: result.devotional || current.devotional || null
         }));
       })
       .catch(() => {
@@ -893,6 +897,26 @@ function App() {
       .catch(() => {
         // Preserve previously loaded content when the API is temporarily unavailable.
       });
+  }, []);
+
+  useEffect(() => {
+    const pathName = window.location.pathname;
+    const isDevotionalDetail = pathName.startsWith("/devotionals/");
+
+    if (!isDevotionalDetail) return;
+
+    const slug = pathName.replace("/devotionals/", "").replace(/\/+$/, "");
+    if (!slug) return;
+
+    setDevotionalLoading(true);
+    fetch(`\${API_BASE}/api/devotionals/\${encodeURIComponent(slug)}/`)
+      .then((response) => {
+        if (!response.ok) throw new Error("Devotional unavailable");
+        return response.json();
+      })
+      .then((result) => setDevotionalPost(result))
+      .catch(() => setDevotionalPost(null))
+      .finally(() => setDevotionalLoading(false));
   }, []);
 
   useEffect(() => {
@@ -1188,7 +1212,7 @@ function App() {
     };
   }, [data.stories]);
   useEffect(() => {
-    if (window.location.pathname.startsWith("/blog/")) {
+    if (window.location.pathname.startsWith("/blog/") || window.location.pathname.startsWith("/devotionals/")) {
       return;
     }
 
@@ -1374,11 +1398,66 @@ function App() {
 
 
   const isEventsPage = window.location.pathname === "/events" || window.location.pathname === "/events/";
+  const isDevotionalPage = window.location.pathname.startsWith("/devotionals/");
   const isBlogArticle = window.location.pathname.startsWith("/blog/");
   const coverWords = (blogPost?.title || "Faith Alone Saves").trim().split(/\s+/);
   const coverSplit = Math.max(1, Math.ceil(coverWords.length / 2));
   const coverLead = coverWords.slice(0, coverSplit).join(" ");
   const coverAccent = coverWords.slice(coverSplit).join(" ");
+
+
+  if (isDevotionalPage) {
+    return (
+      <div className={`site devotionalPage ${darkMode ? "devotionalPageDark" : "devotionalPageLight"}`}>
+        <header className="navbar">
+          <a href="/" className="brand" aria-label="Faith Alone Saves home">
+            <img src="/branding/fas-logo.png" alt="Faith Alone Saves" />
+          </a>
+          <div className="navActions">
+            <button type="button" className="themeToggle" onClick={toggleDarkMode}
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              title={darkMode ? "Switch to light mode" : "Switch to dark mode"}>
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <a href="/" className="textBtn">Back to FAS <ArrowRight size={16} /></a>
+          </div>
+        </header>
+        <main className="devotionalPageMain">
+          {devotionalLoading ? (
+            <div className="devotionalState"><span className="sectionLabel">FAS DAILY DEVOTIONAL</span><p>Preparing today's devotional...</p></div>
+          ) : !devotionalPost ? (
+            <div className="devotionalState"><span className="sectionLabel">FAS DAILY DEVOTIONAL</span><h1>Devotional not found</h1><p>This devotional is no longer published or could not be loaded.</p><a href="/" className="primaryBtn">Back to FAS <ArrowRight size={17} /></a></div>
+          ) : (
+            <article className="devotionalArticle">
+              <div className="devotionalArticleEyebrow">FAS DAILY DEVOTIONAL</div>
+              <div className="devotionalArticleDate">
+                {new Date(devotionalPost.date + "T00:00:00").toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })}
+                <span>·</span><span>3 min read</span>
+              </div>
+              <h1>{devotionalPost.title}</h1>
+              <div className="devotionalByline">By <strong>{devotionalPost.author}</strong></div>
+              <div className="devotionalScripture">
+                <span>“</span>
+                <p>{devotionalPost.scripture_text}</p>
+                <strong>{devotionalPost.scripture_reference}</strong>
+              </div>
+              <div className="devotionalImpact"><span>THE IMPACT</span><strong>{devotionalPost.impact_line}</strong></div>
+              <div className="devotionalBody">
+                <span className="devotionalBodyLabel">REFLECTION</span>
+                {devotionalPost.reflection.split(/\r?\n\s*\r?\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
+                <div className="devotionalPrayer">
+                  <span>PRAYER</span>
+                  {devotionalPost.prayer.split(/\r?\n\s*\r?\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
+                </div>
+                {devotionalPost.application && <div className="devotionalApplication"><span>LIVE IT OUT</span><p>{devotionalPost.application}</p></div>}
+              </div>
+              <div className="devotionalFooter">FAITH · FELLOWSHIP · TRUTH <span>FAS</span></div>
+            </article>
+          )}
+        </main>
+      </div>
+    );
+  }
 
   if (isEventsPage) {
     return (
@@ -2150,6 +2229,37 @@ function App() {
             <div className="heroNextWatermark">FAS</div>
           </div>
         </section>
+
+        {data.devotional && (
+          <section className="devotionalHomeSection reveal-section" aria-labelledby="daily-devotional-title">
+            <div className="devotionalHomeCard">
+              <div className="devotionalHomeTop">
+                <div>
+                  <span className="sectionLabel">FAS DAILY DEVOTIONAL</span>
+                  <span className="devotionalHomeDate">{new Date(data.devotional.date + "T00:00:00").toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" })}</span>
+                </div>
+                <span className="devotionalHomeMark">✦</span>
+              </div>
+              <div className="devotionalHomeScripture">
+                <p id="daily-devotional-title">“{data.devotional.scripture_text}”</p>
+                <span>{data.devotional.scripture_reference}</span>
+              </div>
+              <div className="devotionalHomeImpact">
+                <span>THE IMPACT</span>
+                <strong>{data.devotional.impact_line}</strong>
+              </div>
+              <div className="devotionalHomePrayer">
+                <span>PRAYER</span>
+                <p>{data.devotional.prayer}</p>
+              </div>
+              <div className="devotionalHomeBottom">
+                <span>By {data.devotional.author}</span>
+                <a href={`/devotionals/\${data.devotional.slug}`} className="devotionalReadMore">Read More <ArrowRight size={16} /></a>
+              </div>
+            </div>
+          </section>
+        )}
+
         {data.blog.length > 0 && (
           <section className="latestBlogStrip reveal-section">
             <div className="latestBlogInner">
