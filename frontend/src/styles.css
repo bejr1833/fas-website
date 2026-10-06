@@ -14012,3 +14012,17 @@ html:not([data-theme="dark"]) .heroNextLink--live{
   position:relative;
   z-index:1;
 }
+
+
+/* Light mode: keep the primary Join Today CTA bold and unmistakable. */
+html:not([data-theme="dark"]) .heroNextLink--today{
+  background:#171716 !important;
+  border-color:#171716 !important;
+  color:#ffffff !important;
+  box-shadow:0 14px 30px rgba(23,23,22,.16) !important;
+}
+html:not([data-theme="dark"]) .heroNextLink--today:hover{
+  background:#2b2b2a !important;
+  border-color:#2b2b2a !important;
+  color:#ffffff !important;
+}
