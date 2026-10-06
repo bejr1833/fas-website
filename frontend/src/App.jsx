@@ -1561,6 +1561,10 @@ function App() {
       return map;
     }, {});
     const todaysDevotional = devotionByDate[todayKey] || null;
+    const upcomingDevotionals = calendarDevotionals
+      .filter((devotional) => devotional.date > todayKey)
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .slice(0, 3);
     const calendarDays = getCalendarDays(devotionMonth);
     const monthLabel = devotionMonth.toLocaleDateString("en-US", {
       month: "long",
@@ -1740,6 +1744,42 @@ function App() {
                     </div>
                   );
                 })}
+              </div>
+            )}
+          </section>
+
+          <section className="devotionsUpcoming" aria-labelledby="devotions-upcoming-title">
+            <div className="devotionsUpcomingHeader">
+              <div>
+                <span className="sectionLabel">KEEP WALKING</span>
+                <h2 id="devotions-upcoming-title">Coming next</h2>
+              </div>
+              <p>New Scripture-led reflections will appear here as the journey grows.</p>
+            </div>
+            {upcomingDevotionals.length > 0 ? (
+              <div className="devotionsUpcomingList">
+                {upcomingDevotionals.map((devotional) => (
+                  <a
+                    key={devotional.slug}
+                    href={`/devotionals/${devotional.slug}`}
+                    className="devotionsUpcomingItem"
+                  >
+                    <div className="devotionsUpcomingDate">
+                      <strong>{fromDateKey(devotional.date).toLocaleDateString("en-US", { day: "2-digit" })}</strong>
+                      <span>{fromDateKey(devotional.date).toLocaleDateString("en-US", { month: "short" })}</span>
+                    </div>
+                    <div className="devotionsUpcomingCopy">
+                      <span>{devotional.scripture_reference}</span>
+                      <h3>{devotional.title}</h3>
+                    </div>
+                    <ArrowRight size={18} />
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <div className="devotionsUpcomingEmpty">
+                <span>•</span>
+                <p>The next devotional will appear here when it is published.</p>
               </div>
             )}
           </section>
