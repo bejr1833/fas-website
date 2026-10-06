@@ -351,6 +351,7 @@ function App() {
   const [blogPost, setBlogPost] = useState(null);
   const [devotionalPost, setDevotionalPost] = useState(null);
   const [devotionalLoading, setDevotionalLoading] = useState(false);
+  const [devotionalShareStatus, setDevotionalShareStatus] = useState("");
   const [devotionMonth, setDevotionMonth] = useState(() => {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), 1);
@@ -1401,6 +1402,33 @@ function App() {
     ...(data.settings || {})
   };
 
+    const shareDevotional = async () => {
+    if (!devotionalPost) return;
+
+    const url = window.location.href;
+    const title = `${devotionalPost.title} — FAS Daily Devotional`;
+    const text = devotionalPost.scripture_reference
+      ? `${devotionalPost.title} · ${devotionalPost.scripture_reference} · Faith Alone Saves`
+      : `Read "${devotionalPost.title}" from FAS Daily Devotional.`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, text, url });
+        setDevotionalShareStatus("Shared");
+        window.setTimeout(() => setDevotionalShareStatus(""), 2200);
+        return;
+      }
+
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        setDevotionalShareStatus("Link copied");
+        window.setTimeout(() => setDevotionalShareStatus(""), 2200);
+      }
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+    }
+  };
+
     const shareStory = async (story) => {
     const url = `${window.location.origin}/#story-${story.id}`;
     const title = `${story.student_name} — FAS Student Testimony`;
@@ -1829,6 +1857,16 @@ function App() {
               </div>
               <h1>{devotionalPost.title}</h1>
               <div className="devotionalByline">By <strong>{devotionalPost.author}</strong></div>
+              <button
+                type="button"
+                className="devotionalShareButton"
+                onClick={shareDevotional}
+                aria-label="Share this devotional"
+                title="Share this devotional"
+              >
+                <Share2 size={16} />
+                <span>{devotionalShareStatus || "Share devotional"}</span>
+              </button>
               <div className="devotionalScripture">
                 <span>“</span>
                 <p>{devotionalPost.scripture_text}</p>
