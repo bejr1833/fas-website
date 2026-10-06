@@ -1578,6 +1578,7 @@ function App() {
       map[devotional.date] = devotional;
       return map;
     }, {});
+    const todaysDevotional = devotionByDate[todayKey] || null;
     const calendarDays = getCalendarDays(devotionMonth);
     const monthLabel = devotionMonth.toLocaleDateString("en-US", {
       month: "long",
@@ -1621,7 +1622,7 @@ function App() {
 
         <main className="devotionsPageMain">
           <section className="devotionsHero">
-            <div>
+            <div className="devotionsHeroCopy">
               <span className="sectionLabel">FAS DAILY DEVOTIONAL</span>
               <h1>A daily walk with <em>God's Word.</em></h1>
               <p>
@@ -1634,6 +1635,43 @@ function App() {
               <span>STARTING TODAY</span>
               <strong>{today.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</strong>
             </div>
+          </section>
+
+          <section className="devotionsTodayCard" aria-labelledby="today-devotional-title">
+            <div className="devotionsTodayEyebrow">
+              <span className="devotionsTodayMark"></span>
+              TODAY'S DEVOTIONAL
+            </div>
+            {devotionsLoading ? (
+              <div className="devotionsTodayLoading">
+                <span className="devotionsLoadingOrb"></span>
+                <p>Preparing today's devotional...</p>
+              </div>
+            ) : todaysDevotional ? (
+              <div className="devotionsTodayContent">
+                <div className="devotionsTodayDate">
+                  <strong>{today.toLocaleDateString("en-US", { day: "2-digit" })}</strong>
+                  <span>{today.toLocaleDateString("en-US", { month: "short" })}</span>
+                </div>
+                <div className="devotionsTodayMain">
+                  <span className="devotionsTodayReference">{todaysDevotional.scripture_reference}</span>
+                  <h2 id="today-devotional-title">{todaysDevotional.title}</h2>
+                  <p className="devotionsTodayVerse">“{todaysDevotional.scripture_text}”</p>
+                  <p className="devotionsTodayImpact">{todaysDevotional.impact_line}</p>
+                  <a className="devotionsTodayLink" href={`/devotionals/${todaysDevotional.slug}`}>
+                    Read today's devotional <ArrowRight size={17} />
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <div className="devotionsTodayEmpty">
+                <div>
+                  <span className="devotionsTodayReference">PREPARING THE NEXT WORD</span>
+                  <h2 id="today-devotional-title">Today's devotional is coming soon.</h2>
+                  <p>The FAS team is preparing a Scripture-led reflection for today. Please check back soon.</p>
+                </div>
+              </div>
+            )}
           </section>
 
           <section className="devotionsCalendarShell" aria-labelledby="devotions-calendar-title">
@@ -1692,7 +1730,12 @@ function App() {
                   ].filter(Boolean).join(" ");
 
                   return (
-                    <div className={dayClass} role="gridcell" key={dateKey}>
+                    <div
+                      className={dayClass}
+                      role="gridcell"
+                      key={dateKey}
+                      aria-label={`${date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}${devotional ? `: ${devotional.title}` : isFuture ? ": devotional coming soon" : ""}`}
+                    >
                       <div className="devotionDayTop">
                         <span className="devotionDayNumber">{date.getDate()}</span>
                         {isToday && <span className="devotionTodayPill">TODAY</span>}
@@ -1708,7 +1751,7 @@ function App() {
                           <span className="devotionDayArrow"><ArrowRight size={13} /></span>
                         </a>
                       ) : isFuture ? (
-                        <span className="devotionDayPlaceholder">Coming soon</span>
+                        <span className="devotionDayPlaceholder" aria-label="Devotional coming soon">•</span>
                       ) : (
                         <span className="devotionDayPlaceholder devotionDayPlaceholder--past">—</span>
                       )}
