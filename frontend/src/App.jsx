@@ -111,9 +111,36 @@ function scrollToSection(id) {
   const element = document.getElementById(id);
   if (!element) return false;
 
+  const getTargetTop = () => {
+    const header = document.querySelector(".navbar");
+    const headerHeight = header?.getBoundingClientRect().height || 82;
+    const extraOffset = window.innerWidth <= 850 ? 12 : 16;
+    return Math.max(
+      0,
+      window.scrollY + element.getBoundingClientRect().top - headerHeight - extraOffset
+    );
+  };
+
+  const scrollToTarget = (behavior = "smooth") => {
+    window.scrollTo({ top: getTargetTop(), behavior });
+  };
+
+  // Start after the current layout pass, then correct for images/content
+  // above the target that may finish loading during the scroll.
   window.requestAnimationFrame(() => {
     window.requestAnimationFrame(() => {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollToTarget("smooth");
+
+      [220, 520, 900].forEach((delay) => {
+        window.setTimeout(() => {
+          if (document.getElementById(id) === element) {
+            const targetTop = getTargetTop();
+            if (Math.abs(window.scrollY - targetTop) > 10) {
+              window.scrollTo({ top: targetTop, behavior: "smooth" });
+            }
+          }
+        }, delay);
+      });
     });
   });
 
@@ -400,10 +427,10 @@ function App() {
 
     const timer = window.setTimeout(() => {
       scrollToSection(hash);
-    }, 150);
+    }, 180);
 
     return () => window.clearTimeout(timer);
-  }, [loading, data.slides.length]);
+  }, []);
 
   // Automatically rotate Highlights & Updates while preserving manual controls.
   useEffect(() => {
