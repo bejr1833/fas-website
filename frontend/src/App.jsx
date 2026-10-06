@@ -349,8 +349,6 @@ function App() {
   const [blogPost, setBlogPost] = useState(null);
   const [devotionalPost, setDevotionalPost] = useState(null);
   const [devotionalLoading, setDevotionalLoading] = useState(false);
-  const [devotionals, setDevotionals] = useState([]);
-  const [devotionalsLoading, setDevotionalsLoading] = useState(false);
   const [devotionMonth, setDevotionMonth] = useState(() => {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), 1);
@@ -979,9 +977,6 @@ function App() {
           devotional: result.devotional || current.devotional || null,
           devotionals: Array.isArray(result.devotionals) ? result.devotionals : (current.devotionals || [])
         }));
-        setDevotionals(
-          Array.isArray(result.devotionals) ? result.devotionals : []
-        );
       })
       .catch(() => {
         // Keep the existing homepage data if the API is temporarily unavailable.
@@ -1044,27 +1039,6 @@ function App() {
       .catch(() => {
         // Preserve previously loaded content when the API is temporarily unavailable.
       });
-  }, []);
-
-  useEffect(() => {
-    const pathName = window.location.pathname;
-    const isDevotionsCalendar =
-      pathName === "/devotions" ||
-      pathName === "/devotions/" ||
-      pathName === "/devotionals" ||
-      pathName === "/devotionals/";
-
-    if (!isDevotionsCalendar) return;
-
-    setDevotionalsLoading(true);
-    fetchJsonWithRetry(
-      `${API_BASE}/api/devotionals/`,
-      14,
-      "devotionals"
-    )
-      .then((result) => setDevotionals(Array.isArray(result) ? result : []))
-      .catch(() => setDevotionals([]))
-      .finally(() => setDevotionalsLoading(false));
   }, []);
 
   useEffect(() => {
@@ -1579,7 +1553,7 @@ function App() {
   if (isDevotionsCalendarPage) {
     const today = new Date();
     const todayKey = toDateKey(today);
-    const calendarDevotionals = devotionals.length ? devotionals : (data.devotionals || []);
+    const calendarDevotionals = Array.isArray(data.devotionals) ? data.devotionals : [];
     const devotionByDate = calendarDevotionals.reduce((map, devotional) => {
       map[devotional.date] = devotional;
       return map;
@@ -1705,7 +1679,7 @@ function App() {
               <span><i className="devotionLegendDot devotionLegendDot--future"></i> Coming soon</span>
             </div>
 
-            {devotionalsLoading ? (
+            {loading ? (
               <div className="devotionsCalendarLoading">
                 <span className="devotionsLoadingOrb"></span>
                 <p>Preparing the FAS devotional calendar...</p>
