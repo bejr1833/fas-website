@@ -31,10 +31,12 @@ function writeContentCache(key, data) {
   }
 }
 
-async function fetchJsonWithRetry(path, attempts = 14, cacheKey = null) {
+async function fetchJsonWithRetry(path, attempts = 5, cacheKey = null) {
+  // Keep retries bounded so a cold backend cannot be overwhelmed by one browser.
+  const maxAttempts = Math.min(Math.max(Number(attempts) || 1, 1), 5);
   let lastError;
 
-  for (let attempt = 0; attempt < attempts; attempt += 1) {
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     try {
       const response = await fetch(path, { cache: "no-store" });
 
@@ -48,13 +50,13 @@ async function fetchJsonWithRetry(path, attempts = 14, cacheKey = null) {
     } catch (error) {
       lastError = error;
 
-      if (attempt === attempts - 1) {
+      if (attempt === maxAttempts - 1) {
         break;
       }
 
       const retryDelay = Math.min(
-        1000 * Math.pow(1.5, attempt),
-        5000
+        1200 * Math.pow(1.6, attempt),
+        6000
       );
 
       await new Promise((resolve) =>
