@@ -13,6 +13,8 @@ from .views import (
     EBookListView,
     BlogEngagementView,
     BlogReactionView,
+    DevotionalListView,
+    DevotionalDetailView,
 )
 
 urlpatterns = [
@@ -27,6 +29,8 @@ urlpatterns = [
     path("blog/<slug:slug>/", BlogPostDetailView.as_view(), name="blog-detail"),
     path("blog/<slug:slug>/engagement/", BlogEngagementView.as_view(), name="blog-engagement"),
     path("blog/<slug:slug>/react/", BlogReactionView.as_view(), name="blog-react"),
+    path("devotionals/", DevotionalListView.as_view(), name="devotionals"),
+    path("devotionals/<slug:slug>/", DevotionalDetailView.as_view(), name="devotional-detail"),
     path("sermons/", SermonPDFListView.as_view(), name="sermons"),
     path("videos/", FASVideoListView.as_view(), name="videos"),
 ]
