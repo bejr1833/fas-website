@@ -27,6 +27,7 @@ from .models import (
     EBook,
     BlogComment,
     BlogReaction,
+    Devotional,
 )
 
 
@@ -275,6 +276,12 @@ class EBookSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(url)
 
         return url
+
+
+class DevotionalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Devotional
+        fields = "__all__"
 
 
 class BlogCommentSerializer(serializers.ModelSerializer):
