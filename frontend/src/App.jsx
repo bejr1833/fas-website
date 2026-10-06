@@ -1624,7 +1624,7 @@ function App() {
               <span className="devotionsTodayMark"></span>
               TODAY'S DEVOTIONAL
             </div>
-            {devotionsLoading ? (
+            {loading ? (
               <div className="devotionsTodayLoading">
                 <span className="devotionsLoadingOrb"></span>
                 <p>Preparing today's devotional...</p>
