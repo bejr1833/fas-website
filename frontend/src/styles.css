@@ -13805,3 +13805,169 @@ html[data-theme="dark"] .devotionalFooter{color:#9da29d}
   .devotionalPrayer,.devotionalApplication{padding:22px 20px}
   .devotionalFooter{margin-top:42px}
 }
+
+
+/* =========================================================
+   NEXT GATHERING — date-aware premium event status
+   ========================================================= */
+.heroEventStatus{
+  position:relative;
+  z-index:2;
+  display:inline-flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:9px;
+  margin:18px 0 2px;
+  padding:9px 12px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:999px;
+  background:rgba(255,255,255,.035);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter:blur(8px);
+}
+.heroEventStatusDot{
+  width:8px;
+  height:8px;
+  flex:0 0 8px;
+  border-radius:50%;
+  background:#c7a45c;
+  box-shadow:0 0 0 5px rgba(199,164,92,.10);
+}
+.heroEventStatusLabel{
+  font-size:10px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#efe7d5;
+}
+.heroEventStatusDetail{
+  padding-left:9px;
+  border-left:1px solid rgba(255,255,255,.12);
+  font-size:10px;
+  line-height:1.2;
+  font-weight:700;
+  color:rgba(255,255,255,.58);
+}
+.heroEventStatus--today{
+  border-color:rgba(200,31,42,.42);
+  background:linear-gradient(135deg,rgba(165,18,29,.18),rgba(255,255,255,.025));
+}
+.heroEventStatus--today .heroEventStatusDot{
+  background:#df202b;
+  box-shadow:0 0 0 5px rgba(223,32,43,.13),0 0 18px rgba(223,32,43,.35);
+}
+.heroEventStatus--today .heroEventStatusLabel{color:#ffb9bd}
+
+.heroEventStatus--live{
+  border-color:rgba(227,49,59,.56);
+  background:linear-gradient(135deg,rgba(190,21,31,.27),rgba(255,255,255,.025));
+}
+.heroEventStatus--live .heroEventStatusDot{
+  background:#ff2935;
+  box-shadow:0 0 0 5px rgba(255,41,53,.15),0 0 22px rgba(255,41,53,.55);
+  animation:fasLivePulse 1.45s ease-in-out infinite;
+}
+.heroEventStatus--live .heroEventStatusLabel{
+  color:#ffd1d4;
+}
+.heroEventStatus--ended{
+  opacity:.72;
+  border-color:rgba(255,255,255,.08);
+}
+.heroEventStatus--ended .heroEventStatusDot{
+  background:#7c837f;
+  box-shadow:none;
+}
+.heroEventStatus--ended .heroEventStatusLabel{
+  color:#c1c5c2;
+}
+.heroEventStatus--upcoming .heroEventStatusDot{
+  background:#d0aa60;
+  box-shadow:0 0 0 5px rgba(208,170,96,.11);
+}
+
+.heroNextLiveBadge.isLiveNow{
+  border-color:rgba(255,45,58,.52);
+  background:rgba(179,20,31,.20);
+  color:#ffc0c4;
+  box-shadow:0 0 20px rgba(194,24,35,.12);
+}
+.heroNextLiveBadge.isLiveNow .eventLiveDot{
+  animation:fasLivePulse 1.45s ease-in-out infinite;
+}
+
+.heroNextLink--today,
+.heroNextLink--live{
+  position:relative;
+  overflow:hidden;
+  border-color:#f4eee4 !important;
+  background:linear-gradient(135deg,#f8f5ef 0%,#ffffff 55%,#ece6db 100%) !important;
+  color:#171918 !important;
+  box-shadow:0 16px 35px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.8);
+}
+.heroNextLink--today::before,
+.heroNextLink--live::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  transform:translateX(-120%);
+  background:linear-gradient(105deg,transparent 25%,rgba(255,255,255,.72) 50%,transparent 75%);
+  animation:fasJoinShine 4.6s ease-in-out infinite;
+  pointer-events:none;
+}
+.heroNextLink--live{
+  box-shadow:0 16px 38px rgba(158,22,31,.28),0 0 0 1px rgba(221,37,47,.12);
+}
+.heroNextLink--ended{
+  cursor:default;
+  opacity:.58;
+  background:rgba(255,255,255,.055) !important;
+  color:rgba(255,255,255,.72) !important;
+  border:1px solid rgba(255,255,255,.09) !important;
+  box-shadow:none !important;
+}
+.heroEndedCheck{
+  display:grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  font-size:12px;
+}
+
+@keyframes fasLivePulse{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(.72);opacity:.58}
+}
+@keyframes fasJoinShine{
+  0%,62%{transform:translateX(-120%)}
+  78%,100%{transform:translateX(120%)}
+}
+
+@media (max-width:640px){
+  .heroEventStatus{
+    width:fit-content;
+    max-width:100%;
+    margin-top:15px;
+    gap:7px;
+    padding:8px 10px;
+  }
+  .heroEventStatusDetail{
+    font-size:9px;
+  }
+  .heroNextLink--today,
+  .heroNextLink--live{
+    min-height:54px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .heroEventStatus--live .heroEventStatusDot,
+  .heroNextLiveBadge.isLiveNow .eventLiveDot,
+  .heroNextLink--today::before,
+  .heroNextLink--live::before{
+    animation:none !important;
+  }
+}
