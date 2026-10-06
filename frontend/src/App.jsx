@@ -3848,8 +3848,10 @@ function App() {
               <p>Sermons will appear here.</p>
             </div>
           ) : (
-            <div className="sermonGrid">
-              {data.sermons.map((sermon) => (
+            <>
+              <div className="sermonSliderWrap">
+                <div className="sermonGrid">
+                  {data.sermons.map((sermon) => (
                 <article className="sermonCard reveal-item" key={sermon.id}>
                   <div className="sermonCardTop">
                     <span className="sermonCategory">
@@ -3905,8 +3907,25 @@ function App() {
                     </div>
                   </div>
                 </article>
-              ))}
-            </div>
+                  ))}
+                </div>
+                <div className="sermonSliderControls" aria-label="Sermon navigation">
+                  <button type="button" className="sermonSliderArrow" aria-label="Previous sermon" onClick={() => {
+                    const grid = document.querySelector("#sermons .sermonGrid");
+                    if (grid) grid.scrollBy({ left: -grid.clientWidth, behavior: "smooth" });
+                  }}>
+                    <ArrowLeft size={19} />
+                  </button>
+                  <span className="sermonSliderHint">SWIPE OR USE ARROWS</span>
+                  <button type="button" className="sermonSliderArrow" aria-label="Next sermon" onClick={() => {
+                    const grid = document.querySelector("#sermons .sermonGrid");
+                    if (grid) grid.scrollBy({ left: grid.clientWidth, behavior: "smooth" });
+                  }}>
+                    <ArrowRight size={19} />
+                  </button>
+                </div>
+              </div>
+            </>
           )}
         </section>
 
