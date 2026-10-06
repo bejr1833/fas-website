@@ -1665,6 +1665,12 @@ function App() {
     }, {});
     const todaysDevotional = devotionalHasStarted ? (devotionByDate[todayKey] || null) : null;
     const scheduledNextDevotional = data.next_devotional || null;
+    const nextDevotionalDate = scheduledNextDevotional
+      ? fromDateKey(scheduledNextDevotional.date)
+      : (!devotionalHasStarted ? devotionalStartDate : null);
+    const nextDevotionalTime = scheduledNextDevotional?.release_time
+      ? String(scheduledNextDevotional.release_time).slice(0, 5)
+      : "05:00";
     const upcomingDevotionals = calendarDevotionals
       .filter((devotional) => devotional.date > todayKey)
       .sort((a, b) => a.date.localeCompare(b.date))
@@ -1885,21 +1891,17 @@ function App() {
               <div className="devotionsUpcomingEmpty">
                 <span>•</span>
                 <p>
-                  {scheduledNextDevotional
+                  {nextDevotionalDate
                     ? <>
                         The next devotional will appear on{" "}
                         <strong>
-                          {fromDateKey(scheduledNextDevotional.date).toLocaleDateString("en-US", {
+                          {nextDevotionalDate.toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
                             year: "numeric"
                           })}
                         </strong>{" "}
-                        at{" "}
-                        <strong>
-                          {String(scheduledNextDevotional.release_time || "05:00:00").slice(0, 5)}
-                        </strong>{" "}
-                        IST.
+                        at <strong>{nextDevotionalTime} AM IST</strong>.
                       </>
                     : "The next devotional will appear here when it is scheduled."}
                 </p>
