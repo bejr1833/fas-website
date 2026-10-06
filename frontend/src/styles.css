@@ -13971,3 +13971,44 @@ html[data-theme="dark"] .devotionalFooter{color:#9da29d}
     animation:none !important;
   }
 }
+
+
+/* Light-theme contrast fix for the date-aware Next Gathering status. */
+html:not([data-theme="dark"]) .heroEventStatus{
+  border-color:rgba(136,18,18,.16);
+  background:rgba(136,18,18,.045);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.75),0 4px 16px rgba(23,23,22,.04);
+}
+html:not([data-theme="dark"]) .heroEventStatusLabel{
+  color:#7f1111;
+}
+html:not([data-theme="dark"]) .heroEventStatusDetail{
+  border-left-color:rgba(23,23,22,.14);
+  color:#555b57;
+}
+html:not([data-theme="dark"]) .heroEventStatus--today{
+  border-color:rgba(136,18,18,.28);
+  background:linear-gradient(135deg,rgba(136,18,18,.08),rgba(255,255,255,.72));
+}
+html:not([data-theme="dark"]) .heroEventStatus--today .heroEventStatusLabel{
+  color:#881212;
+}
+html:not([data-theme="dark"]) .heroEventStatus--today .heroEventStatusDetail{
+  color:#4e5450;
+}
+html:not([data-theme="dark"]) .heroEventStatus--ended .heroEventStatusLabel{
+  color:#555b57;
+}
+html:not([data-theme="dark"]) .heroEventStatus--ended .heroEventStatusDetail{
+  color:#6b706c;
+}
+
+html:not([data-theme="dark"]) .heroNextLink--today,
+html:not([data-theme="dark"]) .heroNextLink--live{
+  color:#171918 !important;
+}
+.heroNextLink--today > *,
+.heroNextLink--live > *{
+  position:relative;
+  z-index:1;
+}
