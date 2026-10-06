@@ -1589,7 +1589,11 @@ function App() {
             <div className="emptyState"><CalendarDays size={24} /><p>No upcoming FAS events are currently scheduled.</p></div>
           ) : (
             <div className="eventGrid eventsPageGrid">
-              {data.upcoming_events.map((event) => (
+              {data.upcoming_events.map((event) => {
+                const eventStatus = getEventStatus(event, eventClock);
+                const canJoinEvent = Boolean(event.meeting_url) && eventStatus.key !== "ended";
+
+                return (
                 <article className="eventCard eventCardPremium reveal-item" key={event.id}>
                   <div className="eventDate">
                     <span className="eventDateMonth">{new Date(event.date + "T00:00:00").toLocaleDateString("en-US", { month: "short" })}</span>
@@ -1601,6 +1605,11 @@ function App() {
                       <span className="eventType">{(event.event_type || "event").replace(/-/g, " ")}</span>
                       {event.mode && <span className="eventModeBadge">{event.mode}</span>}
                       {event.meeting_url && <span className="eventLiveBadge"><span className="eventLiveDot"></span>Google Meet</span>}
+                    </div>
+                    <div className={`eventPageStatus eventPageStatus--${eventStatus.key}`}>
+                      <span className="eventPageStatusDot"></span>
+                      <strong>{eventStatus.label}</strong>
+                      {eventStatus.detail && <span>{eventStatus.detail}</span>}
                     </div>
                     <h2>{event.title}</h2>
                     <div className="eventMetaRow eventMetaPremium">
@@ -1614,12 +1623,24 @@ function App() {
                     <div className="eventActionStack">
                       <span className="eventActionHint">EVENT DETAILS</span>
                       <button type="button" className="eventDetailsBtn" onClick={() => setSelectedEvent(event)}>More Details <ArrowRight size={16} /></button>
-                      {event.meeting_url && <a className="eventJoinBtn" href={event.meeting_url} target="_blank" rel="noopener noreferrer">Join Google Meet <ArrowRight size={16} /></a>}
-                      {!event.meeting_url && event.registration_url && <a className="eventJoinBtn eventRegisterBtn" href={event.registration_url} target="_blank" rel="noopener noreferrer">Register / View <ArrowRight size={16} /></a>}
+                      {canJoinEvent ? (
+                        <a className={`eventJoinBtn eventJoinBtn--${eventStatus.key}`} href={event.meeting_url} target="_blank" rel="noopener noreferrer">
+                          {eventStatus.button}
+                          <ArrowRight size={16} />
+                        </a>
+                      ) : eventStatus.key === "ended" ? (
+                        <span className="eventJoinBtn eventJoinBtn--ended" aria-disabled="true">
+                          Event Ended
+                          <span className="eventEndedCheck">✓</span>
+                        </span>
+                      ) : !event.meeting_url && event.registration_url ? (
+                        <a className="eventJoinBtn eventRegisterBtn" href={event.registration_url} target="_blank" rel="noopener noreferrer">Register / View <ArrowRight size={16} /></a>
+                      ) : null}
                     </div>
                   </div>
                 </article>
-              ))}
+                );
+              })}
             </div>
           )}
         </main>
