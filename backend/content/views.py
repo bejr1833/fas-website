@@ -1,4 +1,5 @@
 from django.utils import timezone
+from datetime import datetime
 from django.db import models
 
 from rest_framework import generics, permissions
@@ -40,6 +41,19 @@ from .serializers import (
 )
 
 
+def devotional_is_released(queryset=None):
+    now = timezone.localtime()
+    current_date = now.date()
+    current_time = now.time()
+    base = queryset if queryset is not None else Devotional.objects.all()
+    return base.filter(
+        is_published=True
+    ).filter(
+        models.Q(date__lt=current_date)
+        | models.Q(date=current_date, release_time__lte=current_time)
+    )
+
+
 class HomeDataView(APIView):
 
     def get(self, request):
@@ -77,14 +91,15 @@ class HomeDataView(APIView):
             is_approved=True
         ).order_by("-submitted_at")[:6]
 
-        devotional = Devotional.objects.filter(
-            is_published=True,
-            date__lte=today,
-        ).order_by("-date", "-created_at").first()
+        released_devotionals = devotional_is_released()
 
-        devotional_calendar = Devotional.objects.filter(
-            is_published=True,
-        ).order_by("date", "-created_at")
+        devotional = released_devotionals.order_by(
+            "-date", "-created_at"
+        ).first()
+
+        devotional_calendar = released_devotionals.order_by(
+            "date", "-created_at"
+        )
 
         return Response({
             "settings": (
@@ -225,9 +240,9 @@ class DevotionalListView(generics.ListAPIView):
     def get_queryset(self):
         # Return scheduled and published devotionals so the calendar can
         # display future readings as soon as they are prepared in admin.
-        return Devotional.objects.filter(
-            is_published=True,
-        ).order_by("date", "-created_at")
+        return devotional_is_released().order_by(
+            "date", "-created_at"
+        )
 
 
 class DevotionalDetailView(generics.RetrieveAPIView):
@@ -235,7 +250,7 @@ class DevotionalDetailView(generics.RetrieveAPIView):
     lookup_field = "slug"
 
     def get_queryset(self):
-        return Devotional.objects.filter(is_published=True)
+        return devotional_is_released()
 
 
 class SermonPDFListView(generics.ListAPIView):
