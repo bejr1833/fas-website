@@ -77,6 +77,10 @@ class HomeDataView(APIView):
             date__lte=today,
         ).order_by("-date", "-created_at").first()
 
+        devotional_calendar = Devotional.objects.filter(
+            is_published=True,
+        ).order_by("date", "-created_at")
+
         return Response({
             "settings": (
                 SiteSettingsSerializer(
@@ -119,6 +123,12 @@ class HomeDataView(APIView):
                 if devotional
                 else None
             ),
+
+            "devotionals": DevotionalSerializer(
+                devotional_calendar,
+                many=True,
+                context={"request": request}
+            ).data,
         })
 
 
