@@ -1,5 +1,4 @@
 from django.utils import timezone
-from datetime import datetime
 from django.db import models
 
 from rest_framework import generics, permissions
