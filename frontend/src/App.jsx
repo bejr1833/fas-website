@@ -117,6 +117,102 @@ function scrollToSection(id) {
   return true;
 }
 
+function parseEventTimeRange(timeText = "") {
+  const matches = [...String(timeText).matchAll(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/gi)];
+  if (!matches.length) return null;
+
+  const toMinutes = (match) => {
+    let hour = Number(match[1]);
+    const minute = Number(match[2] || 0);
+    const meridiem = match[3].toLowerCase();
+    if (hour === 12) hour = 0;
+    if (meridiem === "pm") hour += 12;
+    return hour * 60 + minute;
+  };
+
+  return {
+    start: toMinutes(matches[0]),
+    end: matches[1] ? toMinutes(matches[1]) : null
+  };
+}
+
+function getEventStatus(event, now = new Date()) {
+  if (!event?.date) {
+    return { key: "upcoming", label: "UPCOMING", button: "View Event", detail: "" };
+  }
+
+  const eventDate = new Date(`${event.date}T00:00:00`);
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const target = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+  const daysAway = Math.round((target - today) / 86400000);
+
+  if (daysAway < 0) {
+    return { key: "ended", label: "EVENT ENDED", button: "Event Ended", detail: "" };
+  }
+
+  if (daysAway > 0) {
+    const label =
+      daysAway === 1
+        ? "TOMORROW"
+        : daysAway <= 14
+          ? `IN ${daysAway} DAYS`
+          : target.toLocaleDateString("en-US", { month: "short", day: "numeric" }).toUpperCase();
+
+    return {
+      key: "upcoming",
+      label,
+      button: event.meeting_url ? "Join Google Meet" : "View Event",
+      detail: daysAway === 1 ? "Happening tomorrow" : `${daysAway} days to go`
+    };
+  }
+
+  const range = parseEventTimeRange(event.time);
+  if (!range) {
+    return {
+      key: "today",
+      label: "TODAY",
+      button: event.meeting_url ? "Join Today" : "View Today",
+      detail: "Happening today"
+    };
+  }
+
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const endMinutes = range.end ?? range.start + 120;
+
+  if (currentMinutes < range.start) {
+    const minutesUntil = range.start - currentMinutes;
+    const hours = Math.floor(minutesUntil / 60);
+    const minutes = minutesUntil % 60;
+    const detail =
+      hours > 0
+        ? `Starts in ${hours}h${minutes ? ` ${minutes}m` : ""}`
+        : `Starts in ${minutes}m`;
+
+    return {
+      key: "today",
+      label: "TODAY",
+      button: event.meeting_url ? "Join Today" : "View Today",
+      detail
+    };
+  }
+
+  if (currentMinutes <= endMinutes) {
+    return {
+      key: "live",
+      label: "LIVE NOW",
+      button: event.meeting_url ? "Join Live Now" : "View Event",
+      detail: "FAS gathering is live"
+    };
+  }
+
+  return {
+    key: "ended",
+    label: "EVENT ENDED",
+    button: "Event Ended",
+    detail: "Today's gathering has ended"
+  };
+}
+
 function useAutoCarousel(selector, itemSelector, dependency, interval = 4500) {
   useEffect(() => {
     const carousel = document.querySelector(selector);
@@ -233,6 +329,12 @@ function App() {
   const [reactionSubmitting, setReactionSubmitting] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [eventClock, setEventClock] = useState(() => new Date());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setEventClock(new Date()), 30000);
+    return () => window.clearInterval(timer);
+  }, []);
   useAutoCarousel("#story .storyTimeline", ":scope > .storyMilestone", 0, 5600);
   useAutoCarousel("#events .eventGrid", ":scope > .eventCard", data.upcoming_events.length, 4800);
   useAutoCarousel("#sermons .sermonGrid", ":scope > .sermonCard", data.sermons.length, 5000);
@@ -2137,80 +2239,98 @@ function App() {
               <span className="heroNextDot"></span>
             </div>
 
-            {data.upcoming_events.length > 0 ? (
-              <>
-                <div className="heroNextDate">
-                  <strong>
-                    {new Date(
-                      data.upcoming_events[0].date + "T00:00:00"
-                    ).toLocaleDateString("en-US", {
-                      day: "2-digit",
-                    })}
-                  </strong>
+            {data.upcoming_events.length > 0 ? (() => {
+              const featuredEvent = data.upcoming_events[0];
+              const eventStatus = getEventStatus(featuredEvent, eventClock);
+              const canJoin = Boolean(featuredEvent.meeting_url) && eventStatus.key !== "ended";
 
-                  <span>
-                    {new Date(
-                      data.upcoming_events[0].date + "T00:00:00"
-                    ).toLocaleDateString("en-US", {
-                      month: "short",
-                    })}
-                  </span>
-                </div>
+              return (
+                <>
+                  <div className="heroNextDate">
+                    <strong>
+                      {new Date(
+                        featuredEvent.date + "T00:00:00"
+                      ).toLocaleDateString("en-US", {
+                        day: "2-digit",
+                      })}
+                    </strong>
 
-                <div className="heroNextContent">
-                  <div className="heroNextTypeRow">
-                    <span className="heroNextType">
-                      {data.upcoming_events[0].mode || "FAS GATHERING"}
+                    <span>
+                      {new Date(
+                        featuredEvent.date + "T00:00:00"
+                      ).toLocaleDateString("en-US", {
+                        month: "short",
+                      })}
                     </span>
-                    {data.upcoming_events[0].meeting_url && (
-                      <span className="heroNextLiveBadge">
-                        <span className="eventLiveDot"></span>
-                        LIVE LINK
-                      </span>
+                  </div>
+
+                  <div className={`heroEventStatus heroEventStatus--${eventStatus.key}`}>
+                    <span className="heroEventStatusDot"></span>
+                    <span className="heroEventStatusLabel">{eventStatus.label}</span>
+                    {eventStatus.detail && (
+                      <span className="heroEventStatusDetail">{eventStatus.detail}</span>
                     )}
                   </div>
 
-                  <h2>{data.upcoming_events[0].title}</h2>
-
-                  <p className="heroNextTime">
-                    {data.upcoming_events[0].time ||
-                      "Time to be announced"}
-                  </p>
-
-                  {data.upcoming_events[0].speaker_name && (
-                    <div className="heroNextSpeaker">
-                      <span className="heroNextSpeakerIcon">
-                        <UserRound size={14} />
+                  <div className="heroNextContent">
+                    <div className="heroNextTypeRow">
+                      <span className="heroNextType">
+                        {featuredEvent.mode || "FAS GATHERING"}
                       </span>
-                      <span>
-                        <small>Speaker</small>
-                        <strong>{data.upcoming_events[0].speaker_name}</strong>
-                      </span>
+                      {featuredEvent.meeting_url && eventStatus.key !== "ended" && (
+                        <span className={`heroNextLiveBadge ${eventStatus.key === "live" ? "isLiveNow" : ""}`}>
+                          <span className="eventLiveDot"></span>
+                          {eventStatus.key === "live" ? "LIVE NOW" : "LIVE LINK"}
+                        </span>
+                      )}
                     </div>
-                  )}
-                </div>
 
-                {data.upcoming_events[0].meeting_url ? (
-                  <a
-                    className="heroNextLink"
-                    href={data.upcoming_events[0].meeting_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Join Google Meet
-                    <ArrowRight size={16} />
-                  </a>
-                ) : (
-                  <a
-                    className="heroNextLink"
-                    href="#events"
-                  >
-                    View Event
-                    <ArrowRight size={16} />
-                  </a>
-                )}
-              </>
-            ) : (
+                    <h2>{featuredEvent.title}</h2>
+
+                    <p className="heroNextTime">
+                      {featuredEvent.time || "Time to be announced"}
+                    </p>
+
+                    {featuredEvent.speaker_name && (
+                      <div className="heroNextSpeaker">
+                        <span className="heroNextSpeakerIcon">
+                          <UserRound size={14} />
+                        </span>
+                        <span>
+                          <small>Speaker</small>
+                          <strong>{featuredEvent.speaker_name}</strong>
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {canJoin ? (
+                    <a
+                      className={`heroNextLink heroNextLink--${eventStatus.key}`}
+                      href={featuredEvent.meeting_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {eventStatus.button}
+                      <ArrowRight size={16} />
+                    </a>
+                  ) : eventStatus.key === "ended" ? (
+                    <div className="heroNextLink heroNextLink--ended" aria-disabled="true">
+                      Event Ended
+                      <span className="heroEndedCheck">✓</span>
+                    </div>
+                  ) : (
+                    <a
+                      className="heroNextLink"
+                      href="#events"
+                    >
+                      {eventStatus.button}
+                      <ArrowRight size={16} />
+                    </a>
+                  )}
+                </>
+              );
+            })() : (
               <div className="heroNextEmpty">
                 <span className="heroNextType">WEEKLY FELLOWSHIP</span>
                 <h2>Every Tuesday</h2>
