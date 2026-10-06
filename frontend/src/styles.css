@@ -15719,3 +15719,48 @@ html[data-theme="light"] .sermonShareBtn:hover{
   .sermonCardActions .sermonShareBtn,
   .sermonCardActions .sermonOpenBtn{flex:1}
 }
+
+
+/* Sermon slider navigation */
+.sermonSliderWrap{position:relative}
+.sermonSliderControls{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin-top:18px;
+}
+.sermonSliderArrow{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:50%;
+  background:rgba(255,255,255,.045);
+  color:#eeeae2;
+  cursor:pointer;
+  transition:transform 180ms ease,border-color 180ms ease,background 180ms ease;
+}
+.sermonSliderArrow:hover{
+  transform:translateY(-2px);
+  border-color:rgba(181,148,70,.38);
+  background:rgba(139,107,50,.11);
+}
+.sermonSliderArrow svg{color:#c6a86a}
+.sermonSliderHint{
+  color:#777a76;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.16em;
+}
+html[data-theme="light"] .sermonSliderArrow{
+  border-color:rgba(35,36,34,.12);
+  background:rgba(255,255,255,.72);
+  color:#343632;
+}
+html[data-theme="light"] .sermonSliderHint{color:#888b86}
+@media(max-width:600px){
+  .sermonSliderControls{margin-top:14px;gap:10px}
+  .sermonSliderArrow{width:40px;height:40px}
+}
