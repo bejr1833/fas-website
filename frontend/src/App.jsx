@@ -1957,11 +1957,11 @@ function App() {
           </div>
           {loading ? (
             <div className="emptyState"><CalendarDays size={24} /><p>Loading upcoming events...</p></div>
-          ) : data.upcoming_events.length === 0 ? (
+          ) : visibleUpcomingEvents.length === 0 ? (
             <div className="emptyState"><CalendarDays size={24} /><p>No upcoming FAS events are currently scheduled.</p></div>
           ) : (
             <div className="eventGrid eventsPageGrid">
-              {data.upcoming_events.map((event) => {
+              {visibleUpcomingEvents.map((event) => {
                 const eventStatus = getEventStatus(event, eventClock);
                 const canJoinEvent = Boolean(event.meeting_url) && eventStatus.key !== "ended";
 
@@ -2014,6 +2014,36 @@ function App() {
                 );
               })}
             </div>
+          )}
+
+          {pastEvents.length > 0 && (
+            <section className="pastEventsSection" aria-labelledby="past-events-title">
+              <div className="pastEventsHeader">
+                <div>
+                  <span className="sectionLabel">LOOKING BACK</span>
+                  <h2 id="past-events-title">Past <em>Events</em></h2>
+                </div>
+                <p>Previous FAS gatherings remain here as a record of our fellowship, teaching, and shared journey.</p>
+              </div>
+              <div className="pastEventsList">
+                {pastEvents.map((event) => (
+                  <article className="pastEventCard" key={event.id}>
+                    <div className="pastEventDate">
+                      <strong>{new Date(event.date + "T00:00:00").toLocaleDateString("en-US", { day: "2-digit" })}</strong>
+                      <span>{new Date(event.date + "T00:00:00").toLocaleDateString("en-US", { month: "short", year: "numeric" })}</span>
+                    </div>
+                    <div className="pastEventCopy">
+                      <span>{(event.event_type || "event").replace(/-/g, " ")}</span>
+                      <h3>{event.title}</h3>
+                      {event.speaker_name && <p>With {event.speaker_name}</p>}
+                    </div>
+                    <button type="button" className="pastEventDetailsBtn" onClick={() => setSelectedEvent(event)}>
+                      View details <ArrowRight size={15} />
+                    </button>
+                  </article>
+                ))}
+              </div>
+            </section>
           )}
         </main>
         {selectedEvent && (
@@ -3514,7 +3544,7 @@ function App() {
               <CalendarDays size={24} />
               <p>Loading upcoming events...</p>
             </div>
-           ) : data.upcoming_events.length === 0 ? (
+           ) : visibleUpcomingEvents.length === 0 ? (
             <div className="emptyState">
               <CalendarDays size={24} />
               <p>
@@ -3523,7 +3553,7 @@ function App() {
             </div>
           ) : (
             <div className="eventGrid">
-              {data.upcoming_events.map((event) => (
+              {visibleUpcomingEvents.map((event) => (
                 <article
                   className="eventCard eventCardPremium reveal-item"
                   key={event.id}
