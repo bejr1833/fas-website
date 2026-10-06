@@ -15654,3 +15654,49 @@ html[data-theme="dark"] .devotionalShareButton:hover{
     padding-top:3px;
   }
 }
+
+
+/* Sermon card sharing */
+.sermonCardActions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:9px;
+  flex-wrap:wrap;
+}
+.sermonShareBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:42px;
+  padding:0 16px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;
+  background:rgba(255,255,255,.045);
+  color:#eeeae2;
+  font:700 11px "DM Sans",system-ui,sans-serif;
+  letter-spacing:.02em;
+  cursor:pointer;
+  transition:transform 180ms ease,border-color 180ms ease,background 180ms ease;
+}
+.sermonShareBtn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(181,148,70,.35);
+  background:rgba(139,107,50,.10);
+}
+.sermonShareBtn svg{color:#c6a86a}
+html[data-theme="light"] .sermonShareBtn{
+  border-color:rgba(35,36,34,.12);
+  background:rgba(255,255,255,.72);
+  color:#343632;
+}
+html[data-theme="light"] .sermonShareBtn:hover{
+  border-color:rgba(139,107,50,.35);
+  background:#faf7ef;
+}
+@media(max-width:560px){
+  .sermonCardActions{width:100%;justify-content:stretch}
+  .sermonCardActions .sermonShareBtn,
+  .sermonCardActions .sermonOpenBtn{flex:1}
+}
