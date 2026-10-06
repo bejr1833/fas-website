@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://fas-backend-xnhy.onrender.com";
 
 // Keep fresh content for 24h and allow up to 7 days of stale content during backend cold starts.
 const CONTENT_STALE_TTL = 7 * 24 * 60 * 60 * 1000;
