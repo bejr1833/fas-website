@@ -15458,3 +15458,46 @@ html[data-theme="dark"] .devotionalShareButton:hover {
     padding: 9px 13px;
   }
 }
+
+
+/* Devotional sharing */
+.devotionalArticleMetaRow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin-top:4px;
+}
+.devotionalShareButton{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:34px;
+  padding:0 13px;
+  border:1px solid rgba(35,36,34,.12);
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
+  color:#343632;
+  font:700 11px "DM Sans",system-ui,sans-serif;
+  cursor:pointer;
+  transition:transform 180ms ease,border-color 180ms ease,background 180ms ease;
+}
+.devotionalShareButton:hover{
+  transform:translateY(-1px);
+  border-color:rgba(139,107,50,.35);
+  background:#faf7ef;
+}
+.devotionalShareButton svg{color:#8b6b32}
+html[data-theme="dark"] .devotionalShareButton{
+  border-color:rgba(255,255,255,.12);
+  background:rgba(255,255,255,.045);
+  color:#eeeae0;
+}
+html[data-theme="dark"] .devotionalShareButton:hover{
+  border-color:rgba(181,148,70,.35);
+  background:rgba(139,107,50,.10);
+}
+@media(max-width:640px){
+  .devotionalArticleMetaRow{gap:10px;flex-wrap:wrap}
+  .devotionalShareButton{min-height:32px;padding:0 12px}
+}
