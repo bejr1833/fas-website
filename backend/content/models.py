@@ -303,6 +303,29 @@ class EBook(models.Model):
         return self.title
 
 
+class Devotional(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True)
+    date = models.DateField()
+    author = models.CharField(max_length=120, default="FAS")
+    scripture_reference = models.CharField(max_length=160)
+    scripture_text = models.TextField()
+    impact_line = models.CharField(max_length=220)
+    reflection = models.TextField()
+    prayer = models.TextField()
+    application = models.TextField(blank=True)
+    is_published = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-date", "-created_at"]
+        indexes = [models.Index(fields=["-date", "is_published"])]
+
+    def __str__(self):
+        return self.title
+
+
 class BlogComment(models.Model):
     blog_post = models.ForeignKey(
         BlogPost,
