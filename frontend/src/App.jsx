@@ -218,6 +218,35 @@ function getEventStatus(event, now = new Date()) {
   };
 }
 
+
+function toDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function fromDateKey(dateKey) {
+  const [year, month, day] = String(dateKey).split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function getCalendarDays(monthDate) {
+  const year = monthDate.getFullYear();
+  const month = monthDate.getMonth();
+  const firstDay = new Date(year, month, 1);
+  const startOffset = firstDay.getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+
+  return Array.from({ length: totalCells }, (_, index) => {
+    const dayNumber = index - startOffset + 1;
+    return dayNumber >= 1 && dayNumber <= daysInMonth
+      ? new Date(year, month, dayNumber)
+      : null;
+  });
+}
+
 function useAutoCarousel(selector, itemSelector, dependency, interval = 4500) {
   useEffect(() => {
     const carousel = document.querySelector(selector);
@@ -319,6 +348,12 @@ function App() {
   const [blogPost, setBlogPost] = useState(null);
   const [devotionalPost, setDevotionalPost] = useState(null);
   const [devotionalLoading, setDevotionalLoading] = useState(false);
+  const [devotionals, setDevotionals] = useState([]);
+  const [devotionalsLoading, setDevotionalsLoading] = useState(false);
+  const [devotionMonth, setDevotionMonth] = useState(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
+  });
   const [blogLoading, setBlogLoading] = useState(false);
   const [blogEngagement, setBlogEngagement] = useState({
     comments: [],
@@ -1008,6 +1043,27 @@ function App() {
 
   useEffect(() => {
     const pathName = window.location.pathname;
+    const isDevotionsCalendar =
+      pathName === "/devotions" ||
+      pathName === "/devotions/" ||
+      pathName === "/devotionals" ||
+      pathName === "/devotionals/";
+
+    if (!isDevotionsCalendar) return;
+
+    setDevotionalsLoading(true);
+    fetchJsonWithRetry(
+      `${API_BASE}/api/devotionals/`,
+      14,
+      "devotionals"
+    )
+      .then((result) => setDevotionals(Array.isArray(result) ? result : []))
+      .catch(() => setDevotionals([]))
+      .finally(() => setDevotionalsLoading(false));
+  }, []);
+
+  useEffect(() => {
+    const pathName = window.location.pathname;
     const isDevotionalDetail = pathName.startsWith("/devotionals/");
 
     if (!isDevotionalDetail) return;
@@ -1502,6 +1558,11 @@ function App() {
 
 
   const isEventsPage = window.location.pathname === "/events" || window.location.pathname === "/events/";
+  const isDevotionsCalendarPage =
+    window.location.pathname === "/devotions" ||
+    window.location.pathname === "/devotions/" ||
+    window.location.pathname === "/devotionals" ||
+    window.location.pathname === "/devotionals/";
   const isDevotionalPage = window.location.pathname.startsWith("/devotionals/");
   const isBlogArticle = window.location.pathname.startsWith("/blog/");
   const coverWords = (blogPost?.title || "Faith Alone Saves").trim().split(/\s+/);
@@ -1509,6 +1570,169 @@ function App() {
   const coverLead = coverWords.slice(0, coverSplit).join(" ");
   const coverAccent = coverWords.slice(coverSplit).join(" ");
 
+
+  if (isDevotionsCalendarPage) {
+    const today = new Date();
+    const todayKey = toDateKey(today);
+    const devotionByDate = devotionals.reduce((map, devotional) => {
+      map[devotional.date] = devotional;
+      return map;
+    }, {});
+    const calendarDays = getCalendarDays(devotionMonth);
+    const monthLabel = devotionMonth.toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric"
+    });
+    const isCurrentMonth =
+      devotionMonth.getFullYear() === today.getFullYear() &&
+      devotionMonth.getMonth() === today.getMonth();
+
+    const shiftMonth = (amount) => {
+      setDevotionMonth(
+        (current) => new Date(current.getFullYear(), current.getMonth() + amount, 1)
+      );
+    };
+
+    const jumpToToday = () => {
+      setDevotionMonth(new Date(today.getFullYear(), today.getMonth(), 1));
+    };
+
+    return (
+      <div className={`site devotionsPage ${darkMode ? "devotionsPageDark" : "devotionsPageLight"}`}>
+        <header className="navbar">
+          <a href="/" className="brand" aria-label="Faith Alone Saves home">
+            <img src="/branding/fas-logo.png" alt="Faith Alone Saves" />
+          </a>
+          <div className="navActions">
+            <button
+              type="button"
+              className="themeToggle"
+              onClick={toggleDarkMode}
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <a href="/" className="textBtn">
+              Back to FAS <ArrowRight size={16} />
+            </a>
+          </div>
+        </header>
+
+        <main className="devotionsPageMain">
+          <section className="devotionsHero">
+            <div>
+              <span className="sectionLabel">FAS DAILY DEVOTIONAL</span>
+              <h1>A daily walk with <em>God's Word.</em></h1>
+              <p>
+                Set aside a few quiet minutes each day for Scripture, reflection,
+                prayer, and a practical step of faith.
+              </p>
+            </div>
+            <div className="devotionsHeroBadge">
+              <span className="devotionsHeroBadgeDot"></span>
+              <span>STARTING TODAY</span>
+              <strong>{today.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</strong>
+            </div>
+          </section>
+
+          <section className="devotionsCalendarShell" aria-labelledby="devotions-calendar-title">
+            <div className="devotionsCalendarHeader">
+              <div>
+                <span className="devotionsCalendarKicker">THE FAS READING CALENDAR</span>
+                <h2 id="devotions-calendar-title">{monthLabel}</h2>
+              </div>
+              <div className="devotionsCalendarControls">
+                <button type="button" onClick={() => shiftMonth(-1)} disabled={isCurrentMonth} aria-label="Previous month">
+                  <ArrowRight size={18} style={{ transform: "rotate(180deg)" }} />
+                </button>
+                <button type="button" className="devotionsTodayBtn" onClick={jumpToToday}>
+                  Today
+                </button>
+                <button type="button" onClick={() => shiftMonth(1)} aria-label="Next month">
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+            </div>
+
+            <div className="devotionsCalendarLegend">
+              <span><i className="devotionLegendDot devotionLegendDot--published"></i> Devotional available</span>
+              <span><i className="devotionLegendDot devotionLegendDot--today"></i> Today</span>
+              <span><i className="devotionLegendDot devotionLegendDot--future"></i> Coming soon</span>
+            </div>
+
+            {devotionalsLoading ? (
+              <div className="devotionsCalendarLoading">
+                <span className="devotionsLoadingOrb"></span>
+                <p>Preparing the FAS devotional calendar...</p>
+              </div>
+            ) : (
+              <div className="devotionsCalendarGrid" role="grid" aria-label={`FAS devotionals for ${monthLabel}`}>
+                {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((day) => (
+                  <div className="devotionsWeekday" role="columnheader" key={day}>{day}</div>
+                ))}
+
+                {calendarDays.map((date, index) => {
+                  if (!date) {
+                    return <div className="devotionDay devotionDay--empty" key={`empty-${index}`} aria-hidden="true"></div>;
+                  }
+
+                  const dateKey = toDateKey(date);
+                  const devotional = devotionByDate[dateKey];
+                  const isToday = dateKey === todayKey;
+                  const isPast = dateKey < todayKey;
+                  const isFuture = dateKey > todayKey;
+
+                  const dayClass = [
+                    "devotionDay",
+                    isToday ? "devotionDay--today" : "",
+                    devotional ? "devotionDay--published" : "",
+                    isFuture && !devotional ? "devotionDay--future" : "",
+                    isPast && !devotional ? "devotionDay--past" : ""
+                  ].filter(Boolean).join(" ");
+
+                  return (
+                    <div className={dayClass} role="gridcell" key={dateKey}>
+                      <div className="devotionDayTop">
+                        <span className="devotionDayNumber">{date.getDate()}</span>
+                        {isToday && <span className="devotionTodayPill">TODAY</span>}
+                      </div>
+
+                      {devotional ? (
+                        <a
+                          href={`/devotionals/${devotional.slug}`}
+                          className="devotionDayLink"
+                          aria-label={`${devotional.title} — ${date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`}
+                        >
+                          <span className="devotionDayTitle">{devotional.title}</span>
+                          <span className="devotionDayArrow"><ArrowRight size={13} /></span>
+                        </a>
+                      ) : isFuture ? (
+                        <span className="devotionDayPlaceholder">Coming soon</span>
+                      ) : (
+                        <span className="devotionDayPlaceholder devotionDayPlaceholder--past">—</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+
+          <section className="devotionsCalendarFooter">
+            <div>
+              <span className="sectionLabel">A JOURNEY, NOT A CHECKLIST</span>
+              <h2>One day. One Scripture. One step closer.</h2>
+            </div>
+            <p>
+              New devotionals can be published day by day from the FAS admin,
+              while this calendar remains available for the months and years ahead.
+            </p>
+          </section>
+        </main>
+      </div>
+    );
+  }
 
   if (isDevotionalPage) {
     return (
@@ -1523,7 +1747,7 @@ function App() {
               title={darkMode ? "Switch to light mode" : "Switch to dark mode"}>
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            <a href="/" className="textBtn">Back to FAS <ArrowRight size={16} /></a>
+            <a href="/devotions" className="textBtn">Devotion Calendar <ArrowRight size={16} /></a>
           </div>
         </header>
         <main className="devotionalPageMain">
@@ -2156,6 +2380,10 @@ function App() {
 
           <a href="#blog" onClick={closeMenu}>
             Blog
+          </a>
+
+          <a href="/devotions" onClick={closeMenu}>
+            Devotions
           </a>
 
           <a href="#sermons" onClick={closeMenu}>
