@@ -126,23 +126,19 @@ function scrollToSection(id) {
     window.scrollTo({ top: getTargetTop(), behavior });
   };
 
-  // Start after the current layout pass, then correct for images/content
-  // above the target that may finish loading during the scroll.
-  window.requestAnimationFrame(() => {
-    window.requestAnimationFrame(() => {
-      scrollToTarget("smooth");
+  // Scroll after the current layout pass and keep correcting briefly while
+  // images/sliders above the target finish settling. This prevents the CTA
+  // from stopping at the Highlights & Updates section on mobile.
+  const correctionDelays = [0, 120, 300, 600, 1000, 1500];
 
-      [220, 520, 900].forEach((delay) => {
-        window.setTimeout(() => {
-          if (document.getElementById(id) === element) {
-            const targetTop = getTargetTop();
-            if (Math.abs(window.scrollY - targetTop) > 10) {
-              window.scrollTo({ top: targetTop, behavior: "smooth" });
-            }
-          }
-        }, delay);
+  correctionDelays.forEach((delay) => {
+    window.setTimeout(() => {
+      if (document.getElementById(id) !== element) return;
+      window.scrollTo({
+        top: getTargetTop(),
+        behavior: delay === 0 ? "smooth" : "auto",
       });
-    });
+    }, delay);
   });
 
   return true;
@@ -2802,10 +2798,7 @@ function App() {
                   Thank you for being part of FAS. We will update you here
                   as soon as the details of our next gathering are announced.
                 </p>
-                <a className="heroNextLink" href="#events">
-                  Explore Events
-                  <ArrowRight size={16} />
-                </a>
+
               </div>
             )}
 
