@@ -909,7 +909,7 @@ function App() {
     if (!slug) return;
 
     setDevotionalLoading(true);
-    fetch(`\${API_BASE}/api/devotionals/\${encodeURIComponent(slug)}/`)
+    fetch(`${API_BASE}/api/devotionals/${encodeURIComponent(slug)}/`)
       .then((response) => {
         if (!response.ok) throw new Error("Devotional unavailable");
         return response.json();
@@ -2254,7 +2254,7 @@ function App() {
               </div>
               <div className="devotionalHomeBottom">
                 <span>By {data.devotional.author}</span>
-                <a href={`/devotionals/\${data.devotional.slug}`} className="devotionalReadMore">Read More <ArrowRight size={16} /></a>
+                <a href={`/devotionals/${data.devotional.slug}`} className="devotionalReadMore">Read More <ArrowRight size={16} /></a>
               </div>
             </div>
           </section>
@@ -4206,8 +4206,3 @@ function App() {
 
 
 export default App;
-
-
-
-
-
