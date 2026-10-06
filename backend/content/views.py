@@ -202,10 +202,11 @@ class DevotionalListView(generics.ListAPIView):
     serializer_class = DevotionalSerializer
 
     def get_queryset(self):
+        # Return scheduled and published devotionals so the calendar can
+        # display future readings as soon as they are prepared in admin.
         return Devotional.objects.filter(
             is_published=True,
-            date__lte=timezone.localdate(),
-        ).order_by("-date", "-created_at")
+        ).order_by("date", "-created_at")
 
 
 class DevotionalDetailView(generics.RetrieveAPIView):
@@ -213,10 +214,7 @@ class DevotionalDetailView(generics.RetrieveAPIView):
     lookup_field = "slug"
 
     def get_queryset(self):
-        return Devotional.objects.filter(
-            is_published=True,
-            date__lte=timezone.localdate(),
-        )
+        return Devotional.objects.filter(is_published=True)
 
 
 class SermonPDFListView(generics.ListAPIView):
