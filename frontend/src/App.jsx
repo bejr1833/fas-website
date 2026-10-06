@@ -380,6 +380,7 @@ function App() {
   const [devotionalPost, setDevotionalPost] = useState(null);
   const [devotionalLoading, setDevotionalLoading] = useState(false);
   const [devotionalShareStatus, setDevotionalShareStatus] = useState("");
+  const [sermonShareStatus, setSermonShareStatus] = useState("");
   const [devotionMonth, setDevotionMonth] = useState(() => {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), 1);
@@ -1445,7 +1446,37 @@ function App() {
     ...(data.settings || {})
   };
 
-    const shareDevotional = async () => {
+    const shareSermon = async (sermon) => {
+    if (!sermon) return;
+
+    const url = window.location.origin + "/#sermons";
+    const title = sermon.title + " — FAS Sermon Library";
+    const text = sermon.speaker
+      ? sermon.title + " · " + sermon.speaker + " · Faith Alone Saves"
+      : sermon.title + " · Faith Alone Saves Sermon Library";
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, text, url });
+        setSermonShareStatus("Shared");
+        window.setTimeout(() => setSermonShareStatus(""), 2200);
+        return;
+      }
+
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        setSermonShareStatus("Link copied");
+        window.setTimeout(() => setSermonShareStatus(""), 2200);
+        return;
+      }
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+    }
+
+    window.prompt("Copy this sermon link:", url);
+  };
+
+  const shareDevotional = async () => {
     if (!devotionalPost) return;
 
     const url = window.location.href;
@@ -3849,17 +3880,29 @@ function App() {
                       </span>
                     )}
 
-                    {sermon.pdf_file_url && (
-                      <a
-                        href={sermon.pdf_file_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="primaryBtn sermonOpenBtn"
+                    <div className="sermonCardActions">
+                      <button
+                        type="button"
+                        className="sermonShareBtn"
+                        onClick={() => shareSermon(sermon)}
+                        aria-label={"Share " + sermon.title}
+                        title="Share sermon"
                       >
-                        Open PDF
-                        <ArrowRight size={16} />
-                      </a>
-                    )}
+                        <Share2 size={15} />
+                        <span>{sermonShareStatus || "Share"}</span>
+                      </button>
+                      {sermon.pdf_file_url && (
+                        <a
+                          href={sermon.pdf_file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="primaryBtn sermonOpenBtn"
+                        >
+                          Open PDF
+                          <ArrowRight size={16} />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </article>
               ))}
