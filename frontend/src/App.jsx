@@ -1019,7 +1019,8 @@ function App() {
           videos: current.videos || [],
           ebooks: current.ebooks || [],
           devotional: result.devotional || current.devotional || null,
-          devotionals: Array.isArray(result.devotionals) ? result.devotionals : (current.devotionals || [])
+          devotionals: Array.isArray(result.devotionals) ? result.devotionals : (current.devotionals || []),
+  next_devotional: result.next_devotional || current.next_devotional || null
         }));
       })
       .catch(() => {
@@ -1663,6 +1664,7 @@ function App() {
       return map;
     }, {});
     const todaysDevotional = devotionalHasStarted ? (devotionByDate[todayKey] || null) : null;
+    const scheduledNextDevotional = data.next_devotional || null;
     const upcomingDevotionals = calendarDevotionals
       .filter((devotional) => devotional.date > todayKey)
       .sort((a, b) => a.date.localeCompare(b.date))
@@ -1882,7 +1884,25 @@ function App() {
             ) : (
               <div className="devotionsUpcomingEmpty">
                 <span>•</span>
-                <p>The next devotional will appear here when it is published.</p>
+                <p>
+                  {scheduledNextDevotional
+                    ? <>
+                        The next devotional will appear on{" "}
+                        <strong>
+                          {fromDateKey(scheduledNextDevotional.date).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric"
+                          })}
+                        </strong>{" "}
+                        at{" "}
+                        <strong>
+                          {String(scheduledNextDevotional.release_time || "05:00:00").slice(0, 5)}
+                        </strong>{" "}
+                        IST.
+                      </>
+                    : "The next devotional will appear here when it is scheduled."}
+                </p>
               </div>
             )}
           </section>
