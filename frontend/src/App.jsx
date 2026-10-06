@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 const CONTENT_CACHE_TTL = 24 * 60 * 60 * 1000;
+const CONTENT_STALE_TTL = 7 * 24 * 60 * 60 * 1000;
 
 function readContentCache(key) {
   try {
@@ -9,7 +10,7 @@ function readContentCache(key) {
     if (!raw) return null;
 
     const cached = JSON.parse(raw);
-    if (!cached || !cached.data || Date.now() - cached.timestamp > CONTENT_CACHE_TTL) {
+    if (!cached || !cached.data || Date.now() - cached.timestamp > CONTENT_STALE_TTL) {
       return null;
     }
 
@@ -30,7 +31,7 @@ function writeContentCache(key, data) {
   }
 }
 
-async function fetchJsonWithRetry(path, attempts = 8, cacheKey = null) {
+async function fetchJsonWithRetry(path, attempts = 14, cacheKey = null) {
   let lastError;
 
   for (let attempt = 0; attempt < attempts; attempt += 1) {
@@ -134,6 +135,10 @@ function parseEventTimeRange(timeText = "") {
     start: toMinutes(matches[0]),
     end: matches[1] ? toMinutes(matches[1]) : null
   };
+}
+
+function getNextEvent(events = [], now = new Date()) {
+  return events.find((event) => getEventStatus(event, now).key !== "ended") || events[0] || null;
 }
 
 function getEventStatus(event, now = new Date()) {
@@ -923,7 +928,7 @@ function App() {
   }, [galleryLightboxOpen, filteredGallery.length]);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/home/`, 8, "home")
+    fetchJsonWithRetry(`${API_BASE}/api/home/`, 14, "home")
       .then((result) => {
         setData((current) => ({
           settings: result.settings || fallback,
@@ -952,7 +957,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/blog/`, 8, "blog")
+    fetchJsonWithRetry(`${API_BASE}/api/blog/`, 14, "blog")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -964,7 +969,7 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/sermons/`, 8, "sermons")
+    fetchJsonWithRetry(`${API_BASE}/api/sermons/`, 14, "sermons")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -976,7 +981,7 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/videos/`, 8, "videos")
+    fetchJsonWithRetry(`${API_BASE}/api/videos/`, 14, "videos")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -989,7 +994,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/ebooks/`, 8, "ebooks")
+    fetchJsonWithRetry(`${API_BASE}/api/ebooks/`, 14, "ebooks")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -1011,11 +1016,11 @@ function App() {
     if (!slug) return;
 
     setDevotionalLoading(true);
-    fetch(`${API_BASE}/api/devotionals/${encodeURIComponent(slug)}/`)
-      .then((response) => {
-        if (!response.ok) throw new Error("Devotional unavailable");
-        return response.json();
-      })
+    fetchJsonWithRetry(
+      `${API_BASE}/api/devotionals/${encodeURIComponent(slug)}/`,
+      14,
+      `devotional:${slug}`
+    )
       .then((result) => setDevotionalPost(result))
       .catch(() => setDevotionalPost(null))
       .finally(() => setDevotionalLoading(false));
@@ -1040,14 +1045,11 @@ function App() {
     setBlogLoading(true);
     loadBlogEngagement(slug);
 
-    fetch(`${API_BASE}/api/blog/${slug}/`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Blog article unavailable");
-        }
-
-        return response.json();
-      })
+    fetchJsonWithRetry(
+      `${API_BASE}/api/blog/${slug}/`,
+      14,
+      `blog:${slug}`
+    )
       .then((result) => {
         setBlogPost(result);
       })
@@ -2260,8 +2262,8 @@ function App() {
               <span className="heroNextDot"></span>
             </div>
 
-            {data.upcoming_events.length > 0 ? (() => {
-              const featuredEvent = data.upcoming_events[0];
+            {getNextEvent(data.upcoming_events, eventClock) ? (() => {
+              const featuredEvent = getNextEvent(data.upcoming_events, eventClock);
               const eventStatus = getEventStatus(featuredEvent, eventClock);
               const canJoin = Boolean(featuredEvent.meeting_url) && eventStatus.key !== "ended";
 
