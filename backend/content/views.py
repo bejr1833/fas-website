@@ -100,6 +100,14 @@ class HomeDataView(APIView):
             "date", "-created_at"
         )
 
+        now = timezone.localtime()
+        next_devotional = Devotional.objects.filter(
+            is_published=True
+        ).filter(
+            models.Q(date__gt=now.date())
+            | models.Q(date=now.date(), release_time__gt=now.time())
+        ).order_by("date", "release_time", "-created_at").first()
+
         return Response({
             "settings": (
                 SiteSettingsSerializer(
@@ -154,6 +162,15 @@ class HomeDataView(APIView):
                 many=True,
                 context={"request": request}
             ).data,
+
+            "next_devotional": (
+                DevotionalSerializer(
+                    next_devotional,
+                    context={"request": request}
+                ).data
+                if next_devotional
+                else None
+            ),
         })
 
 
