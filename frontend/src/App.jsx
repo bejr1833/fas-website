@@ -1665,13 +1665,20 @@ function App() {
     }, {});
     const todaysDevotional = devotionalHasStarted ? (devotionByDate[todayKey] || null) : null;
     const scheduledNextDevotional = data.next_devotional || null;
-    const nextDevotionalDate = scheduledNextDevotional
+    const nextDevotionalIsLaunchDay =
+      !devotionalHasStarted &&
+      scheduledNextDevotional?.date === devotionalStartKey;
+    const nextDevotionalDate = scheduledNextDevotional && !nextDevotionalIsLaunchDay
       ? fromDateKey(scheduledNextDevotional.date)
       : (!devotionalHasStarted
-        ? new Date(devotionalStartDate.getFullYear(), devotionalStartDate.getMonth(), devotionalStartDate.getDate() + 1)
+        ? new Date(
+            devotionalStartDate.getFullYear(),
+            devotionalStartDate.getMonth(),
+            devotionalStartDate.getDate() + 1
+          )
         : null);
-    const nextDevotionalTime = scheduledNextDevotional?.release_time
-      ? String(scheduledNextDevotional.release_time).slice(0, 5)
+    const nextDevotionalTime = scheduledNextDevotional && !nextDevotionalIsLaunchDay
+      ? String(scheduledNextDevotional.release_time || "05:00:00").slice(0, 5)
       : "05:00";
     const upcomingDevotionals = calendarDevotionals
       .filter((devotional) => devotional.date > todayKey)
