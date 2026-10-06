@@ -64,6 +64,11 @@ class HomeDataView(APIView):
             date__gte=today,
         ).order_by("date")[:6]
 
+        past_events = Event.objects.filter(
+            is_published=True,
+            date__lt=today,
+        ).order_by("-date", "-created_at")[:12]
+
         gallery = GalleryImage.objects.filter(
             is_published=True
         ).order_by("-uploaded_at")
@@ -99,6 +104,12 @@ class HomeDataView(APIView):
 
             "upcoming_events": EventSerializer(
                 events,
+                many=True,
+                context={"request": request}
+            ).data,
+
+            "past_events": EventSerializer(
+                past_events,
                 many=True,
                 context={"request": request}
             ).data,
