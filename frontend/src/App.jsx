@@ -339,7 +339,8 @@ function App() {
     sermons: cachedSermons || [],
     videos: cachedVideos || [],
     ebooks: cachedEbooks || [],
-    devotional: cachedHome?.devotional || null
+    devotional: cachedHome?.devotional || null,
+    devotionals: cachedHome?.devotionals || []
   });
 
   const [loading, setLoading] = useState(!cachedHome);
@@ -975,8 +976,12 @@ function App() {
           sermons: current.sermons || [],
           videos: current.videos || [],
           ebooks: current.ebooks || [],
-          devotional: result.devotional || current.devotional || null
+          devotional: result.devotional || current.devotional || null,
+          devotionals: Array.isArray(result.devotionals) ? result.devotionals : (current.devotionals || [])
         }));
+        setDevotionals(
+          Array.isArray(result.devotionals) ? result.devotionals : []
+        );
       })
       .catch(() => {
         // Keep the existing homepage data if the API is temporarily unavailable.
@@ -1574,7 +1579,8 @@ function App() {
   if (isDevotionsCalendarPage) {
     const today = new Date();
     const todayKey = toDateKey(today);
-    const devotionByDate = devotionals.reduce((map, devotional) => {
+    const calendarDevotionals = devotionals.length ? devotionals : (data.devotionals || []);
+    const devotionByDate = calendarDevotionals.reduce((map, devotional) => {
       map[devotional.date] = devotional;
       return map;
     }, {});
