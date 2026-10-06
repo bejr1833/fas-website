@@ -1667,7 +1667,9 @@ function App() {
     const scheduledNextDevotional = data.next_devotional || null;
     const nextDevotionalDate = scheduledNextDevotional
       ? fromDateKey(scheduledNextDevotional.date)
-      : (!devotionalHasStarted ? devotionalStartDate : null);
+      : (!devotionalHasStarted
+        ? new Date(devotionalStartDate.getFullYear(), devotionalStartDate.getMonth(), devotionalStartDate.getDate() + 1)
+        : null);
     const nextDevotionalTime = scheduledNextDevotional?.release_time
       ? String(scheduledNextDevotional.release_time).slice(0, 5)
       : "05:00";
