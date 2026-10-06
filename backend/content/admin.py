@@ -13,6 +13,7 @@ from .models import (
     EBook,
     BlogComment,
     BlogReaction,
+    Devotional,
 )
 
 
@@ -310,3 +311,39 @@ class BlogReactionAdmin(admin.ModelAdmin):
     list_filter = ("reaction", "created_at")
     search_fields = ("blog_post__title", "visitor_key")
     readonly_fields = ("created_at",)
+
+
+@admin.register(Devotional)
+class DevotionalAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "date",
+        "author",
+        "is_published",
+    )
+    list_filter = ("is_published", "date")
+    search_fields = (
+        "title",
+        "author",
+        "scripture_reference",
+        "impact_line",
+        "reflection",
+    )
+    prepopulated_fields = {"slug": ("title",)}
+    date_hierarchy = "date"
+    fieldsets = (
+        ("Devotional Details", {
+            "fields": (
+                "title", "slug", "date", "author",
+                "scripture_reference", "scripture_text",
+                "impact_line",
+            )
+        }),
+        ("Message", {
+            "fields": ("reflection", "prayer", "application")
+        }),
+        ("Publishing", {
+            "fields": ("is_published", "created_at", "updated_at")
+        }),
+    )
+    readonly_fields = ("created_at", "updated_at")
