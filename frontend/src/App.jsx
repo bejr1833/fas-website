@@ -362,6 +362,7 @@ function App() {
     settings: cachedHome?.settings || fallback,
     slides: cachedHome?.slides || [],
     upcoming_events: cachedHome?.upcoming_events || [],
+    past_events: cachedHome?.past_events || [],
     gallery: cachedHome?.gallery || [],
     stories: cachedHome?.stories || [],
     blog: cachedBlog || [],
@@ -405,7 +406,22 @@ function App() {
     return () => window.clearInterval(timer);
   }, []);
   useAutoCarousel("#story .storyTimeline", ":scope > .storyMilestone", 0, 5600);
-  useAutoCarousel("#events .eventGrid", ":scope > .eventCard", data.upcoming_events.length, 4800);
+  const visibleUpcomingEvents = data.upcoming_events.filter(
+    (event) => getEventStatus(event, eventClock).key !== "ended"
+  );
+  const endedTodayEvents = data.upcoming_events.filter(
+    (event) => getEventStatus(event, eventClock).key === "ended"
+  );
+  const pastEvents = [
+    ...endedTodayEvents,
+    ...(Array.isArray(data.past_events) ? data.past_events : [])
+  ].filter((event, index, all) => all.findIndex((item) => item.id === event.id) === index)
+    .sort((a, b) => {
+      const dateDiff = String(b.date || "").localeCompare(String(a.date || ""));
+      return dateDiff !== 0 ? dateDiff : String(b.time || "").localeCompare(String(a.time || ""));
+    });
+
+  useAutoCarousel("#events .eventGrid", ":scope > .eventCard", visibleUpcomingEvents.length, 4800);
   useAutoCarousel("#sermons .sermonGrid", ":scope > .sermonCard", data.sermons.length, 5000);
   useAutoCarousel("#ebooks .ebookGrid", ":scope > .ebookCard", data.ebooks.length, 5000);
   const [darkMode, setDarkMode] = useState(() => {
