@@ -318,6 +318,7 @@ class DevotionalAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "date",
+        "release_time",
         "author",
         "is_published",
     )
@@ -334,7 +335,7 @@ class DevotionalAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Devotional Details", {
             "fields": (
-                "title", "slug", "date", "author",
+                "title", "slug", "date", "release_time", "author",
                 "scripture_reference", "scripture_text",
                 "impact_line",
             )
