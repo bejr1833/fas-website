@@ -1626,12 +1626,15 @@ function App() {
   if (isDevotionsCalendarPage) {
     const today = new Date();
     const todayKey = toDateKey(today);
+    const devotionalStartDate = new Date(2026, 9, 7);
+    const devotionalStartKey = toDateKey(devotionalStartDate);
+    const devotionalHasStarted = todayKey >= devotionalStartKey;
     const calendarDevotionals = Array.isArray(data.devotionals) ? data.devotionals : [];
     const devotionByDate = calendarDevotionals.reduce((map, devotional) => {
       map[devotional.date] = devotional;
       return map;
     }, {});
-    const todaysDevotional = devotionByDate[todayKey] || null;
+    const todaysDevotional = devotionalHasStarted ? (devotionByDate[todayKey] || null) : null;
     const upcomingDevotionals = calendarDevotionals
       .filter((devotional) => devotional.date > todayKey)
       .sort((a, b) => a.date.localeCompare(b.date))
@@ -1689,15 +1692,15 @@ function App() {
             </div>
             <div className="devotionsHeroBadge">
               <span className="devotionsHeroBadgeDot"></span>
-              <span>STARTING TODAY</span>
-              <strong>{today.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</strong>
+              <span>{devotionalHasStarted ? "DAILY DEVOTIONAL" : "STARTING TOMORROW"}</span>
+              <strong>{(devotionalHasStarted ? today : devotionalStartDate).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</strong>
             </div>
           </section>
 
           <section className="devotionsTodayCard" aria-labelledby="today-devotional-title">
             <div className="devotionsTodayEyebrow">
               <span className="devotionsTodayMark"></span>
-              TODAY'S DEVOTIONAL
+              {devotionalHasStarted ? "TODAY'S DEVOTIONAL" : "THE FIRST DEVOTIONAL"}
             </div>
             {loading ? (
               <div className="devotionsTodayLoading">
@@ -1724,8 +1727,8 @@ function App() {
               <div className="devotionsTodayEmpty">
                 <div>
                   <span className="devotionsTodayReference">PREPARING THE NEXT WORD</span>
-                  <h2 id="today-devotional-title">Today's devotional is coming soon.</h2>
-                  <p>The FAS team is preparing a Scripture-led reflection for today. Please check back soon.</p>
+                  <h2 id="today-devotional-title">{devotionalHasStarted ? "Today's devotional is coming soon." : "FAS devotionals begin tomorrow."}</h2>
+                  <p>{devotionalHasStarted ? "The FAS team is preparing a Scripture-led reflection for today. Please check back soon." : "Starting 7 October 2026, join us each day for Scripture, reflection, prayer, and a practical step of faith."}</p>
                 </div>
               </div>
             )}
@@ -1775,15 +1778,16 @@ function App() {
                   const dateKey = toDateKey(date);
                   const devotional = devotionByDate[dateKey];
                   const isToday = dateKey === todayKey;
+                  const isBeforeStart = dateKey < devotionalStartKey;
                   const isPast = dateKey < todayKey;
-                  const isFuture = dateKey > todayKey;
+                  const isFuture = dateKey >= devotionalStartKey && dateKey > todayKey;
 
                   const dayClass = [
                     "devotionDay",
                     isToday ? "devotionDay--today" : "",
                     devotional ? "devotionDay--published" : "",
                     isFuture && !devotional ? "devotionDay--future" : "",
-                    isPast && !devotional ? "devotionDay--past" : ""
+                    (isPast || isBeforeStart) && !devotional ? "devotionDay--past" : ""
                   ].filter(Boolean).join(" ");
 
                   return (
@@ -1791,7 +1795,7 @@ function App() {
                       className={dayClass}
                       role="gridcell"
                       key={dateKey}
-                      aria-label={`${date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}${devotional ? `: ${devotional.title}` : isFuture ? ": devotional coming soon" : ""}`}
+                      aria-label={`${date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}${devotional ? `: ${devotional.title}` : isFuture ? ": devotional coming soon" : isBeforeStart ? ": devotional series has not started" : ""}`}
                     >
                       <div className="devotionDayTop">
                         <span className="devotionDayNumber">{date.getDate()}</span>
