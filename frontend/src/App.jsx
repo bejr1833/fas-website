@@ -168,7 +168,7 @@ function parseEventTimeRange(timeText = "") {
 }
 
 function getNextEvent(events = [], now = new Date()) {
-  return events.find((event) => getEventStatus(event, now).key !== "ended") || events[0] || null;
+  return events.find((event) => getEventStatus(event, now).key !== "ended") || null;
 }
 
 function getEventStatus(event, now = new Date()) {
@@ -2698,7 +2698,7 @@ function App() {
 
           <div className="heroNext reveal-item reveal-right">
             <div className="heroNextTop">
-              <span className="heroNextLabel">NEXT GATHERING</span>
+              <span className="heroNextLabel">{getNextEvent(data.upcoming_events, eventClock) ? "NEXT GATHERING" : "UPCOMING GATHERING"}</span>
               <span className="heroNextDot"></span>
             </div>
 
@@ -2795,15 +2795,15 @@ function App() {
               );
             })() : (
               <div className="heroNextEmpty">
-                <span className="heroNextType">WEEKLY FELLOWSHIP</span>
-                <h2>Every Tuesday</h2>
+                <span className="heroNextType">STAY CONNECTED</span>
+                <h2>Our next gathering is coming soon.</h2>
 
                 <p>
-                  Join us at 7:00 PM for Bible study, worship,
-                  fellowship and conversations rooted in God's Word.
+                  Thank you for being part of FAS! We'll update you here
+                  as soon as the next gathering is announced.
                 </p>
-                <a className="heroNextLink" href="#about">
-                  Discover FAS
+                <a className="heroNextLink" href="#events">
+                  Explore Events
                   <ArrowRight size={16} />
                 </a>
               </div>
