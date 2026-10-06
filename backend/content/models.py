@@ -1,3 +1,5 @@
+from datetime import time
+
 from django.db import models
 from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
@@ -307,6 +309,7 @@ class Devotional(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=220, unique=True)
     date = models.DateField()
+    release_time = models.TimeField(default=time(5, 0))
     author = models.CharField(max_length=120, default="FAS")
     scripture_reference = models.CharField(max_length=160)
     scripture_text = models.TextField()
