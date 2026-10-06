@@ -15501,3 +15501,156 @@ html[data-theme="dark"] .devotionalShareButton:hover{
   .devotionalArticleMetaRow{gap:10px;flex-wrap:wrap}
   .devotionalShareButton{min-height:32px;padding:0 12px}
 }
+
+
+/* =========================================================
+   PAST EVENTS — automatic event history
+   ========================================================= */
+.pastEventsSection{
+  max-width:1120px;
+  margin:72px auto 0;
+  padding-top:42px;
+  border-top:1px solid rgba(255,255,255,.09);
+}
+.pastEventsHeader{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(260px,.58fr);
+  gap:40px;
+  align-items:end;
+  margin-bottom:24px;
+}
+.pastEventsHeader h2{
+  margin:8px 0 0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(32px,4vw,48px);
+  font-weight:500;
+}
+.pastEventsHeader p{
+  margin:0;
+  color:#9b9d99;
+  font-size:13px;
+  line-height:1.7;
+}
+.pastEventsList{
+  display:grid;
+  gap:10px;
+}
+.pastEventCard{
+  display:grid;
+  grid-template-columns:70px minmax(0,1fr) auto;
+  align-items:center;
+  gap:18px;
+  padding:16px 18px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:17px;
+  background:rgba(255,255,255,.025);
+  transition:transform 180ms ease,border-color 180ms ease,background 180ms ease;
+}
+.pastEventCard:hover{
+  transform:translateY(-2px);
+  border-color:rgba(181,148,70,.24);
+  background:rgba(255,255,255,.04);
+}
+.pastEventDate{
+  width:58px;
+  height:62px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  border:1px solid rgba(181,148,70,.18);
+  border-radius:14px;
+  background:rgba(181,148,70,.055);
+}
+.pastEventDate strong{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:23px;
+  line-height:1;
+  color:#f2eee5;
+}
+.pastEventDate span{
+  margin-top:4px;
+  color:#b99b60;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.pastEventCopy{min-width:0}
+.pastEventCopy>span{
+  color:#a9a19a;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.pastEventCopy h3{
+  margin:5px 0 0;
+  color:#f1eee8;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:18px;
+  line-height:1.2;
+  font-weight:500;
+}
+.pastEventCopy p{
+  margin:5px 0 0;
+  color:#989b97;
+  font-size:11px;
+}
+.pastEventDetailsBtn{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  border:0;
+  background:none;
+  color:#d2bc8d;
+  font:700 11px "DM Sans",system-ui,sans-serif;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.pastEventDetailsBtn:hover{color:#f0dfb7}
+
+.eventsPageLight .pastEventsSection{
+  border-top-color:rgba(35,36,34,.10);
+}
+.eventsPageLight .pastEventCard{
+  border-color:rgba(35,36,34,.09);
+  background:rgba(255,255,255,.7);
+}
+.eventsPageLight .pastEventCard:hover{
+  border-color:rgba(139,107,50,.25);
+  background:#fffdf8;
+}
+.eventsPageLight .pastEventDate{background:#faf7ef}
+.eventsPageLight .pastEventDate strong,
+.eventsPageLight .pastEventCopy h3{color:#252825}
+.eventsPageLight .pastEventCopy>span{color:#8b6b32}
+.eventsPageLight .pastEventCopy p,
+.eventsPageLight .pastEventsHeader p{color:#777873}
+.eventsPageLight .pastEventDetailsBtn{color:#8b6b32}
+
+@media(max-width:700px){
+  .pastEventsSection{
+    margin-top:52px;
+    padding-top:32px;
+  }
+  .pastEventsHeader{
+    grid-template-columns:1fr;
+    gap:8px;
+    margin-bottom:17px;
+  }
+  .pastEventCard{
+    grid-template-columns:54px minmax(0,1fr);
+    gap:13px;
+    padding:14px;
+  }
+  .pastEventDate{
+    width:48px;
+    height:54px;
+  }
+  .pastEventDate strong{font-size:20px}
+  .pastEventDetailsBtn{
+    grid-column:2;
+    justify-self:start;
+    padding-top:3px;
+  }
+}
