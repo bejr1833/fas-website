@@ -1703,6 +1703,175 @@ function App() {
   }, [blogPost]);
 
   useEffect(() => {
+    if (!devotionalPost || !window.location.pathname.startsWith("/devotionals/")) {
+      return;
+    }
+
+    const canonicalUrl = `https://fas-fellowship.org/devotionals/${encodeURIComponent(
+      devotionalPost.slug || window.location.pathname.replace("/devotionals/", "").replace(/\\/+$/, "")
+    )}`;
+    const description =
+      devotionalPost.impact_line ||
+      devotionalPost.reflection?.replace(/\\s+/g, " ").trim().slice(0, 160) ||
+      devotionalPost.scripture_reference ||
+      "Read a daily devotional from Faith Alone Saves.";
+
+    document.title = `${devotionalPost.title} | FAS Daily Devotional | Faith Alone Saves`;
+
+    const setMeta = (selector, attributes) => {
+      let element = document.head.querySelector(selector);
+
+      if (!element) {
+        element = document.createElement("meta");
+        document.head.appendChild(element);
+      }
+
+      Object.entries(attributes).forEach(([key, value]) => {
+        element.setAttribute(key, value);
+      });
+    };
+
+    const setLink = (selector, attributes) => {
+      let element = document.head.querySelector(selector);
+
+      if (!element) {
+        element = document.createElement("link");
+        document.head.appendChild(element);
+      }
+
+      Object.entries(attributes).forEach(([key, value]) => {
+        element.setAttribute(key, value);
+      });
+    };
+
+    setMeta('meta[name="description"]', {
+      name: "description",
+      content: description
+    });
+    setMeta('meta[name="robots"]', {
+      name: "robots",
+      content: "index, follow, max-image-preview:large"
+    });
+    setMeta('meta[property="og:type"]', {
+      property: "og:type",
+      content: "article"
+    });
+    setMeta('meta[property="og:site_name"]', {
+      property: "og:site_name",
+      content: "Faith Alone Saves"
+    });
+    setMeta('meta[property="og:title"]', {
+      property: "og:title",
+      content: devotionalPost.title
+    });
+    setMeta('meta[property="og:description"]', {
+      property: "og:description",
+      content: description
+    });
+    setMeta('meta[property="og:url"]', {
+      property: "og:url",
+      content: canonicalUrl
+    });
+    setMeta('meta[property="og:image"]', {
+      property: "og:image",
+      content: "https://fas-fellowship.org/branding/fas-logo.png"
+    });
+    setMeta('meta[property="og:image:alt"]', {
+      property: "og:image:alt",
+      content: "Faith Alone Saves — FAS Fellowship"
+    });
+    setMeta('meta[name="twitter:card"]', {
+      name: "twitter:card",
+      content: "summary_large_image"
+    });
+    setMeta('meta[name="twitter:title"]', {
+      name: "twitter:title",
+      content: devotionalPost.title
+    });
+    setMeta('meta[name="twitter:description"]', {
+      name: "twitter:description",
+      content: description
+    });
+    setMeta('meta[name="twitter:image"]', {
+      name: "twitter:image",
+      content: "https://fas-fellowship.org/branding/fas-logo.png"
+    });
+
+    setLink('link[rel="canonical"]', {
+      rel: "canonical",
+      href: canonicalUrl
+    });
+
+    const schemaId = "fas-devotional-article-schema";
+    let schema = document.getElementById(schemaId);
+
+    if (!schema) {
+      schema = document.createElement("script");
+      schema.id = schemaId;
+      schema.type = "application/ld+json";
+      document.head.appendChild(schema);
+    }
+
+    schema.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: devotionalPost.title,
+      description,
+      url: canonicalUrl,
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": canonicalUrl
+      },
+      ...(devotionalPost.date
+        ? { datePublished: devotionalPost.date }
+        : {}),
+      ...(devotionalPost.updated_at || devotionalPost.date
+        ? { dateModified: devotionalPost.updated_at || devotionalPost.date }
+        : {}),
+      ...(devotionalPost.author
+        ? {
+            author: {
+              "@type": "Person",
+              name: devotionalPost.author
+            }
+          }
+        : {}),
+      publisher: {
+        "@type": "Organization",
+        name: "Faith Alone Saves",
+        url: "https://fas-fellowship.org/",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://fas-fellowship.org/branding/fas-logo.png"
+        }
+      },
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Faith Alone Saves",
+            item: "https://fas-fellowship.org/"
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "FAS Daily Devotional",
+            item: "https://fas-fellowship.org/devotions"
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: devotionalPost.title,
+            item: canonicalUrl
+          }
+        ]
+      }
+    });
+  }, [devotionalPost]);
+
+  useEffect(() => {
     const items = document.querySelectorAll(
       ".reveal-section, .reveal-item"
     );
