@@ -1977,6 +1977,12 @@ function App() {
                 <span>“</span>
                 <p>{devotionalPost.scripture_text}</p>
                 <strong>{devotionalPost.scripture_reference}</strong>
+                {devotionalPost.scripture_text_telugu && (
+                  <div className="devotionalTeluguVerse">
+                    <span>తెలుగు వాక్యము</span>
+                    <p>{devotionalPost.scripture_text_telugu}</p>
+                  </div>
+                )}
               </div>
               <div className="devotionalImpact"><span>THE IMPACT</span><strong>{devotionalPost.impact_line}</strong></div>
               <div className="devotionalBody">
