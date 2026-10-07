@@ -66,7 +66,7 @@ const fetchBlogs = async () => {
   }
 };
 
-const buildSitemap = (posts) => {
+const buildSitemap = (posts, devotionals) => {
   const today = new Date().toISOString().slice(0, 10);
 
   const urls = [
