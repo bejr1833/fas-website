@@ -1708,11 +1708,11 @@ function App() {
     }
 
     const canonicalUrl = `https://fas-fellowship.org/devotionals/${encodeURIComponent(
-      devotionalPost.slug || window.location.pathname.replace("/devotionals/", "").replace(/\\/+$/, "")
+      devotionalPost.slug || window.location.pathname.replace("/devotionals/", "").replace(/\/+$/, "")
     )}`;
     const description =
       devotionalPost.impact_line ||
-      devotionalPost.reflection?.replace(/\\s+/g, " ").trim().slice(0, 160) ||
+      devotionalPost.reflection?.replace(/\s+/g, " ").trim().slice(0, 160) ||
       devotionalPost.scripture_reference ||
       "Read a daily devotional from Faith Alone Saves.";
 
@@ -1936,7 +1936,7 @@ function App() {
     };
   }, [data.stories]);
   useEffect(() => {
-    const pathName = window.location.pathname.replace(/\\/+$/, "") || "/";
+    const pathName = window.location.pathname.replace(/\/+$/, "") || "/";
 
     if (pathName.startsWith("/blog/") || pathName.startsWith("/devotionals/")) {
       return;
