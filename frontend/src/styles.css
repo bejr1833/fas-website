@@ -15895,3 +15895,354 @@ html[data-theme="dark"] .devotionalTeluguVerse p{
     line-height:1.65;
   }
 }
+
+
+/* =========================================================
+   FAS E-BOOK READER
+   ========================================================= */
+.ebookReaderOverlay{
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(18,18,16,.82);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+.ebookReader{
+  width:min(1180px,100%);
+  height:min(94vh,920px);
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border:1px solid rgba(184,137,50,.28);
+  border-radius:22px;
+  background:#f3f1eb;
+  box-shadow:0 30px 90px rgba(0,0,0,.42);
+}
+.ebookReaderHeader{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:16px 18px;
+  border-bottom:1px solid rgba(35,36,34,.10);
+  background:rgba(250,249,245,.96);
+}
+.ebookReaderTitle{
+  min-width:0;
+}
+.ebookReaderEyebrow{
+  display:block;
+  margin-bottom:4px;
+  color:#8b6b32;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.16em;
+}
+.ebookReaderTitle h2{
+  margin:0;
+  overflow:hidden;
+  color:#252623;
+  font-size:clamp(17px,2vw,22px);
+  line-height:1.2;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.ebookReaderTitle>span:last-child{
+  display:block;
+  margin-top:4px;
+  color:#73746e;
+  font-size:11px;
+}
+.ebookReaderHeaderActions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex:0 0 auto;
+}
+.ebookReaderIconButton,
+.ebookReaderClose{
+  width:38px;
+  height:38px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(35,36,34,.12);
+  border-radius:11px;
+  background:#fff;
+  color:#363733;
+  text-decoration:none;
+  cursor:pointer;
+  transition:transform .2s ease, background .2s ease, border-color .2s ease;
+}
+.ebookReaderIconButton:hover,
+.ebookReaderClose:hover{
+  transform:translateY(-1px);
+  border-color:rgba(184,137,50,.42);
+  background:#f8f4e9;
+}
+.ebookReaderClose{
+  background:#252623;
+  border-color:#252623;
+  color:#fff;
+}
+.ebookReaderToolbar{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:9px 14px;
+  border-bottom:1px solid rgba(35,36,34,.09);
+  background:#ebe9e2;
+}
+.ebookReaderPageControls,
+.ebookReaderZoomControls,
+.ebookReaderUtilityControls{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.ebookReaderPageControls button,
+.ebookReaderZoomControls button{
+  width:34px;
+  height:32px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(35,36,34,.12);
+  border-radius:9px;
+  background:#fff;
+  color:#30312e;
+  cursor:pointer;
+}
+.ebookReaderPageControls button:disabled,
+.ebookReaderZoomControls button:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+.ebookReaderPageControls label{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#676861;
+  font-size:11px;
+  font-weight:700;
+}
+.ebookReaderPageControls input{
+  width:52px;
+  height:32px;
+  padding:0 7px;
+  border:1px solid rgba(35,36,34,.12);
+  border-radius:8px;
+  background:#fff;
+  color:#292a27;
+  text-align:center;
+  font:700 12px/1 "DM Sans",system-ui,sans-serif;
+}
+.ebookReaderZoomControls{
+  margin-left:auto;
+}
+.ebookReaderZoomControls span{
+  min-width:48px;
+  color:#50514c;
+  text-align:center;
+  font-size:11px;
+  font-weight:800;
+}
+.ebookReaderDownload{
+  display:inline-flex;
+  align-items:center;
+  min-height:32px;
+  padding:0 12px;
+  border-radius:9px;
+  background:#252623;
+  color:#fff;
+  text-decoration:none;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.ebookReaderStage{
+  position:relative;
+  flex:1 1 auto;
+  min-height:0;
+  overflow:auto;
+  padding:28px;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(184,137,50,.09), transparent 34%),
+    #d9d7d0;
+  overscroll-behavior:contain;
+}
+.ebookReaderCanvasWrap{
+  min-width:max-content;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:100%;
+}
+.ebookReaderCanvas{
+  display:block;
+  max-width:none;
+  background:#fff;
+  box-shadow:0 12px 34px rgba(0,0,0,.20);
+}
+.ebookReaderState{
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:8px;
+  color:#4f504b;
+  text-align:center;
+}
+.ebookReaderState strong{
+  color:#292a27;
+  font-size:15px;
+}
+.ebookReaderState span{
+  max-width:420px;
+  font-size:12px;
+  line-height:1.6;
+}
+.ebookReaderState .primaryBtn{
+  margin-top:8px;
+  text-decoration:none;
+}
+.ebookReaderError{
+  padding:30px;
+}
+.ebookReaderSpinner{
+  width:32px;
+  height:32px;
+  margin-bottom:8px;
+  border:3px solid rgba(139,107,50,.18);
+  border-top-color:#8b6b32;
+  border-radius:50%;
+  animation:fasReaderSpin .8s linear infinite;
+}
+@keyframes fasReaderSpin{
+  to{transform:rotate(360deg);}
+}
+.ebookReaderFooter{
+  flex:0 0 auto;
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  padding:8px 14px;
+  border-top:1px solid rgba(35,36,34,.09);
+  background:#f7f5ef;
+  color:#85867f;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+html[data-theme="dark"] .ebookReader{
+  background:#1d1e1b;
+  border-color:rgba(212,188,136,.24);
+}
+html[data-theme="dark"] .ebookReaderHeader{
+  border-bottom-color:rgba(255,255,255,.08);
+  background:#20211e;
+}
+html[data-theme="dark"] .ebookReaderTitle h2{
+  color:#f1eee5;
+}
+html[data-theme="dark"] .ebookReaderTitle>span:last-child{
+  color:#a9aaa3;
+}
+html[data-theme="dark"] .ebookReaderIconButton,
+html[data-theme="dark"] .ebookReaderClose,
+html[data-theme="dark"] .ebookReaderPageControls button,
+html[data-theme="dark"] .ebookReaderZoomControls button,
+html[data-theme="dark"] .ebookReaderPageControls input{
+  border-color:rgba(255,255,255,.10);
+  background:#292a27;
+  color:#eeeae0;
+}
+html[data-theme="dark"] .ebookReaderClose{
+  background:#eeeae0;
+  color:#252623;
+}
+html[data-theme="dark"] .ebookReaderToolbar{
+  border-bottom-color:rgba(255,255,255,.08);
+  background:#272824;
+}
+html[data-theme="dark"] .ebookReaderPageControls label,
+html[data-theme="dark"] .ebookReaderZoomControls span{
+  color:#bfc0b9;
+}
+html[data-theme="dark"] .ebookReaderDownload{
+  background:#eeeae0;
+  color:#252623;
+}
+html[data-theme="dark"] .ebookReaderStage{
+  background:
+    radial-gradient(circle at 50% 10%, rgba(212,188,136,.08), transparent 34%),
+    #111210;
+}
+html[data-theme="dark"] .ebookReaderState{
+  color:#aaaCA5;
+}
+html[data-theme="dark"] .ebookReaderState strong{
+  color:#eeeae0;
+}
+html[data-theme="dark"] .ebookReaderFooter{
+  border-top-color:rgba(255,255,255,.08);
+  background:#20211e;
+  color:#999a94;
+}
+@media(max-width:700px){
+  .ebookReaderOverlay{
+    padding:0;
+  }
+  .ebookReader{
+    width:100%;
+    height:100dvh;
+    min-height:100dvh;
+    border:0;
+    border-radius:0;
+  }
+  .ebookReaderHeader{
+    padding:12px;
+  }
+  .ebookReaderTitle h2{
+    font-size:16px;
+  }
+  .ebookReaderHeaderActions{
+    gap:5px;
+  }
+  .ebookReaderIconButton,
+  .ebookReaderClose{
+    width:34px;
+    height:34px;
+  }
+  .ebookReaderToolbar{
+    flex-wrap:wrap;
+    justify-content:space-between;
+    padding:8px 10px;
+  }
+  .ebookReaderZoomControls{
+    margin-left:0;
+  }
+  .ebookReaderUtilityControls{
+    margin-left:auto;
+  }
+  .ebookReaderStage{
+    padding:14px 8px 22px;
+  }
+  .ebookReaderFooter{
+    gap:10px;
+    flex-wrap:wrap;
+    font-size:8px;
+  }
+}
