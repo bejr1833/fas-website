@@ -365,7 +365,7 @@ function EbookReader({ ebook, onClose }) {
   const [currentPage, setCurrentPage] = useState(() => {
     try {
       const saved = Number(
-        localStorage.getItem(\`fas-ebook-page:\${ebook.id}\`) || 1
+        localStorage.getItem(`fas-ebook-page:${ebook.id}`) || 1
       );
       return Number.isFinite(saved) && saved > 0 ? saved : 1;
     } catch {
