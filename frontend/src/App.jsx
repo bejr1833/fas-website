@@ -1936,11 +1936,118 @@ function App() {
     };
   }, [data.stories]);
   useEffect(() => {
-    if (window.location.pathname.startsWith("/blog/") || window.location.pathname.startsWith("/devotionals/")) {
+    const pathName = window.location.pathname.replace(/\\/+$/, "") || "/";
+
+    if (pathName.startsWith("/blog/") || pathName.startsWith("/devotionals/")) {
       return;
     }
 
-    document.title = "Faith Alone Saves | FAS Fellowship";
+    const pageMeta = {
+      "/": {
+        title: "Faith Alone Saves | FAS Fellowship",
+        description:
+          "Faith Alone Saves (FAS) is a Christian student fellowship helping campus students grow in God's Word, worship, fellowship, mentorship, and service.",
+        canonical: "https://fas-fellowship.org/"
+      },
+      "/events": {
+        title: "FAS Events | Faith Alone Saves",
+        description:
+          "Explore upcoming and past Faith Alone Saves fellowship gatherings, meetings, retreats, and campus events.",
+        canonical: "https://fas-fellowship.org/events"
+      },
+      "/devotions": {
+        title: "FAS Daily Devotional | Faith Alone Saves",
+        description:
+          "Read and explore daily devotionals from Faith Alone Saves, centered on Scripture, reflection, prayer, and practical Christian living.",
+        canonical: "https://fas-fellowship.org/devotions"
+      }
+    }[pathName] || {
+      title: "Faith Alone Saves | FAS Fellowship",
+      description:
+        "Faith Alone Saves is a Christian student fellowship helping campus students grow in God's Word, worship, fellowship, mentorship, and service.",
+      canonical: "https://fas-fellowship.org/"
+    };
+
+    document.title = pageMeta.title;
+
+    const setMeta = (selector, attributes) => {
+      let element = document.head.querySelector(selector);
+
+      if (!element) {
+        element = document.createElement("meta");
+        document.head.appendChild(element);
+      }
+
+      Object.entries(attributes).forEach(([key, value]) => {
+        element.setAttribute(key, value);
+      });
+    };
+
+    const setLink = (selector, attributes) => {
+      let element = document.head.querySelector(selector);
+
+      if (!element) {
+        element = document.createElement("link");
+        document.head.appendChild(element);
+      }
+
+      Object.entries(attributes).forEach(([key, value]) => {
+        element.setAttribute(key, value);
+      });
+    };
+
+    setMeta('meta[name="description"]', {
+      name: "description",
+      content: pageMeta.description
+    });
+    setMeta('meta[name="robots"]', {
+      name: "robots",
+      content: "index, follow, max-image-preview:large"
+    });
+    setMeta('meta[property="og:type"]', {
+      property: "og:type",
+      content: "website"
+    });
+    setMeta('meta[property="og:title"]', {
+      property: "og:title",
+      content: pageMeta.title
+    });
+    setMeta('meta[property="og:description"]', {
+      property: "og:description",
+      content: pageMeta.description
+    });
+    setMeta('meta[property="og:url"]', {
+      property: "og:url",
+      content: pageMeta.canonical
+    });
+    setMeta('meta[property="og:image"]', {
+      property: "og:image",
+      content: "https://fas-fellowship.org/branding/fas-logo.png"
+    });
+    setMeta('meta[property="og:image:alt"]', {
+      property: "og:image:alt",
+      content: "Faith Alone Saves — FAS Fellowship"
+    });
+    setMeta('meta[name="twitter:card"]', {
+      name: "twitter:card",
+      content: "summary_large_image"
+    });
+    setMeta('meta[name="twitter:title"]', {
+      name: "twitter:title",
+      content: pageMeta.title
+    });
+    setMeta('meta[name="twitter:description"]', {
+      name: "twitter:description",
+      content: pageMeta.description
+    });
+    setMeta('meta[name="twitter:image"]', {
+      name: "twitter:image",
+      content: "https://fas-fellowship.org/branding/fas-logo.png"
+    });
+    setLink('link[rel="canonical"]', {
+      rel: "canonical",
+      href: pageMeta.canonical
+    });
 
     const schemaId = "fas-website-schema";
     let schema = document.getElementById(schemaId);
