@@ -1,10 +1,3 @@
-import * as pdfjsLib from "pdfjs-dist";
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
-
 import { Fragment, useEffect, useRef, useState } from "react";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://fas-backend-xnhy.onrender.com";
 
@@ -384,41 +377,45 @@ function EbookReader({ ebook, onClose }) {
     setLoading(true);
     setError("");
 
-    try {
-      const loadingTask = pdfjsLib.getDocument({
-        url: ebook.ebook_file_url,
-        withCredentials: false,
-      });
-      loadingTaskRef.current = loadingTask;
+    (async () => {
+      try {
+        // Load PDF.js only when the eBook reader is opened so it does not
+        // inflate the initial JavaScript bundle for normal visitors.
+        const pdfjsLib = await import("pdfjs-dist");
+        pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+          "pdfjs-dist/build/pdf.worker.min.mjs",
+          import.meta.url
+        ).toString();
 
-      loadingTask.promise
-        .then((documentProxy) => {
-          if (cancelled) {
-            documentProxy.destroy();
-            return;
-          }
+        if (cancelled) return;
 
-          setPdf(documentProxy);
-          setCurrentPage((page) =>
-            Math.min(Math.max(page, 1), documentProxy.numPages)
-          );
-          setLoading(false);
-        })
-        .catch((loadError) => {
-          if (cancelled) return;
-          console.error("FAS eBook reader error:", loadError);
-          setError(
-            "This book could not be loaded inside the reader. You can still open the original PDF."
-          );
-          setLoading(false);
+        const loadingTask = pdfjsLib.getDocument({
+          url: ebook.ebook_file_url,
+          withCredentials: false,
         });
-    } catch (loadError) {
-      console.error("FAS eBook reader setup error:", loadError);
-      setError(
-        "This book could not be loaded inside the reader. You can still open the original PDF."
-      );
-      setLoading(false);
-    }
+        loadingTaskRef.current = loadingTask;
+
+        const documentProxy = await loadingTask.promise;
+
+        if (cancelled) {
+          await documentProxy.destroy();
+          return;
+        }
+
+        setPdf(documentProxy);
+        setCurrentPage((page) =>
+          Math.min(Math.max(page, 1), documentProxy.numPages)
+        );
+        setLoading(false);
+      } catch (loadError) {
+        if (cancelled) return;
+        console.error("FAS eBook reader error:", loadError);
+        setError(
+          "This book could not be loaded inside the reader. You can still open the original PDF."
+        );
+        setLoading(false);
+      }
+    })();
 
     return () => {
       cancelled = true;
