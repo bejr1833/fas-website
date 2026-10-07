@@ -3013,6 +3013,10 @@ function App() {
             Sermons
           </a>
 
+          <a href="#ebooks" onClick={closeMenu}>
+            E-Books
+          </a>
+
           <a href="#videos" onClick={closeMenu}>
             Videos
           </a>
