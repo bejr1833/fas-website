@@ -448,8 +448,8 @@ function EbookReader({ ebook, onClose }) {
 
         canvas.width = Math.floor(viewport.width * outputScale);
         canvas.height = Math.floor(viewport.height * outputScale);
-        canvas.style.width = \`\${Math.floor(viewport.width)}px\`;
-        canvas.style.height = \`\${Math.floor(viewport.height)}px\`;
+        canvas.style.width = `${Math.floor(viewport.width)}px`;
+        canvas.style.height = `${Math.floor(viewport.height)}px`;
 
         renderTaskRef.current = page.render({
           canvasContext: context,
@@ -465,7 +465,7 @@ function EbookReader({ ebook, onClose }) {
         if (!cancelled) {
           try {
             localStorage.setItem(
-              \`fas-ebook-page:\${ebook.id}\`,
+              `fas-ebook-page:${ebook.id}`,
               String(currentPage)
             );
           } catch {
@@ -559,7 +559,7 @@ function EbookReader({ ebook, onClose }) {
       className="ebookReaderOverlay"
       role="dialog"
       aria-modal="true"
-      aria-label={\`Reading \${ebook.title}\`}
+      aria-label={`Reading ${ebook.title}`}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -701,7 +701,7 @@ function EbookReader({ ebook, onClose }) {
               <canvas
                 ref={canvasRef}
                 className="ebookReaderCanvas"
-                aria-label={\`Page \${currentPage} of \${pdf?.numPages || 1}\`}
+                aria-label={`Page ${currentPage} of ${pdf?.numPages || 1}`}
               />
             </div>
           )}
