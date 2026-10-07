@@ -37,6 +37,7 @@ jobs:
           BODY="$(curl -fsS --max-time 20 "$URL")"
           echo "$BODY"
 
+          export BODY
           python - <<'PY'
           import json, os
           body = os.environ.get("BODY")
