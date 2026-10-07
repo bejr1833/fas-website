@@ -1012,6 +1012,7 @@ function App() {
           settings: result.settings || fallback,
           slides: result.slides || [],
           upcoming_events: result.upcoming_events || [],
+          past_events: result.past_events || [],
           gallery: result.gallery || [],
           stories: result.stories || [],
           blog: current.blog || [],
