@@ -15850,3 +15850,48 @@ html[data-theme="light"] .sermonSliderHint{color:#888b86}
     padding-top:12px;
   }
 }
+
+
+/* Telugu Scripture on devotional reading page */
+.devotionalTeluguVerse{
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px solid rgba(35,36,34,.10);
+  text-align:center;
+}
+.devotionalTeluguVerse span{
+  display:block;
+  margin-bottom:8px;
+  color:#8b6b32;
+  font-family:"DM Sans",system-ui,sans-serif;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.devotionalTeluguVerse p{
+  margin:0;
+  color:#343632;
+  font-family:"Noto Sans Telugu","Noto Sans",system-ui,sans-serif;
+  font-size:clamp(16px,2.2vw,20px);
+  line-height:1.7;
+}
+html[data-theme="dark"] .devotionalTeluguVerse{
+  border-top-color:rgba(255,255,255,.09);
+}
+html[data-theme="dark"] .devotionalTeluguVerse span{
+  color:#d4bc88;
+}
+html[data-theme="dark"] .devotionalTeluguVerse p{
+  color:#eeeae0;
+}
+@media(max-width:640px){
+  .devotionalTeluguVerse{
+    margin-top:18px;
+    padding-top:16px;
+  }
+  .devotionalTeluguVerse p{
+    font-size:15px;
+    line-height:1.65;
+  }
+}
