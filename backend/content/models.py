@@ -313,6 +313,7 @@ class Devotional(models.Model):
     author = models.CharField(max_length=120, default="FAS")
     scripture_reference = models.CharField(max_length=160)
     scripture_text = models.TextField()
+    scripture_text_telugu = models.TextField(blank=True)
     impact_line = models.CharField(max_length=220)
     reflection = models.TextField()
     prayer = models.TextField()
