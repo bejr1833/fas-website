@@ -1,4 +1,11 @@
-import { Fragment, useEffect, useState } from "react";
+import * as pdfjsLib from "pdfjs-dist";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.mjs",
+  import.meta.url
+).toString();
+
+import { Fragment, useEffect, useRef, useState } from "react";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://fas-backend-xnhy.onrender.com";
 
 // Keep fresh content for 24h and allow up to 7 days of stale content during backend cold starts.
@@ -348,6 +355,368 @@ function useAutoCarousel(selector, itemSelector, dependency, interval = 4500) {
   }, [selector, itemSelector, dependency, interval]);
 }
 
+
+function EbookReader({ ebook, onClose }) {
+  const readerRef = useRef(null);
+  const canvasRef = useRef(null);
+  const renderTaskRef = useRef(null);
+  const loadingTaskRef = useRef(null);
+  const [pdf, setPdf] = useState(null);
+  const [currentPage, setCurrentPage] = useState(() => {
+    try {
+      const saved = Number(
+        localStorage.getItem(\`fas-ebook-page:\${ebook.id}\`) || 1
+      );
+      return Number.isFinite(saved) && saved > 0 ? saved : 1;
+    } catch {
+      return 1;
+    }
+  });
+  const [scale, setScale] = useState(1.05);
+  const [loading, setLoading] = useState(true);
+  const [rendering, setRendering] = useState(false);
+  const [error, setError] = useState("");
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const loadingTask = pdfjsLib.getDocument({
+        url: ebook.ebook_file_url,
+        withCredentials: false,
+      });
+      loadingTaskRef.current = loadingTask;
+
+      loadingTask.promise
+        .then((documentProxy) => {
+          if (cancelled) {
+            documentProxy.destroy();
+            return;
+          }
+
+          setPdf(documentProxy);
+          setCurrentPage((page) =>
+            Math.min(Math.max(page, 1), documentProxy.numPages)
+          );
+          setLoading(false);
+        })
+        .catch((loadError) => {
+          if (cancelled) return;
+          console.error("FAS eBook reader error:", loadError);
+          setError(
+            "This book could not be loaded inside the reader. You can still open the original PDF."
+          );
+          setLoading(false);
+        });
+    } catch (loadError) {
+      console.error("FAS eBook reader setup error:", loadError);
+      setError(
+        "This book could not be loaded inside the reader. You can still open the original PDF."
+      );
+      setLoading(false);
+    }
+
+    return () => {
+      cancelled = true;
+      renderTaskRef.current?.cancel();
+      loadingTaskRef.current?.destroy();
+      loadingTaskRef.current = null;
+    };
+  }, [ebook.id, ebook.ebook_file_url]);
+
+  useEffect(() => {
+    if (!pdf || !canvasRef.current) return;
+
+    let cancelled = false;
+    setRendering(true);
+
+    const renderPage = async () => {
+      try {
+        renderTaskRef.current?.cancel();
+
+        const page = await pdf.getPage(currentPage);
+        if (cancelled) return;
+
+        const viewport = page.getViewport({ scale });
+        const outputScale = window.devicePixelRatio || 1;
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+
+        canvas.width = Math.floor(viewport.width * outputScale);
+        canvas.height = Math.floor(viewport.height * outputScale);
+        canvas.style.width = \`\${Math.floor(viewport.width)}px\`;
+        canvas.style.height = \`\${Math.floor(viewport.height)}px\`;
+
+        renderTaskRef.current = page.render({
+          canvasContext: context,
+          viewport,
+          transform:
+            outputScale !== 1
+              ? [outputScale, 0, 0, outputScale, 0, 0]
+              : null,
+        });
+
+        await renderTaskRef.current.promise;
+
+        if (!cancelled) {
+          try {
+            localStorage.setItem(
+              \`fas-ebook-page:\${ebook.id}\`,
+              String(currentPage)
+            );
+          } catch {
+            // Ignore localStorage errors.
+          }
+        }
+      } catch (renderError) {
+        if (renderError?.name !== "RenderingCancelledException" && !cancelled) {
+          console.error("FAS eBook page render error:", renderError);
+          setError("We could not render this page. Please try another zoom level.");
+        }
+      } finally {
+        if (!cancelled) setRendering(false);
+      }
+    };
+
+    renderPage();
+
+    return () => {
+      cancelled = true;
+      renderTaskRef.current?.cancel();
+    };
+  }, [pdf, currentPage, scale, ebook.id]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        if (document.fullscreenElement) {
+          document.exitFullscreen?.();
+        } else {
+          onClose();
+        }
+      }
+
+      if (event.key === "ArrowLeft") {
+        setCurrentPage((page) => Math.max(1, page - 1));
+      }
+
+      if (event.key === "ArrowRight") {
+        setCurrentPage((page) => Math.min(pdf?.numPages || page, page + 1));
+      }
+
+      if (event.key === "+" || event.key === "=") {
+        setScale((value) => Math.min(2, Number((value + 0.1).toFixed(2))));
+      }
+
+      if (event.key === "-") {
+        setScale((value) => Math.max(0.65, Number((value - 0.1).toFixed(2))));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose, pdf]);
+
+  useEffect(() => {
+    const handleFullscreen = () => {
+      setIsFullscreen(document.fullscreenElement === readerRef.current);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreen);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreen);
+  }, []);
+
+  const changePage = (nextPage) => {
+    if (!pdf) return;
+    setCurrentPage(Math.min(Math.max(nextPage, 1), pdf.numPages));
+  };
+
+  const toggleFullscreen = async () => {
+    if (!readerRef.current) return;
+
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen?.();
+      } else {
+        await readerRef.current.requestFullscreen?.();
+      }
+    } catch (fullscreenError) {
+      console.error("FAS eBook fullscreen error:", fullscreenError);
+    }
+  };
+
+  const zoomOut = () =>
+    setScale((value) => Math.max(0.65, Number((value - 0.1).toFixed(2))));
+  const zoomIn = () =>
+    setScale((value) => Math.min(2, Number((value + 0.1).toFixed(2))));
+
+  return (
+    <div
+      className="ebookReaderOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label={\`Reading \${ebook.title}\`}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div className="ebookReader" ref={readerRef}>
+        <header className="ebookReaderHeader">
+          <div className="ebookReaderTitle">
+            <span className="ebookReaderEyebrow">FAS E-BOOK READER</span>
+            <h2>{ebook.title}</h2>
+            <span>{ebook.author}</span>
+          </div>
+
+          <div className="ebookReaderHeaderActions">
+            <a
+              href={ebook.ebook_file_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ebookReaderIconButton"
+              aria-label="Open original PDF"
+              title="Open original PDF"
+            >
+              <ArrowRight size={18} />
+            </a>
+            <button
+              type="button"
+              className="ebookReaderIconButton"
+              onClick={toggleFullscreen}
+              aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+              title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+            >
+              {isFullscreen ? <X size={18} /> : <Sparkles size={18} />}
+            </button>
+            <button
+              type="button"
+              className="ebookReaderClose"
+              onClick={onClose}
+              aria-label="Close reader"
+              title="Close reader"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </header>
+
+        <div className="ebookReaderToolbar">
+          <div className="ebookReaderPageControls">
+            <button
+              type="button"
+              onClick={() => changePage(currentPage - 1)}
+              disabled={!pdf || currentPage <= 1 || rendering}
+              aria-label="Previous page"
+            >
+              <ArrowLeft size={17} />
+            </button>
+
+            <label>
+              <span className="srOnly">Page number</span>
+              <input
+                type="number"
+                min="1"
+                max={pdf?.numPages || 1}
+                value={currentPage}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  if (Number.isFinite(value)) changePage(value);
+                }}
+              />
+              <span>of {pdf?.numPages || "—"}</span>
+            </label>
+
+            <button
+              type="button"
+              onClick={() => changePage(currentPage + 1)}
+              disabled={!pdf || currentPage >= (pdf?.numPages || 1) || rendering}
+              aria-label="Next page"
+            >
+              <ArrowRight size={17} />
+            </button>
+          </div>
+
+          <div className="ebookReaderZoomControls">
+            <button
+              type="button"
+              onClick={zoomOut}
+              disabled={scale <= 0.65}
+              aria-label="Zoom out"
+            >
+              −
+            </button>
+            <span>{Math.round(scale * 100)}%</span>
+            <button
+              type="button"
+              onClick={zoomIn}
+              disabled={scale >= 2}
+              aria-label="Zoom in"
+            >
+              +
+            </button>
+          </div>
+
+          <div className="ebookReaderUtilityControls">
+            <a
+              href={ebook.ebook_file_url}
+              download
+              className="ebookReaderDownload"
+              aria-label="Download book"
+            >
+              Download
+            </a>
+          </div>
+        </div>
+
+        <main className="ebookReaderStage">
+          {loading && (
+            <div className="ebookReaderState">
+              <div className="ebookReaderSpinner" />
+              <strong>Preparing your book…</strong>
+              <span>Loading the first page.</span>
+            </div>
+          )}
+
+          {!loading && error && (
+            <div className="ebookReaderState ebookReaderError">
+              <strong>Reader unavailable</strong>
+              <span>{error}</span>
+              <a
+                href={ebook.ebook_file_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="primaryBtn"
+              >
+                Open PDF
+              </a>
+            </div>
+          )}
+
+          {!loading && !error && (
+            <div className="ebookReaderCanvasWrap">
+              <canvas
+                ref={canvasRef}
+                className="ebookReaderCanvas"
+                aria-label={\`Page \${currentPage} of \${pdf?.numPages || 1}\`}
+              />
+            </div>
+          )}
+        </main>
+
+        <footer className="ebookReaderFooter">
+          <span>Use ← → to turn pages</span>
+          <span>+ / − to zoom</span>
+          {rendering && <span>Rendering page…</span>}
+        </footer>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const cachedHome = readContentCache("home");
   const cachedBlog = readContentCache("blog");
@@ -397,6 +766,7 @@ function App() {
   const [reactionSubmitting, setReactionSubmitting] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedEbook, setSelectedEbook] = useState(null);
   const [eventClock, setEventClock] = useState(() => new Date());
 
   useEffect(() => {
@@ -2116,6 +2486,13 @@ function App() {
             </section>
           )}
         </main>
+        {selectedEbook && (
+          <EbookReader
+            ebook={selectedEbook}
+            onClose={() => setSelectedEbook(null)}
+          />
+        )}
+
         {selectedEvent && (
           <div className="eventDetailsModalOverlay" role="dialog" aria-modal="true" aria-label={`Event details for ${selectedEvent.title}`} onClick={() => setSelectedEvent(null)}>
             <div className="eventDetailsModal" onClick={(event) => event.stopPropagation()}>
@@ -4136,14 +4513,13 @@ function App() {
                       <p>{ebook.description}</p>
                     )}
 
-                    <a
-                        href={ebook.ebook_file_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <button
+                        type="button"
                         className="ebookReadLink"
+                        onClick={() => setSelectedEbook(ebook)}
                       >
-                        Open E-book <ArrowRight size={16} />
-                      </a>
+                        Read Online <ArrowRight size={16} />
+                      </button>
                   </div>
                 </article>
               ))}
