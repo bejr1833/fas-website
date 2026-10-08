@@ -2689,7 +2689,7 @@ function App() {
                   <div className="devotionalTeluguVerse">
                     <span>తెలుగు వాక్యము</span>
                     <p>{getCleanTeluguScriptureText(devotionalPost.scripture_text_telugu, devotionalPost.scripture_reference)}</p>
-                    <strong>{getTeluguScriptureReference(devotionalPost.scripture_reference)}</strong>
+                    <strong>{devotionalPost.scripture_reference_telugu || getTeluguScriptureReference(devotionalPost.scripture_reference)}</strong>
                   </div>
                 )}
               </div>
