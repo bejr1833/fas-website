@@ -312,6 +312,7 @@ class Devotional(models.Model):
     release_time = models.TimeField(default=time(5, 0))
     author = models.CharField(max_length=120, default="FAS")
     scripture_reference = models.CharField(max_length=160)
+    scripture_reference_telugu = models.CharField(max_length=160, blank=True)
     scripture_text = models.TextField()
     scripture_text_telugu = models.TextField(blank=True)
     impact_line = models.CharField(max_length=220)
