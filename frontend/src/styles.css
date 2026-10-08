@@ -16246,3 +16246,39 @@ html[data-theme="dark"] .ebookReaderFooter{
     font-size:8px;
   }
 }
+
+/* FAS DAILY DEVOTIONAL — PREMIUM EDITORIAL CARD */
+.devotionalHomeCard{
+  position:relative; isolation:isolate; overflow:hidden;
+  width:min(100%,1120px); margin:0 auto; padding:0;
+  border:1px solid rgba(184,137,50,.32); border-radius:28px; border-top:2px solid #b88932;
+  background:radial-gradient(circle at 88% 8%,rgba(184,137,50,.16),transparent 24%),radial-gradient(circle at 10% 100%,rgba(126,34,40,.10),transparent 28%),linear-gradient(145deg,#191b1c 0%,#111314 62%,#0b0d0e 100%);
+  box-shadow:0 28px 80px rgba(0,0,0,.26),0 6px 22px rgba(0,0,0,.14); color:#f5f2eb;
+}
+.devotionalHomeCard:hover{transform:translateY(-4px);border-color:rgba(184,137,50,.52);box-shadow:0 38px 95px rgba(0,0,0,.32),0 12px 30px rgba(0,0,0,.16)}
+.devotionalHomeTop{position:relative;z-index:2;padding:22px 34px;border-bottom:1px solid rgba(255,255,255,.09)}
+.devotionalHomeTop .sectionLabel{color:#d8b66a;font-size:9px;font-weight:700;letter-spacing:.24em}
+.devotionalHomeDate{color:rgba(255,255,255,.48);font-size:9px;letter-spacing:.14em}
+.devotionalHomeMark{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(184,137,50,.34);border-radius:50%;color:#d8b66a;background:rgba(184,137,50,.045);box-shadow:0 0 24px rgba(184,137,50,.07)}
+.devotionalHomeScripture{position:relative;z-index:2;max-width:850px;margin:0 auto;padding:42px 44px 27px;text-align:center}
+.devotionalHomeScripture::before{content:"“";display:block;height:22px;color:#b88932;font-family:Georgia,serif;font-size:54px;line-height:.7;opacity:.72}
+.devotionalHomeScripture p{max-width:790px;margin:0 auto;color:#f0ede6;font-family:"Playfair Display",Georgia,serif;font-size:clamp(22px,2.7vw,34px);font-weight:400;line-height:1.34;letter-spacing:-.02em}
+.devotionalHomeScripture span{margin-top:17px;color:#cda451;font-size:9px;font-weight:700;letter-spacing:.20em}
+.devotionalHomeImpact{max-width:760px;margin:0 auto;padding:22px 28px 0;text-align:center}
+.devotionalHomeImpact span,.devotionalHomePrayer>span{color:#cda451;font-size:8px;font-weight:800;letter-spacing:.22em}
+.devotionalHomeImpact strong{margin-top:9px;color:#f0ece4;font-size:13px;line-height:1.7}
+.devotionalHomePrayer{max-width:780px;margin:25px auto 0;padding:20px 28px 0;border-top:1px solid rgba(255,255,255,.09);text-align:center}
+.devotionalHomePrayer p{max-width:700px;margin:8px auto 0;color:rgba(255,255,255,.60);font-size:12px;line-height:1.75}
+.devotionalHomeBottom{position:relative;z-index:2;margin-top:27px;padding:18px 34px 21px;border-top:1px solid rgba(255,255,255,.09);background:rgba(0,0,0,.10)}
+.devotionalHomeBottom>span{color:rgba(255,255,255,.44);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase}
+.devotionalReadMore{gap:9px;color:#f0ece4;font-size:11px;font-weight:800;text-decoration:none;transition:color .25s ease,gap .25s ease}
+.devotionalReadMore svg{color:#cda451}
+.devotionalReadMore:hover{color:#d8b66a;gap:12px}
+html[data-theme="light"] .devotionalHomeCard{background:radial-gradient(circle at 88% 8%,rgba(184,137,50,.13),transparent 24%),linear-gradient(145deg,#fff 0%,#f6f3eb 100%);color:#202321;box-shadow:0 28px 70px rgba(23,23,22,.12),0 6px 20px rgba(23,23,22,.05)}
+html[data-theme="light"] .devotionalHomeTop,html[data-theme="light"] .devotionalHomePrayer,html[data-theme="light"] .devotionalHomeBottom{border-color:rgba(23,23,22,.10)}
+html[data-theme="light"] .devotionalHomeScripture p,html[data-theme="light"] .devotionalHomeImpact strong,html[data-theme="light"] .devotionalReadMore{color:#252825}
+html[data-theme="light"] .devotionalHomeDate,html[data-theme="light"] .devotionalHomeBottom>span{color:#737873}
+html[data-theme="light"] .devotionalHomePrayer p{color:#626762}
+@media (max-width:700px){
+  .devotionalHomeCard{border-radius:21px}.devotionalHomeTop{padding:19px 18px}.devotionalHomeScripture{padding:31px 20px 22px}.devotionalHomeScripture p{font-size:20px;line-height:1.45}.devotionalHomeImpact{padding:19px 20px 0}.devotionalHomePrayer{margin-top:21px;padding:18px 20px 0}.devotionalHomeBottom{margin-top:23px;padding:16px 18px 18px}
+}
