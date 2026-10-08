@@ -108,6 +108,70 @@ const fallback = {
   email: ""
 };
 
+function getTeluguScriptureReference(reference = "") {
+  const value = String(reference || "").trim();
+  const bookMap = [
+    ["1 John", "1 యోహాను"],
+    ["2 John", "2 యోహాను"],
+    ["3 John", "3 యోహాను"],
+    ["John", "యోహాను"],
+    ["1 Peter", "1 పేతురు"],
+    ["2 Peter", "2 పేతురు"],
+    ["1 Corinthians", "1 కొరింథీయులకు"],
+    ["2 Corinthians", "2 కొరింథీయులకు"],
+    ["1 Thessalonians", "1 థెస్సలొనీకయులకు"],
+    ["2 Thessalonians", "2 థెస్సలొనీకయులకు"],
+    ["1 Timothy", "1 తిమోతికి"],
+    ["2 Timothy", "2 తిమోతికి"],
+    ["Psalms", "కీర్తనలు"],
+    ["Proverbs", "సామెతలు"],
+    ["Isaiah", "యెషయా"],
+    ["Jeremiah", "యిర్మీయా"],
+    ["Ezekiel", "యెహెజ్కేలు"],
+    ["Matthew", "మత్తయి"],
+    ["Mark", "మార్కు"],
+    ["Luke", "లూకా"],
+    ["Acts", "అపొస్తలుల కార్యములు"],
+    ["Romans", "రోమీయులకు"],
+    ["Galatians", "గలతీయులకు"],
+    ["Ephesians", "ఎఫెసీయులకు"],
+    ["Philippians", "ఫిలిప్పీయులకు"],
+    ["Colossians", "కొలొస్సయులకు"],
+    ["Hebrews", "హెబ్రీయులకు"],
+    ["James", "యాకోబు"],
+    ["Jude", "యూదా"],
+    ["Revelation", "ప్రకటన గ్రంథము"],
+  ];
+
+  for (const [englishBook, teluguBook] of bookMap) {
+    if (value.toLowerCase().startsWith(englishBook.toLowerCase())) {
+      return teluguBook + value.slice(englishBook.length);
+    }
+  }
+
+  return value;
+}
+
+function getCleanTeluguScriptureText(text = "", reference = "") {
+  const value = String(text || "").trim();
+  const teluguReference = getTeluguScriptureReference(reference);
+  if (!value || !teluguReference) return value;
+
+  const variants = [
+    teluguReference,
+    teluguReference.replace(/-/g, "–"),
+    teluguReference.replace(/–/g, "-"),
+  ];
+
+  for (const variant of variants) {
+    if (value.endsWith(variant)) {
+      return value.slice(0, -variant.length).replace(/[\s“”"'‘’—–.,，。]+$/u, "").trim();
+    }
+  }
+
+  return value;
+}
+
 function scrollToSection(id) {
   const element = document.getElementById(id);
   if (!element) return false;
@@ -2624,7 +2688,8 @@ function App() {
                 {devotionalPost.scripture_text_telugu && (
                   <div className="devotionalTeluguVerse">
                     <span>తెలుగు వాక్యము</span>
-                    <p>{devotionalPost.scripture_text_telugu}</p>
+                    <p>{getCleanTeluguScriptureText(devotionalPost.scripture_text_telugu, devotionalPost.scripture_reference)}</p>
+                    <strong>{getTeluguScriptureReference(devotionalPost.scripture_reference)}</strong>
                   </div>
                 )}
               </div>
