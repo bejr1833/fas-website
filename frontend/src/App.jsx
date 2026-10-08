@@ -2684,12 +2684,23 @@ function App() {
               <div className="devotionalScripture">
                 <span>“</span>
                 <p>{devotionalPost.scripture_text}</p>
-                <strong>{devotionalPost.scripture_reference}</strong>
+                <strong className="devotionalReference devotionalReferenceEnglish">
+                  {devotionalPost.scripture_reference}
+                </strong>
                 {devotionalPost.scripture_text_telugu && (
                   <div className="devotionalTeluguVerse">
-                    <span>తెలుగు వాక్యము</span>
-                    <p>{getCleanTeluguScriptureText(devotionalPost.scripture_text_telugu, devotionalPost.scripture_reference)}</p>
-                    <strong>{devotionalPost.scripture_reference_telugu || getTeluguScriptureReference(devotionalPost.scripture_reference)}</strong>
+                    <span className="devotionalTeluguLabel">తెలుగు వాక్యము</span>
+                    <p>
+                      {getCleanTeluguScriptureText(
+                        devotionalPost.scripture_text_telugu,
+                        devotionalPost.scripture_reference_telugu ||
+                          getTeluguScriptureReference(devotionalPost.scripture_reference)
+                      )}
+                    </p>
+                    <strong className="devotionalReference devotionalReferenceTelugu">
+                      {devotionalPost.scripture_reference_telugu ||
+                        getTeluguScriptureReference(devotionalPost.scripture_reference)}
+                    </strong>
                   </div>
                 )}
               </div>
