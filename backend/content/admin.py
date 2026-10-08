@@ -336,7 +336,7 @@ class DevotionalAdmin(admin.ModelAdmin):
         ("Devotional Details", {
             "fields": (
                 "title", "slug", "date", "release_time", "author",
-                "scripture_reference", "scripture_text", "scripture_text_telugu",
+                "scripture_reference", "scripture_reference_telugu", "scripture_text", "scripture_text_telugu",
                 "impact_line",
             )
         }),
