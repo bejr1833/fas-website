@@ -16283,35 +16283,48 @@ html[data-theme="light"] .devotionalHomePrayer p{color:#626762}
   .devotionalHomeCard{border-radius:21px}.devotionalHomeTop{padding:19px 18px}.devotionalHomeScripture{padding:31px 20px 22px}.devotionalHomeScripture p{font-size:20px;line-height:1.45}.devotionalHomeScripture span{font-size:13px;letter-spacing:.16em}.devotionalHomeImpact{padding:19px 20px 0}.devotionalHomePrayer{margin-top:21px;padding:18px 20px 0}.devotionalHomeBottom{margin-top:23px;padding:16px 18px 18px}
 }
 
-
-/* DEVOTIONAL SCRIPTURE REFERENCES — clearer bilingual hierarchy */
-.devotionalScripture strong{
-  margin-top:18px;
-  color:#c79f4f;
-  font-size:14px;
+/* =========================================================
+   DEVOTIONAL REFERENCE SYSTEM — explicit, override-safe
+   ========================================================= */
+.devotionalScripture > .devotionalReference{
+  display:block;
+  width:max-content;
+  max-width:100%;
+  margin-left:auto;
+  margin-right:auto;
   font-weight:800;
   line-height:1.4;
-  letter-spacing:.16em;
-}
-
-.devotionalTeluguVerse{
-  margin-top:28px;
-  padding:24px 20px 4px;
-  border-top:1px solid rgba(184,137,50,.20);
   text-align:center;
 }
 
-.devotionalTeluguVerse > span{
+.devotionalScripture > .devotionalReferenceEnglish{
+  margin-top:18px;
+  color:#d6ad57;
+  font-size:14px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  text-shadow:0 0 18px rgba(214,173,87,.12);
+}
+
+.devotionalTeluguVerse{
+  margin-top:30px;
+  padding:26px 20px 4px;
+  border-top:1px solid rgba(214,173,87,.22);
+  text-align:center;
+}
+
+.devotionalTeluguVerse > .devotionalTeluguLabel{
   display:block;
   margin-bottom:14px;
-  color:#c79f4f;
+  color:#d6ad57;
+  font-family:"DM Sans",system-ui,sans-serif;
   font-size:10px;
   font-weight:900;
   letter-spacing:.18em;
   text-transform:uppercase;
 }
 
-.devotionalTeluguVerse p{
+.devotionalTeluguVerse > p{
   max-width:760px;
   margin:0 auto;
   color:#eeeae0;
@@ -16323,29 +16336,40 @@ html[data-theme="light"] .devotionalHomePrayer p{color:#626762}
   text-wrap:pretty;
 }
 
-.devotionalTeluguVerse strong{
-  display:block;
-  margin-top:17px;
-  padding-top:13px;
-  color:#d8b66a;
-  border-top:1px solid rgba(184,137,50,.14);
+.devotionalTeluguVerse > .devotionalReferenceTelugu{
+  margin-top:18px;
+  padding:12px 18px 0;
+  border-top:1px solid rgba(214,173,87,.16);
+  color:#d6ad57;
   font-family:"Noto Sans Telugu","Noto Sans",system-ui,sans-serif;
   font-size:14px;
-  font-weight:800;
-  line-height:1.4;
   letter-spacing:.08em;
+  text-transform:none;
+  text-shadow:0 0 18px rgba(214,173,87,.10);
+}
+
+html[data-theme="dark"] .devotionalScripture > .devotionalReferenceEnglish,
+html[data-theme="dark"] .devotionalTeluguVerse > .devotionalReferenceTelugu,
+html[data-theme="dark"] .devotionalTeluguVerse > .devotionalTeluguLabel{
+  color:#d6ad57;
+}
+
+html[data-theme="light"] .devotionalScripture > .devotionalReferenceEnglish,
+html[data-theme="light"] .devotionalTeluguVerse > .devotionalReferenceTelugu,
+html[data-theme="light"] .devotionalTeluguVerse > .devotionalTeluguLabel{
+  color:#a97d2f;
 }
 
 html[data-theme="light"] .devotionalTeluguVerse{
-  border-top-color:rgba(184,137,50,.22);
+  border-top-color:rgba(169,125,47,.22);
 }
 
-html[data-theme="light"] .devotionalTeluguVerse p{
+html[data-theme="light"] .devotionalTeluguVerse > p{
   color:#343632;
 }
 
 @media(max-width:640px){
-  .devotionalScripture strong{
+  .devotionalScripture > .devotionalReferenceEnglish{
     margin-top:15px;
     font-size:13px;
     letter-spacing:.14em;
@@ -16353,21 +16377,21 @@ html[data-theme="light"] .devotionalTeluguVerse p{
 
   .devotionalTeluguVerse{
     margin-top:22px;
-    padding:19px 8px 2px;
+    padding:20px 8px 2px;
   }
 
-  .devotionalTeluguVerse > span{
+  .devotionalTeluguVerse > .devotionalTeluguLabel{
     margin-bottom:11px;
     font-size:9px;
   }
 
-  .devotionalTeluguVerse p{
+  .devotionalTeluguVerse > p{
     font-size:17px;
     line-height:1.82;
     letter-spacing:0;
   }
 
-  .devotionalTeluguVerse strong{
+  .devotionalTeluguVerse > .devotionalReferenceTelugu{
     margin-top:15px;
     padding-top:11px;
     font-size:13px;
