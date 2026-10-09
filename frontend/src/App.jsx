@@ -2263,34 +2263,6 @@ function App() {
         }
       };
 
-      const wrapText = (text, maxWidth, font, lineHeight, maxLines) => {
-        ctx.font = font;
-        const words = String(text || "").split(/\s+/).filter(Boolean);
-        const lines = [];
-        let line = "";
-        for (const word of words) {
-          const candidate = line ? line + " " + word : word;
-          if (ctx.measureText(candidate).width > maxWidth && line) {
-            lines.push(line);
-            line = word;
-          } else {
-            line = candidate;
-          }
-        }
-        if (line) lines.push(line);
-        if (lines.length > maxLines) {
-          lines.length = maxLines;
-          let last = lines[maxLines - 1];
-          while (last && ctx.measureText(last + "…").width > maxWidth) {
-            last = last.slice(0, -1);
-          }
-          lines[maxLines - 1] = last.trimEnd() + "…";
-        }
-        ctx.font = font;
-        lines.forEach((lineText, index) => ctx.fillText(lineText, 0, index * lineHeight));
-        return lines.length;
-      };
-
       const background = ctx.createLinearGradient(0, 0, W, H);
       background.addColorStop(0, "#242329");
       background.addColorStop(0.48, "#17171d");
@@ -2410,9 +2382,6 @@ function App() {
       ctx.fillText(impact ? "WHAT GOD DID" : "A WORD FROM THE STORY", quotePanel.x + 60, quotePanel.y + 63);
       ctx.fillStyle = ivory;
       ctx.font = "italic 37px Georgia, serif";
-      const quoteLines = wrapText(quote || "Discover how God has been at work in this student's life.", quotePanel.w - 120, "italic 37px Georgia, serif", 52, 5);
-      // wrapText draws at x=0; reposition the quote cleanly within the panel.
-      ctx.clearRect(quotePanel.x + 50, quotePanel.y + 82, quotePanel.w - 90, quotePanel.h - 100);
       ctx.fillStyle = ivory;
       ctx.font = "italic 37px Georgia, serif";
       const words = String(quote || "Discover how God has been at work in this student's life.").split(/\s+/).filter(Boolean);
