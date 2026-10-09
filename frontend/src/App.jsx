@@ -2214,9 +2214,12 @@ function App() {
       // Ensure the premium display font is ready before drawing the share image.
       if (document.fonts?.load) {
         try {
-          await document.fonts.load('600 54px "Playfair Display"');
+          await Promise.all([
+            document.fonts.load('700 46px "DM Sans"'),
+            document.fonts.load('italic 600 46px "Playfair Display"')
+          ]);
         } catch {
-          // Keep the share card functional with the serif fallback if font loading fails.
+          // Keep the share card functional with the available font fallbacks.
         }
       }
 
@@ -2582,19 +2585,21 @@ function App() {
       ctx.font = "800 26px Arial, sans-serif";
       drawTrackedText("STUDENT TESTIMONY", margin, 142, 4);
 
-      // Premium editorial headline typography: Playfair Display with a classic serif fallback.
-      // drawLines expects (lines, x, y, lineHeight, font, color).
-      const headlineFont = '600 46px "Playfair Display", Georgia, serif';
-      const headlineLineHeight = 54;
+      // Match the website's editorial "Stories of faith." lockup:
+      // bold sans-serif in white, paired with italic Playfair Display in red.
       const headlineY = 204;
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
       ctx.fillStyle = colors.white;
-      ctx.font = headlineFont;
-      const headlineLines = wrapLines(storyHeadline, headlineFont, contentW, 2);
-      drawLines(headlineLines, margin, headlineY, headlineLineHeight, headlineFont, colors.white);
+      ctx.font = '700 46px "DM Sans", Arial, sans-serif';
+      ctx.fillText("Stories of", margin, headlineY);
+      const faithX = margin + ctx.measureText("Stories of ").width;
+      ctx.fillStyle = colors.red;
+      ctx.font = 'italic 600 46px "Playfair Display", Georgia, serif';
+      ctx.fillText("faith.", faithX, headlineY);
 
-      // Position branding and portrait from the headline's actual height so
-      // long two-line headlines never collide with the brand line or photo.
-      const brandY = headlineY + (headlineLines.length - 1) * headlineLineHeight + 38;
+      // Keep the branding close to the single-line headline.
+      const brandY = headlineY + 38;
       ctx.fillStyle = colors.muted;
       ctx.font = "25px Arial, sans-serif";
       ctx.fillText("FAITH ALONE SAVES  ·  LOVE IN FELLOWSHIP & TRUTH", margin, brandY);
