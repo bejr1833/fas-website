@@ -2461,6 +2461,9 @@ function App() {
     const college = String(story.college || "").trim();
     const title = studentName + " — FAS Student Testimony";
     const impact = String(story.impact_statement || "").replace(/\s+/g, " ").trim();
+    const impactClauses = impact.split(/[;:—–]/).map((part) => part.trim()).filter(Boolean);
+    const headlineClause = impactClauses.find((part) => /\bGod\b/i.test(part)) || impactClauses[0] || "";
+    const storyHeadline = String(headlineClause || "A STORY OF GRACE").replace(/^[“"'‘]+|[”"'’]+$/g, "").trim();
     const excerpt = String(story.testimony || "").replace(/\s+/g, " ").trim();
     const shortExcerpt = excerpt.length > 180 ? excerpt.slice(0, 177).trim() + "…" : excerpt;
     const shareText = [
@@ -2572,7 +2575,8 @@ function App() {
 
       ctx.fillStyle = colors.white;
       ctx.font = "800 47px Arial, sans-serif";
-      ctx.fillText("A STORY OF GRACE", margin, 210);
+      const headlineLines = wrapLines(storyHeadline, "800 47px Arial, sans-serif", contentW, 1);
+      drawLines(headlineLines, margin, 210, 54, "800 47px Arial, sans-serif", colors.white);
       ctx.fillStyle = colors.muted;
       ctx.font = "23px Arial, sans-serif";
       ctx.fillText("FAITH ALONE SAVES  ·  LOVE IN FELLOWSHIP & TRUTH", margin, 252);
