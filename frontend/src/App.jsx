@@ -2580,25 +2580,24 @@ function App() {
       ctx.fill();
 
       ctx.fillStyle = colors.premiumRed;
-      ctx.font = "800 24px Arial, sans-serif";
+      ctx.font = "800 26px Arial, sans-serif";
       drawTrackedText("STUDENT TESTIMONY", margin, 142, 4);
 
       // Premium editorial headline typography: Playfair Display with a classic serif fallback.
-      // Keep the drawLines argument order aligned with its helper signature:
-      // (lines, x, y, font, color, lineHeight). This prevents baselines from collapsing.
+      // drawLines expects (lines, x, y, lineHeight, font, color).
       const headlineFont = '600 46px "Playfair Display", Georgia, serif';
       const headlineLineHeight = 54;
       const headlineY = 204;
       ctx.fillStyle = colors.white;
       ctx.font = headlineFont;
       const headlineLines = wrapLines(storyHeadline, headlineFont, contentW, 2);
-      drawLines(headlineLines, margin, headlineY, headlineFont, colors.white, headlineLineHeight);
+      drawLines(headlineLines, margin, headlineY, headlineLineHeight, headlineFont, colors.white);
 
       // Position branding and portrait from the headline's actual height so
       // long two-line headlines never collide with the brand line or photo.
       const brandY = headlineY + (headlineLines.length - 1) * headlineLineHeight + 38;
       ctx.fillStyle = colors.muted;
-      ctx.font = "23px Arial, sans-serif";
+      ctx.font = "25px Arial, sans-serif";
       ctx.fillText("FAITH ALONE SAVES  ·  LOVE IN FELLOWSHIP & TRUTH", margin, brandY);
 
       // Preserve the portrait's lower edge so the identity and impact panel stay aligned.
