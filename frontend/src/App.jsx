@@ -2470,9 +2470,8 @@ function App() {
     const college = String(story.college || "").trim();
     const title = studentName + " — FAS Student Testimony";
     const impact = String(story.impact_statement || "").replace(/\s+/g, " ").trim();
-    const impactClauses = impact.split(/[;:—–]/).map((part) => part.trim()).filter(Boolean);
-    const headlineClause = impactClauses.find((part) => /\bGod\b/i.test(part)) || impactClauses[0] || "";
-    const storyHeadline = String(headlineClause || "A STORY OF GRACE").replace(/^[“"'‘]+|[”"'’]+$/g, "").trim();
+    // Keep the share card's top headline consistent across all student stories.
+    const storyHeadline = "STORIES OF FAITH";
     const excerpt = String(story.testimony || "").replace(/\s+/g, " ").trim();
     const shortExcerpt = excerpt.length > 180 ? excerpt.slice(0, 177).trim() + "…" : excerpt;
     const shareText = [
@@ -2683,11 +2682,10 @@ function App() {
         ctx.fillStyle = colors.red;
         roundedRect(margin, impactY, 7, impactH, 3);
         ctx.fill();
-        // Replace the functional label with the shared, premium FAS story tagline.
-        ctx.fillStyle = colors.rose;
-        const storyTaglineFont = '600 25px "Playfair Display", Georgia, serif';
-        ctx.font = storyTaglineFont;
-        ctx.fillText("STORIES OF FAITH", margin + 34, impactY + 43);
+        // Keep the original impact-panel label here, below the photo.
+        ctx.fillStyle = colors.muted;
+        ctx.font = "900 21px Arial, sans-serif";
+        drawTrackedText("WHAT GOD DID", margin + 34, impactY + 43, 3);
         drawLines(impactLines, margin + 34, impactY + 94, 48, impactFont, colors.white);
         y = impactY + impactH + 34;
       } else {
