@@ -2683,9 +2683,11 @@ function App() {
         ctx.fillStyle = colors.red;
         roundedRect(margin, impactY, 7, impactH, 3);
         ctx.fill();
-        ctx.fillStyle = colors.muted;
-        ctx.font = "900 21px Arial, sans-serif";
-        drawTrackedText("WHAT GOD DID", margin + 34, impactY + 43, 3);
+        // Replace the functional label with the shared, premium FAS story tagline.
+        ctx.fillStyle = colors.rose;
+        const storyTaglineFont = '600 25px "Playfair Display", Georgia, serif';
+        ctx.font = storyTaglineFont;
+        ctx.fillText("STORIES OF FAITH", margin + 34, impactY + 43);
         drawLines(impactLines, margin + 34, impactY + 94, 48, impactFont, colors.white);
         y = impactY + impactH + 34;
       } else {
