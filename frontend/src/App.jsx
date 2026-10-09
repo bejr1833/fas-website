@@ -2790,6 +2790,23 @@ function App() {
     setMenuOpen(false);
   };
 
+  // Use the same measured scroll for every in-page navigation link.
+  // On mobile, wait for the menu to close before measuring the target so
+  // the browser cannot leave the page at the previous section.
+  const handleSectionNavClick = (event, sectionId) => {
+    event.preventDefault();
+    closeMenu();
+
+    const nextHash = `#${sectionId}`;
+    if (window.location.hash !== nextHash) {
+      window.history.replaceState(null, "", nextHash);
+    }
+
+    window.setTimeout(() => {
+      scrollToSection(sectionId);
+    }, 80);
+  };
+
   const getVisitorKey = () => {
     const storageKey = "fas-blog-visitor-key";
     try {
@@ -3872,7 +3889,7 @@ function App() {
         <a
           href="#top"
           className="brand"
-          onClick={closeMenu}
+          onClick={(event) => handleSectionNavClick(event, "top")}
         >
           <img
             src="/branding/fas-logo.png"
@@ -3887,23 +3904,23 @@ function App() {
           id="main-navigation"
           className={menuOpen ? "mobileOpen" : ""}
         >
-          <a href="#about" onClick={closeMenu}>
+          <a href="#about" onClick={(event) => handleSectionNavClick(event, "about")}>
             About
           </a>
 
-          <a href="#vision" onClick={closeMenu}>
+          <a href="#vision" onClick={(event) => handleSectionNavClick(event, "vision")}>
             Vision
           </a>
 
-          <a href="#mission" onClick={closeMenu}>
+          <a href="#mission" onClick={(event) => handleSectionNavClick(event, "mission")}>
             Mission
           </a>
 
-          <a href="#events" onClick={closeMenu}>
+          <a href="#events" onClick={(event) => handleSectionNavClick(event, "events")}>
             Events
           </a>
 
-          <a href="#blog" onClick={closeMenu}>
+          <a href="#blog" onClick={(event) => handleSectionNavClick(event, "blog")}>
             Blog
           </a>
 
@@ -3911,30 +3928,30 @@ function App() {
             Devotions
           </a>
 
-          <a href="#sermons" onClick={closeMenu}>
+          <a href="#sermons" onClick={(event) => handleSectionNavClick(event, "sermons")}>
             Sermons
           </a>
 
-          <a href="#ebooks" onClick={closeMenu}>
+          <a href="#ebooks" onClick={(event) => handleSectionNavClick(event, "ebooks")}>
             E-Books
           </a>
 
-          <a href="#videos" onClick={closeMenu}>
+          <a href="#videos" onClick={(event) => handleSectionNavClick(event, "videos")}>
             Videos
           </a>
 
-          <a href="#stories" onClick={closeMenu}>
+          <a href="#stories" onClick={(event) => handleSectionNavClick(event, "stories")}>
             Stories
           </a>
 
-          <a href="#gallery" onClick={closeMenu}>
+          <a href="#gallery" onClick={(event) => handleSectionNavClick(event, "gallery")}>
             Gallery
           </a>
 
           <a
             href="#connect"
             className="mobileConnectLink"
-            onClick={closeMenu}
+            onClick={(event) => handleSectionNavClick(event, "connect")}
           >
             <span>Connect with FAS</span>
             <ArrowRight size={16} />
@@ -3956,7 +3973,7 @@ function App() {
           <a
             className="navCta"
             href="#connect"
-            onClick={closeMenu}
+            onClick={(event) => handleSectionNavClick(event, "connect")}
           >
             Connect
             <ArrowRight size={16} />
@@ -3989,11 +4006,7 @@ function App() {
               <a
                 className="primaryBtn"
                 href="#events"
-                onClick={(event) => {
-                  event.preventDefault();
-                  window.history.replaceState(null, "", "#events");
-                  scrollToSection("events");
-                }}
+                onClick={(event) => handleSectionNavClick(event, "events")}
               >
                 Explore Events
                 <ArrowRight size={17} />
@@ -4002,6 +4015,7 @@ function App() {
               <a
                 className="textBtn"
                 href="#about"
+                onClick={(event) => handleSectionNavClick(event, "about")}
               >
                 Discover FAS
               </a>
