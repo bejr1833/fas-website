@@ -2212,19 +2212,20 @@ function App() {
   const shareStory = async (story) => {
     if (!story) return;
 
-    const storyUrl = new URL(`/#story-${story.id}`, window.location.origin).href;
-    const title = `${story.student_name} — FAS Student Testimony`;
-    const impact = String(story.impact_statement || "").trim();
+    const storyUrl = new URL("/#story-" + story.id, window.location.origin).href;
+    const studentName = String(story.student_name || "FAS Student").trim();
+    const title = studentName + " — FAS Student Testimony";
+    const impact = String(story.impact_statement || "").replace(/\s+/g, " ").trim();
     const excerpt = String(story.testimony || "").replace(/\s+/g, " ").trim();
-    const quote = excerpt.length > 230 ? `${excerpt.slice(0, 227).trim()}…` : excerpt;
+    const quote = impact || (excerpt.length > 220 ? excerpt.slice(0, 217).trim() + "…" : excerpt);
     const shareText = [
-      `A FAS student testimony: ${story.student_name}`,
-      impact ? `“${impact}”` : "",
-      `Read the full story: ${storyUrl}`,
+      "A FAS student testimony: " + studentName,
+      quote ? "“" + quote + "”" : "",
+      "Read the full story: " + storyUrl,
       "Faith Alone Saves · Love in Fellowship & Truth"
     ].filter(Boolean).join("\n\n");
 
-    // Create a 9:16 story-ready image with a visible Read More call to action.
+    // A premium, mobile-first 9:16 story card with generous spacing and a clear CTA.
     const canvas = document.createElement("canvas");
     canvas.width = 1080;
     canvas.height = 1920;
@@ -2232,23 +2233,111 @@ function App() {
     let storyFile = null;
 
     if (ctx) {
-      const gradient = ctx.createLinearGradient(0, 0, 1080, 1920);
-      gradient.addColorStop(0, "#202126");
-      gradient.addColorStop(1, "#101114");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, 1080, 1920);
+      const W = canvas.width;
+      const H = canvas.height;
+      const margin = 76;
+      const gold = "#d8b66a";
+      const rose = "#d77e91";
+      const ivory = "#fffaf2";
+      const muted = "#c6c0bc";
 
-      ctx.fillStyle = "#c9283e";
-      ctx.fillRect(72, 90, 120, 12);
-      ctx.fillStyle = "#e6b2b6";
-      ctx.font = "700 28px Arial, sans-serif";
-      ctx.letterSpacing = "8px";
-      ctx.fillText("FAITH ALONE SAVES", 72, 160);
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "700 54px Arial, sans-serif";
-      ctx.fillText("STUDENT TESTIMONY", 72, 245);
+      const roundedRect = (x, y, w, h, r) => {
+        ctx.beginPath();
+        if (typeof ctx.roundRect === "function") {
+          ctx.roundRect(x, y, w, h, r);
+        } else {
+          ctx.moveTo(x + r, y);
+          ctx.arcTo(x + w, y, x + w, y + h, r);
+          ctx.arcTo(x + w, y + h, x, y + h, r);
+          ctx.arcTo(x, y + h, x, y, r);
+          ctx.arcTo(x, y, x + w, y, r);
+        }
+        ctx.closePath();
+      };
 
-      let imageBottom = 720;
+      const drawTrackedText = (text, x, y, tracking) => {
+        let cursor = x;
+        for (const character of text) {
+          ctx.fillText(character, cursor, y);
+          cursor += ctx.measureText(character).width + tracking;
+        }
+      };
+
+      const wrapText = (text, maxWidth, font, lineHeight, maxLines) => {
+        ctx.font = font;
+        const words = String(text || "").split(/\s+/).filter(Boolean);
+        const lines = [];
+        let line = "";
+        for (const word of words) {
+          const candidate = line ? line + " " + word : word;
+          if (ctx.measureText(candidate).width > maxWidth && line) {
+            lines.push(line);
+            line = word;
+          } else {
+            line = candidate;
+          }
+        }
+        if (line) lines.push(line);
+        if (lines.length > maxLines) {
+          lines.length = maxLines;
+          let last = lines[maxLines - 1];
+          while (last && ctx.measureText(last + "…").width > maxWidth) {
+            last = last.slice(0, -1);
+          }
+          lines[maxLines - 1] = last.trimEnd() + "…";
+        }
+        ctx.font = font;
+        lines.forEach((lineText, index) => ctx.fillText(lineText, 0, index * lineHeight));
+        return lines.length;
+      };
+
+      const background = ctx.createLinearGradient(0, 0, W, H);
+      background.addColorStop(0, "#242329");
+      background.addColorStop(0.48, "#17171d");
+      background.addColorStop(1, "#0c0d11");
+      ctx.fillStyle = background;
+      ctx.fillRect(0, 0, W, H);
+
+      // Soft ambient light and restrained gold framing.
+      const glow = ctx.createRadialGradient(W * 0.82, H * 0.12, 10, W * 0.82, H * 0.12, 760);
+      glow.addColorStop(0, "rgba(216,182,106,0.14)");
+      glow.addColorStop(1, "rgba(216,182,106,0)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.strokeStyle = "rgba(216,182,106,0.55)";
+      ctx.lineWidth = 2;
+      roundedRect(28, 28, W - 56, H - 56, 34);
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(255,255,255,0.10)";
+      ctx.lineWidth = 1;
+      roundedRect(42, 42, W - 84, H - 84, 28);
+      ctx.stroke();
+
+      // Brand lockup.
+      ctx.fillStyle = rose;
+      roundedRect(margin, 94, 84, 8, 4);
+      ctx.fill();
+      ctx.fillStyle = "#f0c4cb";
+      ctx.font = "700 25px Arial, sans-serif";
+      drawTrackedText("FAITH ALONE SAVES", margin, 151, 5);
+      ctx.fillStyle = ivory;
+      ctx.font = "700 48px Arial, sans-serif";
+      ctx.fillText("STUDENT TESTIMONY", margin, 229);
+      ctx.fillStyle = muted;
+      ctx.font = "24px Arial, sans-serif";
+      ctx.fillText("A STORY OF GRACE  ·  A LIFE IN CHRIST", margin, 273);
+
+      // Portrait with a soft gold edge.
+      const photoBox = { x: margin, y: 315, w: W - margin * 2, h: 500 };
+      ctx.save();
+      roundedRect(photoBox.x - 3, photoBox.y - 3, photoBox.w + 6, photoBox.h + 6, 30);
+      ctx.strokeStyle = "rgba(216,182,106,0.82)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+
+      let photoLoaded = false;
       if (story.photo) {
         try {
           const photo = new Image();
@@ -2258,82 +2347,141 @@ function App() {
             photo.onload = resolve;
             photo.onerror = reject;
           });
-          const box = { x: 72, y: 300, w: 936, h: 520 };
-          const scale = Math.max(box.w / photo.width, box.h / photo.height);
-          const sw = box.w / scale, sh = box.h / scale;
-          const sx = (photo.width - sw) / 2, sy = (photo.height - sh) / 2;
+          const scale = Math.max(photoBox.w / photo.width, photoBox.h / photo.height);
+          const sw = photoBox.w / scale;
+          const sh = photoBox.h / scale;
+          const sx = (photo.width - sw) / 2;
+          const sy = (photo.height - sh) / 2;
           ctx.save();
-          ctx.beginPath();
-          ctx.roundRect(box.x, box.y, box.w, box.h, 28);
+          roundedRect(photoBox.x, photoBox.y, photoBox.w, photoBox.h, 26);
           ctx.clip();
-          ctx.drawImage(photo, sx, sy, sw, sh, box.x, box.y, box.w, box.h);
+          ctx.drawImage(photo, sx, sy, sw, sh, photoBox.x, photoBox.y, photoBox.w, photoBox.h);
+          // Gentle bottom scrim to keep the photograph cinematic.
+          const scrim = ctx.createLinearGradient(0, photoBox.y + photoBox.h * 0.55, 0, photoBox.y + photoBox.h);
+          scrim.addColorStop(0, "rgba(8,8,12,0)");
+          scrim.addColorStop(1, "rgba(8,8,12,0.30)");
+          ctx.fillStyle = scrim;
+          ctx.fillRect(photoBox.x, photoBox.y, photoBox.w, photoBox.h);
           ctx.restore();
-          imageBottom = 880;
+          photoLoaded = true;
         } catch {
-          // Continue with the branded text-only card if the photo blocks canvas access.
+          // Keep the premium branded card usable when the photo host blocks canvas access.
         }
       }
 
-      let y = imageBottom + 30;
-      ctx.fillStyle = "#e5a5ad";
-      ctx.font = "700 30px Arial, sans-serif";
-      ctx.fillText(story.student_name || "FAS Student", 72, y);
-      y += 58;
-
-      const wrapText = (text, maxWidth, font, lineHeight, maxLines = 5) => {
-        ctx.font = font;
-        const words = text.split(/\s+/);
-        let line = "";
-        let lines = [];
-        for (const word of words) {
-          const test = line ? `${line} ${word}` : word;
-          if (ctx.measureText(test).width > maxWidth && line) {
-            lines.push(line);
-            line = word;
-          } else line = test;
-        }
-        if (line) lines.push(line);
-        if (lines.length > maxLines) {
-          lines = lines.slice(0, maxLines);
-          lines[maxLines - 1] = lines[maxLines - 1].replace(/[.…]*$/, "") + "…";
-        }
-        ctx.fillStyle = "#f7f3ed";
-        ctx.font = font;
-        lines.forEach((item, index) => ctx.fillText(item, 72, y + index * lineHeight));
-        y += lines.length * lineHeight;
-      };
-
-      if (impact) {
-        ctx.fillStyle = "#c9283e";
-        ctx.fillRect(72, y - 10, 7, 150);
-        ctx.fillStyle = "#d7b3b5";
-        ctx.font = "700 22px Arial, sans-serif";
-        ctx.fillText("WHAT GOD DID", 100, y + 20);
-        y += 65;
-        wrapText(impact, 860, "italic 38px Georgia, serif", 48, 4);
-        y += 24;
-      } else {
-        wrapText(quote, 900, "italic 38px Georgia, serif", 49, 5);
-        y += 24;
+      if (!photoLoaded) {
+        ctx.save();
+        roundedRect(photoBox.x, photoBox.y, photoBox.w, photoBox.h, 26);
+        ctx.fillStyle = "#222127";
+        ctx.fill();
+        ctx.clip();
+        ctx.fillStyle = "rgba(216,182,106,0.08)";
+        ctx.fillRect(photoBox.x, photoBox.y, photoBox.w, photoBox.h);
+        ctx.fillStyle = gold;
+        ctx.font = "700 92px Georgia, serif";
+        ctx.textAlign = "center";
+        ctx.fillText("FAS", W / 2, photoBox.y + 270);
+        ctx.textAlign = "left";
+        ctx.restore();
       }
 
-      ctx.fillStyle = "rgba(255,255,255,0.22)";
-      ctx.fillRect(72, 1560, 936, 2);
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "700 34px Arial, sans-serif";
-      ctx.fillText("READ THE FULL STORY  →", 72, 1635);
-      ctx.fillStyle = "#e0b96c";
-      ctx.font = "24px Arial, sans-serif";
-      ctx.fillText("Open the shared link to read more", 72, 1685);
-      ctx.fillStyle = "#c7c5c2";
+      // Student name and quote panel.
+      const nameY = 879;
+      ctx.fillStyle = rose;
+      ctx.font = "700 29px Arial, sans-serif";
+      ctx.fillText(studentName, margin, nameY);
+      ctx.fillStyle = muted;
+      ctx.font = "21px Arial, sans-serif";
+      ctx.fillText("A PERSONAL TESTIMONY", margin, nameY + 38);
+
+      const quotePanel = { x: margin, y: 948, w: W - margin * 2, h: 420 };
+      ctx.save();
+      roundedRect(quotePanel.x, quotePanel.y, quotePanel.w, quotePanel.h, 26);
+      ctx.fillStyle = "rgba(255,255,255,0.035)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(216,182,106,0.24)";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = rose;
+      roundedRect(quotePanel.x + 30, quotePanel.y + 35, 6, quotePanel.h - 70, 3);
+      ctx.fill();
+      ctx.fillStyle = gold;
+      ctx.font = "700 21px Arial, sans-serif";
+      ctx.fillText(impact ? "WHAT GOD DID" : "A WORD FROM THE STORY", quotePanel.x + 60, quotePanel.y + 63);
+      ctx.fillStyle = ivory;
+      ctx.font = "italic 37px Georgia, serif";
+      const quoteLines = wrapText(quote || "Discover how God has been at work in this student's life.", quotePanel.w - 120, "italic 37px Georgia, serif", 52, 5);
+      // wrapText draws at x=0; reposition the quote cleanly within the panel.
+      ctx.clearRect(quotePanel.x + 50, quotePanel.y + 82, quotePanel.w - 90, quotePanel.h - 100);
+      ctx.fillStyle = ivory;
+      ctx.font = "italic 37px Georgia, serif";
+      const words = String(quote || "Discover how God has been at work in this student's life.").split(/\s+/).filter(Boolean);
+      const lines = [];
+      let line = "";
+      const maxQuoteWidth = quotePanel.w - 120;
+      for (const word of words) {
+        const candidate = line ? line + " " + word : word;
+        if (ctx.measureText(candidate).width > maxQuoteWidth && line) {
+          lines.push(line);
+          line = word;
+        } else line = candidate;
+      }
+      if (line) lines.push(line);
+      if (lines.length > 5) {
+        lines.length = 5;
+        let last = lines[4];
+        while (last && ctx.measureText(last + "…").width > maxQuoteWidth) last = last.slice(0, -1);
+        lines[4] = last.trimEnd() + "…";
+      }
+      lines.forEach((lineText, index) => ctx.fillText(lineText, quotePanel.x + 60, quotePanel.y + 126 + index * 48));
+      ctx.restore();
+
+      // Pull-quote ornament and subtle closing statement balance the composition.
+      ctx.fillStyle = "rgba(216,182,106,0.75)";
+      ctx.font = "bold 68px Georgia, serif";
+      ctx.fillText("”", W - margin - 20, 1430);
+      ctx.fillStyle = muted;
       ctx.font = "22px Arial, sans-serif";
-      ctx.fillText("fas-fellowship.org", 72, 1780);
-      ctx.fillStyle = "#e0b96c";
-      ctx.fillRect(72, 1830, 110, 7);
+      ctx.fillText("Every story points back to His grace.", margin, 1480);
+
+      // Clear, high-contrast call to action; kept away from story-app UI edges.
+      ctx.strokeStyle = "rgba(255,255,255,0.20)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(margin, 1540);
+      ctx.lineTo(W - margin, 1540);
+      ctx.stroke();
+
+      ctx.fillStyle = gold;
+      roundedRect(margin, 1580, 64, 64, 18);
+      ctx.fill();
+      ctx.strokeStyle = "#27221a";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(margin + 19, 1612);
+      ctx.lineTo(margin + 43, 1612);
+      ctx.lineTo(margin + 34, 1602);
+      ctx.moveTo(margin + 43, 1612);
+      ctx.lineTo(margin + 34, 1622);
+      ctx.stroke();
+
+      ctx.fillStyle = ivory;
+      ctx.font = "700 31px Arial, sans-serif";
+      ctx.fillText("READ THE FULL STORY", margin + 88, 1607);
+      ctx.fillStyle = gold;
+      ctx.font = "24px Arial, sans-serif";
+      ctx.fillText("Open the shared link to read more", margin + 88, 1645);
+
+      ctx.fillStyle = muted;
+      ctx.font = "22px Arial, sans-serif";
+      drawTrackedText("FAS-FELLOWSHIP.ORG", margin, 1745, 3);
+      ctx.fillStyle = gold;
+      roundedRect(margin, 1790, 110, 6, 3);
+      ctx.fill();
 
       try {
         const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-        if (blob) storyFile = new File([blob], `fas-testimony-${story.id}.png`, { type: "image/png" });
+        if (blob) storyFile = new File([blob], "fas-testimony-" + story.id + ".png", { type: "image/png" });
       } catch {
         storyFile = null;
       }
