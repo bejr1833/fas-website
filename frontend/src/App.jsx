@@ -983,10 +983,6 @@ function App() {
       "(prefers-reduced-motion: reduce)"
     );
 
-    if (reduceMotionQuery.matches) {
-      return;
-    }
-
     let timer = null;
     let paused = false;
 
@@ -1002,11 +998,12 @@ function App() {
     };
 
     const slideNext = () => {
-      if (paused) return;
+      if (paused || reduceMotionQuery.matches) return;
 
       const step = getStep();
-      const maxScroll =
-        carousel.scrollWidth - carousel.clientWidth;
+      const maxScroll = Math.max(0, carousel.scrollWidth - carousel.clientWidth);
+
+      if (maxScroll <= 10) return;
 
       if (carousel.scrollLeft >= maxScroll - 10) {
         carousel.scrollTo({
@@ -1022,37 +1019,66 @@ function App() {
     };
 
     const startTimer = () => {
-      clearInterval(timer);
-      timer = setInterval(slideNext, 4500);
+      window.clearInterval(timer);
+      timer = null;
+      if (paused || reduceMotionQuery.matches) return;
+      timer = window.setInterval(slideNext, 4500);
     };
 
     const pause = () => {
       paused = true;
-      clearInterval(timer);
+      window.clearInterval(timer);
+      timer = null;
     };
 
     const resume = () => {
+      if (reduceMotionQuery.matches) return;
       paused = false;
       startTimer();
     };
 
+    const handleFocusOut = (event) => {
+      if (!carousel.contains(event.relatedTarget)) resume();
+    };
+
+    const handleMotionPreferenceChange = (event) => {
+      if (event.matches) {
+        pause();
+      } else {
+        paused = false;
+        startTimer();
+      }
+    };
+
     carousel.addEventListener("mouseenter", pause);
     carousel.addEventListener("mouseleave", resume);
-    carousel.addEventListener("touchstart", pause, {
-      passive: true
-    });
-    carousel.addEventListener("touchend", resume, {
-      passive: true
-    });
+    carousel.addEventListener("touchstart", pause, { passive: true });
+    carousel.addEventListener("touchend", resume, { passive: true });
+    carousel.addEventListener("focusin", pause);
+    carousel.addEventListener("focusout", handleFocusOut);
+
+    if (typeof reduceMotionQuery.addEventListener === "function") {
+      reduceMotionQuery.addEventListener("change", handleMotionPreferenceChange);
+    } else {
+      reduceMotionQuery.addListener(handleMotionPreferenceChange);
+    }
 
     startTimer();
 
     return () => {
-      clearInterval(timer);
+      window.clearInterval(timer);
       carousel.removeEventListener("mouseenter", pause);
       carousel.removeEventListener("mouseleave", resume);
       carousel.removeEventListener("touchstart", pause);
       carousel.removeEventListener("touchend", resume);
+      carousel.removeEventListener("focusin", pause);
+      carousel.removeEventListener("focusout", handleFocusOut);
+
+      if (typeof reduceMotionQuery.removeEventListener === "function") {
+        reduceMotionQuery.removeEventListener("change", handleMotionPreferenceChange);
+      } else {
+        reduceMotionQuery.removeListener(handleMotionPreferenceChange);
+      }
     };
   }, [data.stories]);
 
@@ -2473,8 +2499,6 @@ function App() {
     const college = String(story.college || "").trim();
     const title = studentName + " — FAS Student Testimony";
     const impact = String(story.impact_statement || "").replace(/\s+/g, " ").trim();
-    // Keep the share card's top headline consistent across all student stories.
-    const storyHeadline = "STORIES OF FAITH";
     const excerpt = String(story.testimony || "").replace(/\s+/g, " ").trim();
     const shortExcerpt = excerpt.length > 180 ? excerpt.slice(0, 177).trim() + "…" : excerpt;
     const shareText = [
