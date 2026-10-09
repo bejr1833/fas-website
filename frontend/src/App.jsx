@@ -2211,6 +2211,15 @@ function App() {
     let devotionalFile = null;
 
     if (ctx) {
+      // Ensure the premium display font is ready before drawing the share image.
+      if (document.fonts?.load) {
+        try {
+          await document.fonts.load('600 54px "Playfair Display"');
+        } catch {
+          // Keep the share card functional with the serif fallback if font loading fails.
+        }
+      }
+
       const W = canvas.width;
       const H = canvas.height;
       const margin = 76;
@@ -2574,10 +2583,12 @@ function App() {
       ctx.font = "800 24px Arial, sans-serif";
       drawTrackedText("STUDENT TESTIMONY", margin, 142, 4);
 
+      // Premium editorial headline typography: Playfair Display with a classic serif fallback.
+      const headlineFont = '600 54px "Playfair Display", Georgia, serif';
       ctx.fillStyle = colors.white;
-      ctx.font = "800 47px Arial, sans-serif";
-      const headlineLines = wrapLines(storyHeadline, "800 47px Arial, sans-serif", contentW, 1);
-      drawLines(headlineLines, margin, 210, 54, "800 47px Arial, sans-serif", colors.white);
+      ctx.font = headlineFont;
+      const headlineLines = wrapLines(storyHeadline, headlineFont, contentW, 2);
+      drawLines(headlineLines, margin, 210, 61, headlineFont, colors.white);
       ctx.fillStyle = colors.muted;
       ctx.font = "23px Arial, sans-serif";
       ctx.fillText("FAITH ALONE SAVES  ·  LOVE IN FELLOWSHIP & TRUTH", margin, 252);
