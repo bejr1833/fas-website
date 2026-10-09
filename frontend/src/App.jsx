@@ -2215,14 +2215,14 @@ function App() {
     const storyUrl = new URL(`/#story-${story.id}`, window.location.origin).href;
     const title = `${story.student_name} — FAS Student Testimony`;
     const impact = String(story.impact_statement || "").trim();
-    const excerpt = String(story.testimony || "").replace(/\\s+/g, " ").trim();
+    const excerpt = String(story.testimony || "").replace(/\s+/g, " ").trim();
     const quote = excerpt.length > 230 ? `${excerpt.slice(0, 227).trim()}…` : excerpt;
     const shareText = [
       `A FAS student testimony: ${story.student_name}`,
       impact ? `“${impact}”` : "",
       `Read the full story: ${storyUrl}`,
       "Faith Alone Saves · Love in Fellowship & Truth"
-    ].filter(Boolean).join("\\n\\n");
+    ].filter(Boolean).join("\n\n");
 
     // Create a 9:16 story-ready image with a visible Read More call to action.
     const canvas = document.createElement("canvas");
@@ -2282,7 +2282,7 @@ function App() {
 
       const wrapText = (text, maxWidth, font, lineHeight, maxLines = 5) => {
         ctx.font = font;
-        const words = text.split(/\\s+/);
+        const words = text.split(/\s+/);
         let line = "";
         let lines = [];
         for (const word of words) {
