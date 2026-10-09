@@ -2209,29 +2209,156 @@ function App() {
     }
   };
 
-    const shareStory = async (story) => {
-    const url = `${window.location.origin}/#story-${story.id}`;
+  const shareStory = async (story) => {
+    if (!story) return;
+
+    const storyUrl = new URL(`/#story-${story.id}`, window.location.origin).href;
     const title = `${story.student_name} — FAS Student Testimony`;
-    const text = story.impact_statement
-      ? `${story.impact_statement} — ${story.student_name}`
-      : `Read ${story.student_name}'s testimony on FAS.`;
+    const impact = String(story.impact_statement || "").trim();
+    const excerpt = String(story.testimony || "").replace(/\\s+/g, " ").trim();
+    const quote = excerpt.length > 230 ? `${excerpt.slice(0, 227).trim()}…` : excerpt;
+    const shareText = [
+      `A FAS student testimony: ${story.student_name}`,
+      impact ? `“${impact}”` : "",
+      `Read the full story: ${storyUrl}`,
+      "Faith Alone Saves · Love in Fellowship & Truth"
+    ].filter(Boolean).join("\\n\\n");
+
+    // Create a 9:16 story-ready image with a visible Read More call to action.
+    const canvas = document.createElement("canvas");
+    canvas.width = 1080;
+    canvas.height = 1920;
+    const ctx = canvas.getContext("2d");
+    let storyFile = null;
+
+    if (ctx) {
+      const gradient = ctx.createLinearGradient(0, 0, 1080, 1920);
+      gradient.addColorStop(0, "#202126");
+      gradient.addColorStop(1, "#101114");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 1080, 1920);
+
+      ctx.fillStyle = "#c9283e";
+      ctx.fillRect(72, 90, 120, 12);
+      ctx.fillStyle = "#e6b2b6";
+      ctx.font = "700 28px Arial, sans-serif";
+      ctx.letterSpacing = "8px";
+      ctx.fillText("FAITH ALONE SAVES", 72, 160);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "700 54px Arial, sans-serif";
+      ctx.fillText("STUDENT TESTIMONY", 72, 245);
+
+      let imageBottom = 720;
+      if (story.photo) {
+        try {
+          const photo = new Image();
+          photo.crossOrigin = "anonymous";
+          photo.src = story.photo;
+          await new Promise((resolve, reject) => {
+            photo.onload = resolve;
+            photo.onerror = reject;
+          });
+          const box = { x: 72, y: 300, w: 936, h: 520 };
+          const scale = Math.max(box.w / photo.width, box.h / photo.height);
+          const sw = box.w / scale, sh = box.h / scale;
+          const sx = (photo.width - sw) / 2, sy = (photo.height - sh) / 2;
+          ctx.save();
+          ctx.beginPath();
+          ctx.roundRect(box.x, box.y, box.w, box.h, 28);
+          ctx.clip();
+          ctx.drawImage(photo, sx, sy, sw, sh, box.x, box.y, box.w, box.h);
+          ctx.restore();
+          imageBottom = 880;
+        } catch {
+          // Continue with the branded text-only card if the photo blocks canvas access.
+        }
+      }
+
+      let y = imageBottom + 30;
+      ctx.fillStyle = "#e5a5ad";
+      ctx.font = "700 30px Arial, sans-serif";
+      ctx.fillText(story.student_name || "FAS Student", 72, y);
+      y += 58;
+
+      const wrapText = (text, maxWidth, font, lineHeight, maxLines = 5) => {
+        ctx.font = font;
+        const words = text.split(/\\s+/);
+        let line = "";
+        let lines = [];
+        for (const word of words) {
+          const test = line ? `${line} ${word}` : word;
+          if (ctx.measureText(test).width > maxWidth && line) {
+            lines.push(line);
+            line = word;
+          } else line = test;
+        }
+        if (line) lines.push(line);
+        if (lines.length > maxLines) {
+          lines = lines.slice(0, maxLines);
+          lines[maxLines - 1] = lines[maxLines - 1].replace(/[.…]*$/, "") + "…";
+        }
+        ctx.fillStyle = "#f7f3ed";
+        ctx.font = font;
+        lines.forEach((item, index) => ctx.fillText(item, 72, y + index * lineHeight));
+        y += lines.length * lineHeight;
+      };
+
+      if (impact) {
+        ctx.fillStyle = "#c9283e";
+        ctx.fillRect(72, y - 10, 7, 150);
+        ctx.fillStyle = "#d7b3b5";
+        ctx.font = "700 22px Arial, sans-serif";
+        ctx.fillText("WHAT GOD DID", 100, y + 20);
+        y += 65;
+        wrapText(impact, 860, "italic 38px Georgia, serif", 48, 4);
+        y += 24;
+      } else {
+        wrapText(quote, 900, "italic 38px Georgia, serif", 49, 5);
+        y += 24;
+      }
+
+      ctx.fillStyle = "rgba(255,255,255,0.22)";
+      ctx.fillRect(72, 1560, 936, 2);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "700 34px Arial, sans-serif";
+      ctx.fillText("READ THE FULL STORY  →", 72, 1635);
+      ctx.fillStyle = "#e0b96c";
+      ctx.font = "24px Arial, sans-serif";
+      ctx.fillText("Open the shared link to read more", 72, 1685);
+      ctx.fillStyle = "#c7c5c2";
+      ctx.font = "22px Arial, sans-serif";
+      ctx.fillText("fas-fellowship.org", 72, 1780);
+      ctx.fillStyle = "#e0b96c";
+      ctx.fillRect(72, 1830, 110, 7);
+
+      try {
+        const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+        if (blob) storyFile = new File([blob], `fas-testimony-${story.id}.png`, { type: "image/png" });
+      } catch {
+        storyFile = null;
+      }
+    }
 
     try {
-      if (navigator.share) {
-        await navigator.share({ title, text, url });
+      if (storyFile && navigator.canShare?.({ files: [storyFile] }) && navigator.share) {
+        await navigator.share({ files: [storyFile], title, text: shareText });
         return;
       }
 
-      if (navigator.clipboard) {
-        await navigator.clipboard.writeText(url);
-        window.alert("Testimony link copied.");
+      if (navigator.share) {
+        await navigator.share({ title, text: shareText, url: storyUrl });
         return;
       }
     } catch (error) {
       if (error?.name === "AbortError") return;
     }
 
-    window.prompt("Copy this testimony link:", url);
+    try {
+      await navigator.clipboard.writeText(shareText);
+      window.alert("Testimony message and Read More link copied. You can now paste it into WhatsApp or Instagram.");
+    } catch {
+      window.prompt("Copy this testimony message and Read More link:", shareText);
+    }
   };
   const closeMenu = () => {
     setMenuOpen(false);
