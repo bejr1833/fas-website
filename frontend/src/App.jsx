@@ -2214,18 +2214,20 @@ function App() {
 
     const storyUrl = new URL("/#story-" + story.id, window.location.origin).href;
     const studentName = String(story.student_name || "FAS Student").trim();
+    const college = String(story.college || "").trim();
     const title = studentName + " — FAS Student Testimony";
     const impact = String(story.impact_statement || "").replace(/\s+/g, " ").trim();
     const excerpt = String(story.testimony || "").replace(/\s+/g, " ").trim();
-    const quote = impact || (excerpt.length > 220 ? excerpt.slice(0, 217).trim() + "…" : excerpt);
+    const shortExcerpt = excerpt.length > 180 ? excerpt.slice(0, 177).trim() + "…" : excerpt;
     const shareText = [
       "A FAS student testimony: " + studentName,
-      quote ? "“" + quote + "”" : "",
+      impact ? "“" + impact + "”" : "",
       "Read the full story: " + storyUrl,
       "Faith Alone Saves · Love in Fellowship & Truth"
     ].filter(Boolean).join("\n\n");
 
-    // A premium, mobile-first 9:16 story card with generous spacing and a clear CTA.
+    // Match the live website story card's dark-mode colors, type hierarchy,
+    // red accent, impact panel, quote preview and Read Full Story divider.
     const canvas = document.createElement("canvas");
     canvas.width = 1080;
     canvas.height = 1920;
@@ -2236,23 +2238,65 @@ function App() {
       const W = canvas.width;
       const H = canvas.height;
       const margin = 76;
-      const gold = "#d8b66a";
-      const rose = "#d77e91";
-      const ivory = "#fffaf2";
-      const muted = "#c6c0bc";
+      const colors = {
+        background: "#0f1012",
+        card: "#17191c",
+        panel: "#20242A",
+        border: "#34383D",
+        photoBorder: "#41464D",
+        red: "#B52A2A",
+        rose: "#D9A3A0",
+        white: "#F5F3EF",
+        muted: "#B8B5B0",
+        preview: "#F5F3EF"
+      };
+      const cardX = 30;
+      const cardY = 30;
+      const cardW = W - 60;
+      const cardH = H - 60;
+      const contentW = W - margin * 2;
 
       const roundedRect = (x, y, w, h, r) => {
         ctx.beginPath();
-        if (typeof ctx.roundRect === "function") {
-          ctx.roundRect(x, y, w, h, r);
-        } else {
+        if (typeof ctx.roundRect === "function") ctx.roundRect(x, y, w, h, r);
+        else {
           ctx.moveTo(x + r, y);
           ctx.arcTo(x + w, y, x + w, y + h, r);
           ctx.arcTo(x + w, y + h, x, y + h, r);
-          ctx.arcTo(x, y + h, x, y, r);
-          ctx.arcTo(x, y, x + w, y, r);
+          ctx.arcTo(x, y + h, x + w, y, r);
+          ctx.closePath();
         }
         ctx.closePath();
+      };
+
+      const wrapLines = (text, font, maxWidth, maxLines) => {
+        ctx.font = font;
+        const words = String(text || "").split(/\s+/).filter(Boolean);
+        const lines = [];
+        let line = "";
+        for (const word of words) {
+          const candidate = line ? line + " " + word : word;
+          if (line && ctx.measureText(candidate).width > maxWidth) {
+            lines.push(line);
+            line = word;
+          } else {
+            line = candidate;
+          }
+        }
+        if (line) lines.push(line);
+        if (lines.length > maxLines) {
+          lines.length = maxLines;
+          let last = lines[maxLines - 1];
+          while (last && ctx.measureText(last + "…").width > maxWidth) last = last.slice(0, -1);
+          lines[maxLines - 1] = last.trimEnd() + "…";
+        }
+        return lines;
+      };
+
+      const drawLines = (lines, x, y, lineHeight, font, color) => {
+        ctx.font = font;
+        ctx.fillStyle = color;
+        lines.forEach((line, index) => ctx.fillText(line, x, y + index * lineHeight));
       };
 
       const drawTrackedText = (text, x, y, tracking) => {
@@ -2263,51 +2307,40 @@ function App() {
         }
       };
 
-      const background = ctx.createLinearGradient(0, 0, W, H);
-      background.addColorStop(0, "#242329");
-      background.addColorStop(0.48, "#17171d");
-      background.addColorStop(1, "#0c0d11");
-      ctx.fillStyle = background;
+      // Dark card shell and the same restrained red detail used on the website.
+      ctx.fillStyle = colors.background;
       ctx.fillRect(0, 0, W, H);
-
-      // Soft ambient light and restrained gold framing.
-      const glow = ctx.createRadialGradient(W * 0.82, H * 0.12, 10, W * 0.82, H * 0.12, 760);
-      glow.addColorStop(0, "rgba(216,182,106,0.14)");
-      glow.addColorStop(1, "rgba(216,182,106,0)");
-      ctx.fillStyle = glow;
-      ctx.fillRect(0, 0, W, H);
-
-      ctx.strokeStyle = "rgba(216,182,106,0.55)";
-      ctx.lineWidth = 2;
-      roundedRect(28, 28, W - 56, H - 56, 34);
-      ctx.stroke();
-      ctx.strokeStyle = "rgba(255,255,255,0.10)";
-      ctx.lineWidth = 1;
-      roundedRect(42, 42, W - 84, H - 84, 28);
-      ctx.stroke();
-
-      // Brand lockup.
-      ctx.fillStyle = rose;
-      roundedRect(margin, 94, 84, 8, 4);
+      ctx.fillStyle = colors.card;
+      roundedRect(cardX, cardY, cardW, cardH, 34);
       ctx.fill();
-      ctx.fillStyle = "#f0c4cb";
-      ctx.font = "700 25px Arial, sans-serif";
-      drawTrackedText("FAITH ALONE SAVES", margin, 151, 5);
-      ctx.fillStyle = ivory;
-      ctx.font = "700 48px Arial, sans-serif";
-      ctx.fillText("STUDENT TESTIMONY", margin, 229);
-      ctx.fillStyle = muted;
-      ctx.font = "24px Arial, sans-serif";
-      ctx.fillText("A STORY OF GRACE  ·  A LIFE IN CHRIST", margin, 273);
-
-      // Portrait with a soft gold edge.
-      const photoBox = { x: margin, y: 315, w: W - margin * 2, h: 500 };
-      ctx.save();
-      roundedRect(photoBox.x - 3, photoBox.y - 3, photoBox.w + 6, photoBox.h + 6, 30);
-      ctx.strokeStyle = "rgba(216,182,106,0.82)";
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 2;
+      roundedRect(cardX, cardY, cardW, cardH, 34);
       ctx.stroke();
-      ctx.restore();
+
+      ctx.fillStyle = colors.red;
+      roundedRect(margin, 86, 78, 8, 4);
+      ctx.fill();
+
+      ctx.fillStyle = colors.rose;
+      ctx.font = "800 24px Arial, sans-serif";
+      drawTrackedText("STUDENT TESTIMONY", margin, 142, 4);
+
+      ctx.fillStyle = colors.white;
+      ctx.font = "800 47px Arial, sans-serif";
+      ctx.fillText("A STORY OF GRACE", margin, 210);
+      ctx.fillStyle = colors.muted;
+      ctx.font = "23px Arial, sans-serif";
+      ctx.fillText("FAITH ALONE SAVES  ·  LOVE IN FELLOWSHIP & TRUTH", margin, 252);
+
+      // Match the website's 4:3 / mobile 16:11 portrait frame and cool grey border.
+      const photoBox = { x: margin, y: 292, w: contentW, h: 610 };
+      ctx.fillStyle = colors.photoBorder;
+      roundedRect(photoBox.x - 4, photoBox.y - 4, photoBox.w + 8, photoBox.h + 8, 30);
+      ctx.fill();
+      ctx.save();
+      roundedRect(photoBox.x, photoBox.y, photoBox.w, photoBox.h, 25);
+      ctx.clip();
 
       let photoLoaded = false;
       if (story.photo) {
@@ -2319,134 +2352,107 @@ function App() {
             photo.onload = resolve;
             photo.onerror = reject;
           });
-          const scale = Math.max(photoBox.w / photo.width, photoBox.h / photo.height);
-          const sw = photoBox.w / scale;
-          const sh = photoBox.h / scale;
-          const sx = (photo.width - sw) / 2;
-          const sy = (photo.height - sh) / 2;
-          ctx.save();
-          roundedRect(photoBox.x, photoBox.y, photoBox.w, photoBox.h, 26);
-          ctx.clip();
-          ctx.drawImage(photo, sx, sy, sw, sh, photoBox.x, photoBox.y, photoBox.w, photoBox.h);
-          // Gentle bottom scrim to keep the photograph cinematic.
-          const scrim = ctx.createLinearGradient(0, photoBox.y + photoBox.h * 0.55, 0, photoBox.y + photoBox.h);
-          scrim.addColorStop(0, "rgba(8,8,12,0)");
-          scrim.addColorStop(1, "rgba(8,8,12,0.30)");
-          ctx.fillStyle = scrim;
+          // The site uses object-fit: contain; preserve the full original portrait.
+          const scale = Math.min(photoBox.w / photo.width, photoBox.h / photo.height);
+          const drawW = photo.width * scale;
+          const drawH = photo.height * scale;
+          ctx.fillStyle = "#171716";
           ctx.fillRect(photoBox.x, photoBox.y, photoBox.w, photoBox.h);
-          ctx.restore();
+          ctx.drawImage(
+            photo,
+            photoBox.x + (photoBox.w - drawW) / 2,
+            photoBox.y + (photoBox.h - drawH) / 2,
+            drawW,
+            drawH
+          );
           photoLoaded = true;
         } catch {
-          // Keep the premium branded card usable when the photo host blocks canvas access.
+          // Continue with the branded fallback if the image host blocks canvas access.
         }
       }
-
       if (!photoLoaded) {
-        ctx.save();
-        roundedRect(photoBox.x, photoBox.y, photoBox.w, photoBox.h, 26);
-        ctx.fillStyle = "#222127";
-        ctx.fill();
-        ctx.clip();
-        ctx.fillStyle = "rgba(216,182,106,0.08)";
+        ctx.fillStyle = colors.panel;
         ctx.fillRect(photoBox.x, photoBox.y, photoBox.w, photoBox.h);
-        ctx.fillStyle = gold;
-        ctx.font = "700 92px Georgia, serif";
+        ctx.fillStyle = colors.rose;
+        ctx.font = "700 74px Georgia, serif";
         ctx.textAlign = "center";
-        ctx.fillText("FAS", W / 2, photoBox.y + 270);
+        ctx.fillText("FAS STORY", W / 2, photoBox.y + photoBox.h / 2);
         ctx.textAlign = "left";
-        ctx.restore();
       }
-
-      // Student name and quote panel.
-      const nameY = 879;
-      ctx.fillStyle = rose;
-      ctx.font = "700 29px Arial, sans-serif";
-      ctx.fillText(studentName, margin, nameY);
-      ctx.fillStyle = muted;
-      ctx.font = "21px Arial, sans-serif";
-      ctx.fillText("A PERSONAL TESTIMONY", margin, nameY + 38);
-
-      const quotePanel = { x: margin, y: 948, w: W - margin * 2, h: 420 };
-      ctx.save();
-      roundedRect(quotePanel.x, quotePanel.y, quotePanel.w, quotePanel.h, 26);
-      ctx.fillStyle = "rgba(255,255,255,0.035)";
-      ctx.fill();
-      ctx.strokeStyle = "rgba(216,182,106,0.24)";
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-      ctx.fillStyle = rose;
-      roundedRect(quotePanel.x + 30, quotePanel.y + 35, 6, quotePanel.h - 70, 3);
-      ctx.fill();
-      ctx.fillStyle = gold;
-      ctx.font = "700 21px Arial, sans-serif";
-      ctx.fillText(impact ? "WHAT GOD DID" : "A WORD FROM THE STORY", quotePanel.x + 60, quotePanel.y + 63);
-      ctx.fillStyle = ivory;
-      ctx.font = "italic 37px Georgia, serif";
-      ctx.fillStyle = ivory;
-      ctx.font = "italic 37px Georgia, serif";
-      const words = String(quote || "Discover how God has been at work in this student's life.").split(/\s+/).filter(Boolean);
-      const lines = [];
-      let line = "";
-      const maxQuoteWidth = quotePanel.w - 120;
-      for (const word of words) {
-        const candidate = line ? line + " " + word : word;
-        if (ctx.measureText(candidate).width > maxQuoteWidth && line) {
-          lines.push(line);
-          line = word;
-        } else line = candidate;
-      }
-      if (line) lines.push(line);
-      if (lines.length > 5) {
-        lines.length = 5;
-        let last = lines[4];
-        while (last && ctx.measureText(last + "…").width > maxQuoteWidth) last = last.slice(0, -1);
-        lines[4] = last.trimEnd() + "…";
-      }
-      lines.forEach((lineText, index) => ctx.fillText(lineText, quotePanel.x + 60, quotePanel.y + 126 + index * 48));
       ctx.restore();
 
-      // Pull-quote ornament and subtle closing statement balance the composition.
-      ctx.fillStyle = "rgba(216,182,106,0.75)";
-      ctx.font = "bold 68px Georgia, serif";
-      ctx.fillText("”", W - margin - 20, 1430);
-      ctx.fillStyle = muted;
-      ctx.font = "22px Arial, sans-serif";
-      ctx.fillText("Every story points back to His grace.", margin, 1480);
+      // Identity typography mirrors .storyEyebrow and .storyIdentity h3.
+      let y = 957;
+      ctx.fillStyle = colors.rose;
+      ctx.font = "900 22px Arial, sans-serif";
+      drawTrackedText("STUDENT TESTIMONY", margin, y, 3);
+      y += 55;
 
-      // Clear, high-contrast call to action; kept away from story-app UI edges.
-      ctx.strokeStyle = "rgba(255,255,255,0.20)";
-      ctx.lineWidth = 1;
+      ctx.fillStyle = colors.white;
+      ctx.font = "800 47px Arial, sans-serif";
+      const nameLines = wrapLines(studentName, "800 47px Arial, sans-serif", contentW, 2);
+      drawLines(nameLines, margin, y, 54, "800 47px Arial, sans-serif", colors.white);
+      y += nameLines.length * 54 + 4;
+
+      if (college) {
+        ctx.fillStyle = colors.muted;
+        ctx.font = "500 25px Arial, sans-serif";
+        const collegeLines = wrapLines(college, "500 25px Arial, sans-serif", contentW, 1);
+        drawLines(collegeLines, margin, y, 34, "500 25px Arial, sans-serif", colors.muted);
+        y += 40;
+      }
+
+      // Website .storyImpact: #20242A panel, red rail, muted label, bold italic Georgia.
+      if (impact) {
+        const impactFont = "italic 700 36px Georgia, 'Times New Roman', serif";
+        const impactLines = wrapLines(impact, impactFont, contentW - 100, 4);
+        const impactH = 66 + impactLines.length * 48 + 24;
+        const impactY = y + 20;
+        ctx.fillStyle = colors.panel;
+        roundedRect(margin, impactY, contentW, impactH, 18);
+        ctx.fill();
+        ctx.fillStyle = colors.red;
+        roundedRect(margin, impactY, 7, impactH, 3);
+        ctx.fill();
+        ctx.fillStyle = colors.muted;
+        ctx.font = "900 21px Arial, sans-serif";
+        drawTrackedText("WHAT GOD DID", margin + 34, impactY + 43, 3);
+        drawLines(impactLines, margin + 34, impactY + 94, 48, impactFont, colors.white);
+        y = impactY + impactH + 34;
+      } else {
+        y += 24;
+      }
+
+      // Website .storyPreview: rose quote mark and Georgia excerpt.
+      ctx.fillStyle = colors.rose;
+      ctx.font = "700 72px Georgia, 'Times New Roman', serif";
+      ctx.fillText("“", margin, y + 20);
+      y += 50;
+      const previewLines = wrapLines(shortExcerpt || "Read the full testimony to discover the story.", "30px Georgia, 'Times New Roman', serif", contentW, 3);
+      drawLines(previewLines, margin, y + 25, 48, "30px Georgia, 'Times New Roman', serif", colors.preview);
+      y += 25 + previewLines.length * 48 + 28;
+
+      // The Read Full Story row uses the site's divider, letter-spaced label and red arrow.
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(margin, 1540);
-      ctx.lineTo(W - margin, 1540);
+      ctx.moveTo(margin, y);
+      ctx.lineTo(W - margin, y);
       ctx.stroke();
+      y += 58;
+      ctx.fillStyle = colors.muted;
+      ctx.font = "900 26px Arial, sans-serif";
+      drawTrackedText("READ FULL STORY", margin, y, 4);
+      ctx.fillStyle = colors.red;
+      ctx.font = "bold 48px Arial, sans-serif";
+      ctx.fillText("→", W - margin - 52, y + 5);
 
-      ctx.fillStyle = gold;
-      roundedRect(margin, 1580, 64, 64, 18);
-      ctx.fill();
-      ctx.strokeStyle = "#27221a";
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(margin + 19, 1612);
-      ctx.lineTo(margin + 43, 1612);
-      ctx.lineTo(margin + 34, 1602);
-      ctx.moveTo(margin + 43, 1612);
-      ctx.lineTo(margin + 34, 1622);
-      ctx.stroke();
-
-      ctx.fillStyle = ivory;
-      ctx.font = "700 31px Arial, sans-serif";
-      ctx.fillText("READ THE FULL STORY", margin + 88, 1607);
-      ctx.fillStyle = gold;
-      ctx.font = "24px Arial, sans-serif";
-      ctx.fillText("Open the shared link to read more", margin + 88, 1645);
-
-      ctx.fillStyle = muted;
+      ctx.fillStyle = colors.muted;
       ctx.font = "22px Arial, sans-serif";
-      drawTrackedText("FAS-FELLOWSHIP.ORG", margin, 1745, 3);
-      ctx.fillStyle = gold;
-      roundedRect(margin, 1790, 110, 6, 3);
-      ctx.fill();
+      ctx.fillText("Open the shared link to read more", margin, y + 46);
+      ctx.fillStyle = colors.rose;
+      ctx.font = "700 21px Arial, sans-serif";
+      drawTrackedText("FAS-FELLOWSHIP.ORG", margin, 1800, 3);
 
       try {
         const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
