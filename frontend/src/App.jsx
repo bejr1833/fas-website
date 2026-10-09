@@ -2598,11 +2598,16 @@ function App() {
       ctx.font = 'italic 600 46px "Playfair Display", Georgia, serif';
       ctx.fillText("faith.", faithX, headlineY);
 
-      // Keep the branding close to the single-line headline.
-      const brandY = headlineY + 38;
-      ctx.fillStyle = colors.muted;
-      ctx.font = "25px Arial, sans-serif";
-      ctx.fillText("FAITH ALONE SAVES  ·  LOVE IN FELLOWSHIP & TRUTH", margin, brandY);
+      // Smaller, premium brand lockup: restrained uppercase name with a softer
+      // serif tagline, matching the website's elegant editorial identity.
+      const brandY = headlineY + 32;
+      ctx.fillStyle = colors.white;
+      ctx.font = '700 18px "DM Sans", Arial, sans-serif';
+      ctx.fillText("FAITH ALONE SAVES", margin, brandY);
+      const brandNameWidth = ctx.measureText("FAITH ALONE SAVES").width;
+      ctx.fillStyle = colors.rose;
+      ctx.font = 'italic 500 17px "Playfair Display", Georgia, serif';
+      ctx.fillText("Love in Fellowship & Truth", margin + brandNameWidth + 12, brandY);
 
       // Preserve the portrait's lower edge so the identity and impact panel stay aligned.
       const photoY = brandY + 38;
