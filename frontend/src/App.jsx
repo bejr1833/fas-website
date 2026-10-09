@@ -2492,6 +2492,7 @@ function App() {
         border: "#34383D",
         photoBorder: "#41464D",
         red: "#B52A2A",
+        premiumRed: "#E04444",
         rose: "#D9A3A0",
         white: "#F5F3EF",
         muted: "#B8B5B0",
@@ -2569,7 +2570,7 @@ function App() {
       roundedRect(margin, 86, 78, 8, 4);
       ctx.fill();
 
-      ctx.fillStyle = colors.rose;
+      ctx.fillStyle = colors.premiumRed;
       ctx.font = "800 24px Arial, sans-serif";
       drawTrackedText("STUDENT TESTIMONY", margin, 142, 4);
 
@@ -2631,7 +2632,7 @@ function App() {
 
       // Identity typography mirrors .storyEyebrow and .storyIdentity h3.
       let y = 957;
-      ctx.fillStyle = colors.rose;
+      ctx.fillStyle = colors.premiumRed;
       ctx.font = "900 22px Arial, sans-serif";
       drawTrackedText("STUDENT TESTIMONY", margin, y, 3);
       y += 55;
@@ -2672,7 +2673,7 @@ function App() {
       }
 
       // Website .storyPreview: rose quote mark and Georgia excerpt.
-      ctx.fillStyle = colors.rose;
+      ctx.fillStyle = colors.premiumRed;
       ctx.font = "700 72px Georgia, 'Times New Roman', serif";
       ctx.fillText("“", margin, y + 20);
       y += 50;
