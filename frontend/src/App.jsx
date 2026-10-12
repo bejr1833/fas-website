@@ -417,6 +417,8 @@ function EbookReader({ ebook, onClose }) {
   const readerRef = useRef(null);
   const canvasRef = useRef(null);
   const touchStartRef = useRef(null);
+  const pinchStartRef = useRef(null);
+  const pinchDistanceRef = useRef(0);
   const renderTaskRef = useRef(null);
   const loadingTaskRef = useRef(null);
   const [pdf, setPdf] = useState(null);
@@ -522,6 +524,8 @@ function EbookReader({ ebook, onClose }) {
         const outputScale = window.devicePixelRatio || 1;
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
+        canvas.style.transform = "scale(1)";
+        canvas.style.transformOrigin = "center center";
 
         canvas.width = Math.floor(viewport.width * outputScale);
         canvas.height = Math.floor(viewport.height * outputScale);
@@ -761,6 +765,20 @@ function EbookReader({ ebook, onClose }) {
         <main
           className="ebookReaderStage"
           onTouchStart={(event) => {
+            if (event.touches.length >= 2) {
+              const first = event.touches[0];
+              const second = event.touches[1];
+              const distance = Math.hypot(
+                second.clientX - first.clientX,
+                second.clientY - first.clientY
+              );
+              pinchStartRef.current = { distance, scale };
+              pinchDistanceRef.current = distance;
+              touchStartRef.current = null;
+              return;
+            }
+
+            pinchStartRef.current = null;
             if (event.touches.length !== 1) {
               touchStartRef.current = null;
               return;
@@ -768,7 +786,41 @@ function EbookReader({ ebook, onClose }) {
             const touch = event.touches[0];
             touchStartRef.current = { x: touch.clientX, y: touch.clientY };
           }}
+          onTouchMove={(event) => {
+            if (event.touches.length < 2 || !pinchStartRef.current) return;
+            event.preventDefault();
+            const first = event.touches[0];
+            const second = event.touches[1];
+            const distance = Math.hypot(
+              second.clientX - first.clientX,
+              second.clientY - first.clientY
+            );
+            pinchDistanceRef.current = distance;
+            const start = pinchStartRef.current;
+            const factor = distance / Math.max(start.distance, 1);
+            if (canvasRef.current) {
+              const previewScale = Math.max(0.65 / start.scale, Math.min(2 / start.scale, factor));
+              canvasRef.current.style.transform = "scale(" + previewScale + ")";
+              canvasRef.current.style.transformOrigin = "center center";
+            }
+          }}
           onTouchEnd={(event) => {
+            if (pinchStartRef.current) {
+              const start = pinchStartRef.current;
+              const distance = pinchDistanceRef.current || start.distance;
+              pinchStartRef.current = null;
+              pinchDistanceRef.current = 0;
+              touchStartRef.current = null;
+              if (pdf && !loading && !error) {
+                const nextScale = Math.max(
+                  0.65,
+                  Math.min(2, Number((start.scale * distance / Math.max(start.distance, 1)).toFixed(2)))
+                );
+                setScale(nextScale);
+              }
+              return;
+            }
+
             const start = touchStartRef.current;
             touchStartRef.current = null;
             if (!start || !pdf || loading || error || rendering) return;
