@@ -546,7 +546,7 @@ function EbookReader({ ebook, onClose }) {
           const heightScale = availableHeight / baseViewport.height;
           // Fullscreen prioritizes filling the available screen height.
           // The page keeps its original proportions; horizontal scrolling is available when wider than the phone.
-          const targetScale = isFullscreen ? Math.max(widthScale, heightScale) : widthScale;
+          const targetScale = isFullscreen ? Math.min(widthScale, heightScale) : widthScale;
           setScale(Math.max(0.25, Math.min(3, Number(targetScale.toFixed(3)))));
         } catch (pageFitError) {
           console.error("FAS eBook page fit error:", pageFitError);
@@ -713,7 +713,7 @@ function EbookReader({ ebook, onClose }) {
               const heightScale = availableHeight / baseViewport.height;
               // Fill the available screen height while preserving the PDF aspect ratio.
               // The stage supports horizontal scrolling for wider page layouts.
-              const immersiveScale = Math.max(widthScale, heightScale);
+              const immersiveScale = Math.min(widthScale, heightScale);
               setFitPageMode(true);
               setScale(Math.max(0.25, Math.min(3, Number(immersiveScale.toFixed(3)))));
             } catch (fullscreenFitError) {
@@ -764,9 +764,8 @@ function EbookReader({ ebook, onClose }) {
       if (!stage) return;
       const page = await pdf.getPage(currentPage);
       const viewport = page.getViewport({ scale: 1 });
-      // On phones, fitting both width and height makes the printed text
-      // unnecessarily tiny. Fit to the reader width instead and let the
-      // stage scroll vertically so the page remains comfortable to read.
+      // Fit the complete page inside both viewport dimensions. This preserves
+      // the PDF's aspect ratio and prevents text or page edges from cropping.
       const availableWidth = Math.max(240, stage.clientWidth - 8);
       const availableHeight = Math.max(
         isFullscreen ? window.screen?.height || 0 : 0,
@@ -778,10 +777,9 @@ function EbookReader({ ebook, onClose }) {
       ) - 8;
       const widthFitScale = availableWidth / viewport.width;
       const heightFitScale = Math.max(320, availableHeight) / viewport.height;
-      // In fullscreen, prioritize the screen height for immersive reading.
-      // The stage supports horizontal panning when the page is wider than the phone.
+      // "Fit page" must show the whole page in fullscreen, not crop it.
       const nextScale = isFullscreen
-        ? Math.max(widthFitScale, heightFitScale)
+        ? Math.min(widthFitScale, heightFitScale)
         : widthFitScale;
       setFitPageMode(true);
       setScale(Math.max(0.25, Math.min(3, Number(nextScale.toFixed(2)))));
