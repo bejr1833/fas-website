@@ -17243,3 +17243,17 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
 .ebookReader:-webkit-full-screen .ebookReaderFooter {
   transition: none !important;
 }
+
+
+/* Avoid perspective/turn transforms causing clipped edges on mobile page swipes. */
+@media (max-width: 700px) {
+  .ebookReaderPageSheet,
+  .ebookReaderPageSheet.isTurning {
+    animation: none !important;
+    transform: none !important;
+    transform-style: flat !important;
+  }
+  .ebookReaderBookScene {
+    scroll-snap-type: none !important;
+  }
+}
