@@ -546,7 +546,7 @@ function EbookReader({ ebook, onClose }) {
           const heightScale = availableHeight / baseViewport.height;
           // Fullscreen prioritizes filling the available screen height.
           // The page keeps its original proportions; horizontal scrolling is available when wider than the phone.
-          const targetScale = isFullscreen ? Math.max(widthScale, heightScale) : widthScale;
+          const targetScale = isFullscreen ? Math.min(widthScale, heightScale) : widthScale;
           setScale(Math.max(0.25, Math.min(3, Number(targetScale.toFixed(3)))));
         } catch (pageFitError) {
           console.error("FAS eBook page fit error:", pageFitError);
@@ -706,7 +706,7 @@ function EbookReader({ ebook, onClose }) {
               const heightScale = availableHeight / baseViewport.height;
               // Fill the available screen height while preserving the PDF aspect ratio.
               // The stage supports horizontal scrolling for wider page layouts.
-              const immersiveScale = Math.max(widthScale, heightScale);
+              const immersiveScale = Math.min(widthScale, heightScale);
               setFitPageMode(true);
               setScale(Math.max(0.25, Math.min(3, Number(immersiveScale.toFixed(3)))));
             } catch (fullscreenFitError) {
@@ -771,10 +771,10 @@ function EbookReader({ ebook, onClose }) {
       ) - 8;
       const widthFitScale = availableWidth / viewport.width;
       const heightFitScale = Math.max(320, availableHeight) / viewport.height;
-      // In fullscreen, Fit page means fill the screen height; outside fullscreen,
-      // it remains a conventional width-fit control.
+      // Fit the complete page within both screen dimensions in fullscreen.
+      // Preserve all page content rather than enlarging beyond the viewport.
       const nextScale = isFullscreen
-        ? Math.max(widthFitScale, heightFitScale)
+        ? Math.min(widthFitScale, heightFitScale)
         : widthFitScale;
       setFitPageMode(true);
       setScale(Math.max(0.25, Math.min(3, Number(nextScale.toFixed(2)))));
