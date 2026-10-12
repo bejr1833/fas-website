@@ -645,18 +645,33 @@ function EbookReader({ ebook, onClose }) {
       setIsFullscreen(active);
       setFullscreenControlsVisible(!active);
       if (active) {
-        // Avoid inheriting a scrolled/centered position from the normal reader.
+        // Re-measure after the browser has applied fullscreen dimensions.
+        // A scale calculated in the smaller modal can otherwise leave the page
+        // looking undersized in the much taller fullscreen viewport.
         requestAnimationFrame(() => {
-          const stage = readerRef.current?.querySelector(".ebookReaderStage");
-          const scene = readerRef.current?.querySelector(".ebookReaderBookScene");
-          if (stage) {
-            stage.scrollTop = 0;
-            stage.scrollLeft = 0;
-          }
-          if (scene) {
-            scene.scrollTop = 0;
-            scene.scrollLeft = 0;
-          }
+          requestAnimationFrame(async () => {
+            const stage = readerRef.current?.querySelector(".ebookReaderStage");
+            const scene = readerRef.current?.querySelector(".ebookReaderBookScene");
+            if (stage) {
+              stage.scrollTop = 0;
+              stage.scrollLeft = 0;
+            }
+            if (scene) {
+              scene.scrollTop = 0;
+              scene.scrollLeft = 0;
+            }
+            if (!pdf || !stage) return;
+            try {
+              const page = await pdf.getPage(currentPage);
+              const baseViewport = page.getViewport({ scale: 1 });
+              const availableWidth = Math.max(240, stage.clientWidth - 20);
+              const widthFitScale = Math.min(3, availableWidth / baseViewport.width);
+              setFitPageMode(true);
+              setScale(Math.max(0.25, Number(widthFitScale.toFixed(2))));
+            } catch (fullscreenFitError) {
+              console.error("FAS eBook fullscreen fit error:", fullscreenFitError);
+            }
+          });
         });
       }
     };
