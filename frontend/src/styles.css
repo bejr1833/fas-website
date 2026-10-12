@@ -17288,3 +17288,63 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     height: 100%;
   }
 }
+
+
+/* Refined desktop eBook feature: balanced cover/details split, not an oversized poster. */
+@media (min-width: 851px) {
+  .ebookSection .ebookGrid {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 1120px !important;
+    margin: 30px auto 0 !important;
+    align-items: stretch;
+  }
+  .ebookSection .ebookGrid > .ebookCard,
+  .ebookSection .ebookGrid > .ebookCard.isFeatured {
+    flex: 0 1 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: 360px;
+    display: grid !important;
+    grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr) !important;
+    overflow: hidden;
+  }
+  .ebookSection .ebookGrid > .ebookCard.isFallback,
+  .ebookSection .ebookGrid > .ebookCard.isFeatured.isFallback {
+    grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr) !important;
+  }
+  .ebookSection .ebookGrid > .ebookCard .ebookCover,
+  .ebookSection .ebookGrid > .ebookCard.isFeatured .ebookCover {
+    min-height: 0 !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
+    overflow: hidden;
+  }
+  .ebookSection .ebookGrid > .ebookCard .ebookCoverPlaceholder {
+    min-height: 0;
+    height: 100%;
+    padding: clamp(26px, 3vw, 44px);
+  }
+  .ebookSection .ebookGrid > .ebookCard .ebookCoverPlaceholder::before {
+    font-size: clamp(120px, 16vw, 220px);
+  }
+  .ebookSection .ebookGrid > .ebookCard .ebookCardBody,
+  .ebookSection .ebookGrid > .ebookCard.isFeatured .ebookCardBody {
+    min-width: 0;
+    padding: clamp(24px, 3vw, 42px) !important;
+    justify-content: center;
+    gap: 4px;
+  }
+  .ebookSection .ebookGrid > .ebookCard .ebookCardBody h3,
+  .ebookSection .ebookGrid > .ebookCard.isFeatured .ebookCardBody h3 {
+    max-width: 100%;
+    font-size: clamp(28px, 2.5vw, 38px);
+    line-height: 1.12;
+  }
+  .ebookSection .ebookGrid > .ebookCard .ebookFormatActions {
+    margin-top: 18px;
+    gap: 10px;
+  }
+}
