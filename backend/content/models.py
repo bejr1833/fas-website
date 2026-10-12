@@ -1,6 +1,7 @@
 from datetime import time
 
 from django.db import models
+from django.core.validators import FileExtensionValidator
 from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 class SiteSettings(models.Model):
@@ -288,6 +289,42 @@ class EBook(models.Model):
     description = models.TextField(blank=True)
     ebook_file = models.FileField(
         upload_to="ebooks/files/",
+        blank=True,
+        validators=[FileExtensionValidator(["pdf"])],
+        verbose_name="PDF file",
+        help_text="Upload a PDF copy only if FAS has permission to redistribute it. Either PDF or EPUB is required.",
+    )
+    epub_file = models.FileField(
+        upload_to="ebooks/files/",
+        blank=True,
+        validators=[FileExtensionValidator(["epub"])],
+        verbose_name="EPUB file",
+        help_text="Optional EPUB copy. Upload only when redistribution is permitted.",
+    )
+    RIGHTS_CHOICES = [
+        ("pending", "Pending review — do not publish"),
+        ("original", "Original / owned by FAS"),
+        ("public_domain", "Public domain — verified"),
+        ("permission_granted", "Written permission granted"),
+        ("open_license", "Open licence permits redistribution"),
+    ]
+    rights_status = models.CharField(
+        max_length=24,
+        choices=RIGHTS_CHOICES,
+        default="pending",
+        help_text="Select the documented legal basis for hosting this book.",
+    )
+    rights_verified = models.BooleanField(
+        default=False,
+        help_text="Tick only after checking the source, edition, licence/permission, and allowed file formats.",
+    )
+    rights_source_url = models.URLField(
+        blank=True,
+        help_text="Official source, licence page, permission record, or public-domain evidence.",
+    )
+    rights_notes = models.TextField(
+        blank=True,
+        help_text="Record permission scope, licence conditions, rights-holder contact, and verification notes.",
     )
     published_at = models.DateTimeField(
         blank=True,
@@ -300,6 +337,20 @@ class EBook(models.Model):
 
     class Meta:
         ordering = ["-published_at", "-created_at"]
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        super().clean()
+        if not self.ebook_file and not self.epub_file:
+            raise ValidationError("Upload at least one file: PDF or EPUB.")
+        if self.is_published and (
+            not self.rights_verified
+            or self.rights_status == "pending"
+        ):
+            raise ValidationError(
+                "Before publishing, verify the copyright basis and select a non-pending rights status."
+            )
 
     def __str__(self):
         return self.title
