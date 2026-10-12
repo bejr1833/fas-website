@@ -16233,18 +16233,80 @@ html[data-theme="dark"] .devotionalTeluguVerse p{
     #d9d7d0;
   overscroll-behavior:contain;
 }
+.ebookReaderBookScene{
+  min-height:100%;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  perspective:1800px;
+  padding:4px 12px 24px;
+}
+.ebookReaderPageSheet{
+  position:relative;
+  transform-origin:left center;
+  transform-style:preserve-3d;
+  animation:fasPageTurnIn .42s cubic-bezier(.2,.72,.2,1) both;
+  background:#fffdf8;
+  border-radius:2px 5px 5px 2px;
+  box-shadow:
+    -8px 0 0 #e6e1d7,
+    -11px 0 0 #f8f5ed,
+    0 18px 44px rgba(0,0,0,.26),
+    12px 2px 24px rgba(0,0,0,.08);
+}
+.ebookReaderPageSheet::before{
+  content:"";
+  position:absolute;
+  z-index:2;
+  inset:0 auto 0 0;
+  width:18px;
+  pointer-events:none;
+  background:linear-gradient(90deg,rgba(48,39,23,.13),rgba(255,255,255,.42),transparent);
+}
+.ebookReaderPageSheet.isTurning{
+  animation-name:fasPageTurnIn;
+}
+.ebookReaderPageEdge{
+  position:absolute;
+  z-index:-1;
+  top:5px;
+  right:-5px;
+  bottom:5px;
+  width:5px;
+  border-radius:0 3px 3px 0;
+  background:repeating-linear-gradient(to bottom,#f4f0e7 0,#f4f0e7 2px,#dcd5c8 3px,#f4f0e7 4px);
+  box-shadow:2px 1px 3px rgba(0,0,0,.12);
+}
 .ebookReaderCanvasWrap{
   min-width:max-content;
   display:flex;
   justify-content:center;
   align-items:flex-start;
   min-height:100%;
+  overflow:hidden;
+  border-radius:2px 5px 5px 2px;
 }
 .ebookReaderCanvas{
   display:block;
   max-width:none;
-  background:#fff;
-  box-shadow:0 12px 34px rgba(0,0,0,.20);
+  background:#fffdf8;
+  box-shadow:inset 8px 0 14px rgba(45,35,20,.05);
+}
+.ebookReaderPageNumber{
+  display:block;
+  padding:5px 0 8px;
+  background:#fffdf8;
+  color:#9c9588;
+  text-align:center;
+  font-family:Georgia,serif;
+  font-size:10px;
+}
+@keyframes fasPageTurnIn{
+  from{opacity:.72;transform:rotateY(-8deg) translateX(-8px);filter:brightness(.94)}
+  to{opacity:1;transform:rotateY(0) translateX(0);filter:brightness(1)}
+}
+@media (prefers-reduced-motion:reduce){
+  .ebookReaderPageSheet{animation:none}
 }
 .ebookReaderState{
   min-height:100%;
