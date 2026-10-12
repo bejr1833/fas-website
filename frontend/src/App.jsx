@@ -589,8 +589,10 @@ function EbookReader({ ebook, onClose }) {
 
         canvas.width = Math.floor(viewport.width * outputScale);
         canvas.height = Math.floor(viewport.height * outputScale);
-        canvas.style.width = `${Math.floor(viewport.width)}px`;
-        canvas.style.height = `${Math.floor(viewport.height)}px`;
+        // Preserve exact PDF.js CSS-pixel dimensions so fullscreen zoom can
+        // grow beyond the viewport and use the stage scroll area.
+        canvas.style.setProperty("width", `${Math.floor(viewport.width)}px`, "important");
+        canvas.style.setProperty("height", `${Math.floor(viewport.height)}px`, "important");
 
         renderTaskRef.current = page.render({
           canvasContext: context,
@@ -749,6 +751,9 @@ function EbookReader({ ebook, onClose }) {
   };
 
   const applyZoom = (direction) => {
+    // Manual zoom takes precedence over fit-page mode; the fullscreen stage
+    // remains scrollable when the enlarged page exceeds the viewport.
+    setFitPageMode(false);
     setScale((currentScale) => {
       const nextScale = currentScale + direction * 0.1;
       return Math.max(0.25, Math.min(3, Number(nextScale.toFixed(2))));
