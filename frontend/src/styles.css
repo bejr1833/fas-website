@@ -17636,3 +17636,44 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   max-height: none !important;
   object-fit: initial !important;
 }
+
+
+/* Minimal share icon for eBook cards; keep it visually secondary to reading actions. */
+.ebookCard .ebookFormatActions .ebookShareButton {
+  display: inline-flex;
+  flex: 0 0 48px;
+  width: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  padding: 0;
+  border: 1px solid rgba(184, 137, 50, .72);
+  border-radius: 13px;
+  background: transparent;
+  color: #881212;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.ebookCard .ebookFormatActions .ebookShareButton svg {
+  display: block;
+  color: currentColor;
+  stroke: currentColor;
+}
+.ebookCard .ebookFormatActions .ebookShareButton:hover {
+  background: rgba(184, 137, 50, .12);
+  border-color: #b88932;
+  transform: translateY(-1px);
+}
+.ebookCard .ebookFormatActions .ebookShareButton:focus-visible {
+  outline: 3px solid #d6ad57;
+  outline-offset: 3px;
+}
+html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookShareButton {
+  color: #f5d88e;
+  border-color: rgba(214, 173, 87, .72);
+}
+html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookShareButton:hover {
+  background: rgba(214, 173, 87, .12);
+}
