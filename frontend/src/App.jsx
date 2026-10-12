@@ -952,7 +952,13 @@ function EbookReader({ ebook, onClose }) {
               return;
             }
             const touch = event.touches[0];
-            touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+            const stage = readerRef.current?.querySelector(".ebookReaderStage");
+            touchStartRef.current = {
+              x: touch.clientX,
+              y: touch.clientY,
+              scrollLeft: stage?.scrollLeft || 0,
+              scrollWidth: stage?.scrollWidth || 0,
+            };
           }}
           onTouchMove={(event) => {
             if (event.touches.length < 2 || !pinchStartRef.current) return;
@@ -980,6 +986,7 @@ function EbookReader({ ebook, onClose }) {
               pinchDistanceRef.current = 0;
               touchStartRef.current = null;
               if (pdf && !loading && !error) {
+                setFitPageMode(false);
                 const nextScale = Math.max(
                   0.25,
                   Math.min(3, Number((start.scale * distance / Math.max(start.distance, 1)).toFixed(2)))
@@ -996,15 +1003,19 @@ function EbookReader({ ebook, onClose }) {
             if (!touch) return;
             const deltaX = touch.clientX - start.x;
             const deltaY = touch.clientY - start.y;
-            // In immersive mode, horizontal swipes belong to native scrolling
-            // whenever the PDF is wider than the viewport. Do not turn the page
-            // at touch-end and interrupt the user's horizontal pan.
+            // On a zoomed page, swipes pan horizontally until the page edge.
+            // A swipe outward from an edge turns the page and retains zoom.
             const stage = readerRef.current?.querySelector(".ebookReaderStage");
-            const canPanHorizontally = isFullscreen && stage &&
-              stage.scrollWidth > stage.clientWidth + 4;
-            if (canPanHorizontally) return;
-            // Otherwise, retain the familiar horizontal page-turn gesture.
+            const hasHorizontalOverflow = isFullscreen && stage &&
+              Math.max(start.scrollWidth || 0, stage.scrollWidth) > stage.clientWidth + 4;
             if (Math.abs(deltaX) < 32 || Math.abs(deltaX) < Math.abs(deltaY) * 1.15) return;
+            if (hasHorizontalOverflow) {
+              const maxScrollLeft = Math.max(0, stage.scrollWidth - stage.clientWidth);
+              const atLeftEdge = Math.min(start.scrollLeft || 0, stage.scrollLeft) <= 4;
+              const atRightEdge = Math.max(start.scrollLeft || 0, stage.scrollLeft) >= maxScrollLeft - 8;
+              if (deltaX < 0 && !atRightEdge) return;
+              if (deltaX > 0 && !atLeftEdge) return;
+            }
             changePage(currentPage + (deltaX < 0 ? 1 : -1));
           }}
         >
