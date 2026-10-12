@@ -16397,3 +16397,46 @@ html[data-theme="light"] .devotionalTeluguVerse > p{
     font-size:13px;
   }
 }
+
+
+/* E-book publishing transparency and multi-format actions */
+.ebookLibraryNotice {
+  max-width: 760px;
+  margin: 14px 0 0;
+  color: var(--muted, #6b7471);
+  font-size: 13px;
+  line-height: 1.75;
+}
+.ebookLibraryNotice a {
+  color: #881212;
+  font-weight: 800;
+  text-underline-offset: 3px;
+}
+.ebookFormatActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+.ebookFormatActions .ebookReadLink {
+  margin-top: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+}
+html[data-theme="dark"] .ebookLibraryNotice {
+  color: #b5b7b1;
+}
+html[data-theme="dark"] .ebookLibraryNotice a {
+  color: #d6ad57;
+}
+@media (max-width: 560px) {
+  .ebookFormatActions {
+    gap: 14px;
+  }
+}
