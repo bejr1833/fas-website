@@ -526,7 +526,7 @@ function EbookReader({ ebook, onClose }) {
             240,
             (isFullscreen ? stage.clientWidth : stage.clientWidth || window.innerWidth) - 8
           );
-          const availableHeight = Math.max(320, (isFullscreen ? stage.clientHeight : window.innerHeight) - 8);
+          const availableHeight = Math.max(320, (isFullscreen ? (stage.clientHeight || readerRef.current?.clientHeight || window.innerHeight) : window.innerHeight) - 8);
           const widthScale = availableWidth / baseViewport.width;
           const heightScale = availableHeight / baseViewport.height;
           // Immersive fullscreen uses "cover": fill the phone vertically, like
