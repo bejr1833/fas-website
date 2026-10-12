@@ -17334,3 +17334,40 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   }
 }
 
+
+
+/* Full-screen mobile: place the whole page at the top of the viewport and
+   use the available height instead of vertically centering a short page. */
+@media (max-width: 700px) {
+  .ebookReader:fullscreen .ebookReaderStage,
+  .ebookReader:-webkit-full-screen .ebookReaderStage {
+    display: block !important;
+    padding: 0 !important;
+    overflow: auto !important;
+    overscroll-behavior: contain;
+  }
+  .ebookReader:fullscreen .ebookReaderBookScene,
+  .ebookReader:-webkit-full-screen .ebookReaderBookScene {
+    display: flex !important;
+    min-height: 100% !important;
+    height: auto !important;
+    width: max-content !important;
+    min-width: 100% !important;
+    box-sizing: border-box;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding: 0 0 12px !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+  .ebookReader:fullscreen .ebookReaderPageSheet,
+  .ebookReader:-webkit-full-screen .ebookReaderPageSheet {
+    align-self: flex-start !important;
+    margin: 0 !important;
+  }
+  .ebookReader:fullscreen .ebookReaderCanvasWrap,
+  .ebookReader:-webkit-full-screen .ebookReaderCanvasWrap {
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+  }
+}
