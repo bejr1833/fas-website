@@ -5762,6 +5762,43 @@ function App() {
                           Download EPUB <ArrowRight size={16} />
                         </a>
                       )}
+                      {(ebook.ebook_file_url || ebook.epub_file_url) && (
+                        <button
+                          type="button"
+                          className="ebookShareButton"
+                          aria-label={`Share ${ebook.title}`}
+                          title={`Share ${ebook.title}`}
+                          onClick={async () => {
+                            const shareUrl = ebook.ebook_file_url || ebook.epub_file_url;
+                            const shareData = {
+                              title: ebook.title,
+                              text: `Read “${ebook.title}” from Faith Alone Saves.`,
+                              url: shareUrl
+                            };
+
+                            try {
+                              if (navigator.share) {
+                                await navigator.share(shareData);
+                              } else if (navigator.clipboard?.writeText) {
+                                await navigator.clipboard.writeText(shareUrl);
+                                window.alert("eBook link copied to clipboard.");
+                              } else {
+                                window.prompt("Copy this eBook link:", shareUrl);
+                              }
+                            } catch (shareError) {
+                              if (shareError?.name === "AbortError") return;
+                              try {
+                                await navigator.clipboard.writeText(shareUrl);
+                                window.alert("eBook link copied to clipboard.");
+                              } catch {
+                                window.prompt("Copy this eBook link:", shareUrl);
+                              }
+                            }
+                          }}
+                        >
+                          <Share2 size={18} strokeWidth={1.9} />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </article>
