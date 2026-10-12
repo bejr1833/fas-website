@@ -510,17 +510,39 @@ function EbookReader({ ebook, onClose }) {
   }, [ebook.id, ebook.ebook_file_url]);
 
   useEffect(() => {
-    // Reset horizontal scroll after a page turn so the next PDF page does
-    // not inherit a clipped position from the previous zoomed page.
-    const frame = window.requestAnimationFrame(() => {
-      const scene = readerRef.current?.querySelector(".ebookReaderBookScene");
-      if (scene) {
-        const maxScroll = Math.max(0, scene.scrollWidth - scene.clientWidth);
-        scene.scrollLeft = maxScroll > 0 ? maxScroll / 2 : 0;
+    let cancelled = false;
+
+    // When Fit Page is active, recalculate the width for every new PDF page.
+    // Some PDFs contain pages with slightly different dimensions; retaining
+    // the previous page's scale can crop the next page on a phone.
+    const keepPageInView = async () => {
+      if (fitPageMode && pdf) {
+        try {
+          const stage = readerRef.current?.querySelector(".ebookReaderStage");
+          const page = await pdf.getPage(currentPage);
+          if (cancelled || !stage) return;
+          const baseViewport = page.getViewport({ scale: 1 });
+          const availableWidth = Math.max(240, stage.clientWidth - 28);
+          const widthFitScale = Math.min(3, availableWidth / baseViewport.width);
+          setScale(Math.max(0.25, Number(widthFitScale.toFixed(2))));
+        } catch (pageFitError) {
+          console.error("FAS eBook page fit error:", pageFitError);
+        }
       }
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [currentPage, isFullscreen]);
+
+      // Always start each page at its left edge. Centering a page whose
+      // rendered width exceeds the phone viewport clips both sides.
+      requestAnimationFrame(() => {
+        const scene = readerRef.current?.querySelector(".ebookReaderBookScene");
+        if (scene) scene.scrollLeft = 0;
+        const stage = readerRef.current?.querySelector(".ebookReaderStage");
+        if (stage) stage.scrollLeft = 0;
+      });
+    };
+
+    keepPageInView();
+    return () => { cancelled = true; };
+  }, [currentPage, isFullscreen, fitPageMode, pdf]);
 
   useEffect(() => {
     if (!pdf || !canvasRef.current) return;
