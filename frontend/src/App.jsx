@@ -5397,12 +5397,12 @@ function App() {
                         decoding="async"
                       />
                     ) : (
-                      <div className="ebookCoverPlaceholder">
-                        <span className="ebookCoverKicker">{(ebook.category || "CHRISTIAN LIFE").replace(/-/g, " ")}</span>
-                        <strong>{ebook.title}</strong>
-                        <small>{ebook.author ? `BY ${ebook.author}` : "FAS E-BOOK LIBRARY"}</small>
+                      <div className="ebookCoverPlaceholder" aria-hidden="true">
+                        <span className="ebookCoverKicker">FAITH · FELLOWSHIP · TRUTH</span>
+                        <strong className="ebookCoverBrand">FAS</strong>
+                        <small>CHRISTIAN CLASSICS</small>
                         <span className="ebookCoverRule" />
-                        <span className="ebookCoverFooter">FAITH · FELLOWSHIP · TRUTH</span>
+                        <span className="ebookCoverFooter">A CURATED E-BOOK COLLECTION</span>
                       </div>
                     )}
 
