@@ -17375,9 +17375,7 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   .ebookReader:fullscreen .ebookReaderCanvas,
   .ebookReader:-webkit-full-screen .ebookReaderCanvas {
     display: block !important;
-    /* Override stale inline canvas width and fit the rendered page to the phone. */
-    width: calc(100vw - 8px) !important;
-    height: auto !important;
+    /* Preserve PDF.js's scaled inline width and height; do not distort the page. */
     max-width: none !important;
     object-fit: initial !important;
   }
@@ -17385,7 +17383,7 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   .ebookReader:-webkit-full-screen .ebookReaderPageSheet,
   .ebookReader:fullscreen .ebookReaderCanvasWrap,
   .ebookReader:-webkit-full-screen .ebookReaderCanvasWrap {
-    width: calc(100vw - 8px) !important;
+    width: max-content !important;
     min-width: 0 !important;
   }
 }
