@@ -17549,3 +17549,31 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
 .ebookReader.isFullscreen .ebookReaderFooter {
   z-index: 30 !important;
 }
+
+
+/* Reliable native horizontal pan for immersive PDF pages wider than the phone. */
+.ebookReader.isFullscreen .ebookReaderStage {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  touch-action: pan-x pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior-x: contain !important;
+  scroll-behavior: auto !important;
+  scrollbar-width: none;
+}
+.ebookReader.isFullscreen .ebookReaderStage::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+.ebookReader.isFullscreen .ebookReaderBookScene {
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.ebookReader.isFullscreen .ebookReaderPageSheet,
+.ebookReader.isFullscreen .ebookReaderCanvasWrap {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
