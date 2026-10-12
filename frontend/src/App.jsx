@@ -5440,13 +5440,15 @@ function App() {
 
                     <div className="ebookFormatActions" aria-label={`Available formats for ${ebook.title}`}>
                       {ebook.ebook_file_url && (
-                        <button
-                          type="button"
+                        <a
                           className="ebookReadLink"
-                          onClick={() => setSelectedEbook(ebook)}
+                          href={ebook.ebook_file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Read ${ebook.title} PDF in a new tab`}
                         >
                           Read PDF <ArrowRight size={16} />
-                        </button>
+                        </a>
                       )}
                       {ebook.epub_file_url && (
                         <a
