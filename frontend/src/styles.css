@@ -17078,3 +17078,30 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   transform-origin: center center;
   will-change: transform;
 }
+
+
+/* Let PDF.js zoom use its true rendered dimensions on narrow screens. */
+@media (max-width: 700px) {
+  .ebookReaderBookScene {
+    overflow: auto !important;
+    align-items: flex-start;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ebookReaderPageSheet {
+    width: max-content !important;
+    max-width: none !important;
+    overflow: visible !important;
+    flex: 0 0 auto;
+  }
+  .ebookReaderCanvasWrap {
+    width: max-content !important;
+    max-width: none !important;
+    overflow: visible !important;
+  }
+  .ebookReaderCanvas {
+    display: block;
+    max-width: none !important;
+    height: auto !important;
+  }
+}
