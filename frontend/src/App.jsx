@@ -702,7 +702,7 @@ function EbookReader({ ebook, onClose }) {
               aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
               title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
             >
-              {isFullscreen ? <X size={18} /> : <Sparkles size={18} />}
+              {isFullscreen ? <X size={18} /> : <span aria-hidden="true" style={{ fontSize: 22, lineHeight: 1 }}>⛶</span>}
             </button>
             <button
               type="button"
