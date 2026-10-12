@@ -17375,8 +17375,7 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   .ebookReader:fullscreen .ebookReaderCanvas,
   .ebookReader:-webkit-full-screen .ebookReaderCanvas {
     display: block !important;
-    /* Keep the inline CSS dimensions written by PDF.js. Do not use width:auto:
-       the canvas backing bitmap is DPR-scaled and would display too large/blurry. */
+    /* Keep PDF.js inline dimensions; fullscreen scale is set from viewport height. */
     max-width: none !important;
     object-fit: initial !important;
   }
