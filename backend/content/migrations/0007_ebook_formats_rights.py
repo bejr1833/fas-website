@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("content", "0006_ebook"),
+        ("content", "0022_alter_devotional_scripture_reference_telugu"),
     ]
 
     operations = [
