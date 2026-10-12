@@ -438,6 +438,7 @@ function EbookReader({ ebook, onClose }) {
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fullscreenControlsVisible, setFullscreenControlsVisible] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     try {
       return localStorage.getItem("fas-ebook-reader-theme") === "dark";
@@ -605,7 +606,9 @@ function EbookReader({ ebook, onClose }) {
 
   useEffect(() => {
     const handleFullscreen = () => {
-      setIsFullscreen(document.fullscreenElement === readerRef.current);
+      const active = document.fullscreenElement === readerRef.current;
+      setIsFullscreen(active);
+      setFullscreenControlsVisible(!active);
     };
 
     document.addEventListener("fullscreenchange", handleFullscreen);
@@ -624,6 +627,7 @@ function EbookReader({ ebook, onClose }) {
       if (document.fullscreenElement) {
         await document.exitFullscreen?.();
       } else {
+        setFullscreenControlsVisible(false);
         await readerRef.current.requestFullscreen?.();
       }
     } catch (fullscreenError) {
@@ -670,7 +674,7 @@ function EbookReader({ ebook, onClose }) {
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      <div className={`ebookReader${isDarkMode ? " readerDarkMode" : ""}`} data-reader-theme={isDarkMode ? "dark" : "light"} ref={readerRef}>
+      <div className={`ebookReader${isDarkMode ? " readerDarkMode" : ""}${fullscreenControlsVisible ? " fullscreenControlsVisible" : ""}`} data-reader-theme={isDarkMode ? "dark" : "light"} ref={readerRef}>
         <header className="ebookReaderHeader">
           <div className="ebookReaderTitle">
             <span className="ebookReaderEyebrow">FAS E-BOOK READER</span>
@@ -790,6 +794,13 @@ function EbookReader({ ebook, onClose }) {
 
         <main
           className="ebookReaderStage"
+          onClick={(event) => {
+            if (!isFullscreen) return;
+            const rect = event.currentTarget.getBoundingClientRect();
+            if (event.clientY - rect.top <= 84) {
+              setFullscreenControlsVisible((visible) => !visible);
+            }
+          }}
           onTouchStart={(event) => {
             if (event.touches.length >= 2) {
               const first = event.touches[0];
