@@ -647,9 +647,12 @@ function EbookReader({ ebook, onClose }) {
       if (!stage) return;
       const page = await pdf.getPage(currentPage);
       const viewport = page.getViewport({ scale: 1 });
-      const availableWidth = Math.max(180, stage.clientWidth - 36);
-      const availableHeight = Math.max(180, stage.clientHeight - 36);
-      const nextScale = Math.min(availableWidth / viewport.width, availableHeight / viewport.height, 3);
+      // On phones, fitting both width and height makes the printed text
+      // unnecessarily tiny. Fit to the reader width instead and let the
+      // stage scroll vertically so the page remains comfortable to read.
+      const availableWidth = Math.max(240, stage.clientWidth - 28);
+      const widthFitScale = availableWidth / viewport.width;
+      const nextScale = Math.min(widthFitScale, 3);
       setFitPageMode(true);
       setScale(Math.max(0.25, Number(nextScale.toFixed(2))));
     } catch (fitError) {
