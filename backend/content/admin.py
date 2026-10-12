@@ -278,12 +278,16 @@ class EBookAdmin(admin.ModelAdmin):
         "title",
         "author",
         "category",
+        "rights_status",
+        "rights_verified",
         "is_published",
         "is_featured",
         "published_at",
     )
     list_filter = (
         "category",
+        "rights_status",
+        "rights_verified",
         "is_published",
         "is_featured",
     )
@@ -291,8 +295,26 @@ class EBookAdmin(admin.ModelAdmin):
         "title",
         "author",
         "description",
+        "rights_notes",
     )
     date_hierarchy = "published_at"
+    fieldsets = (
+        ("Book details", {
+            "fields": ("title", "author", "category", "cover_image", "description")
+        }),
+        ("Available formats", {
+            "fields": ("ebook_file", "epub_file"),
+            "description": "Upload PDF, EPUB, or both. The site serves each uploaded format separately and does not automatically convert files."
+        }),
+        ("Copyright and permissions — required before publishing", {
+            "fields": ("rights_status", "rights_verified", "rights_source_url", "rights_notes"),
+            "description": "Only publish FAS-owned works, verified public-domain works, works with written permission, or works whose open licence permits redistribution. Do not upload books just because they are downloadable from another site."
+        }),
+        ("Publishing", {
+            "fields": ("published_at", "is_published", "is_featured", "created_at", "updated_at")
+        }),
+    )
+    readonly_fields = ("created_at", "updated_at")
 
 admin.site.register(SiteSettings, SiteSettingsAdmin)
 

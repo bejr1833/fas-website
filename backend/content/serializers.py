@@ -248,6 +248,7 @@ class FASVideoSerializer(serializers.ModelSerializer):
 class EBookSerializer(serializers.ModelSerializer):
     cover_image_url = serializers.SerializerMethodField()
     ebook_file_url = serializers.SerializerMethodField()
+    epub_file_url = serializers.SerializerMethodField()
 
     class Meta:
         model = EBook
@@ -271,6 +272,18 @@ class EBookSerializer(serializers.ModelSerializer):
             return None
 
         url = obj.ebook_file.url
+
+        if request:
+            return request.build_absolute_uri(url)
+
+        return url
+
+    def get_epub_file_url(self, obj):
+        request = self.context.get("request")
+        if not obj.epub_file:
+            return None
+
+        url = obj.epub_file.url
 
         if request:
             return request.build_absolute_uri(url)

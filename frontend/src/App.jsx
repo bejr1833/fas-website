@@ -5369,6 +5369,11 @@ function App() {
             <div>
               <div className="sectionLabel">E-BOOK LIBRARY</div>
               <h2>Read, reflect, and <em>grow.</em></h2>
+              <p className="ebookLibraryNotice">
+                A carefully curated collection of Christian resources. FAS publishes only works it owns,
+                verified public-domain editions, or books shared with permission or a licence that allows redistribution.
+                Copyright concern? Please contact us through the <a href="#connect">contact section</a>.
+              </p>
             </div>
           </div>
 
@@ -5433,13 +5438,28 @@ function App() {
                       <p>{ebook.description}</p>
                     )}
 
-                    <button
-                        type="button"
-                        className="ebookReadLink"
-                        onClick={() => setSelectedEbook(ebook)}
-                      >
-                        Read Online <ArrowRight size={16} />
-                      </button>
+                    <div className="ebookFormatActions" aria-label={`Available formats for ${ebook.title}`}>
+                      {ebook.ebook_file_url && (
+                        <button
+                          type="button"
+                          className="ebookReadLink"
+                          onClick={() => setSelectedEbook(ebook)}
+                        >
+                          Read PDF <ArrowRight size={16} />
+                        </button>
+                      )}
+                      {ebook.epub_file_url && (
+                        <a
+                          className="ebookReadLink"
+                          href={ebook.epub_file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download
+                        >
+                          Download EPUB <ArrowRight size={16} />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </article>
               ))}

@@ -299,7 +299,14 @@ class EBookListView(generics.ListAPIView):
 
     def get_queryset(self):
         return EBook.objects.filter(
-            is_published=True
+            is_published=True,
+            rights_verified=True,
+            rights_status__in=[
+                "original",
+                "public_domain",
+                "permission_granted",
+                "open_license",
+            ],
         ).order_by(
             "-published_at",
             "-created_at"
