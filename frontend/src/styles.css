@@ -17371,3 +17371,30 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     justify-content: flex-start !important;
   }
 }
+
+
+/* Fullscreen uses height-fit scaling; allow horizontal panning for tall phone viewports. */
+@media (max-width: 700px) {
+  .ebookReader:fullscreen .ebookReaderStage,
+  .ebookReader:-webkit-full-screen .ebookReaderStage {
+    overflow: auto !important;
+    overscroll-behavior: contain;
+  }
+  .ebookReader:fullscreen .ebookReaderBookScene,
+  .ebookReader:-webkit-full-screen .ebookReaderBookScene {
+    width: max-content !important;
+    min-width: 100% !important;
+    height: max-content !important;
+    min-height: 100% !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .ebookReader:fullscreen .ebookReaderPageSheet,
+  .ebookReader:-webkit-full-screen .ebookReaderPageSheet {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+  }
+}
