@@ -522,13 +522,16 @@ function EbookReader({ ebook, onClose }) {
           const page = await pdf.getPage(currentPage);
           if (cancelled || !stage) return;
           const baseViewport = page.getViewport({ scale: 1 });
-          // In fullscreen, measure the actual browser viewport rather than
-          // stage.clientWidth (which can retain the modal's narrower width).
           const availableWidth = Math.max(
             240,
             (isFullscreen ? window.innerWidth : stage.clientWidth || window.innerWidth) - 8
           );
-          const targetScale = availableWidth / baseViewport.width;
+          const availableHeight = Math.max(320, window.innerHeight - 8);
+          const widthScale = availableWidth / baseViewport.width;
+          const heightScale = availableHeight / baseViewport.height;
+          // Immersive fullscreen uses "cover": fill the phone vertically, like
+          // a native reading app. Horizontal overflow is scrollable if needed.
+          const targetScale = isFullscreen ? Math.max(widthScale, heightScale) : widthScale;
           setScale(Math.max(0.25, Math.min(3, Number(targetScale.toFixed(3)))));
         } catch (pageFitError) {
           console.error("FAS eBook page fit error:", pageFitError);
@@ -669,12 +672,15 @@ function EbookReader({ ebook, onClose }) {
             try {
               const page = await pdf.getPage(currentPage);
               const baseViewport = page.getViewport({ scale: 1 });
-              // Use the real viewport width; stage.clientWidth may still reflect
-              // the narrower pre-fullscreen modal on mobile browsers.
               const availableWidth = Math.max(240, window.innerWidth - 8);
-              const widthFitScale = availableWidth / baseViewport.width;
+              const availableHeight = Math.max(320, window.innerHeight - 8);
+              const widthScale = availableWidth / baseViewport.width;
+              const heightScale = availableHeight / baseViewport.height;
+              // Fill the screen height first; horizontal scrolling remains
+              // available when a portrait PDF is taller than the phone ratio.
+              const immersiveScale = Math.max(widthScale, heightScale);
               setFitPageMode(true);
-              setScale(Math.max(0.25, Math.min(3, Number(widthFitScale.toFixed(3)))));
+              setScale(Math.max(0.25, Math.min(3, Number(immersiveScale.toFixed(3)))));
             } catch (fullscreenFitError) {
               console.error("FAS eBook fullscreen fit error:", fullscreenFitError);
             }
