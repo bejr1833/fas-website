@@ -670,14 +670,12 @@ function EbookReader({ ebook, onClose }) {
             try {
               const page = await pdf.getPage(currentPage);
               const baseViewport = page.getViewport({ scale: 1 });
-              // Full-screen reading should fit the page to the screen width,
-              // just like the user's reference screenshot. Height-fitting makes
-              // some PDF pages look too small because page dimensions can vary.
-              const stageWidth = stage.clientWidth || window.innerWidth;
-              const availableWidth = Math.max(240, Math.min(stageWidth, window.innerWidth) - 16);
-              const widthFitScale = Math.min(3, availableWidth / baseViewport.width);
+              // Use the viewport height in fullscreen. The page-fit effect uses
+              // the same rule, so it will not immediately shrink the page again.
+              const availableHeight = Math.max(320, window.innerHeight - 8);
+              const heightFitScale = availableHeight / baseViewport.height;
               setFitPageMode(true);
-              setScale(Math.max(0.25, Number(widthFitScale.toFixed(2))));
+              setScale(Math.max(0.25, Math.min(3, Number(heightFitScale.toFixed(2)))));
             } catch (fullscreenFitError) {
               console.error("FAS eBook fullscreen fit error:", fullscreenFitError);
             }
