@@ -344,6 +344,12 @@ class EBook(models.Model):
         super().clean()
         if not self.ebook_file and not self.epub_file:
             raise ValidationError("Upload at least one file: PDF or EPUB.")
+        if self.rights_verified and not (
+            self.rights_source_url or self.rights_notes.strip()
+        ):
+            raise ValidationError(
+                "Add a rights source URL or notes documenting the permission/licence review."
+            )
         if self.is_published and (
             not self.rights_verified
             or self.rights_status == "pending"
