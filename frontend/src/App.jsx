@@ -416,6 +416,7 @@ function useAutoCarousel(selector, itemSelector, dependency, interval = 4500) {
 function EbookReader({ ebook, onClose }) {
   const readerRef = useRef(null);
   const canvasRef = useRef(null);
+  const touchStartRef = useRef(null);
   const renderTaskRef = useRef(null);
   const loadingTaskRef = useRef(null);
   const [pdf, setPdf] = useState(null);
@@ -733,7 +734,30 @@ function EbookReader({ ebook, onClose }) {
           </div>
         </div>
 
-        <main className="ebookReaderStage">
+        <main
+          className="ebookReaderStage"
+          onTouchStart={(event) => {
+            if (event.touches.length !== 1) {
+              touchStartRef.current = null;
+              return;
+            }
+            const touch = event.touches[0];
+            touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+          }}
+          onTouchEnd={(event) => {
+            const start = touchStartRef.current;
+            touchStartRef.current = null;
+            if (!start || !pdf || loading || error || rendering) return;
+            const touch = event.changedTouches[0];
+            if (!touch) return;
+            const deltaX = touch.clientX - start.x;
+            const deltaY = touch.clientY - start.y;
+            // Only treat deliberate horizontal swipes as page turns;
+            // leave vertical gestures available for normal scrolling.
+            if (Math.abs(deltaX) < 45 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
+            changePage(currentPage + (deltaX < 0 ? 1 : -1));
+          }}
+        >
           {loading && (
             <div className="ebookReaderState">
               <div className="ebookReaderSpinner" />
