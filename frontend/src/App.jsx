@@ -794,10 +794,10 @@ function EbookReader({ ebook, onClose }) {
 
         <main
           className="ebookReaderStage"
-          onClick={(event) => {
-            if (!isFullscreen) return;
-            const rect = event.currentTarget.getBoundingClientRect();
-            if (event.clientY - rect.top <= 84) {
+          onClick={() => {
+            // In immersive mode, any tap on the reading page toggles the
+            // controls. This makes the hide gesture reliable on touch screens.
+            if (isFullscreen) {
               setFullscreenControlsVisible((visible) => !visible);
             }
           }}
