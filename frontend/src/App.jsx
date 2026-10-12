@@ -526,7 +526,18 @@ function EbookReader({ ebook, onClose }) {
             240,
             (isFullscreen ? stage.clientWidth : stage.clientWidth || window.innerWidth) - 8
           );
-          const availableHeight = Math.max(320, (isFullscreen ? (stage.clientHeight || readerRef.current?.clientHeight || window.innerHeight) : window.innerHeight) - 8);
+          // In mobile fullscreen, the stage can temporarily report its old modal height.
+          // Prefer the actual viewport and use the largest trustworthy measurement.
+          const fullscreenViewportHeight = Math.max(
+            window.innerHeight || 0,
+            window.visualViewport?.height || 0,
+            stage.clientHeight || 0,
+            readerRef.current?.clientHeight || 0
+          );
+          const availableHeight = Math.max(
+            320,
+            (isFullscreen ? fullscreenViewportHeight : window.innerHeight) - 8
+          );
           const widthScale = availableWidth / baseViewport.width;
           const heightScale = availableHeight / baseViewport.height;
           // Fullscreen prioritizes filling the available screen height.
@@ -673,7 +684,15 @@ function EbookReader({ ebook, onClose }) {
               const page = await pdf.getPage(currentPage);
               const baseViewport = page.getViewport({ scale: 1 });
               const availableWidth = Math.max(240, window.innerWidth - 8);
-              const availableHeight = Math.max(320, (stage.clientHeight || window.innerHeight) - 8);
+              // Do not trust stage.clientHeight alone here: on Android it can still
+              // reflect the pre-fullscreen modal size during the fullscreenchange event.
+              const fullscreenViewportHeight = Math.max(
+                window.innerHeight || 0,
+                window.visualViewport?.height || 0,
+                stage.clientHeight || 0,
+                readerRef.current?.clientHeight || 0
+              );
+              const availableHeight = Math.max(320, fullscreenViewportHeight - 8);
               const widthScale = availableWidth / baseViewport.width;
               const heightScale = availableHeight / baseViewport.height;
               // Fill the available screen height while preserving the PDF aspect ratio.
@@ -732,11 +751,22 @@ function EbookReader({ ebook, onClose }) {
       // On phones, fitting both width and height makes the printed text
       // unnecessarily tiny. Fit to the reader width instead and let the
       // stage scroll vertically so the page remains comfortable to read.
-      const availableWidth = Math.max(240, stage.clientWidth - 28);
+      const availableWidth = Math.max(240, stage.clientWidth - 8);
+      const availableHeight = Math.max(
+        window.innerHeight || 0,
+        window.visualViewport?.height || 0,
+        stage.clientHeight || 0,
+        readerRef.current?.clientHeight || 0
+      ) - 8;
       const widthFitScale = availableWidth / viewport.width;
-      const nextScale = Math.min(widthFitScale, 3);
+      const heightFitScale = Math.max(320, availableHeight) / viewport.height;
+      // In fullscreen, Fit page means fill the screen height; outside fullscreen,
+      // it remains a conventional width-fit control.
+      const nextScale = isFullscreen
+        ? Math.max(widthFitScale, heightFitScale)
+        : widthFitScale;
       setFitPageMode(true);
-      setScale(Math.max(0.25, Number(nextScale.toFixed(2))));
+      setScale(Math.max(0.25, Math.min(3, Number(nextScale.toFixed(2)))));
     } catch (fitError) {
       console.error("FAS eBook fit-page error:", fitError);
     }
