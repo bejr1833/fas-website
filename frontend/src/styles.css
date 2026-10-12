@@ -17398,3 +17398,58 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     margin: 0 !important;
   }
 }
+
+
+/* Final fullscreen canvas override: defeat legacy mobile max-width rules that
+   were shrinking the inline-sized PDF canvas back into a narrow wrapper. */
+@media (max-width: 700px) {
+  .ebookReader:fullscreen .ebookReaderStage,
+  .ebookReader:-webkit-full-screen .ebookReaderStage {
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    overflow: auto !important;
+  }
+  .ebookReader:fullscreen .ebookReaderBookScene,
+  .ebookReader:-webkit-full-screen .ebookReaderBookScene {
+    display: block !important;
+    width: max-content !important;
+    min-width: 100vw !important;
+    min-height: 100dvh !important;
+    height: max-content !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+  .ebookReader:fullscreen .ebookReaderPageSheet,
+  .ebookReader:-webkit-full-screen .ebookReaderPageSheet {
+    display: block !important;
+    width: max-content !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: max-content !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  .ebookReader:fullscreen .ebookReaderCanvasWrap,
+  .ebookReader:-webkit-full-screen .ebookReaderCanvasWrap {
+    display: block !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    height: max-content !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  .ebookReader:fullscreen .ebookReaderCanvas,
+  .ebookReader:-webkit-full-screen .ebookReaderCanvas {
+    display: block !important;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    object-fit: initial !important;
+  }
+}
