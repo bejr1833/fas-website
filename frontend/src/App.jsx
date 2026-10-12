@@ -640,6 +640,23 @@ function EbookReader({ ebook, onClose }) {
   const zoomOut = () => applyZoom(-1);
   const zoomIn = () => applyZoom(1);
 
+  const fitPageToView = async () => {
+    if (!pdf) return;
+    try {
+      const stage = readerRef.current?.querySelector(".ebookReaderStage");
+      if (!stage) return;
+      const page = await pdf.getPage(currentPage);
+      const viewport = page.getViewport({ scale: 1 });
+      const availableWidth = Math.max(180, stage.clientWidth - 36);
+      const availableHeight = Math.max(180, stage.clientHeight - 36);
+      const nextScale = Math.min(availableWidth / viewport.width, availableHeight / viewport.height, 3);
+      setFitPageMode(true);
+      setScale(Math.max(0.25, Number(nextScale.toFixed(2))));
+    } catch (fitError) {
+      console.error("FAS eBook fit-page error:", fitError);
+    }
+  };
+
   return (
     <div
       className="ebookReaderOverlay"
@@ -756,6 +773,7 @@ function EbookReader({ ebook, onClose }) {
           </div>
 
           <div className="ebookReaderUtilityControls">
+            <button type="button" className="ebookReaderDownload ebookReaderFitButton" onClick={fitPageToView} disabled={!pdf} aria-label="Fit entire page to screen">Fit page</button>
             <a
               href={ebook.ebook_file_url}
               download
