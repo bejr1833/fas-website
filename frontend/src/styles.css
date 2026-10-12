@@ -17222,3 +17222,24 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   }
 }
 
+
+
+/* Keep the full-screen toolbar directly beneath the header and make reveal/hide immediate. */
+.ebookReader:fullscreen .ebookReaderHeader,
+.ebookReader:-webkit-full-screen .ebookReaderHeader {
+  transition: none !important;
+}
+.ebookReader:fullscreen .ebookReaderToolbar,
+.ebookReader:-webkit-full-screen .ebookReaderToolbar {
+  top: auto !important;
+  margin-top: 0;
+  transition: none !important;
+}
+.ebookReader:fullscreen.fullscreenControlsVisible .ebookReaderToolbar,
+.ebookReader:-webkit-full-screen.fullscreenControlsVisible .ebookReaderToolbar {
+  top: var(--fas-reader-header-height, 88px) !important;
+}
+.ebookReader:fullscreen .ebookReaderFooter,
+.ebookReader:-webkit-full-screen .ebookReaderFooter {
+  transition: none !important;
+}
