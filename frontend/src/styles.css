@@ -17156,3 +17156,69 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     min-height: 0 !important;
   }
 }
+
+/* Full-screen eBook: let the page use the entire viewport and reveal controls on a top-edge tap. */
+.ebookReader:fullscreen .ebookReaderHeader,
+.ebookReader:fullscreen .ebookReaderToolbar,
+.ebookReader:fullscreen .ebookReaderFooter,
+.ebookReader:-webkit-full-screen .ebookReaderHeader,
+.ebookReader:-webkit-full-screen .ebookReaderToolbar,
+.ebookReader:-webkit-full-screen .ebookReaderFooter {
+  position: absolute !important;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .18s ease, visibility .18s ease;
+}
+.ebookReader:fullscreen .ebookReaderHeader,
+.ebookReader:-webkit-full-screen .ebookReaderHeader {
+  top: 0;
+}
+.ebookReader:fullscreen .ebookReaderToolbar,
+.ebookReader:-webkit-full-screen .ebookReaderToolbar {
+  top: var(--fas-reader-header-height, 82px);
+}
+.ebookReader:fullscreen .ebookReaderFooter,
+.ebookReader:-webkit-full-screen .ebookReaderFooter {
+  bottom: 0;
+}
+.ebookReader:fullscreen.fullscreenControlsVisible .ebookReaderHeader,
+.ebookReader:fullscreen.fullscreenControlsVisible .ebookReaderToolbar,
+.ebookReader:fullscreen.fullscreenControlsVisible .ebookReaderFooter,
+.ebookReader:-webkit-full-screen.fullscreenControlsVisible .ebookReaderHeader,
+.ebookReader:-webkit-full-screen.fullscreenControlsVisible .ebookReaderToolbar,
+.ebookReader:-webkit-full-screen.fullscreenControlsVisible .ebookReaderFooter {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.ebookReader:fullscreen .ebookReaderStage,
+.ebookReader:-webkit-full-screen .ebookReaderStage {
+  width: 100%;
+  height: 100%;
+  flex: 1 1 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.ebookReader:fullscreen .ebookReaderBookScene,
+.ebookReader:-webkit-full-screen .ebookReaderBookScene {
+  min-height: 100% !important;
+  width: 100% !important;
+  padding: 0 !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.ebookReader:fullscreen .ebookReaderPageSheet,
+.ebookReader:-webkit-full-screen .ebookReaderPageSheet {
+  margin: 0 auto;
+}
+@media (max-width: 700px) {
+  .ebookReader:fullscreen .ebookReaderHeader,
+  .ebookReader:-webkit-full-screen .ebookReaderHeader {
+    padding-top: max(8px, env(safe-area-inset-top));
+  }
+}
+
