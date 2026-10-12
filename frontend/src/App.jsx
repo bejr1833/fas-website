@@ -809,6 +809,45 @@ function EbookReader({ ebook, onClose }) {
 }
 
 function App() {
+  const ebookCarouselRef = useRef(null);
+  useEffect(() => {
+    const track = ebookCarouselRef.current;
+    if (!track || data.ebooks.length < 2) return undefined;
+
+    let intervalId;
+    const startAutoplay = () => {
+      window.clearInterval(intervalId);
+      intervalId = window.setInterval(() => {
+        if (document.visibilityState !== "visible") return;
+        const firstCard = track.querySelector(".ebookCard");
+        if (!firstCard) return;
+        const styles = window.getComputedStyle(track);
+        const gap = Number.parseFloat(styles.columnGap || styles.gap) || 0;
+        const step = firstCard.getBoundingClientRect().width + gap;
+        const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+        track.scrollTo({
+          left: atEnd ? 0 : track.scrollLeft + step,
+          behavior: "smooth",
+        });
+      }, 4500);
+    };
+
+    const stopAutoplay = () => window.clearInterval(intervalId);
+    startAutoplay();
+    track.addEventListener("pointerenter", stopAutoplay);
+    track.addEventListener("pointerleave", startAutoplay);
+    track.addEventListener("focusin", stopAutoplay);
+    track.addEventListener("focusout", startAutoplay);
+
+    return () => {
+      stopAutoplay();
+      track.removeEventListener("pointerenter", stopAutoplay);
+      track.removeEventListener("pointerleave", startAutoplay);
+      track.removeEventListener("focusin", stopAutoplay);
+      track.removeEventListener("focusout", startAutoplay);
+    };
+  }, [data.ebooks.length]);
+
   const cachedHome = readContentCache("home");
   const cachedBlog = readContentCache("blog");
   const cachedSermons = readContentCache("sermons");
@@ -5405,7 +5444,7 @@ function App() {
               <p>E-books will appear here.</p>
             </div>
           ) : (
-            <div className="ebookGrid">
+            <div className="ebookGrid ebookCarouselTrack" ref={ebookCarouselRef} aria-label="E-book collection" tabIndex={0}>
               {data.ebooks.map((ebook, index) => (
                 <article
                   className={`ebookCard ebookCardFeatured reveal-item${index === 0 ? " isFeatured" : ""}${!ebook.cover_image_url ? " isFallback" : ""}`}
