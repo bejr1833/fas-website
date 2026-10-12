@@ -2530,6 +2530,63 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   position: relative;
 }
 
+/* E-book library horizontal carousel with gentle autoplay */
+.ebookCarouselTrack {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 4px 22px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(184,137,50,.55) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+.ebookCarouselTrack > .ebookCard {
+  flex: 0 0 min(390px, 82%);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+.ebookCarouselTrack > .ebookCard.isFeatured {
+  grid-column: auto;
+  display: flex;
+  flex-direction: column;
+}
+.ebookCarouselTrack > .ebookCard.isFeatured .ebookCover {
+  min-height: 0;
+  height: auto;
+  aspect-ratio: 16 / 10;
+}
+.ebookCarouselTrack > .ebookCard.isFeatured .ebookCardBody {
+  padding: 24px;
+}
+.ebookCarouselTrack > .ebookCard.isFeatured .ebookCardBody h3 {
+  font-size: clamp(22px, 2.5vw, 30px);
+}
+.ebookCarouselTrack:focus-visible {
+  outline: 2px solid #b88932;
+  outline-offset: 4px;
+}
+@media (max-width: 640px) {
+  .ebookCarouselTrack {
+    gap: 14px;
+    margin-right: -18px;
+    padding-right: 18px;
+    padding-left: 2px;
+  }
+  .ebookCarouselTrack > .ebookCard {
+    flex-basis: min(84vw, 340px);
+  }
+  .ebookCarouselTrack > .ebookCard.isFeatured .ebookCardBody {
+    padding: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ebookCarouselTrack { scroll-behavior: auto; }
+}
+
 .ebookGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
