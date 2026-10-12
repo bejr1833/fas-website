@@ -17105,3 +17105,54 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     height: auto !important;
   }
 }
+
+
+/* Immersive reading mode and true fit-to-page sizing on phones. */
+.ebookReader:fullscreen,
+.ebookReader:-webkit-full-screen {
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background: #f4f1e9;
+}
+.ebookReader:fullscreen .ebookReaderStage,
+.ebookReader:-webkit-full-screen .ebookReaderStage {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  overflow: auto !important;
+}
+.ebookReader:fullscreen .ebookReaderBookScene,
+.ebookReader:-webkit-full-screen .ebookReaderBookScene {
+  min-height: 100% !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.ebookReaderFitButton {
+  border: 1px solid rgba(184, 137, 50, .65) !important;
+  cursor: pointer;
+  font: inherit;
+}
+.ebookReaderFitButton:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+@media (max-width: 700px) {
+  .ebookReader:fullscreen .ebookReaderHeader,
+  .ebookReader:-webkit-full-screen .ebookReaderHeader {
+    padding-top: max(8px, env(safe-area-inset-top));
+  }
+  .ebookReader:fullscreen .ebookReaderToolbar,
+  .ebookReader:-webkit-full-screen .ebookReaderToolbar {
+    flex: 0 0 auto;
+  }
+  .ebookReader:fullscreen .ebookReaderStage,
+  .ebookReader:-webkit-full-screen .ebookReaderStage {
+    min-height: 0 !important;
+  }
+}
