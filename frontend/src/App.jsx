@@ -524,8 +524,13 @@ function EbookReader({ ebook, onClose }) {
           const baseViewport = page.getViewport({ scale: 1 });
           const stageWidth = stage.clientWidth || window.innerWidth;
           const availableWidth = Math.max(240, Math.min(stageWidth, window.innerWidth) - 16);
-          const widthFitScale = Math.min(3, availableWidth / baseViewport.width);
-          setScale(Math.max(0.25, Number(widthFitScale.toFixed(2))));
+          const availableHeight = Math.max(320, window.innerHeight - 8);
+          // Full-screen should use the viewport height, matching the user's
+          // reference reader. Normal Fit Page remains width-fitted.
+          const targetScale = isFullscreen
+            ? availableHeight / baseViewport.height
+            : availableWidth / baseViewport.width;
+          setScale(Math.max(0.25, Math.min(3, Number(targetScale.toFixed(2)))));
         } catch (pageFitError) {
           console.error("FAS eBook page fit error:", pageFitError);
         }
