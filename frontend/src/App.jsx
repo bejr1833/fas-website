@@ -544,10 +544,9 @@ function EbookReader({ ebook, onClose }) {
           );
           const widthScale = availableWidth / baseViewport.width;
           const heightScale = availableHeight / baseViewport.height;
-          // Default immersive reading matches the larger text in the reference:
-          // fit to screen height and preserve the PDF's original proportions.
-          // Wider pages remain horizontally scrollable from their left edge.
-          const targetScale = isFullscreen ? Math.max(widthScale, heightScale) : widthScale;
+          // Fit the PDF to the phone's width by default. This matches the
+          // reference screenshot without cutting off the right side.
+          const targetScale = widthScale;
           setScale(Math.max(0.25, Math.min(3, Number(targetScale.toFixed(3)))));
         } catch (pageFitError) {
           console.error("FAS eBook page fit error:", pageFitError);
@@ -716,9 +715,9 @@ function EbookReader({ ebook, onClose }) {
               const availableHeight = Math.max(320, fullscreenViewportHeight - 36);
               const widthScale = availableWidth / baseViewport.width;
               const heightScale = availableHeight / baseViewport.height;
-              // Match the reference's larger text size by fitting page height.
-              // Keep proportions unchanged; allow horizontal panning on narrow screens.
-              const immersiveScale = Math.max(widthScale, heightScale);
+              // Match the reference screenshot: fit page width and preserve
+              // the PDF's proportions, keeping the whole page visible initially.
+              const immersiveScale = widthScale;
               setFitPageMode(true);
               setScale(Math.max(0.25, Math.min(3, Number(immersiveScale.toFixed(3)))));
             } catch (fullscreenFitError) {
@@ -785,11 +784,9 @@ function EbookReader({ ebook, onClose }) {
       ) - 36;
       const widthFitScale = availableWidth / viewport.width;
       const heightFitScale = Math.max(320, availableHeight) / viewport.height;
-      // Fullscreen fit uses the screen height for larger text; the stage
-      // scrolls horizontally when the page is wider than the device.
-      const nextScale = isFullscreen
-        ? Math.max(widthFitScale, heightFitScale)
-        : widthFitScale;
+      // Fit page width by default so the page is not cropped.
+      // Users can then zoom manually and pan horizontally.
+      const nextScale = widthFitScale;
       setFitPageMode(true);
       setScale(Math.max(0.25, Math.min(3, Number(nextScale.toFixed(2)))));
     } catch (fitError) {
