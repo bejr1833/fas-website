@@ -630,10 +630,16 @@ function EbookReader({ ebook, onClose }) {
     }
   };
 
-  const zoomOut = () =>
-    setScale((value) => Math.max(0.65, Number((value - 0.1).toFixed(2))));
-  const zoomIn = () =>
-    setScale((value) => Math.min(2, Number((value + 0.1).toFixed(2))));
+  const applyZoom = (nextScale) => {
+    const boundedScale = Math.max(0.65, Math.min(2, Number(nextScale.toFixed(2))));
+    if (canvasRef.current) {
+      canvasRef.current.style.transform = "scale(" + boundedScale / scale + ")";
+      canvasRef.current.style.transformOrigin = "center center";
+    }
+    setScale(boundedScale);
+  };
+  const zoomOut = () => applyZoom(scale - 0.1);
+  const zoomIn = () => applyZoom(scale + 0.1);
 
   return (
     <div
@@ -823,14 +829,14 @@ function EbookReader({ ebook, onClose }) {
 
             const start = touchStartRef.current;
             touchStartRef.current = null;
-            if (!start || !pdf || loading || error || rendering) return;
+            if (!start || !pdf || loading || error) return;
             const touch = event.changedTouches[0];
             if (!touch) return;
             const deltaX = touch.clientX - start.x;
             const deltaY = touch.clientY - start.y;
             // Only treat deliberate horizontal swipes as page turns;
             // leave vertical gestures available for normal scrolling.
-            if (Math.abs(deltaX) < 45 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
+            if (Math.abs(deltaX) < 32 || Math.abs(deltaX) < Math.abs(deltaY) * 1.15) return;
             changePage(currentPage + (deltaX < 0 ? 1 : -1));
           }}
         >
