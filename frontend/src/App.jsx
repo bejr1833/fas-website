@@ -3411,13 +3411,6 @@ function App() {
             </section>
           )}
         </main>
-        {selectedEbook && (
-          <EbookReader
-            ebook={selectedEbook}
-            onClose={() => setSelectedEbook(null)}
-          />
-        )}
-
         {selectedEvent && (
           <div className="eventDetailsModalOverlay" role="dialog" aria-modal="true" aria-label={`Event details for ${selectedEvent.title}`} onClick={() => setSelectedEvent(null)}>
             <div className="eventDetailsModal" onClick={(event) => event.stopPropagation()}>
@@ -6163,6 +6156,13 @@ function App() {
           </div>
         </section>
       </main>
+
+      {selectedEbook && (
+        <EbookReader
+          ebook={selectedEbook}
+          onClose={() => setSelectedEbook(null)}
+        />
+      )}
 
       <footer>
         <div>
