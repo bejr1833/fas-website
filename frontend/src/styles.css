@@ -16827,3 +16827,78 @@ html[data-theme="dark"] .ebookLibraryNotice a {
     gap: 14px;
   }
 }
+
+
+/* E-book reader's independent, persistent reading theme */
+.ebookReader[data-reader-theme="light"] .ebookReaderHeader{
+  background:rgba(250,249,245,.96);
+  border-bottom-color:rgba(35,36,34,.10);
+}
+.ebookReader[data-reader-theme="light"] .ebookReaderTitle h2{color:#252623}
+.ebookReader[data-reader-theme="light"] .ebookReaderTitle>span:last-child{color:#73746e}
+.ebookReader[data-reader-theme="light"] .ebookReaderToolbar{background:#ebe9e2;border-bottom-color:rgba(35,36,34,.09)}
+.ebookReader[data-reader-theme="light"] .ebookReaderIconButton,
+.ebookReader[data-reader-theme="light"] .ebookReaderPageControls button,
+.ebookReader[data-reader-theme="light"] .ebookReaderZoomControls button,
+.ebookReader[data-reader-theme="light"] .ebookReaderPageControls input{
+  border-color:rgba(35,36,34,.12);background:#fff;color:#30312e;
+}
+.ebookReader[data-reader-theme="light"] .ebookReaderPageControls label,
+.ebookReader[data-reader-theme="light"] .ebookReaderZoomControls span{color:#676861}
+.ebookReader[data-reader-theme="light"] .ebookReaderStage{
+  background:radial-gradient(circle at 50% 10%,rgba(184,137,50,.09),transparent 34%),#d9d7d0;
+}
+.ebookReader[data-reader-theme="light"] .ebookReaderPageSheet{background:#fffdf8}
+.ebookReader[data-reader-theme="light"] .ebookReaderCanvas{filter:none}
+.ebookReader[data-reader-theme="light"] .ebookReaderPageNumber{background:#fffdf8;color:#9c9588}
+.ebookReader[data-reader-theme="light"] .ebookReaderState{color:#4f504b}
+.ebookReader[data-reader-theme="light"] .ebookReaderState strong{color:#292a27}
+.ebookReader[data-reader-theme="light"] .ebookReaderFooter{background:#f7f5ef;color:#85867f;border-top-color:rgba(35,36,34,.09)}
+
+.ebookReader[data-reader-theme="dark"]{
+  background:#1b1c19;
+  border-color:rgba(212,188,136,.24);
+  color:#eeeae0;
+}
+.ebookReader[data-reader-theme="dark"] .ebookReaderHeader{background:#20211e;border-bottom-color:rgba(255,255,255,.08)}
+.ebookReader[data-reader-theme="dark"] .ebookReaderTitle h2{color:#f1eee5}
+.ebookReader[data-reader-theme="dark"] .ebookReaderTitle>span:last-child{color:#a9aaa3}
+.ebookReader[data-reader-theme="dark"] .ebookReaderEyebrow{color:#d6b66f}
+.ebookReader[data-reader-theme="dark"] .ebookReaderIconButton,
+.ebookReader[data-reader-theme="dark"] .ebookReaderPageControls button,
+.ebookReader[data-reader-theme="dark"] .ebookReaderZoomControls button,
+.ebookReader[data-reader-theme="dark"] .ebookReaderPageControls input{
+  border-color:rgba(255,255,255,.10);background:#292a27;color:#eeeae0;
+}
+.ebookReader[data-reader-theme="dark"] .ebookReaderClose{background:#eeeae0;border-color:#eeeae0;color:#252623}
+.ebookReader[data-reader-theme="dark"] .ebookReaderToolbar{background:#272824;border-bottom-color:rgba(255,255,255,.08)}
+.ebookReader[data-reader-theme="dark"] .ebookReaderPageControls label,
+.ebookReader[data-reader-theme="dark"] .ebookReaderZoomControls span{color:#bfc0b9}
+.ebookReader[data-reader-theme="dark"] .ebookReaderDownload{background:#eeeae0;color:#252623}
+.ebookReader[data-reader-theme="dark"] .ebookReaderStage{
+  background:radial-gradient(circle at 50% 10%,rgba(212,188,136,.08),transparent 34%),#111210;
+}
+.ebookReader[data-reader-theme="dark"] .ebookReaderPageSheet{
+  background:#252621;
+  box-shadow:-8px 0 0 #30312b,-11px 0 0 #20211c,0 18px 44px rgba(0,0,0,.42),12px 2px 24px rgba(0,0,0,.18);
+}
+.ebookReader[data-reader-theme="dark"] .ebookReaderPageSheet::before{
+  background:linear-gradient(90deg,rgba(0,0,0,.22),rgba(255,255,255,.07),transparent);
+}
+.ebookReader[data-reader-theme="dark"] .ebookReaderCanvas{
+  filter:invert(.88) hue-rotate(180deg);
+}
+.ebookReader[data-reader-theme="dark"] .ebookReaderPageNumber{background:#252621;color:#a8a99f}
+.ebookReader[data-reader-theme="dark"] .ebookReaderPageEdge{
+  background:repeating-linear-gradient(to bottom,#45463e 0,#45463e 2px,#292a24 3px,#45463e 4px);
+}
+.ebookReader[data-reader-theme="dark"] .ebookReaderState{color:#aaaCA5}
+.ebookReader[data-reader-theme="dark"] .ebookReaderState strong{color:#eeeae0}
+.ebookReader[data-reader-theme="dark"] .ebookReaderFooter{background:#20211e;color:#999a94;border-top-color:rgba(255,255,255,.08)}
+.ebookReader[data-reader-theme="dark"] .ebookReaderSpinner{border-color:rgba(214,182,111,.2);border-top-color:#d6b66f}
+.ebookReader[data-reader-theme="dark"] .ebookReaderPageControls button:disabled,
+.ebookReader[data-reader-theme="dark"] .ebookReaderZoomControls button:disabled{opacity:.35}
+
+@media (prefers-reduced-motion:reduce){
+  .ebookReader[data-reader-theme="dark"] .ebookReaderCanvas{transition:none}
+}
