@@ -665,9 +665,16 @@ function EbookReader({ ebook, onClose }) {
               const page = await pdf.getPage(currentPage);
               const baseViewport = page.getViewport({ scale: 1 });
               const availableWidth = Math.max(240, stage.clientWidth - 20);
-              const widthFitScale = Math.min(3, availableWidth / baseViewport.width);
+              const availableHeight = Math.max(320, stage.clientHeight - 16);
+              // In immersive full-screen mode, scale the PDF page to the
+              // viewport height so the reading surface fills the phone.
+              // The scene remains horizontally scrollable for portrait pages
+              // whose natural aspect ratio is wider than the phone screen.
+              const heightFitScale = availableHeight / baseViewport.height;
+              const widthFitScale = availableWidth / baseViewport.width;
+              const immersiveScale = Math.min(3, Math.max(heightFitScale, widthFitScale));
               setFitPageMode(true);
-              setScale(Math.max(0.25, Number(widthFitScale.toFixed(2))));
+              setScale(Math.max(0.25, Number(immersiveScale.toFixed(2))));
             } catch (fullscreenFitError) {
               console.error("FAS eBook fullscreen fit error:", fullscreenFitError);
             }
