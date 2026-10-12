@@ -540,7 +540,7 @@ function EbookReader({ ebook, onClose }) {
             : window.innerHeight || 0;
           const availableHeight = Math.max(
             320,
-            (isFullscreen ? fullscreenViewportHeight : window.innerHeight) - 8
+            (isFullscreen ? fullscreenViewportHeight : window.innerHeight) - 36
           );
           const widthScale = availableWidth / baseViewport.width;
           const heightScale = availableHeight / baseViewport.height;
@@ -708,7 +708,7 @@ function EbookReader({ ebook, onClose }) {
                 stage.clientHeight || 0,
                 readerRef.current?.clientHeight || 0
               );
-              const availableHeight = Math.max(320, fullscreenViewportHeight - 8);
+              const availableHeight = Math.max(320, fullscreenViewportHeight - 36);
               const widthScale = availableWidth / baseViewport.width;
               const heightScale = availableHeight / baseViewport.height;
               // Fill the available screen height while preserving the PDF aspect ratio.
@@ -774,7 +774,7 @@ function EbookReader({ ebook, onClose }) {
         window.visualViewport?.height || 0,
         stage.clientHeight || 0,
         readerRef.current?.clientHeight || 0
-      ) - 8;
+      ) - 36;
       const widthFitScale = availableWidth / viewport.width;
       const heightFitScale = Math.max(320, availableHeight) / viewport.height;
       // "Fit page" must show the whole page in fullscreen, not crop it.
