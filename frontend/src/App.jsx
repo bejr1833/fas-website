@@ -522,15 +522,14 @@ function EbookReader({ ebook, onClose }) {
           const page = await pdf.getPage(currentPage);
           if (cancelled || !stage) return;
           const baseViewport = page.getViewport({ scale: 1 });
-          const stageWidth = stage.clientWidth || window.innerWidth;
-          const availableWidth = Math.max(240, Math.min(stageWidth, window.innerWidth) - 16);
-          const availableHeight = Math.max(320, window.innerHeight - 8);
-          // Full-screen should use the viewport height, matching the user's
-          // reference reader. Normal Fit Page remains width-fitted.
-          const targetScale = isFullscreen
-            ? availableHeight / baseViewport.height
-            : availableWidth / baseViewport.width;
-          setScale(Math.max(0.25, Math.min(3, Number(targetScale.toFixed(2)))));
+          // In fullscreen, measure the actual browser viewport rather than
+          // stage.clientWidth (which can retain the modal's narrower width).
+          const availableWidth = Math.max(
+            240,
+            (isFullscreen ? window.innerWidth : stage.clientWidth || window.innerWidth) - 8
+          );
+          const targetScale = availableWidth / baseViewport.width;
+          setScale(Math.max(0.25, Math.min(3, Number(targetScale.toFixed(3)))));
         } catch (pageFitError) {
           console.error("FAS eBook page fit error:", pageFitError);
         }
@@ -670,12 +669,12 @@ function EbookReader({ ebook, onClose }) {
             try {
               const page = await pdf.getPage(currentPage);
               const baseViewport = page.getViewport({ scale: 1 });
-              // Use the viewport height in fullscreen. The page-fit effect uses
-              // the same rule, so it will not immediately shrink the page again.
-              const availableHeight = Math.max(320, window.innerHeight - 8);
-              const heightFitScale = availableHeight / baseViewport.height;
+              // Use the real viewport width; stage.clientWidth may still reflect
+              // the narrower pre-fullscreen modal on mobile browsers.
+              const availableWidth = Math.max(240, window.innerWidth - 8);
+              const widthFitScale = availableWidth / baseViewport.width;
               setFitPageMode(true);
-              setScale(Math.max(0.25, Math.min(3, Number(heightFitScale.toFixed(2)))));
+              setScale(Math.max(0.25, Math.min(3, Number(widthFitScale.toFixed(3)))));
             } catch (fullscreenFitError) {
               console.error("FAS eBook fullscreen fit error:", fullscreenFitError);
             }
