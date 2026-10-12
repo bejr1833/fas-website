@@ -758,12 +758,18 @@ function EbookReader({ ebook, onClose }) {
           )}
 
           {!loading && !error && (
-            <div className="ebookReaderCanvasWrap">
-              <canvas
-                ref={canvasRef}
-                className="ebookReaderCanvas"
-                aria-label={`Page ${currentPage} of ${pdf?.numPages || 1}`}
-              />
+            <div className="ebookReaderBookScene">
+              <div className={`ebookReaderPageSheet ${currentPage > 1 ? "isTurning" : ""}`} key={currentPage}>
+                <span className="ebookReaderPageEdge" aria-hidden="true" />
+                <div className="ebookReaderCanvasWrap">
+                  <canvas
+                    ref={canvasRef}
+                    className="ebookReaderCanvas"
+                    aria-label={`Page ${currentPage} of ${pdf?.numPages || 1}`}
+                  />
+                </div>
+                <span className="ebookReaderPageNumber" aria-hidden="true">{currentPage}</span>
+              </div>
             </div>
           )}
         </main>
@@ -5446,15 +5452,14 @@ function App() {
 
                     <div className="ebookFormatActions" aria-label={`Available formats for ${ebook.title}`}>
                       {ebook.ebook_file_url && (
-                        <a
+                        <button
+                          type="button"
                           className="ebookReadLink"
-                          href={ebook.ebook_file_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Read ${ebook.title} PDF in a new tab`}
+                          onClick={() => setSelectedEbook(ebook)}
+                          aria-label={`Read ${ebook.title} in the FAS book reader`}
                         >
-                          Read PDF <ArrowRight size={16} />
-                        </a>
+                          Read in reader <ArrowRight size={16} />
+                        </button>
                       )}
                       {ebook.epub_file_url && (
                         <a
