@@ -435,6 +435,21 @@ function EbookReader({ ebook, onClose }) {
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    try {
+      return localStorage.getItem("fas-ebook-reader-theme") === "dark";
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("fas-ebook-reader-theme", isDarkMode ? "dark" : "light");
+    } catch {
+      // Reader theme still works when storage is unavailable.
+    }
+  }, [isDarkMode]);
 
   useEffect(() => {
     let cancelled = false;
@@ -626,7 +641,7 @@ function EbookReader({ ebook, onClose }) {
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      <div className="ebookReader" ref={readerRef}>
+      <div className={`ebookReader${isDarkMode ? " readerDarkMode" : ""}`} data-reader-theme={isDarkMode ? "dark" : "light"} ref={readerRef}>
         <header className="ebookReaderHeader">
           <div className="ebookReaderTitle">
             <span className="ebookReaderEyebrow">FAS E-BOOK READER</span>
@@ -645,6 +660,15 @@ function EbookReader({ ebook, onClose }) {
             >
               <ArrowRight size={18} />
             </a>
+            <button
+              type="button"
+              className="ebookReaderIconButton"
+              onClick={() => setIsDarkMode((enabled) => !enabled)}
+              aria-label={isDarkMode ? "Switch to light reading mode" : "Switch to dark reading mode"}
+              title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             <button
               type="button"
               className="ebookReaderIconButton"
