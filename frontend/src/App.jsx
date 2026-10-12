@@ -433,6 +433,7 @@ function EbookReader({ ebook, onClose }) {
     }
   });
   const [scale, setScale] = useState(1.05);
+  const [fitPageMode, setFitPageMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState("");
@@ -633,7 +634,7 @@ function EbookReader({ ebook, onClose }) {
   const applyZoom = (direction) => {
     setScale((currentScale) => {
       const nextScale = currentScale + direction * 0.1;
-      return Math.max(0.65, Math.min(2, Number(nextScale.toFixed(2))));
+      return Math.max(0.25, Math.min(3, Number(nextScale.toFixed(2))));
     });
   };
   const zoomOut = () => applyZoom(-1);
@@ -738,7 +739,7 @@ function EbookReader({ ebook, onClose }) {
             <button
               type="button"
               onClick={zoomOut}
-              disabled={scale <= 0.65}
+              disabled={scale <= 0.25}
               aria-label="Zoom out"
             >
               −
@@ -747,7 +748,7 @@ function EbookReader({ ebook, onClose }) {
             <button
               type="button"
               onClick={zoomIn}
-              disabled={scale >= 2}
+              disabled={scale >= 3}
               aria-label="Zoom in"
             >
               +
@@ -803,7 +804,7 @@ function EbookReader({ ebook, onClose }) {
             const start = pinchStartRef.current;
             const factor = distance / Math.max(start.distance, 1);
             if (canvasRef.current) {
-              const previewScale = Math.max(0.65 / start.scale, Math.min(2 / start.scale, factor));
+              const previewScale = Math.max(0.25 / start.scale, Math.min(3 / start.scale, factor));
               canvasRef.current.style.transform = "scale(" + previewScale + ")";
               canvasRef.current.style.transformOrigin = "center center";
             }
@@ -817,8 +818,8 @@ function EbookReader({ ebook, onClose }) {
               touchStartRef.current = null;
               if (pdf && !loading && !error) {
                 const nextScale = Math.max(
-                  0.65,
-                  Math.min(2, Number((start.scale * distance / Math.max(start.distance, 1)).toFixed(2)))
+                  0.25,
+                  Math.min(3, Number((start.scale * distance / Math.max(start.distance, 1)).toFixed(2)))
                 );
                 setScale(nextScale);
               }
