@@ -17257,3 +17257,34 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     scroll-snap-type: none !important;
   }
 }
+
+
+/* Match the desktop Journal card footprint for the featured eBook card. */
+@media (min-width: 851px) {
+  .ebooksSection .ebookGrid,
+  .ebookSection .ebookGrid {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 1120px !important;
+    margin-inline: auto !important;
+    align-items: stretch;
+  }
+  .ebooksSection .ebookGrid > .ebookCard,
+  .ebookSection .ebookGrid > .ebookCard {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+  .ebooksSection .ebookCard.isFeatured,
+  .ebookSection .ebookGrid > .ebookCard.isFeatured,
+  .ebookSection .ebookGrid > .ebookCard.ebookCardFeatured {
+    min-height: 420px;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr) !important;
+  }
+  .ebooksSection .ebookCard.isFeatured .ebookCover,
+  .ebookSection .ebookCard.ebookCardFeatured .ebookCover {
+    min-height: 420px;
+    height: 100%;
+  }
+}
