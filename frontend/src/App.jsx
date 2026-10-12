@@ -593,6 +593,8 @@ function EbookReader({ ebook, onClose }) {
         // grow beyond the viewport and use the stage scroll area.
         canvas.style.setProperty("width", `${Math.floor(viewport.width)}px`, "important");
         canvas.style.setProperty("height", `${Math.floor(viewport.height)}px`, "important");
+        canvas.style.setProperty("max-width", "none", "important");
+        canvas.style.setProperty("max-height", "none", "important");
 
         renderTaskRef.current = page.render({
           canvasContext: context,
