@@ -630,16 +630,14 @@ function EbookReader({ ebook, onClose }) {
     }
   };
 
-  const applyZoom = (nextScale) => {
-    const boundedScale = Math.max(0.65, Math.min(2, Number(nextScale.toFixed(2))));
-    if (canvasRef.current) {
-      canvasRef.current.style.transform = "scale(" + boundedScale / scale + ")";
-      canvasRef.current.style.transformOrigin = "center center";
-    }
-    setScale(boundedScale);
+  const applyZoom = (direction) => {
+    setScale((currentScale) => {
+      const nextScale = currentScale + direction * 0.1;
+      return Math.max(0.65, Math.min(2, Number(nextScale.toFixed(2))));
+    });
   };
-  const zoomOut = () => applyZoom(scale - 0.1);
-  const zoomIn = () => applyZoom(scale + 0.1);
+  const zoomOut = () => applyZoom(-1);
+  const zoomIn = () => applyZoom(1);
 
   return (
     <div
