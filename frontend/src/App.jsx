@@ -681,7 +681,7 @@ function EbookReader({ ebook, onClose }) {
 
     document.addEventListener("fullscreenchange", handleFullscreen);
     return () => document.removeEventListener("fullscreenchange", handleFullscreen);
-  }, []);
+  }, [pdf, currentPage]);
 
   const changePage = (nextPage) => {
     if (!pdf) return;
