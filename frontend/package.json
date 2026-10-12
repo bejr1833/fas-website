@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run generate:sitemap && vite build",
+    "build": "npm run generate:sitemap && vite build && node scripts/generate-amp.mjs",
     "preview": "vite preview",
     "generate:sitemap": "node scripts/generate-sitemap.mjs"
   },
