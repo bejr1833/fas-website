@@ -528,12 +528,16 @@ function EbookReader({ ebook, onClose }) {
           );
           // In mobile fullscreen, the stage can temporarily report its old modal height.
           // Prefer the actual viewport and use the largest trustworthy measurement.
-          const fullscreenViewportHeight = Math.max(
-            window.innerHeight || 0,
-            window.visualViewport?.height || 0,
-            stage.clientHeight || 0,
-            readerRef.current?.clientHeight || 0
-          );
+          const fullscreenViewportHeight = isFullscreen
+            ? Math.max(
+                window.screen?.height || 0,
+                window.outerHeight || 0,
+                window.innerHeight || 0,
+                window.visualViewport?.height || 0,
+                stage.clientHeight || 0,
+                readerRef.current?.clientHeight || 0
+              )
+            : window.innerHeight || 0;
           const availableHeight = Math.max(
             320,
             (isFullscreen ? fullscreenViewportHeight : window.innerHeight) - 8
@@ -686,7 +690,12 @@ function EbookReader({ ebook, onClose }) {
               const availableWidth = Math.max(240, window.innerWidth - 8);
               // Do not trust stage.clientHeight alone here: on Android it can still
               // reflect the pre-fullscreen modal size during the fullscreenchange event.
+              // Android fullscreen can leave innerHeight/visualViewport at the
+              // pre-fullscreen layout size. screen.height is the stable display
+              // measurement; take the largest CSS-pixel viewport candidate.
               const fullscreenViewportHeight = Math.max(
+                window.screen?.height || 0,
+                window.outerHeight || 0,
                 window.innerHeight || 0,
                 window.visualViewport?.height || 0,
                 stage.clientHeight || 0,
@@ -753,6 +762,8 @@ function EbookReader({ ebook, onClose }) {
       // stage scroll vertically so the page remains comfortable to read.
       const availableWidth = Math.max(240, stage.clientWidth - 8);
       const availableHeight = Math.max(
+        isFullscreen ? window.screen?.height || 0 : 0,
+        window.outerHeight || 0,
         window.innerHeight || 0,
         window.visualViewport?.height || 0,
         stage.clientHeight || 0,
