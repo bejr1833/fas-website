@@ -70,7 +70,7 @@ async function fetchJsonWithRetry(path, attempts = 5, cacheKey = null) {
 import {
   ArrowLeft,
   ArrowRight,
-  ArrowUp,
+  ExternalLink,
   CalendarDays,
   Clock3,
   Instagram,
@@ -171,6 +171,42 @@ function getCleanTeluguScriptureText(text = "", reference = "") {
   }
 
   return value;
+}
+
+async function shareEbook(ebook) {
+  const ebookUrl = ebook?.ebook_file_url || ebook?.epub_file_url;
+  if (!ebookUrl) {
+    window.alert("This eBook does not have a shareable link yet.");
+    return;
+  }
+
+  const shareData = {
+    title: ebook.title || "FAS eBook",
+    text: `Read "${ebook.title || "this eBook"}" from Faith Alone Saves.`,
+    url: ebookUrl,
+  };
+
+  if (typeof navigator.share === "function") {
+    try {
+      await navigator.share(shareData);
+      return;
+    } catch (error) {
+      // A user cancelling the native share sheet is not an error to recover from.
+      if (error?.name === "AbortError") return;
+    }
+  }
+
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(ebookUrl);
+      window.alert("eBook link copied. You can now paste and share it.");
+      return;
+    }
+  } catch {
+    // Use the manual copy fallback below when clipboard permission is denied.
+  }
+
+  window.prompt("Copy this eBook link to share it:", ebookUrl);
 }
 
 function scrollToSection(id) {
@@ -5767,11 +5803,11 @@ function App() {
                         <button
                           type="button"
                           className="ebookShareButton"
-                          aria-label="Go to eBook section"
-                          title="Go to eBook section"
-                          onClick={() => scrollToSection("ebooks")}
+                          aria-label={`Share ${ebook.title}`}
+                          title={`Share ${ebook.title}`}
+                          onClick={() => shareEbook(ebook)}
                         >
-                          <ArrowUp size={18} strokeWidth={1.9} />
+                          <ExternalLink size={22} strokeWidth={2} />
                         </button>
                       )}
                     </div>
