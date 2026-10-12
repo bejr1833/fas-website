@@ -17309,130 +17309,58 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   }
 }
 
-/* Critical mobile fix: do not center an oversized PDF canvas in a scroll viewport. */
+/* Canonical fullscreen eBook rules. Keep these as the single source of truth. */
 @media (max-width: 700px) {
-  .ebookReader:fullscreen .ebookReaderBookScene,
-  .ebookReader:-webkit-full-screen .ebookReaderBookScene {
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    padding: 0 0 16px !important;
-    overflow-x: auto !important;
-    overflow-y: visible !important;
-    scroll-padding-inline: 0 !important;
+  .ebookReader:fullscreen,
+  .ebookReader:-webkit-full-screen {
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
-  .ebookReader:fullscreen .ebookReaderPageSheet,
-  .ebookReader:-webkit-full-screen .ebookReaderPageSheet {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    flex: 0 0 auto !important;
-    transform: none !important;
-    animation: none !important;
-  }
-  .ebookReader:fullscreen .ebookReaderCanvasWrap,
-  .ebookReader:-webkit-full-screen .ebookReaderCanvasWrap {
-    justify-content: flex-start !important;
-  }
-}
-
-
-
-/* Full-screen mobile: place the whole page at the top of the viewport and
-   use the available height instead of vertically centering a short page. */
-@media (max-width: 700px) {
   .ebookReader:fullscreen .ebookReaderStage,
   .ebookReader:-webkit-full-screen .ebookReaderStage {
-    display: block !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
     padding: 0 !important;
     overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
   }
   .ebookReader:fullscreen .ebookReaderBookScene,
   .ebookReader:-webkit-full-screen .ebookReaderBookScene {
     display: flex !important;
-    min-height: 100% !important;
-    height: auto !important;
-    width: max-content !important;
-    min-width: 100% !important;
-    box-sizing: border-box;
     align-items: flex-start !important;
     justify-content: flex-start !important;
-    padding: 0 0 12px !important;
-    margin: 0 !important;
-    overflow: visible !important;
-  }
-  .ebookReader:fullscreen .ebookReaderPageSheet,
-  .ebookReader:-webkit-full-screen .ebookReaderPageSheet {
-    align-self: flex-start !important;
-    margin: 0 !important;
-  }
-  .ebookReader:fullscreen .ebookReaderCanvasWrap,
-  .ebookReader:-webkit-full-screen .ebookReaderCanvasWrap {
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-  }
-}
-
-
-/* Fullscreen uses height-fit scaling; allow horizontal panning for tall phone viewports. */
-@media (max-width: 700px) {
-  .ebookReader:fullscreen .ebookReaderStage,
-  .ebookReader:-webkit-full-screen .ebookReaderStage {
-    overflow: auto !important;
-    overscroll-behavior: contain;
-  }
-  .ebookReader:fullscreen .ebookReaderBookScene,
-  .ebookReader:-webkit-full-screen .ebookReaderBookScene {
     width: max-content !important;
     min-width: 100% !important;
     height: max-content !important;
     min-height: 100% !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    overflow: visible !important;
-    padding: 0 !important;
     margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
   }
   .ebookReader:fullscreen .ebookReaderPageSheet,
   .ebookReader:-webkit-full-screen .ebookReaderPageSheet {
+    display: block !important;
     flex: 0 0 auto !important;
-    margin: 0 !important;
-  }
-}
-
-
-/* Final fullscreen canvas override: defeat legacy mobile max-width rules that
-   were shrinking the inline-sized PDF canvas back into a narrow wrapper. */
-@media (max-width: 700px) {
-  .ebookReader:fullscreen .ebookReaderStage,
-  .ebookReader:-webkit-full-screen .ebookReaderStage {
-    width: 100vw !important;
-    height: 100dvh !important;
-    min-height: 0 !important;
-    padding: 0 !important;
-    overflow: auto !important;
-  }
-  .ebookReader:fullscreen .ebookReaderBookScene,
-  .ebookReader:-webkit-full-screen .ebookReaderBookScene {
-    display: block !important;
     width: max-content !important;
-    min-width: 100vw !important;
-    min-height: 100dvh !important;
-    height: max-content !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    overflow: visible !important;
-  }
-  .ebookReader:fullscreen .ebookReaderPageSheet,
-  .ebookReader:-webkit-full-screen .ebookReaderPageSheet {
-    display: block !important;
-    width: max-content !important;
-    max-width: none !important;
     min-width: 0 !important;
+    max-width: none !important;
     height: max-content !important;
-    overflow: visible !important;
     margin: 0 !important;
-    animation: none !important;
+    padding: 0 !important;
+    overflow: visible !important;
     transform: none !important;
+    animation: none !important;
+    box-shadow: none !important;
   }
   .ebookReader:fullscreen .ebookReaderCanvasWrap,
   .ebookReader:-webkit-full-screen .ebookReaderCanvasWrap {
@@ -17453,3 +17381,4 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     object-fit: initial !important;
   }
 }
+
