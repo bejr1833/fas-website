@@ -17577,3 +17577,60 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
+
+
+/* FINAL FIT-WHOLE-PAGE MODE: centered, proportional, no crop. */
+.ebookReader.isFullscreen .ebookReaderStage {
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  overflow: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  touch-action: pan-x pan-y !important;
+}
+.ebookReader.isFullscreen .ebookReaderBookScene {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+.ebookReader.isFullscreen .ebookReaderPageSheet {
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: max-content !important;
+  height: max-content !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  animation: none !important;
+  overflow: visible !important;
+}
+.ebookReader.isFullscreen .ebookReaderCanvasWrap {
+  display: block !important;
+  width: max-content !important;
+  height: max-content !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  overflow: visible !important;
+}
+.ebookReader.isFullscreen .ebookReaderCanvas {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100vw !important;
+  max-height: calc(100dvh - 36px) !important;
+  object-fit: contain !important;
+}
