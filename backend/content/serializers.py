@@ -252,7 +252,18 @@ class EBookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EBook
-        fields = "__all__"
+        fields = (
+            "id",
+            "title",
+            "author",
+            "category",
+            "cover_image_url",
+            "description",
+            "ebook_file_url",
+            "epub_file_url",
+            "published_at",
+            "is_featured",
+        )
 
     def get_cover_image_url(self, obj):
         request = self.context.get("request")
