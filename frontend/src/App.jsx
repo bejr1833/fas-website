@@ -510,6 +510,19 @@ function EbookReader({ ebook, onClose }) {
   }, [ebook.id, ebook.ebook_file_url]);
 
   useEffect(() => {
+    // Reset horizontal scroll after a page turn so the next PDF page does
+    // not inherit a clipped position from the previous zoomed page.
+    const frame = window.requestAnimationFrame(() => {
+      const scene = readerRef.current?.querySelector(".ebookReaderBookScene");
+      if (scene) {
+        const maxScroll = Math.max(0, scene.scrollWidth - scene.clientWidth);
+        scene.scrollLeft = maxScroll > 0 ? maxScroll / 2 : 0;
+      }
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [currentPage, isFullscreen]);
+
+  useEffect(() => {
     if (!pdf || !canvasRef.current) return;
 
     let cancelled = false;
