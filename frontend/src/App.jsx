@@ -5383,20 +5383,26 @@ function App() {
             </div>
           ) : (
             <div className="ebookGrid">
-              {data.ebooks.map((ebook) => (
-                <article className="ebookCard reveal-item" key={ebook.id}>
+              {data.ebooks.map((ebook, index) => (
+                <article
+                  className={`ebookCard ebookCardFeatured reveal-item${index === 0 ? " isFeatured" : ""}${!ebook.cover_image_url ? " isFallback" : ""}`}
+                  key={ebook.id}
+                >
                   <div className="ebookCover">
                     {ebook.cover_image_url ? (
                       <img
                         src={ebook.cover_image_url}
                         alt={ebook.title}
-                        loading="lazy"
+                        loading={index === 0 ? "eager" : "lazy"}
                         decoding="async"
                       />
                     ) : (
                       <div className="ebookCoverPlaceholder">
-                        <span>FAS</span>
-                        <small>E-BOOK</small>
+                        <span className="ebookCoverKicker">{(ebook.category || "CHRISTIAN LIFE").replace(/-/g, " ")}</span>
+                        <strong>{ebook.title}</strong>
+                        <small>{ebook.author ? `BY ${ebook.author}` : "FAS E-BOOK LIBRARY"}</small>
+                        <span className="ebookCoverRule" />
+                        <span className="ebookCoverFooter">FAITH · FELLOWSHIP · TRUTH</span>
                       </div>
                     )}
 
