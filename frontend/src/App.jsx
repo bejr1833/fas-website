@@ -524,9 +524,9 @@ function EbookReader({ ebook, onClose }) {
           const baseViewport = page.getViewport({ scale: 1 });
           const availableWidth = Math.max(
             240,
-            (isFullscreen ? window.innerWidth : stage.clientWidth || window.innerWidth) - 8
+            (isFullscreen ? stage.clientWidth : stage.clientWidth || window.innerWidth) - 8
           );
-          const availableHeight = Math.max(320, window.innerHeight - 8);
+          const availableHeight = Math.max(320, (isFullscreen ? stage.clientHeight : window.innerHeight) - 8);
           const widthScale = availableWidth / baseViewport.width;
           const heightScale = availableHeight / baseViewport.height;
           // Immersive fullscreen uses "cover": fill the phone vertically, like
@@ -673,7 +673,7 @@ function EbookReader({ ebook, onClose }) {
               const page = await pdf.getPage(currentPage);
               const baseViewport = page.getViewport({ scale: 1 });
               const availableWidth = Math.max(240, window.innerWidth - 8);
-              const availableHeight = Math.max(320, window.innerHeight - 8);
+              const availableHeight = Math.max(320, (stage.clientHeight || window.innerHeight) - 8);
               const widthScale = availableWidth / baseViewport.width;
               const heightScale = availableHeight / baseViewport.height;
               // Fill the screen height first; horizontal scrolling remains
@@ -752,7 +752,7 @@ function EbookReader({ ebook, onClose }) {
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      <div className={`ebookReader${isDarkMode ? " readerDarkMode" : ""}${fullscreenControlsVisible ? " fullscreenControlsVisible" : ""}`} data-reader-theme={isDarkMode ? "dark" : "light"} ref={readerRef}>
+      <div className={`ebookReader${isDarkMode ? " readerDarkMode" : ""}${isFullscreen ? " isFullscreen" : ""}${fullscreenControlsVisible ? " fullscreenControlsVisible" : ""}`} data-reader-theme={isDarkMode ? "dark" : "light"} ref={readerRef}>
         <header className="ebookReaderHeader">
           <div className="ebookReaderTitle">
             <span className="ebookReaderEyebrow">FAS E-BOOK READER</span>
