@@ -522,7 +522,8 @@ function EbookReader({ ebook, onClose }) {
           const page = await pdf.getPage(currentPage);
           if (cancelled || !stage) return;
           const baseViewport = page.getViewport({ scale: 1 });
-          const availableWidth = Math.max(240, stage.clientWidth - 28);
+          const stageWidth = stage.clientWidth || window.innerWidth;
+          const availableWidth = Math.max(240, Math.min(stageWidth, window.innerWidth) - 16);
           const widthFitScale = Math.min(3, availableWidth / baseViewport.width);
           setScale(Math.max(0.25, Number(widthFitScale.toFixed(2))));
         } catch (pageFitError) {
@@ -664,13 +665,14 @@ function EbookReader({ ebook, onClose }) {
             try {
               const page = await pdf.getPage(currentPage);
               const baseViewport = page.getViewport({ scale: 1 });
-              // Use the actual fullscreen viewport, not the reader stage's
-              // possibly stale flex height on mobile browsers.
-              const availableHeight = Math.max(320, window.innerHeight - 8);
-              const heightFitScale = availableHeight / baseViewport.height;
-              const immersiveScale = Math.min(3, Math.max(0.25, heightFitScale));
+              // Full-screen reading should fit the page to the screen width,
+              // just like the user's reference screenshot. Height-fitting makes
+              // some PDF pages look too small because page dimensions can vary.
+              const stageWidth = stage.clientWidth || window.innerWidth;
+              const availableWidth = Math.max(240, Math.min(stageWidth, window.innerWidth) - 16);
+              const widthFitScale = Math.min(3, availableWidth / baseViewport.width);
               setFitPageMode(true);
-              setScale(Math.max(0.25, Number(immersiveScale.toFixed(2))));
+              setScale(Math.max(0.25, Number(widthFitScale.toFixed(2))));
             } catch (fullscreenFitError) {
               console.error("FAS eBook fullscreen fit error:", fullscreenFitError);
             }
