@@ -604,6 +604,13 @@ function EbookReader({ ebook, onClose }) {
         await renderTaskRef.current.promise;
 
         if (!cancelled) {
+          // A newly rendered PDF page should always begin at the left edge in
+          // immersive mode; otherwise the previous page's horizontal offset
+          // can make the next page appear incorrectly cropped.
+          if (isFullscreen) {
+            const stage = readerRef.current?.querySelector(".ebookReaderStage");
+            if (stage) stage.scrollLeft = 0;
+          }
           try {
             localStorage.setItem(
               `fas-ebook-page:${ebook.id}`,
@@ -984,8 +991,14 @@ function EbookReader({ ebook, onClose }) {
             if (!touch) return;
             const deltaX = touch.clientX - start.x;
             const deltaY = touch.clientY - start.y;
-            // Only treat deliberate horizontal swipes as page turns;
-            // leave vertical gestures available for normal scrolling.
+            // In immersive mode, horizontal swipes belong to native scrolling
+            // whenever the PDF is wider than the viewport. Do not turn the page
+            // at touch-end and interrupt the user's horizontal pan.
+            const stage = readerRef.current?.querySelector(".ebookReaderStage");
+            const canPanHorizontally = isFullscreen && stage &&
+              stage.scrollWidth > stage.clientWidth + 4;
+            if (canPanHorizontally) return;
+            // Otherwise, retain the familiar horizontal page-turn gesture.
             if (Math.abs(deltaX) < 32 || Math.abs(deltaX) < Math.abs(deltaY) * 1.15) return;
             changePage(currentPage + (deltaX < 0 ? 1 : -1));
           }}
