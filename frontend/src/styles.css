@@ -17258,39 +17258,7 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   }
 }
 
-
-/* Match the desktop Journal card footprint for the featured eBook card. */
-@media (min-width: 851px) {
-  .ebooksSection .ebookGrid,
-  .ebookSection .ebookGrid {
-    display: flex !important;
-    width: 100% !important;
-    max-width: 1120px !important;
-    margin-inline: auto !important;
-    align-items: stretch;
-  }
-  .ebooksSection .ebookGrid > .ebookCard,
-  .ebookSection .ebookGrid > .ebookCard {
-    flex: 0 0 100% !important;
-    width: 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
-  }
-  .ebooksSection .ebookCard.isFeatured,
-  .ebookSection .ebookGrid > .ebookCard.isFeatured,
-  .ebookSection .ebookGrid > .ebookCard.ebookCardFeatured {
-    min-height: 420px;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr) !important;
-  }
-  .ebooksSection .ebookCard.isFeatured .ebookCover,
-  .ebookSection .ebookCard.ebookCardFeatured .ebookCover {
-    min-height: 420px;
-    height: 100%;
-  }
-}
-
-
-/* Refined desktop eBook feature: balanced cover/details split, not an oversized poster. */
+/* Desktop eBook feature card: balanced, premium proportions without competing overrides. */
 @media (min-width: 851px) {
   .ebookSection .ebookGrid {
     display: flex !important;
@@ -17299,8 +17267,7 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     margin: 30px auto 0 !important;
     align-items: stretch;
   }
-  .ebookSection .ebookGrid > .ebookCard,
-  .ebookSection .ebookGrid > .ebookCard.isFeatured {
+  .ebookSection .ebookGrid > .ebookCard {
     flex: 0 1 100% !important;
     width: 100% !important;
     min-width: 0 !important;
@@ -17311,12 +17278,7 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr) !important;
     overflow: hidden;
   }
-  .ebookSection .ebookGrid > .ebookCard.isFallback,
-  .ebookSection .ebookGrid > .ebookCard.isFeatured.isFallback {
-    grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr) !important;
-  }
-  .ebookSection .ebookGrid > .ebookCard .ebookCover,
-  .ebookSection .ebookGrid > .ebookCard.isFeatured .ebookCover {
+  .ebookSection .ebookGrid > .ebookCard .ebookCover {
     min-height: 0 !important;
     height: 100% !important;
     aspect-ratio: auto !important;
@@ -17330,15 +17292,13 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
   .ebookSection .ebookGrid > .ebookCard .ebookCoverPlaceholder::before {
     font-size: clamp(120px, 16vw, 220px);
   }
-  .ebookSection .ebookGrid > .ebookCard .ebookCardBody,
-  .ebookSection .ebookGrid > .ebookCard.isFeatured .ebookCardBody {
+  .ebookSection .ebookGrid > .ebookCard .ebookCardBody {
     min-width: 0;
     padding: clamp(24px, 3vw, 42px) !important;
     justify-content: center;
     gap: 4px;
   }
-  .ebookSection .ebookGrid > .ebookCard .ebookCardBody h3,
-  .ebookSection .ebookGrid > .ebookCard.isFeatured .ebookCardBody h3 {
+  .ebookSection .ebookGrid > .ebookCard .ebookCardBody h3 {
     max-width: 100%;
     font-size: clamp(28px, 2.5vw, 38px);
     line-height: 1.12;
@@ -17348,3 +17308,29 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     gap: 10px;
   }
 }
+
+/* Critical mobile fix: do not center an oversized PDF canvas in a scroll viewport. */
+@media (max-width: 700px) {
+  .ebookReader:fullscreen .ebookReaderBookScene,
+  .ebookReader:-webkit-full-screen .ebookReaderBookScene {
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding: 0 0 16px !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    scroll-padding-inline: 0 !important;
+  }
+  .ebookReader:fullscreen .ebookReaderPageSheet,
+  .ebookReader:-webkit-full-screen .ebookReaderPageSheet {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    flex: 0 0 auto !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .ebookReader:fullscreen .ebookReaderCanvasWrap,
+  .ebookReader:-webkit-full-screen .ebookReaderCanvasWrap {
+    justify-content: flex-start !important;
+  }
+}
+
