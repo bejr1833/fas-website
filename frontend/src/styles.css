@@ -17549,3 +17549,29 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
 .ebookReader.isFullscreen .ebookReaderFooter {
   z-index: 30 !important;
 }
+
+
+/* HEIGHT-FIRST CANVAS SIZING FOR ANDROID IMMERSIVE READING
+   Use the fullscreen viewport itself as the sizing constraint. The PDF canvas
+   keeps its intrinsic aspect ratio; wider pages remain horizontally scrollable. */
+.ebookReader.isFullscreen .ebookReaderCanvas {
+  width: auto !important;
+  height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+}
+.ebookReader.isFullscreen .ebookReaderCanvasWrap,
+.ebookReader.isFullscreen .ebookReaderPageSheet,
+.ebookReader.isFullscreen .ebookReaderBookScene {
+  width: max-content !important;
+  height: max-content !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+.ebookReader.isFullscreen .ebookReaderStage {
+  overflow: auto !important;
+  overscroll-behavior: contain !important;
+}
