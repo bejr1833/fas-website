@@ -17068,3 +17068,13 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     min-height: 44px;
   }
 }
+
+
+/* Let the reader handle two-finger pinch zoom while preserving vertical scrolling. */
+.ebookReaderStage {
+  touch-action: pan-y;
+}
+.ebookReaderCanvas {
+  transform-origin: center center;
+  will-change: transform;
+}
