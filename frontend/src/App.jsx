@@ -475,7 +475,7 @@ function EbookReader({ ebook, onClose }) {
         if (cancelled) return;
         console.error("FAS eBook reader error:", loadError);
         setError(
-          "This book could not be loaded inside the reader. You can still open the original PDF."
+          "This PDF could not be loaded in the interactive reader (the file host may restrict embedded access). Use Open PDF below to read it directly."
         );
         setLoading(false);
       }
@@ -5452,14 +5452,25 @@ function App() {
 
                     <div className="ebookFormatActions" aria-label={`Available formats for ${ebook.title}`}>
                       {ebook.ebook_file_url && (
-                        <button
-                          type="button"
-                          className="ebookReadLink"
-                          onClick={() => setSelectedEbook(ebook)}
-                          aria-label={`Read ${ebook.title} in the FAS book reader`}
-                        >
-                          Read in reader <ArrowRight size={16} />
-                        </button>
+                        <>
+                          <button
+                            type="button"
+                            className="ebookReadLink"
+                            onClick={() => setSelectedEbook(ebook)}
+                            aria-label={`Read ${ebook.title} in the FAS book reader`}
+                          >
+                            Read in reader <ArrowRight size={16} />
+                          </button>
+                          <a
+                            className="ebookReadLink"
+                            href={ebook.ebook_file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Open ${ebook.title} PDF directly`}
+                          >
+                            Open PDF <ArrowRight size={16} />
+                          </a>
+                        </>
                       )}
                       {ebook.epub_file_url && (
                         <a
