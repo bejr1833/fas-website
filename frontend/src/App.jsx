@@ -644,6 +644,21 @@ function EbookReader({ ebook, onClose }) {
       const active = document.fullscreenElement === readerRef.current;
       setIsFullscreen(active);
       setFullscreenControlsVisible(!active);
+      if (active) {
+        // Avoid inheriting a scrolled/centered position from the normal reader.
+        requestAnimationFrame(() => {
+          const stage = readerRef.current?.querySelector(".ebookReaderStage");
+          const scene = readerRef.current?.querySelector(".ebookReaderBookScene");
+          if (stage) {
+            stage.scrollTop = 0;
+            stage.scrollLeft = 0;
+          }
+          if (scene) {
+            scene.scrollTop = 0;
+            scene.scrollLeft = 0;
+          }
+        });
+      }
     };
 
     document.addEventListener("fullscreenchange", handleFullscreen);
