@@ -16995,3 +16995,76 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookReadLink:nth-of-typ
     flex: 1 1 auto;
   }
 }
+
+
+/* Mobile reader toolbar: prevent overlapping hit targets and make zoom reliable. */
+.ebookReaderZoomControls {
+  position: relative;
+  z-index: 5;
+  flex: 0 0 auto;
+  gap: 10px;
+  pointer-events: auto;
+}
+.ebookReaderZoomControls button {
+  position: relative;
+  z-index: 6;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  touch-action: manipulation;
+  pointer-events: auto;
+  font-size: 20px;
+}
+.ebookReaderZoomControls span {
+  min-width: 48px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.ebookReaderPageControls button {
+  min-width: 42px;
+  min-height: 42px;
+  width: 42px;
+  height: 42px;
+  touch-action: manipulation;
+}
+.ebookReaderToolbar {
+  position: relative;
+  z-index: 4;
+}
+@media (max-width: 700px) {
+  .ebookReaderToolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .ebookReaderPageControls {
+    min-width: 0;
+    gap: 5px;
+  }
+  .ebookReaderPageControls label {
+    gap: 5px;
+  }
+  .ebookReaderPageControls input {
+    width: 48px;
+    min-width: 0;
+  }
+  .ebookReaderZoomControls {
+    grid-column: 1 / -1;
+    justify-content: center;
+    margin-left: 0;
+    padding: 4px 0;
+  }
+  .ebookReaderUtilityControls {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  .ebookReaderDownload {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+}
