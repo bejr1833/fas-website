@@ -17680,87 +17680,124 @@ html[data-theme="dark"] .ebookCard .ebookFormatActions .ebookShareButton:hover {
 
 
 /* Devotional archive navigation: easy, accessible movement between released messages. */
-.devotionalNavigation {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 10px;
-  width: 100%;
-  max-width: 720px;
-  margin: 16px auto 20px;
+/* Compact devotional navigation. Keep sizing explicit to prevent broad site rules from expanding these cards. */
+body .devotionalNavigation {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 720px !important;
+  margin: 14px auto 18px !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
 }
-.devotionalNavigation--top { margin-top: 16px; margin-bottom: 22px; }
-.devotionalNavigation--bottom { margin-top: 28px; margin-bottom: 20px; }
-.devotionalNavItem {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-  min-height: 58px;
-  box-sizing: border-box;
-  padding: 9px 11px;
-  border: 1px solid rgba(184, 137, 50, .22);
-  border-radius: 12px;
-  background: rgba(184, 137, 50, .035);
-  color: inherit;
-  text-decoration: none;
-  transition: border-color .18s ease, background .18s ease, transform .18s ease;
+body .devotionalNavigation--top { margin-top: 14px !important; margin-bottom: 18px !important; }
+body .devotionalNavigation--bottom { margin-top: 24px !important; margin-bottom: 18px !important; }
+body .devotionalNavigation .devotionalNavItem {
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 58px !important;
+  max-height: 58px !important;
+  box-sizing: border-box !important;
+  padding: 8px 9px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(184, 137, 50, .22) !important;
+  border-radius: 11px !important;
+  background: rgba(184, 137, 50, .035) !important;
+  color: inherit !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transition: border-color .18s ease, background .18s ease, transform .18s ease !important;
 }
-.devotionalNavItem--next { justify-content: flex-end; text-align: right; }
-.devotionalNavItem:not(.isDisabled):hover {
+body .devotionalNavigation .devotionalNavItem--next { justify-content: flex-end !important; text-align: right !important; }
+body .devotionalNavigation .devotionalNavItem:not(.isDisabled):hover {
   transform: translateY(-1px);
-  border-color: rgba(184, 137, 50, .5);
-  background: rgba(184, 137, 50, .075);
+  border-color: rgba(184, 137, 50, .5) !important;
+  background: rgba(184, 137, 50, .075) !important;
 }
-.devotionalNavItem:focus-visible { outline: 2px solid #c7a45c; outline-offset: 3px; }
-.devotionalNavArrow {
-  display: grid;
-  place-items: center;
-  flex: 0 0 27px;
-  width: 27px;
-  height: 27px;
-  border: 1px solid rgba(184, 137, 50, .26);
-  border-radius: 50%;
-  color: #c7a45c;
+body .devotionalNavigation .devotionalNavItem:focus-visible { outline: 2px solid #c7a45c; outline-offset: 3px; }
+body .devotionalNavigation .devotionalNavArrow {
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 25px !important;
+  width: 25px !important;
+  min-width: 25px !important;
+  height: 25px !important;
+  min-height: 25px !important;
+  max-height: 25px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(184, 137, 50, .26) !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: #c7a45c !important;
 }
-.devotionalNavCopy { display: flex; flex: 1 1 auto; flex-direction: column; gap: 2px; min-width: 0; }
-.devotionalNavCopy small {
-  color: #c7a45c;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: .11em;
-  line-height: 1.25;
+body .devotionalNavigation .devotionalNavArrow svg { width: 15px !important; height: 15px !important; }
+body .devotionalNavigation .devotionalNavCopy {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
 }
-.devotionalNavCopy strong {
-  overflow: hidden;
-  color: var(--text-primary, inherit);
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.3;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+body .devotionalNavigation .devotionalNavCopy small {
+  display: block !important;
+  margin: 0 !important;
+  color: #c7a45c !important;
+  font-size: 7px !important;
+  font-weight: 800 !important;
+  letter-spacing: .09em !important;
+  line-height: 1.2 !important;
 }
-.devotionalNavCopy > span { color: var(--text-secondary, #8d8d8d); font-size: 9px; line-height: 1.25; }
-.devotionalNavItem.isDisabled { opacity: .42; cursor: default; }
-html[data-theme="dark"] .devotionalNavItem {
-  border-color: rgba(199, 164, 92, .2);
-  background: rgba(199, 164, 92, .035);
+body .devotionalNavigation .devotionalNavCopy strong {
+  display: block !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  color: var(--text-primary, inherit) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
-html[data-theme="dark"] .devotionalNavCopy strong { color: #f5f3ef; }
-html[data-theme="dark"] .devotionalNavCopy > span { color: #b8b5b0; }
-html[data-theme="light"] .devotionalNavItem {
-  background: #fffdf8;
-  border-color: rgba(143, 104, 39, .2);
+body .devotionalNavigation .devotionalNavCopy > span {
+  display: block !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  color: var(--text-secondary, #8d8d8d) !important;
+  font-size: 8px !important;
+  line-height: 1.2 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
-html[data-theme="light"] .devotionalNavCopy strong { color: #242522; }
-html[data-theme="light"] .devotionalNavCopy > span { color: #77756f; }
+body .devotionalNavigation .devotionalNavItem.isDisabled { opacity: .42 !important; cursor: default !important; }
+html[data-theme="dark"] body .devotionalNavigation .devotionalNavItem {
+  border-color: rgba(199, 164, 92, .2) !important;
+  background: rgba(199, 164, 92, .035) !important;
+}
+html[data-theme="dark"] body .devotionalNavigation .devotionalNavCopy strong { color: #f5f3ef !important; }
+html[data-theme="dark"] body .devotionalNavigation .devotionalNavCopy > span { color: #b8b5b0 !important; }
+html[data-theme="light"] body .devotionalNavigation .devotionalNavItem {
+  background: #fffdf8 !important;
+  border-color: rgba(143, 104, 39, .2) !important;
+}
+html[data-theme="light"] body .devotionalNavigation .devotionalNavCopy strong { color: #242522 !important; }
+html[data-theme="light"] body .devotionalNavigation .devotionalNavCopy > span { color: #77756f !important; }
 @media (max-width: 520px) {
-  .devotionalNavigation { gap: 7px; margin-left: auto; margin-right: auto; }
-  .devotionalNavItem { min-height: 54px; gap: 6px; padding: 8px 7px; border-radius: 10px; }
-  .devotionalNavArrow { flex-basis: 24px; width: 24px; height: 24px; }
-  .devotionalNavArrow svg { width: 14px; height: 14px; }
-  .devotionalNavCopy small { font-size: 7px; letter-spacing: .07em; }
-  .devotionalNavCopy strong { font-size: 10px; }
-  .devotionalNavCopy > span { font-size: 8px; }
+  body .devotionalNavigation { gap: 6px !important; margin: 12px auto 16px !important; }
+  body .devotionalNavigation--top { margin-bottom: 16px !important; }
+  body .devotionalNavigation--bottom { margin-top: 20px !important; }
+  body .devotionalNavigation .devotionalNavItem { height: 54px !important; max-height: 54px !important; gap: 5px !important; padding: 7px 6px !important; border-radius: 9px !important; }
+  body .devotionalNavigation .devotionalNavArrow { flex-basis: 22px !important; width: 22px !important; min-width: 22px !important; height: 22px !important; min-height: 22px !important; max-height: 22px !important; }
+  body .devotionalNavigation .devotionalNavArrow svg { width: 13px !important; height: 13px !important; }
+  body .devotionalNavigation .devotionalNavCopy small { font-size: 6px !important; letter-spacing: .06em !important; }
+  body .devotionalNavigation .devotionalNavCopy strong { font-size: 9px !important; }
+  body .devotionalNavigation .devotionalNavCopy > span { font-size: 7px !important; }
 }
 
 /* Premium GLOW audience marker on the homepage's featured next-gathering card. */
