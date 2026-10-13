@@ -264,6 +264,72 @@ function parseEventTimeRange(timeText = "") {
   };
 }
 
+function DevotionalNavigation({ previous, next, placement = "top" }) {
+  const formatDate = (date) => {
+    if (!date) return "";
+    return new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    });
+  };
+
+  return (
+    <nav
+      className={`devotionalNavigation devotionalNavigation--${placement}`}
+      aria-label="Browse devotionals"
+    >
+      {previous ? (
+        <a
+          className="devotionalNavItem devotionalNavItem--previous"
+          href={`/devotionals/${encodeURIComponent(previous.slug)}`}
+          aria-label={`Read previous devotional: ${previous.title}`}
+        >
+          <span className="devotionalNavArrow"><ArrowLeft size={19} strokeWidth={2} /></span>
+          <span className="devotionalNavCopy">
+            <small>PREVIOUS DEVOTIONAL</small>
+            <strong>Older message</strong>
+            <span>{formatDate(previous.date)}</span>
+          </span>
+        </a>
+      ) : (
+        <span className="devotionalNavItem devotionalNavItem--previous isDisabled" aria-disabled="true">
+          <span className="devotionalNavArrow"><ArrowLeft size={19} strokeWidth={2} /></span>
+          <span className="devotionalNavCopy">
+            <small>PREVIOUS DEVOTIONAL</small>
+            <strong>First available message</strong>
+            <span>No older devotional</span>
+          </span>
+        </span>
+      )}
+
+      {next ? (
+        <a
+          className="devotionalNavItem devotionalNavItem--next"
+          href={`/devotionals/${encodeURIComponent(next.slug)}`}
+          aria-label={`Read next devotional: ${next.title}`}
+        >
+          <span className="devotionalNavCopy">
+            <small>NEXT DEVOTIONAL</small>
+            <strong>Newer message</strong>
+            <span>{formatDate(next.date)}</span>
+          </span>
+          <span className="devotionalNavArrow"><ArrowRight size={19} strokeWidth={2} /></span>
+        </a>
+      ) : (
+        <span className="devotionalNavItem devotionalNavItem--next isDisabled" aria-disabled="true">
+          <span className="devotionalNavCopy">
+            <small>NEXT DEVOTIONAL</small>
+            <strong>Latest available message</strong>
+            <span>Check back for the next release</span>
+          </span>
+          <span className="devotionalNavArrow"><ArrowRight size={19} strokeWidth={2} /></span>
+        </span>
+      )}
+    </nav>
+  );
+}
+
 function getNextEvent(events = [], now = new Date()) {
   return events.find((event) => getEventStatus(event, now).key !== "ended") || null;
 }
@@ -1134,6 +1200,7 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [blogPost, setBlogPost] = useState(null);
   const [devotionalPost, setDevotionalPost] = useState(null);
+  const [devotionalArchive, setDevotionalArchive] = useState([]);
   const [devotionalLoading, setDevotionalLoading] = useState(false);
   const [devotionalShareStatus, setDevotionalShareStatus] = useState("");
   const [sermonShareStatus, setSermonShareStatus] = useState("");
@@ -1178,6 +1245,32 @@ function App() {
       const dateDiff = String(b.date || "").localeCompare(String(a.date || ""));
       return dateDiff !== 0 ? dateDiff : String(b.time || "").localeCompare(String(a.time || ""));
     });
+
+  const devotionalNavigationItems = [
+    ...(Array.isArray(data.devotionals) ? data.devotionals : []),
+    ...(Array.isArray(devotionalArchive) ? devotionalArchive : []),
+    ...(devotionalPost ? [devotionalPost] : [])
+  ].filter((item) => item?.slug && item?.date)
+    .reduce((unique, item) => {
+      if (!unique.some((existing) => existing.slug === item.slug)) unique.push(item);
+      return unique;
+    }, [])
+    .sort((a, b) => String(a.date).localeCompare(String(b.date)) || String(a.slug).localeCompare(String(b.slug)));
+
+  const currentDevotionalSlug = devotionalPost?.slug ||
+    (window.location.pathname.startsWith("/devotionals/")
+      ? window.location.pathname.replace("/devotionals/", "").replace(/\/+$/, "")
+      : "");
+  const currentDevotionalIndex = devotionalNavigationItems.findIndex(
+    (item) => item.slug === currentDevotionalSlug
+  );
+  const previousDevotional = currentDevotionalIndex > 0
+    ? devotionalNavigationItems[currentDevotionalIndex - 1]
+    : null;
+  const nextDevotional = currentDevotionalIndex >= 0 &&
+    currentDevotionalIndex < devotionalNavigationItems.length - 1
+      ? devotionalNavigationItems[currentDevotionalIndex + 1]
+      : null;
 
   useAutoCarousel("#events .eventGrid", ":scope > .eventCard", visibleUpcomingEvents.length, 4800);
   useAutoCarousel("#sermons .sermonGrid", ":scope > .sermonCard", data.sermons.length, 5000);
@@ -1891,6 +1984,18 @@ function App() {
       .then((result) => setDevotionalPost(result))
       .catch(() => setDevotionalPost(null))
       .finally(() => setDevotionalLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (!window.location.pathname.startsWith("/devotionals/")) return;
+
+    fetchJsonWithRetry(`${API_BASE}/api/devotionals/`, 14, "devotionals")
+      .then((result) => {
+        setDevotionalArchive(Array.isArray(result) ? result : []);
+      })
+      .catch(() => {
+        // Keep any devotionals already available from the homepage cache.
+      });
   }, []);
 
   useEffect(() => {
@@ -3580,6 +3685,7 @@ function App() {
                 <Share2 size={16} />
                 <span>{devotionalShareStatus || "Share devotional"}</span>
               </button>
+              <DevotionalNavigation previous={previousDevotional} next={nextDevotional} placement="top" />
               <div className="devotionalScripture">
                 <span>“</span>
                 <p>{devotionalPost.scripture_text}</p>
@@ -3613,6 +3719,7 @@ function App() {
                 </div>
                 {devotionalPost.application && <div className="devotionalApplication"><span>LIVE IT OUT</span><p>{devotionalPost.application}</p></div>}
               </div>
+              <DevotionalNavigation previous={previousDevotional} next={nextDevotional} placement="bottom" />
               <div className="devotionalFooter">FAITH · FELLOWSHIP · TRUTH <span>FAS</span></div>
             </article>
           )}
