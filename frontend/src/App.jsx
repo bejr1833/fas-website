@@ -330,6 +330,44 @@ function DevotionalNavigation({ previous, next, placement = "top" }) {
   );
 }
 
+
+function getEventSession(event) {
+  const speaker = String(event?.speaker_name || "").trim();
+  return speaker
+    ? { isDiscussion: false, label: "Speaker", value: speaker }
+    : { isDiscussion: true, label: "SESSION FORMAT", value: "Discussion" };
+}
+
+function EventSessionDisplay({ event, variant = "card" }) {
+  const session = getEventSession(event);
+  const Icon = session.isDiscussion ? MessageCircle : UserRound;
+
+  if (variant === "hero") {
+    return (
+      <div className="heroNextSpeaker">
+        <span className="heroNextSpeakerIcon"><Icon size={14} /></span>
+        <span><small>{session.label}</small><strong>{session.value}</strong></span>
+      </div>
+    );
+  }
+
+  if (variant === "details") {
+    return (
+      <div className="eventDetailsSpeaker">
+        <span className="eventDetailsSpeakerIcon"><Icon size={17} /></span>
+        <span><small>{session.label}</small><strong>{session.value}</strong></span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="eventSpeaker">
+      <span className="eventSpeakerIcon"><Icon size={14} /></span>
+      <span><small>{session.label}</small><strong>{session.value}</strong></span>
+    </div>
+  );
+}
+
 function getNextEvent(events = [], now = new Date()) {
   return events.find((event) => getEventStatus(event, now).key !== "ended") || null;
 }
@@ -3783,7 +3821,7 @@ function App() {
                       {event.time && <span className="eventTimeChip"><Clock3 size={14} /><span><small>TIME</small><strong>{event.time}</strong></span></span>}
                       {event.location && <span className="eventLocationChip"><MapPin size={14} /><span>{event.location}</span></span>}
                     </div>
-                    {event.speaker_name && <div className="eventSpeaker"><span className="eventSpeakerIcon"><UserRound size={14} /></span><span><small>Speaker</small><strong>{event.speaker_name}</strong></span></div>}
+                    <EventSessionDisplay event={event} />
                     {event.description && <p className="muted">{event.description}</p>}
                   </div>
                   <div className="eventCardAction">
@@ -3830,7 +3868,7 @@ function App() {
                     <div className="pastEventCopy">
                       <span>{(event.event_type || "event").replace(/-/g, " ")}</span>
                       <h3>{event.title}</h3>
-                      {event.speaker_name && <p>With {event.speaker_name}</p>}
+                      <p>{String(event.speaker_name || "").trim() ? "With " + event.speaker_name : "Discussion"}</p>
                     </div>
                     <button type="button" className="pastEventDetailsBtn" onClick={() => setSelectedEvent(event)}>
                       View details <ArrowRight size={15} />
@@ -3856,7 +3894,7 @@ function App() {
                   {selectedEvent.time && <div><span className="eventMetaBullet">TIME</span><span>{selectedEvent.time}</span></div>}
                   {selectedEvent.location && <div><span className="eventMetaBullet">LOCATION</span><span>{selectedEvent.location}</span></div>}
                 </div>
-                {selectedEvent.speaker_name && <div className="eventDetailsSpeaker"><span className="eventDetailsSpeakerIcon"><UserRound size={17} /></span><span><small>SPEAKER</small><strong>{selectedEvent.speaker_name}</strong></span></div>}
+                <EventSessionDisplay event={selectedEvent} variant="details" />
                 {selectedEvent.description && <div className="eventDetailsDescription"><span className="eventDetailsLabel">ABOUT THIS GATHERING</span><p>{selectedEvent.description}</p></div>}
                 <div className="eventDetailsActions">
                   {selectedEvent.meeting_url && <a className="eventDetailsPrimary" href={selectedEvent.meeting_url} target="_blank" rel="noopener noreferrer">Join Google Meet <ArrowRight size={17} /></a>}
@@ -4524,17 +4562,7 @@ function App() {
                       {featuredEvent.time || "Time to be announced"}
                     </p>
 
-                    {featuredEvent.speaker_name && (
-                      <div className="heroNextSpeaker">
-                        <span className="heroNextSpeakerIcon">
-                          <UserRound size={14} />
-                        </span>
-                        <span>
-                          <small>Speaker</small>
-                          <strong>{featuredEvent.speaker_name}</strong>
-                        </span>
-                      </div>
-                    )}
+                    <EventSessionDisplay event={featuredEvent} variant="hero" />
                   </div>
 
                   {canJoin ? (
@@ -5421,17 +5449,7 @@ function App() {
                       )}
                     </div>
 
-                    {event.speaker_name && (
-                      <div className="eventSpeaker">
-                        <span className="eventSpeakerIcon">
-                          <UserRound size={14} />
-                        </span>
-                        <span>
-                          <small>Speaker</small>
-                          <strong>{event.speaker_name}</strong>
-                        </span>
-                      </div>
-                    )}
+                    <EventSessionDisplay event={event} />
 
                     {event.description && (
                       <p className="muted">{event.description}</p>
@@ -6020,17 +6038,7 @@ function App() {
                   )}
                 </div>
 
-                {selectedEvent.speaker_name && (
-                  <div className="eventDetailsSpeaker">
-                    <span className="eventDetailsSpeakerIcon">
-                      <UserRound size={17} />
-                    </span>
-                    <span>
-                      <small>SPEAKER</small>
-                      <strong>{selectedEvent.speaker_name}</strong>
-                    </span>
-                  </div>
-                )}
+                <EventSessionDisplay event={selectedEvent} variant="details" />
 
                 {selectedEvent.description && (
                   <div className="eventDetailsDescription">
