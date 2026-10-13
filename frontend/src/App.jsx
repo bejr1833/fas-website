@@ -4359,6 +4359,7 @@ function App() {
               const featuredEvent = getNextEvent(data.upcoming_events, eventClock);
               const eventStatus = getEventStatus(featuredEvent, eventClock);
               const canJoin = Boolean(featuredEvent.meeting_url) && eventStatus.key !== "ended";
+              const isGlowEvent = String(featuredEvent.event_type || "").trim().toLowerCase() === "glow";
 
               return (
                 <>
@@ -4400,6 +4401,15 @@ function App() {
                         </span>
                       )}
                     </div>
+
+                    {isGlowEvent && (
+                      <div className="heroGlowExclusiveBadge" role="note" aria-label="GLOW event exclusively for girls">
+                        <Sparkles size={15} strokeWidth={1.8} aria-hidden="true" />
+                        <span className="heroGlowExclusiveName">GLOW</span>
+                        <span className="heroGlowExclusiveDivider" aria-hidden="true"></span>
+                        <strong>EXCLUSIVELY FOR GIRLS</strong>
+                      </div>
+                    )}
 
                     <h2>{featuredEvent.title}</h2>
 
