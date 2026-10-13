@@ -17698,9 +17698,9 @@ body .devotionalNavigation .devotionalNavItem {
   align-items: center !important;
   gap: 7px !important;
   min-width: 0 !important;
-  min-height: 0 !important;
-  height: 58px !important;
-  max-height: 58px !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  max-height: 44px !important;
   box-sizing: border-box !important;
   padding: 8px 9px !important;
   overflow: hidden !important;
@@ -17722,19 +17722,19 @@ body .devotionalNavigation .devotionalNavItem:focus-visible { outline: 2px solid
 body .devotionalNavigation .devotionalNavArrow {
   display: grid !important;
   place-items: center !important;
-  flex: 0 0 25px !important;
-  width: 25px !important;
-  min-width: 25px !important;
-  height: 25px !important;
-  min-height: 25px !important;
-  max-height: 25px !important;
+  flex: 0 0 22px !important;
+  width: 22px !important;
+  min-width: 22px !important;
+  height: 22px !important;
+  min-height: 22px !important;
+  max-height: 22px !important;
   padding: 0 !important;
   border: 1px solid rgba(184, 137, 50, .26) !important;
   border-radius: 50% !important;
   background: transparent !important;
   color: #c7a45c !important;
 }
-body .devotionalNavigation .devotionalNavArrow svg { width: 15px !important; height: 15px !important; }
+body .devotionalNavigation .devotionalNavArrow svg { width: 12px !important; height: 12px !important; }
 body .devotionalNavigation .devotionalNavCopy {
   display: flex !important;
   flex: 1 1 auto !important;
@@ -17792,9 +17792,9 @@ html[data-theme="light"] body .devotionalNavigation .devotionalNavCopy > span { 
   body .devotionalNavigation { gap: 6px !important; margin: 12px auto 16px !important; }
   body .devotionalNavigation--top { margin-bottom: 16px !important; }
   body .devotionalNavigation--bottom { margin-top: 20px !important; }
-  body .devotionalNavigation .devotionalNavItem { height: 54px !important; max-height: 54px !important; gap: 5px !important; padding: 7px 6px !important; border-radius: 9px !important; }
-  body .devotionalNavigation .devotionalNavArrow { flex-basis: 22px !important; width: 22px !important; min-width: 22px !important; height: 22px !important; min-height: 22px !important; max-height: 22px !important; }
-  body .devotionalNavigation .devotionalNavArrow svg { width: 13px !important; height: 13px !important; }
+  body .devotionalNavigation .devotionalNavItem { height: 40px !important; max-height: 40px !important; gap: 5px !important; padding: 7px 6px !important; border-radius: 9px !important; }
+  body .devotionalNavigation .devotionalNavArrow { flex-basis: 20px !important; width: 20px !important; min-width: 20px !important; height: 20px !important; min-height: 20px !important; max-height: 20px !important; }
+  body .devotionalNavigation .devotionalNavArrow svg { width: 12px !important; height: 12px !important; }
   body .devotionalNavigation .devotionalNavCopy small { font-size: 6px !important; letter-spacing: .06em !important; }
   body .devotionalNavigation .devotionalNavCopy strong { font-size: 9px !important; }
   body .devotionalNavigation .devotionalNavCopy > span { font-size: 7px !important; }
