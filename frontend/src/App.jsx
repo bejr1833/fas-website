@@ -265,40 +265,80 @@ function parseEventTimeRange(timeText = "") {
 }
 
 function DevotionalNavigation({ previous, next, placement = "top" }) {
-  const formatDate = (date) => {
-    if (!date) return "";
-    return new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric"
-    });
+  const navItemStyle = {
+    height: 44,
+    minHeight: 44,
+    maxHeight: 44,
+    padding: "5px 8px",
+    gap: 7,
+    borderRadius: 10,
+    boxSizing: "border-box",
+    overflow: "hidden"
   };
+  const arrowStyle = {
+    width: 23,
+    minWidth: 23,
+    height: 23,
+    minHeight: 23,
+    flex: "0 0 23px",
+    display: "grid",
+    placeItems: "center",
+    borderRadius: "50%"
+  };
+  const copyStyle = {
+    display: "flex",
+    flex: "1 1 auto",
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: 2,
+    minWidth: 0,
+    overflow: "hidden"
+  };
+  const labelStyle = {
+    display: "block",
+    fontSize: 7,
+    lineHeight: 1.1,
+    letterSpacing: ".1em",
+    fontWeight: 800,
+    whiteSpace: "nowrap"
+  };
+  const titleStyle = {
+    display: "block",
+    fontSize: 10,
+    lineHeight: 1.2,
+    fontWeight: 650,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
+  };
+  const disabledStyle = { ...navItemStyle, opacity: 0.42, cursor: "default" };
 
   return (
     <nav
       className={`devotionalNavigation devotionalNavigation--${placement}`}
       aria-label="Browse devotionals"
+      style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: 7, width: "100%", maxWidth: 680, margin: placement === "top" ? "14px auto 18px" : "22px auto 18px", padding: 0 }}
     >
       {previous ? (
         <a
           className="devotionalNavItem devotionalNavItem--previous"
           href={`/devotionals/${encodeURIComponent(previous.slug)}`}
           aria-label={`Read previous devotional: ${previous.title}`}
+          title={previous.title}
+          style={navItemStyle}
         >
-          <span className="devotionalNavArrow"><ArrowLeft size={19} strokeWidth={2} /></span>
-          <span className="devotionalNavCopy">
-            <small>PREVIOUS DEVOTIONAL</small>
-            <strong>{previous.title}</strong>
-            <span>{formatDate(previous.date)}</span>
+          <span className="devotionalNavArrow" style={arrowStyle}><ArrowLeft size={14} strokeWidth={1.8} /></span>
+          <span className="devotionalNavCopy" style={copyStyle}>
+            <small style={labelStyle}>PREVIOUS</small>
+            <strong style={titleStyle}>{previous.title}</strong>
           </span>
         </a>
       ) : (
-        <span className="devotionalNavItem devotionalNavItem--previous isDisabled" aria-disabled="true">
-          <span className="devotionalNavArrow"><ArrowLeft size={19} strokeWidth={2} /></span>
-          <span className="devotionalNavCopy">
-            <small>PREVIOUS DEVOTIONAL</small>
-            <strong>First available message</strong>
-            <span>No older devotional</span>
+        <span className="devotionalNavItem devotionalNavItem--previous isDisabled" aria-disabled="true" style={disabledStyle}>
+          <span className="devotionalNavArrow" style={arrowStyle}><ArrowLeft size={14} strokeWidth={1.8} /></span>
+          <span className="devotionalNavCopy" style={copyStyle}>
+            <small style={labelStyle}>PREVIOUS</small>
+            <strong style={titleStyle}>No older devotional</strong>
           </span>
         </span>
       )}
@@ -308,28 +348,27 @@ function DevotionalNavigation({ previous, next, placement = "top" }) {
           className="devotionalNavItem devotionalNavItem--next"
           href={`/devotionals/${encodeURIComponent(next.slug)}`}
           aria-label={`Read next devotional: ${next.title}`}
+          title={next.title}
+          style={{ ...navItemStyle, justifyContent: "flex-end", textAlign: "right" }}
         >
-          <span className="devotionalNavCopy">
-            <small>NEXT DEVOTIONAL</small>
-            <strong>{next.title}</strong>
-            <span>{formatDate(next.date)}</span>
+          <span className="devotionalNavCopy" style={copyStyle}>
+            <small style={labelStyle}>NEXT</small>
+            <strong style={titleStyle}>{next.title}</strong>
           </span>
-          <span className="devotionalNavArrow"><ArrowRight size={19} strokeWidth={2} /></span>
+          <span className="devotionalNavArrow" style={arrowStyle}><ArrowRight size={14} strokeWidth={1.8} /></span>
         </a>
       ) : (
-        <span className="devotionalNavItem devotionalNavItem--next isDisabled" aria-disabled="true">
-          <span className="devotionalNavCopy">
-            <small>NEXT DEVOTIONAL</small>
-            <strong>Latest available message</strong>
-            <span>Check back for the next release</span>
+        <span className="devotionalNavItem devotionalNavItem--next isDisabled" aria-disabled="true" style={{ ...disabledStyle, justifyContent: "flex-end", textAlign: "right" }}>
+          <span className="devotionalNavCopy" style={copyStyle}>
+            <small style={labelStyle}>NEXT</small>
+            <strong style={titleStyle}>Latest available</strong>
           </span>
-          <span className="devotionalNavArrow"><ArrowRight size={19} strokeWidth={2} /></span>
+          <span className="devotionalNavArrow" style={arrowStyle}><ArrowRight size={14} strokeWidth={1.8} /></span>
         </span>
       )}
     </nav>
   );
 }
-
 
 function getEventSession(event) {
   const speaker = String(event?.speaker_name || "").trim();
