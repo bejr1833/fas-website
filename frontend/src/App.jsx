@@ -288,7 +288,7 @@ function DevotionalNavigation({ previous, next, placement = "top" }) {
           <span className="devotionalNavArrow"><ArrowLeft size={19} strokeWidth={2} /></span>
           <span className="devotionalNavCopy">
             <small>PREVIOUS DEVOTIONAL</small>
-            <strong>Older message</strong>
+            <strong>{previous.title}</strong>
             <span>{formatDate(previous.date)}</span>
           </span>
         </a>
@@ -311,7 +311,7 @@ function DevotionalNavigation({ previous, next, placement = "top" }) {
         >
           <span className="devotionalNavCopy">
             <small>NEXT DEVOTIONAL</small>
-            <strong>Newer message</strong>
+            <strong>{next.title}</strong>
             <span>{formatDate(next.date)}</span>
           </span>
           <span className="devotionalNavArrow"><ArrowRight size={19} strokeWidth={2} /></span>
