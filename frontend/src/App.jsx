@@ -333,9 +333,10 @@ function DevotionalNavigation({ previous, next, placement = "top" }) {
 
 function getEventSession(event) {
   const speaker = String(event?.speaker_name || "").trim();
-  return speaker
-    ? { isDiscussion: false, label: "Speaker", value: speaker }
-    : { isDiscussion: true, label: "SESSION FORMAT", value: "Discussion" };
+  const isDiscussion = !speaker || /^(open\s+)?discussion$/i.test(speaker);
+  return isDiscussion
+    ? { isDiscussion: true, label: "SESSION FORMAT", value: "Discussion" }
+    : { isDiscussion: false, label: "Speaker", value: speaker };
 }
 
 function EventSessionDisplay({ event, variant = "card" }) {
