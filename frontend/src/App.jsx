@@ -38,7 +38,19 @@ async function fetchJsonWithRetry(path, attempts = 5, cacheKey = null) {
 
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     try {
-      const response = await fetch(path, { cache: "no-store" });
+      // Bound each network attempt so a sleeping backend or stalled connection
+      // cannot leave a request hanging indefinitely. Retries remain capped below.
+      const controller = new AbortController();
+      const requestTimeout = window.setTimeout(() => controller.abort(), 12000);
+      let response;
+      try {
+        response = await fetch(path, {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+      } finally {
+        window.clearTimeout(requestTimeout);
+      }
 
       if (!response.ok) {
         throw new Error(`Request failed: ${response.status}`);
