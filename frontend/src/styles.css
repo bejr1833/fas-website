@@ -19503,3 +19503,116 @@ html[data-theme="dark"] .heroMeta .goldDot {
   background: #d04b55 !important;
   box-shadow: 0 0 0 4px rgba(208,75,85,.16) !important;
 }
+
+
+/* HERO CTA — premium ivory/charcoal inverse treatment.
+   Both buttons use the same quiet-luxury language in both themes. */
+.heroActions .primaryBtn,
+.heroActions .primaryBtn:visited,
+.heroActions .textBtn,
+.heroActions .textBtn:visited {
+  min-height: 56px !important;
+  border-radius: 15px !important;
+  font-size: 13px !important;
+  font-weight: 750 !important;
+  letter-spacing: .015em !important;
+  gap: 12px !important;
+  box-shadow: 0 8px 22px rgba(15,12,12,.10), inset 0 1px 0 rgba(255,255,255,.75) !important;
+  transition: background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease !important;
+}
+.heroActions .primaryBtn,
+.heroActions .primaryBtn:visited {
+  background: linear-gradient(180deg, #fffefa 0%, #f3eee7 100%) !important;
+  border: 1px solid #e6d9d0 !important;
+  color: #74131b !important;
+  -webkit-text-fill-color: #74131b !important;
+  box-shadow: 0 9px 24px rgba(0,0,0,.13), inset 0 1px 0 #ffffff !important;
+}
+.heroActions .primaryBtn *,
+.heroActions .primaryBtn svg,
+.heroActions .primaryBtn svg * {
+  color: #8d1720 !important;
+  -webkit-text-fill-color: #8d1720 !important;
+  stroke: currentColor !important;
+}
+.heroActions .textBtn,
+.heroActions .textBtn:visited {
+  background: linear-gradient(145deg, #30272a 0%, #1d191b 100%) !important;
+  border: 1px solid #63464a !important;
+  color: #fffaf6 !important;
+  -webkit-text-fill-color: #fffaf6 !important;
+  box-shadow: 0 9px 24px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+.heroActions .textBtn *,
+.heroActions .textBtn svg,
+.heroActions .textBtn svg * {
+  color: #e8b9bc !important;
+  -webkit-text-fill-color: #e8b9bc !important;
+  stroke: currentColor !important;
+}
+.heroActions .primaryBtn:hover,
+.heroActions .primaryBtn:focus-visible {
+  transform: translateY(-2px) !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8eee9 100%) !important;
+  border-color: #cda7a5 !important;
+  color: #5f0e17 !important;
+  -webkit-text-fill-color: #5f0e17 !important;
+  box-shadow: 0 13px 28px rgba(66,18,22,.17), inset 0 1px 0 #fff !important;
+}
+.heroActions .textBtn:hover,
+.heroActions .textBtn:focus-visible {
+  transform: translateY(-2px) !important;
+  background: linear-gradient(145deg, #49282d 0%, #281a1d 100%) !important;
+  border-color: #a65b62 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 13px 28px rgba(66,18,22,.2), inset 0 1px 0 rgba(255,255,255,.1) !important;
+}
+html[data-theme="light"] .heroActions .primaryBtn,
+html[data-theme="light"] .heroActions .primaryBtn:visited {
+  background: linear-gradient(180deg, #fffefa 0%, #f3eee7 100%) !important;
+  color: #74131b !important;
+  -webkit-text-fill-color: #74131b !important;
+}
+html[data-theme="light"] .heroActions .textBtn,
+html[data-theme="light"] .heroActions .textBtn:visited {
+  background: linear-gradient(145deg, #30272a 0%, #1d191b 100%) !important;
+  color: #fffaf6 !important;
+  -webkit-text-fill-color: #fffaf6 !important;
+}
+html[data-theme="dark"] .heroActions .primaryBtn,
+html[data-theme="dark"] .heroActions .primaryBtn:visited {
+  background: linear-gradient(180deg, #fffefa 0%, #f3eee7 100%) !important;
+  border-color: #e6d9d0 !important;
+  color: #74131b !important;
+  -webkit-text-fill-color: #74131b !important;
+}
+html[data-theme="dark"] .heroActions .primaryBtn *,
+html[data-theme="dark"] .heroActions .primaryBtn svg,
+html[data-theme="dark"] .heroActions .primaryBtn svg * {
+  color: #8d1720 !important;
+  -webkit-text-fill-color: #8d1720 !important;
+}
+html[data-theme="dark"] .heroActions .textBtn,
+html[data-theme="dark"] .heroActions .textBtn:visited {
+  background: linear-gradient(145deg, #30272a 0%, #1d191b 100%) !important;
+  border-color: #63464a !important;
+  color: #fffaf6 !important;
+  -webkit-text-fill-color: #fffaf6 !important;
+}
+html[data-theme="dark"] .heroActions .textBtn *,
+html[data-theme="dark"] .heroActions .textBtn svg,
+html[data-theme="dark"] .heroActions .textBtn svg * {
+  color: #e8b9bc !important;
+  -webkit-text-fill-color: #e8b9bc !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .heroActions .primaryBtn,
+  .heroActions .textBtn {
+    transition: none !important;
+  }
+  .heroActions .primaryBtn:hover,
+  .heroActions .textBtn:hover {
+    transform: none !important;
+  }
+}
