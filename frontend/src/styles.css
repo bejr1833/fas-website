@@ -19337,3 +19337,169 @@ html[data-theme="dark"] .hero {
     box-shadow: 0 8px 22px rgba(100,15,23,.17), inset 0 1px 0 rgba(255,255,255,.1) !important;
   }
 }
+
+
+/* =========================================================
+   FAS HERO — final premium brand palette
+   Deep oxblood + warm ivory + charcoal; remove remaining gold casts.
+   ========================================================= */
+.hero {
+  background:
+    radial-gradient(ellipse at 50% 36%, rgba(136,18,18,.065), transparent 46%),
+    linear-gradient(180deg, #fffdfb 0%, #faf7f4 100%) !important;
+}
+.hero::before {
+  border-color: rgba(136,18,18,.16) !important;
+}
+.hero::after {
+  border-color: rgba(136,18,18,.075) !important;
+  box-shadow:
+    0 0 0 38px rgba(136,18,18,.025),
+    0 0 0 78px rgba(136,18,18,.016) !important;
+}
+.heroCopy .eyebrow {
+  color: #881212 !important;
+}
+.heroCopy .eyebrow::before,
+.heroCopy .eyebrow::after {
+  background: linear-gradient(90deg, transparent, #a83b42) !important;
+}
+.heroActions .primaryBtn,
+.heroActions .primaryBtn:visited {
+  color: #fffaf7 !important;
+  -webkit-text-fill-color: #fffaf7 !important;
+  background: linear-gradient(135deg, #a51f2b 0%, #881212 55%, #650d15 100%) !important;
+  border: 1px solid #b6535a !important;
+  box-shadow: 0 10px 24px rgba(104,13,21,.22), inset 0 1px 0 rgba(255,255,255,.14) !important;
+}
+.heroActions .primaryBtn *,
+.heroActions .primaryBtn svg,
+.heroActions .primaryBtn svg * {
+  color: #fffaf7 !important;
+  -webkit-text-fill-color: #fffaf7 !important;
+  stroke: currentColor;
+}
+.heroActions .primaryBtn:hover,
+.heroActions .primaryBtn:focus-visible {
+  color: #fffaf7 !important;
+  background: linear-gradient(135deg, #b72d38 0%, #78111b 100%) !important;
+  border-color: #d17a80 !important;
+  box-shadow: 0 13px 28px rgba(104,13,21,.27) !important;
+}
+.heroActions .textBtn,
+.heroActions .textBtn:visited {
+  color: #781820 !important;
+  -webkit-text-fill-color: #781820 !important;
+  background: rgba(136,18,18,.035) !important;
+  border: 1px solid rgba(136,18,18,.34) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 6px 18px rgba(48,20,20,.035) !important;
+}
+.heroActions .textBtn::after {
+  color: #a12a33 !important;
+}
+.heroActions .textBtn:hover,
+.heroActions .textBtn:focus-visible {
+  color: #650d15 !important;
+  -webkit-text-fill-color: #650d15 !important;
+  background: rgba(136,18,18,.075) !important;
+  border-color: #a83b42 !important;
+}
+.heroMeta {
+  color: #716663 !important;
+}
+.heroMeta .goldDot {
+  background: #9a1b24 !important;
+  box-shadow: 0 0 0 4px rgba(154,27,36,.12) !important;
+}
+html[data-theme="light"] .hero {
+  background:
+    radial-gradient(ellipse at 50% 36%, rgba(136,18,18,.065), transparent 46%),
+    linear-gradient(180deg, #fffdfb 0%, #faf7f4 100%) !important;
+}
+html[data-theme="light"] .heroCopy .eyebrow {
+  color: #881212 !important;
+}
+html[data-theme="light"] .hero h1 {
+  color: #171716 !important;
+}
+html[data-theme="light"] .hero p {
+  color: #5f5957 !important;
+}
+html[data-theme="light"] .heroActions .primaryBtn,
+html[data-theme="light"] .heroActions .primaryBtn:visited {
+  color: #fffaf7 !important;
+  -webkit-text-fill-color: #fffaf7 !important;
+}
+html[data-theme="light"] .heroActions .textBtn,
+html[data-theme="light"] .heroActions .textBtn:visited {
+  color: #781820 !important;
+  -webkit-text-fill-color: #781820 !important;
+  background: #fffaf8 !important;
+}
+html[data-theme="dark"] .hero {
+  background:
+    radial-gradient(ellipse at 50% 36%, rgba(165,31,43,.12), transparent 48%),
+    linear-gradient(180deg, #111112 0%, #151416 100%) !important;
+}
+html[data-theme="dark"] .hero::before {
+  border-color: rgba(190,104,109,.2) !important;
+}
+html[data-theme="dark"] .hero::after {
+  border-color: rgba(190,75,83,.12) !important;
+  box-shadow:
+    0 0 0 38px rgba(190,75,83,.035),
+    0 0 0 78px rgba(190,75,83,.022) !important;
+}
+html[data-theme="dark"] .heroCopy .eyebrow {
+  color: #e6b5b7 !important;
+}
+html[data-theme="dark"] .heroCopy .eyebrow::before,
+html[data-theme="dark"] .heroCopy .eyebrow::after {
+  background: linear-gradient(90deg, transparent, #b94b53) !important;
+}
+html[data-theme="dark"] .hero h1 {
+  color: #f8f5f1 !important;
+}
+html[data-theme="dark"] .hero h1 em {
+  color: #e2a0a4 !important;
+}
+html[data-theme="dark"] .hero p {
+  color: #c7c0bd !important;
+}
+html[data-theme="dark"] .heroActions .primaryBtn,
+html[data-theme="dark"] .heroActions .primaryBtn:visited {
+  color: #fffaf7 !important;
+  -webkit-text-fill-color: #fffaf7 !important;
+  background: linear-gradient(135deg, #a51f2b 0%, #881212 55%, #650d15 100%) !important;
+  border-color: #b6535a !important;
+}
+html[data-theme="dark"] .heroActions .primaryBtn *,
+html[data-theme="dark"] .heroActions .primaryBtn svg,
+html[data-theme="dark"] .heroActions .primaryBtn svg * {
+  color: #fffaf7 !important;
+  -webkit-text-fill-color: #fffaf7 !important;
+}
+html[data-theme="dark"] .heroActions .textBtn,
+html[data-theme="dark"] .heroActions .textBtn:visited {
+  color: #f3dfe0 !important;
+  -webkit-text-fill-color: #f3dfe0 !important;
+  background: rgba(136,18,18,.16) !important;
+  border-color: rgba(193,94,101,.55) !important;
+}
+html[data-theme="dark"] .heroActions .textBtn::after {
+  color: #e7a0a4 !important;
+}
+html[data-theme="dark"] .heroActions .textBtn:hover,
+html[data-theme="dark"] .heroActions .textBtn:focus-visible {
+  color: #fff7f3 !important;
+  -webkit-text-fill-color: #fff7f3 !important;
+  background: rgba(136,18,18,.27) !important;
+  border-color: #c15e65 !important;
+}
+html[data-theme="dark"] .heroMeta {
+  color: #c6bfbc !important;
+}
+html[data-theme="dark"] .heroMeta .goldDot {
+  background: #d04b55 !important;
+  box-shadow: 0 0 0 4px rgba(208,75,85,.16) !important;
+}
