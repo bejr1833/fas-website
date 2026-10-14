@@ -2471,50 +2471,62 @@ function App() {
   }, [devotionalPost]);
 
   useEffect(() => {
-    const items = document.querySelectorAll(
-      ".reveal-section, .reveal-item"
-    );
-
-    if (!items.length) {
-      return;
-    }
-
+    const selector = ".reveal-section, .reveal-item";
+    const root = document.getElementById("root") || document.body;
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
     if (reduceMotion) {
-      items.forEach((element) => {
-        element.classList.add("is-visible");
-      });
+      const revealAll = (node) => {
+        if (node.nodeType !== 1) return;
+        if (node.matches?.(selector)) node.classList.add("is-visible");
+        node.querySelectorAll?.(selector).forEach((element) => {
+          element.classList.add("is-visible");
+        });
+      };
 
-      return;
+      revealAll(root);
+      const contentObserver = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => mutation.addedNodes.forEach(revealAll));
+      });
+      contentObserver.observe(root, { childList: true, subtree: true });
+      return () => contentObserver.disconnect();
     }
 
     const observer = new IntersectionObserver(
       (entries, activeObserver) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-
-          // Reveal each section/card once; never animate it back out while scrolling.
+          // Reveal once and release the target from observation after it appears.
           entry.target.classList.add("is-visible");
           activeObserver.unobserve(entry.target);
         });
       },
-      {
-        threshold: 0.08,
-        rootMargin: "0px 0px 4% 0px"
-      }
+      { threshold: 0.08, rootMargin: "0px 0px 4% 0px" }
     );
 
-    items.forEach((element) => {
-      if (!element.classList.contains("is-visible")) {
-        observer.observe(element);
+    const observeRevealTargets = (node) => {
+      if (node.nodeType !== 1) return;
+      if (node.matches?.(selector) && !node.classList.contains("is-visible")) {
+        observer.observe(node);
       }
-    });
+      node.querySelectorAll?.(selector).forEach((element) => {
+        if (!element.classList.contains("is-visible")) observer.observe(element);
+      });
+    };
 
-    return () => observer.disconnect();
-  }, [data]);
+    observeRevealTargets(root);
+    const contentObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => mutation.addedNodes.forEach(observeRevealTargets));
+    });
+    contentObserver.observe(root, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      contentObserver.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (!data.stories.length) return;
