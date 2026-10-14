@@ -17875,3 +17875,324 @@ html[data-theme="light"] .heroGlowExclusiveBadge strong {
   }
 }
 
+
+
+/* =========================================================
+   FAS HERO REFINEMENT — EDITORIAL, PREMIUM, RESPONSIVE
+   Keep the headline centered in the viewport while the
+   gathering card remains independently anchored to the right.
+   ========================================================= */
+.hero {
+  isolation: isolate;
+  position: relative !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: clamp(600px, 74vh, 760px) !important;
+  padding: 88px clamp(24px, 5vw, 76px) 92px !important;
+  overflow: clip;
+  background:
+    radial-gradient(ellipse at 50% 34%, rgba(190, 157, 91, .10), transparent 43%),
+    linear-gradient(180deg, #fff 0%, #fcfbf8 100%);
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 24px clamp(14px, 2.2vw, 34px);
+  border: 1px solid rgba(190, 157, 91, .19);
+  border-radius: 28px;
+  pointer-events: none;
+  z-index: -1;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -52%);
+  border-radius: 50%;
+  border: 1px solid rgba(136, 18, 18, .055);
+  box-shadow: 0 0 0 38px rgba(190, 157, 91, .025), 0 0 0 78px rgba(190, 157, 91, .018);
+  pointer-events: none;
+  z-index: -1;
+}
+.heroCopy {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 790px) !important;
+  max-width: 790px !important;
+  margin: 0 auto !important;
+  padding: 22px 0;
+  justify-self: auto !important;
+}
+.heroCopy .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  color: #8b6a2c;
+  font-size: 10px;
+  letter-spacing: .23em;
+}
+.heroCopy .eyebrow::before,
+.heroCopy .eyebrow::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b99a5b);
+}
+.heroCopy .eyebrow::after {
+  transform: rotate(180deg);
+}
+.hero h1 {
+  max-width: 790px !important;
+  margin-top: 25px !important;
+  margin-bottom: 24px !important;
+  font-size: clamp(54px, 6.3vw, 88px) !important;
+  line-height: .99 !important;
+  letter-spacing: -.065em !important;
+  text-wrap: balance;
+  color: #171716 !important;
+}
+.hero h1 em {
+  color: #881212 !important;
+  font-style: italic;
+}
+.hero p {
+  max-width: 590px !important;
+  margin: 0 auto !important;
+  color: #62605b !important;
+  font-size: clamp(15px, 1.25vw, 17px) !important;
+  line-height: 1.85 !important;
+  text-wrap: pretty;
+}
+.heroActions {
+  justify-content: center !important;
+  gap: 13px !important;
+  margin-top: 32px !important;
+}
+.heroActions .primaryBtn {
+  min-height: 48px;
+  padding: 0 21px;
+  border: 1px solid #171716;
+  border-radius: 999px;
+  background: #171716;
+  box-shadow: 0 8px 22px rgba(23, 23, 22, .12);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.heroActions .primaryBtn:hover {
+  transform: translateY(-2px);
+  background: #881212;
+  box-shadow: 0 12px 26px rgba(136, 18, 18, .18);
+}
+.heroActions .textBtn {
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid rgba(23, 23, 22, .13);
+  border-radius: 999px;
+  background: rgba(255,255,255,.7);
+  transition: border-color .2s ease, background .2s ease;
+}
+.heroActions .textBtn:hover {
+  border-color: rgba(136, 18, 18, .35);
+  background: #fff;
+}
+.heroMeta {
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-top: 29px !important;
+  color: #77736b !important;
+  font-size: 11px !important;
+  letter-spacing: .025em;
+}
+.heroMeta .goldDot {
+  width: 6px;
+  height: 6px;
+  background: #b99a5b !important;
+  box-shadow: 0 0 0 4px rgba(185,154,91,.13);
+}
+/* The panel is visually detached from the centered headline. */
+.heroNext {
+  position: absolute !important;
+  top: 50% !important;
+  right: clamp(28px, 4.2vw, 68px) !important;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: clamp(230px, 22vw, 292px) !important;
+  min-height: 342px !important;
+  padding: 23px 22px !important;
+  border: 1px solid rgba(255,255,255,.13) !important;
+  border-radius: 22px !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(185,154,91,.20), transparent 38%),
+    linear-gradient(145deg, #292522 0%, #171716 62%, #2d1717 100%) !important;
+  box-shadow: 0 24px 60px rgba(25,20,18,.19), 0 4px 12px rgba(25,20,18,.08) !important;
+  color: #f8f5ef !important;
+  text-align: left !important;
+}
+.heroNext::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(185,154,91,.18);
+  border-radius: 15px;
+  pointer-events: none;
+}
+.heroNextTop,
+.heroNextDate,
+.heroEventStatus,
+.heroNextContent,
+.heroNextLink {
+  position: relative;
+  z-index: 1;
+}
+.heroNextLabel {
+  color: #d5bd88 !important;
+  letter-spacing: .18em !important;
+  font-size: 9px !important;
+}
+.heroNextDot {
+  background: #c6a766 !important;
+  box-shadow: 0 0 0 4px rgba(198,167,102,.14) !important;
+}
+.heroNextDate {
+  margin-top: 19px !important;
+  border-color: rgba(198,167,102,.32) !important;
+  background: rgba(255,255,255,.045) !important;
+}
+.heroNextDate strong {
+  color: #fffaf0 !important;
+}
+.heroNextDate span {
+  color: #d5bd88 !important;
+}
+.heroEventStatus {
+  color: #e9dfc9 !important;
+}
+.heroEventStatusDetail {
+  color: #bcb4a6 !important;
+}
+.heroNextType {
+  color: #d5bd88 !important;
+}
+.heroNextContent h2 {
+  color: #fffaf3 !important;
+  font-size: clamp(21px, 1.8vw, 25px) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -.025em !important;
+}
+.heroNextTime {
+  color: #d2ccc1 !important;
+}
+.heroNextSpeaker {
+  color: #c6bfb3 !important;
+}
+.heroNextSpeaker strong {
+  color: #fffaf3 !important;
+}
+.heroNextSpeaker svg {
+  color: #d5bd88 !important;
+}
+.heroNextLink {
+  border-color: rgba(213,189,136,.4) !important;
+  background: #d5bd88 !important;
+  color: #201d18 !important;
+  font-weight: 800 !important;
+}
+.heroNextLink:hover {
+  background: #f0dfb4 !important;
+}
+.heroNextWatermark {
+  color: rgba(255,255,255,.045) !important;
+}
+/* At narrower desktop widths, preserve the focal point and give the
+   event card its own row instead of squeezing the main headline. */
+@media (max-width: 1180px) {
+  .hero {
+    min-height: 0 !important;
+    padding: 74px 5vw 42px !important;
+    flex-direction: column;
+    gap: 36px !important;
+  }
+  .heroCopy {
+    width: min(100%, 800px) !important;
+    padding: 22px 0 0;
+  }
+  .heroNext {
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    width: min(100%, 560px) !important;
+    min-height: 300px !important;
+    margin: 0 auto !important;
+  }
+}
+@media (max-width: 640px) {
+  .hero {
+    padding: 48px 20px 34px !important;
+    gap: 27px !important;
+  }
+  .hero::before {
+    inset: 10px 8px;
+    border-radius: 20px;
+  }
+  .hero::after {
+    width: 220px;
+    height: 220px;
+  }
+  .heroCopy {
+    padding: 20px 0 0;
+  }
+  .heroCopy .eyebrow {
+    font-size: 8px;
+    letter-spacing: .16em;
+  }
+  .heroCopy .eyebrow::before,
+  .heroCopy .eyebrow::after {
+    width: 12px;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 11.5vw, 58px) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -.055em !important;
+    margin-top: 20px !important;
+    margin-bottom: 18px !important;
+  }
+  .hero p {
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+  }
+  .heroActions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: min(100%, 290px);
+    margin: 25px auto 0 !important;
+  }
+  .heroActions .primaryBtn,
+  .heroActions .textBtn {
+    justify-content: center;
+    width: 100%;
+  }
+  .heroMeta {
+    margin-top: 22px !important;
+    font-size: 10px !important;
+    text-align: center;
+  }
+  .heroNext {
+    min-height: 320px !important;
+    padding: 23px 20px !important;
+    border-radius: 20px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .heroActions .primaryBtn,
+  .heroActions .textBtn {
+    transition: none !important;
+  }
+  .heroActions .primaryBtn:hover {
+    transform: none;
+  }
+}
