@@ -95,21 +95,21 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   opacity: 1;
   transform: none;
   transition:
-    opacity 700ms cubic-bezier(.22,1,.36,1),
-    transform 700ms cubic-bezier(.22,1,.36,1);
-  will-change: opacity, transform;
+    opacity 480ms cubic-bezier(.22,1,.36,1),
+    transform 480ms cubic-bezier(.22,1,.36,1);
+  /* Avoid promoting every section/card to its own compositor layer. */
 }
 
 .reveal-left {
-  transform: translate3d(-38px, 0, 0);
+  transform: translate3d(-20px, 0, 0);
 }
 
 .reveal-right {
-  transform: translate3d(38px, 0, 0);
+  transform: translate3d(20px, 0, 0);
 }
 
 .reveal-up {
-  transform: translate3d(0, 38px, 0);
+  transform: translate3d(0, 20px, 0);
 }
 
 .reveal-section.is-visible,
