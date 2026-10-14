@@ -18653,3 +18653,26 @@ html[data-theme="light"] .heroNextLiveBadge {
   background: #fff0ed !important;
   border-color: #e4b4ae !important;
 }
+
+
+/* LIGHT THEME FIX: event time text was inheriting pale-on-pale colors.
+   Use explicit high-contrast ink and a light champagne time pill. */
+html[data-theme="light"] .heroNextContent .heroNextTime,
+html:not([data-theme="dark"]) .heroNextContent .heroNextTime {
+  color: #29231a !important;
+  background: linear-gradient(135deg, #fffaf0 0%, #f1e4c7 100%) !important;
+  border: 1px solid #cbb47b !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 4px 12px rgba(0,0,0,.08) !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #29231a !important;
+}
+html[data-theme="light"] .heroNextContent .heroNextTime *,
+html:not([data-theme="dark"]) .heroNextContent .heroNextTime * {
+  color: #29231a !important;
+  -webkit-text-fill-color: #29231a !important;
+}
+html[data-theme="dark"] .heroNextContent .heroNextTime {
+  color: #fff3d6 !important;
+  -webkit-text-fill-color: #fff3d6 !important;
+}
