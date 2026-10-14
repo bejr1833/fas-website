@@ -122,7 +122,10 @@ try {
     "Sitemap: could not reach the content API during build.",
     error?.message || error
   );
-  process.exit(1);
+  // Keep deployments resilient during a temporary API outage. The SPA can
+  // still serve its core routes; dynamic URLs will be added on the next build.
+  posts = [];
+  devotionals = [];
 }
 
 await mkdir(join(process.cwd(), "public"), { recursive: true });
