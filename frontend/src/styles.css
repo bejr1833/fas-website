@@ -18447,3 +18447,57 @@ html[data-theme="light"] .heroGlowExclusiveBadge strong {
     transform: none !important;
   }
 }
+
+
+/* ACCESSIBILITY FIX: ensure hero branding and secondary CTA stay readable
+   in both themes, including mobile browsers with cached CSS. */
+.heroCopy .eyebrow {
+  color: #6b4b17 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.heroCopy .eyebrow::before,
+.heroCopy .eyebrow::after {
+  background: linear-gradient(90deg, transparent, #9b7b3f) !important;
+  opacity: 1 !important;
+}
+.heroActions .textBtn,
+.heroActions .textBtn:visited {
+  color: #641515 !important;
+  background: #fffaf0 !important;
+  border: 1px solid #c8b17d !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.heroActions .textBtn::after {
+  color: #805d21 !important;
+  opacity: 1 !important;
+}
+.heroActions .textBtn:hover,
+.heroActions .textBtn:focus-visible {
+  color: #4f0e0e !important;
+  background: #f7eedb !important;
+  border-color: #a98a4d !important;
+}
+html[data-theme="dark"] .heroCopy .eyebrow {
+  color: #e2c98f !important;
+}
+html[data-theme="dark"] .heroCopy .eyebrow::before,
+html[data-theme="dark"] .heroCopy .eyebrow::after {
+  background: linear-gradient(90deg, transparent, #c6a766) !important;
+}
+html[data-theme="dark"] .heroActions .textBtn,
+html[data-theme="dark"] .heroActions .textBtn:visited {
+  color: #f4ead4 !important;
+  background: rgba(255,253,248,.055) !important;
+  border-color: rgba(213,189,136,.62) !important;
+}
+html[data-theme="dark"] .heroActions .textBtn::after {
+  color: #e0c27e !important;
+}
+html[data-theme="dark"] .heroActions .textBtn:hover,
+html[data-theme="dark"] .heroActions .textBtn:focus-visible {
+  color: #fffaf0 !important;
+  background: rgba(185,154,91,.16) !important;
+  border-color: #d5bd88 !important;
+}
