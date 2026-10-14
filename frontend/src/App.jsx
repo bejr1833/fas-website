@@ -1963,7 +1963,13 @@ function App() {
   }, [galleryLightboxOpen, filteredGallery.length]);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/home/`, 14, "home")
+    // Never let a slow/cold API keep desktop sections in a loading state indefinitely.
+    // Cached content is rendered immediately; uncached visits fall back to the shell after 2.8s.
+    const loadingFallbackTimer = window.setTimeout(() => {
+      setLoading(false);
+    }, 2800);
+
+    fetchJsonWithRetry(`${API_BASE}/api/home/`, 2, "home")
       .then((result) => {
         setData((current) => ({
           settings: result.settings || fallback,
@@ -1990,8 +1996,11 @@ function App() {
         }));
       })
       .finally(() => {
+        window.clearTimeout(loadingFallbackTimer);
         setLoading(false);
       });
+
+    return () => window.clearTimeout(loadingFallbackTimer);
   }, []);
 
   useEffect(() => {
