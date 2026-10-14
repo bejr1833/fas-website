@@ -19087,3 +19087,136 @@ html[data-theme="dark"] .heroNextLink svg * {
     min-width: 0 !important;
   }
 }
+
+
+/* FAS BRAND ALIGNMENT: replace gold/yellow gathering accents with premium
+   burgundy red, matching the cross and wordmark. Keep contrast theme-safe. */
+.heroNext {
+  border-top-color: #8d1720 !important;
+}
+.heroNextLabel,
+.heroNextDate span {
+  color: #8d1720 !important;
+}
+.heroNextDot {
+  background: #9a1b24 !important;
+  box-shadow: 0 0 0 4px rgba(154,27,36,.12) !important;
+}
+.heroEventStatusDot {
+  background: #9a1b24 !important;
+  box-shadow: 0 0 0 3px rgba(154,27,36,.12) !important;
+}
+.heroEventStatusLabel {
+  color: #8d1720 !important;
+}
+.heroNextContent .heroNextType {
+  border-color: #e7c9cb !important;
+  background: #fbf1f1 !important;
+  color: #8d1720 !important;
+}
+.heroNextContent .heroNextTime {
+  border-color: #e8cdd0 !important;
+  background: #fbf3f3 !important;
+  color: #382326 !important;
+  -webkit-text-fill-color: #382326 !important;
+}
+.heroNextSpeakerIcon {
+  border-color: #ead4d5 !important;
+  background: #fbf3f3 !important;
+  color: #8d1720 !important;
+}
+.heroGlowExclusiveBadge {
+  border-color: #e7c9cb !important;
+  background: #fbf1f1 !important;
+  color: #7f2028 !important;
+}
+.heroGlowExclusiveName,
+.heroGlowExclusiveBadge strong {
+  color: #7f2028 !important;
+}
+.heroGlowExclusiveDivider {
+  background: #e4c3c6 !important;
+}
+.heroNextLink:hover,
+.heroNextLink:focus-visible {
+  background: #78131b !important;
+  border-color: #78131b !important;
+}
+html[data-theme="light"] .heroNext {
+  border-top-color: #8d1720 !important;
+}
+html[data-theme="light"] .heroNextLabel,
+html[data-theme="light"] .heroNextDate span,
+html[data-theme="light"] .heroEventStatusLabel {
+  color: #8d1720 !important;
+}
+html[data-theme="light"] .heroNextDot,
+html[data-theme="light"] .heroEventStatusDot {
+  background: #9a1b24 !important;
+}
+html[data-theme="light"] .heroNextContent .heroNextType {
+  background: #fbf1f1 !important;
+  border-color: #e7c9cb !important;
+  color: #8d1720 !important;
+}
+html[data-theme="light"] .heroNextContent .heroNextTime {
+  background: #fbf3f3 !important;
+  border-color: #e8cdd0 !important;
+  color: #382326 !important;
+  -webkit-text-fill-color: #382326 !important;
+}
+html[data-theme="light"] .heroNextSpeakerIcon {
+  background: #fbf3f3 !important;
+  border-color: #ead4d5 !important;
+  color: #8d1720 !important;
+}
+html[data-theme="light"] .heroGlowExclusiveBadge {
+  background: #fbf1f1 !important;
+  border-color: #e7c9cb !important;
+}
+html[data-theme="dark"] .heroNext {
+  border-top-color: #b72b35 !important;
+}
+html[data-theme="dark"] .heroNextLabel,
+html[data-theme="dark"] .heroNextDate span {
+  color: #e2a0a4 !important;
+}
+html[data-theme="dark"] .heroNextDot,
+html[data-theme="dark"] .heroEventStatusDot {
+  background: #cf4650 !important;
+  box-shadow: 0 0 0 4px rgba(207,70,80,.14) !important;
+}
+html[data-theme="dark"] .heroEventStatusLabel {
+  color: #e6a4a8 !important;
+}
+html[data-theme="dark"] .heroEventStatus {
+  border-color: #494044 !important;
+}
+html[data-theme="dark"] .heroNextContent .heroNextType {
+  background: #302326 !important;
+  border-color: #5a3b40 !important;
+  color: #edb7bb !important;
+}
+html[data-theme="dark"] .heroNextContent .heroNextTime {
+  background: #292326 !important;
+  border-color: #574044 !important;
+  color: #f2e7e8 !important;
+  -webkit-text-fill-color: #f2e7e8 !important;
+}
+html[data-theme="dark"] .heroNextSpeakerIcon {
+  background: #302326 !important;
+  border-color: #574044 !important;
+  color: #e2a0a4 !important;
+}
+html[data-theme="dark"] .heroGlowExclusiveBadge {
+  background: #302124 !important;
+  border-color: #624047 !important;
+  color: #efc5c8 !important;
+}
+html[data-theme="dark"] .heroGlowExclusiveName,
+html[data-theme="dark"] .heroGlowExclusiveBadge strong {
+  color: #efc5c8 !important;
+}
+html[data-theme="dark"] .heroGlowExclusiveDivider {
+  background: #68464b !important;
+}
