@@ -18676,3 +18676,33 @@ html[data-theme="dark"] .heroNextContent .heroNextTime {
   color: #fff3d6 !important;
   -webkit-text-fill-color: #fff3d6 !important;
 }
+
+
+/* DARK MODE: Join Google Meet uses a light button, so its arrow must
+   use the same dark ink as the label. Apply to every event status class. */
+html[data-theme="dark"] .heroNextLink,
+html[data-theme="dark"] .heroNextLink:visited {
+  color: #171716 !important;
+  background: #F5F3EF !important;
+  border-color: #F5F3EF !important;
+}
+html[data-theme="dark"] .heroNextLink svg,
+html[data-theme="dark"] .heroNextLink svg * {
+  color: #171716 !important;
+  stroke: #171716 !important;
+  fill: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+}
+html[data-theme="dark"] .heroNextLink:hover,
+html[data-theme="dark"] .heroNextLink:focus-visible {
+  color: #171716 !important;
+  background: #E5D6B5 !important;
+  border-color: #D5BD88 !important;
+}
+html[data-theme="dark"] .heroNextLink:hover svg,
+html[data-theme="dark"] .heroNextLink:focus-visible svg {
+  color: #171716 !important;
+  stroke: #171716 !important;
+}
