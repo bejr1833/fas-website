@@ -166,10 +166,21 @@ const writePage = async (relativePath, html) => {
 };
 
 const shell = await readFile(join(DIST, "index.html"), "utf8");
-const [posts, devotionals] = await Promise.all([
-  fetchList("/api/blog/"),
-  fetchList("/api/devotionals/"),
-]);
+let posts = [];
+let devotionals = [];
+try {
+  [posts, devotionals] = await Promise.all([
+    fetchList("/api/blog/"),
+    fetchList("/api/devotionals/"),
+  ]);
+} catch (error) {
+  // Do not fail the entire frontend deployment when the content API is cold
+  // or temporarily unavailable. The app and static shell remain deployable.
+  console.warn(
+    "AMP generation: content API unavailable; skipping content-specific pages for this build.",
+    error?.message || error
+  );
+}
 
 let generated = 0;
 for (const post of posts) {
