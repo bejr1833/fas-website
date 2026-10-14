@@ -2492,21 +2492,26 @@ function App() {
     }
 
     const observer = new IntersectionObserver(
-      (entries) => {
+      (entries, activeObserver) => {
         entries.forEach((entry) => {
-          entry.target.classList.toggle(
-            "is-visible",
-            entry.isIntersecting
-          );
+          if (!entry.isIntersecting) return;
+
+          // Reveal each section/card once; never animate it back out while scrolling.
+          entry.target.classList.add("is-visible");
+          activeObserver.unobserve(entry.target);
         });
       },
       {
-        threshold: 0.12,
-        rootMargin: "0px 0px -8% 0px"
+        threshold: 0.08,
+        rootMargin: "0px 0px 4% 0px"
       }
     );
 
-    items.forEach((element) => observer.observe(element));
+    items.forEach((element) => {
+      if (!element.classList.contains("is-visible")) {
+        observer.observe(element);
+      }
+    });
 
     return () => observer.disconnect();
   }, [data]);
