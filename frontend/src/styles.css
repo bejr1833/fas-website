@@ -18706,3 +18706,384 @@ html[data-theme="dark"] .heroNextLink:focus-visible svg {
   color: #171716 !important;
   stroke: #171716 !important;
 }
+
+
+/* =========================================================
+   FAS GATHERING — simplified editorial card, both themes
+   Quiet surfaces, clear hierarchy, restrained gold accents.
+   ========================================================= */
+.heroNext {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+  gap: 16px !important;
+  min-height: 0 !important;
+  padding: clamp(20px, 3vw, 30px) !important;
+  border: 1px solid #e5dfd2 !important;
+  border-top: 2px solid #a88443 !important;
+  border-radius: 20px !important;
+  background: #fffdf9 !important;
+  box-shadow: 0 14px 38px rgba(35,29,19,.075) !important;
+  isolation: isolate;
+}
+.heroNext::before,
+.heroNext::after {
+  display: none !important;
+  content: none !important;
+}
+.heroNextTop {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  min-height: 0 !important;
+  padding: 0 0 14px !important;
+  border-bottom: 1px solid #ece6dc !important;
+}
+.heroNextLabel {
+  color: #755a2b !important;
+  font-size: 10px !important;
+  letter-spacing: .17em !important;
+}
+.heroNextDot {
+  width: 7px !important;
+  height: 7px !important;
+  background: #a88443 !important;
+  box-shadow: 0 0 0 4px rgba(168,132,67,.12) !important;
+}
+.heroNextDate {
+  align-self: flex-start !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+.heroNextDate strong {
+  color: #24211c !important;
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-size: 46px !important;
+  line-height: .98 !important;
+  letter-spacing: -.055em !important;
+}
+.heroNextDate span {
+  color: #8a6b34 !important;
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-size: 15px !important;
+  font-style: italic !important;
+  letter-spacing: .12em !important;
+}
+.heroEventStatus {
+  align-self: flex-start !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  max-width: 100% !important;
+  margin: -4px 0 0 !important;
+  padding: 7px 11px !important;
+  border: 1px solid #e9e1d3 !important;
+  border-radius: 999px !important;
+  background: #f8f4ec !important;
+  color: #6a5635 !important;
+  font-size: 10px !important;
+  line-height: 1.4 !important;
+  box-shadow: none !important;
+}
+.heroEventStatusLabel {
+  color: #765a2a !important;
+  font-weight: 800 !important;
+  letter-spacing: .13em !important;
+}
+.heroEventStatusDetail {
+  padding-left: 9px;
+  border-left: 1px solid #d8cbb4;
+  color: #6b655b !important;
+  font-weight: 600 !important;
+}
+.heroEventStatusDot {
+  background: #b28b43 !important;
+  box-shadow: 0 0 0 3px rgba(178,139,67,.12) !important;
+}
+.heroNextContent {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+.heroNextTypeRow {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.heroNextContent .heroNextType {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 29px !important;
+  padding: 7px 10px !important;
+  border: 1px solid #e5dcc9 !important;
+  border-radius: 999px !important;
+  background: #f8f4ec !important;
+  color: #66502a !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: .12em !important;
+  line-height: 1.2 !important;
+}
+.heroNextContent .heroNextLiveBadge {
+  min-height: 29px !important;
+  padding: 7px 10px !important;
+  border: 1px solid #ead2cf !important;
+  border-radius: 999px !important;
+  background: #fff5f3 !important;
+  color: #8b2929 !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: .1em !important;
+}
+.heroNextContent h2 {
+  margin: 0 !important;
+  color: #211f1b !important;
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-size: clamp(24px, 2.2vw, 30px) !important;
+  font-weight: 600 !important;
+  line-height: 1.16 !important;
+  letter-spacing: -.025em !important;
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+}
+.heroNextContent .heroNextTime {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 8px 11px !important;
+  border: 1px solid #e8dfce !important;
+  border-radius: 10px !important;
+  background: #faf6ed !important;
+  color: #393126 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.45 !important;
+  letter-spacing: .01em !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  -webkit-text-fill-color: #393126 !important;
+}
+.heroNextSpeaker {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  color: #70695e !important;
+}
+.heroNextSpeakerIcon {
+  display: grid !important;
+  place-items: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  flex: 0 0 34px !important;
+  border: 1px solid #e8dfce !important;
+  border-radius: 50% !important;
+  background: #faf6ed !important;
+  color: #8a6b34 !important;
+}
+.heroNextSpeaker small {
+  color: #81796d !important;
+  font-size: 9px !important;
+  letter-spacing: .12em !important;
+}
+.heroNextSpeaker strong {
+  color: #29251f !important;
+  font-size: 13px !important;
+}
+.heroGlowExclusiveBadge {
+  max-width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 9px !important;
+  padding: 9px 12px !important;
+  border: 1px solid #e7d4d0 !important;
+  border-radius: 10px !important;
+  background: #fbf3f1 !important;
+  color: #7e3434 !important;
+}
+.heroGlowExclusiveName,
+.heroGlowExclusiveBadge strong {
+  color: #7e3434 !important;
+  font-size: 9px !important;
+  letter-spacing: .11em !important;
+}
+.heroGlowExclusiveDivider {
+  height: 16px !important;
+  background: #e2c9c4 !important;
+}
+.heroNextLink,
+.heroNextLink:visited {
+  align-self: flex-start !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: auto !important;
+  min-width: 190px !important;
+  min-height: 46px !important;
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  border: 1px solid #29251f !important;
+  border-radius: 11px !important;
+  background: #29251f !important;
+  color: #fffdf8 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: .07em !important;
+  box-shadow: none !important;
+}
+.heroNextLink svg,
+.heroNextLink svg * {
+  color: currentColor !important;
+  stroke: currentColor !important;
+  opacity: 1 !important;
+}
+.heroNextLink:hover,
+.heroNextLink:focus-visible {
+  background: #51432c !important;
+  border-color: #51432c !important;
+  color: #fffdf8 !important;
+}
+.heroNextWatermark {
+  display: none !important;
+}
+html[data-theme="light"] .heroNext {
+  background: #fffdf9 !important;
+  border-color: #e5dfd2 !important;
+  border-top-color: #a88443 !important;
+}
+html[data-theme="dark"] .heroNext {
+  background: #1c1f23 !important;
+  border-color: #34383d !important;
+  border-top-color: #b89a5b !important;
+  box-shadow: 0 16px 38px rgba(0,0,0,.22) !important;
+}
+html[data-theme="dark"] .heroNextTop {
+  border-bottom-color: #36393e !important;
+}
+html[data-theme="dark"] .heroNextLabel {
+  color: #d8c08a !important;
+}
+html[data-theme="dark"] .heroNextDot {
+  background: #c4a45f !important;
+}
+html[data-theme="dark"] .heroNextDate strong,
+html[data-theme="dark"] .heroNextContent h2 {
+  color: #f5f1e9 !important;
+}
+html[data-theme="dark"] .heroNextDate span {
+  color: #d8bd82 !important;
+}
+html[data-theme="dark"] .heroEventStatus {
+  background: #282a2d !important;
+  border-color: #414348 !important;
+  color: #e8dfce !important;
+}
+html[data-theme="dark"] .heroEventStatusLabel {
+  color: #dfc68f !important;
+}
+html[data-theme="dark"] .heroEventStatusDetail {
+  border-left-color: #55504a !important;
+  color: #c4bdb1 !important;
+}
+html[data-theme="dark"] .heroNextContent .heroNextType {
+  background: #282a2d !important;
+  border-color: #45484d !important;
+  color: #e5d5ad !important;
+}
+html[data-theme="dark"] .heroNextContent .heroNextLiveBadge {
+  background: #351f22 !important;
+  border-color: #674044 !important;
+  color: #efb9b5 !important;
+}
+html[data-theme="dark"] .heroNextContent .heroNextTime {
+  background: #292a2c !important;
+  border-color: #4b463a !important;
+  color: #f2e7ce !important;
+  -webkit-text-fill-color: #f2e7ce !important;
+}
+html[data-theme="dark"] .heroNextSpeaker {
+  color: #c9c2b6 !important;
+}
+html[data-theme="dark"] .heroNextSpeakerIcon {
+  background: #292a2c !important;
+  border-color: #46413a !important;
+  color: #d8bd82 !important;
+}
+html[data-theme="dark"] .heroNextSpeaker small {
+  color: #aaa398 !important;
+}
+html[data-theme="dark"] .heroNextSpeaker strong {
+  color: #f4eee4 !important;
+}
+html[data-theme="dark"] .heroGlowExclusiveBadge {
+  background: #2d2224 !important;
+  border-color: #584044 !important;
+  color: #e9b8b4 !important;
+}
+html[data-theme="dark"] .heroGlowExclusiveName,
+html[data-theme="dark"] .heroGlowExclusiveBadge strong {
+  color: #efc5c1 !important;
+}
+html[data-theme="dark"] .heroGlowExclusiveDivider {
+  background: #65464a !important;
+}
+html[data-theme="dark"] .heroNextLink,
+html[data-theme="dark"] .heroNextLink:visited {
+  background: #f3eee5 !important;
+  border-color: #f3eee5 !important;
+  color: #24211c !important;
+}
+html[data-theme="dark"] .heroNextLink:hover,
+html[data-theme="dark"] .heroNextLink:focus-visible {
+  background: #e1d1ad !important;
+  border-color: #e1d1ad !important;
+  color: #24211c !important;
+}
+html[data-theme="dark"] .heroNextLink svg,
+html[data-theme="dark"] .heroNextLink svg * {
+  color: #24211c !important;
+  stroke: #24211c !important;
+}
+@media (max-width: 640px) {
+  .heroNext {
+    gap: 14px !important;
+    padding: 21px 18px !important;
+    border-radius: 17px !important;
+  }
+  .heroNextDate strong {
+    font-size: 42px !important;
+  }
+  .heroNextContent {
+    gap: 11px !important;
+  }
+  .heroNextContent h2 {
+    font-size: clamp(23px, 6vw, 28px) !important;
+    line-height: 1.17 !important;
+  }
+  .heroEventStatus {
+    max-width: 100% !important;
+    gap: 7px !important;
+  }
+  .heroNextLink {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
