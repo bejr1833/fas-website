@@ -31,29 +31,26 @@ function writeContentCache(key, data) {
   }
 }
 
-async function fetchJsonWithRetry(path, attempts = 5, cacheKey = null) {
-  // Keep retries bounded so a cold backend cannot be overwhelmed by one browser.
-  const maxAttempts = Math.min(Math.max(Number(attempts) || 1, 1), 5);
+async function fetchJsonWithRetry(path, attempts = 3, cacheKey = null) {
+  // Keep startup resilient without flooding a cold backend with duplicate calls.
+  const maxAttempts = Math.min(Math.max(Number(attempts) || 1, 1), 3);
   let lastError;
 
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    const controller = new AbortController();
+    // Keep the timeout active through response-body parsing, not just headers.
+    const requestTimeout = window.setTimeout(() => controller.abort(), 9000);
+
     try {
-      // Bound each network attempt so a sleeping backend or stalled connection
-      // cannot leave a request hanging indefinitely. Retries remain capped below.
-      const controller = new AbortController();
-      const requestTimeout = window.setTimeout(() => controller.abort(), 12000);
-      let response;
-      try {
-        response = await fetch(path, {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-      } finally {
-        window.clearTimeout(requestTimeout);
-      }
+      const response = await fetch(path, {
+        cache: "no-store",
+        signal: controller.signal,
+      });
 
       if (!response.ok) {
-        throw new Error(`Request failed: ${response.status}`);
+        const error = new Error(`Request failed: ${response.status}`);
+        error.status = response.status;
+        throw error;
       }
 
       const data = await response.json();
@@ -62,18 +59,21 @@ async function fetchJsonWithRetry(path, attempts = 5, cacheKey = null) {
     } catch (error) {
       lastError = error;
 
-      if (attempt === maxAttempts - 1) {
+      // A missing/unauthorized resource will not become available by retrying.
+      const isRetryableStatus =
+        !error.status ||
+        error.status === 408 ||
+        error.status === 429 ||
+        error.status >= 500;
+
+      if (!isRetryableStatus || attempt === maxAttempts - 1) {
         break;
       }
 
-      const retryDelay = Math.min(
-        1200 * Math.pow(1.6, attempt),
-        6000
-      );
-
-      await new Promise((resolve) =>
-        setTimeout(resolve, retryDelay)
-      );
+      const retryDelay = Math.min(700 * Math.pow(2, attempt), 2800);
+      await new Promise((resolve) => window.setTimeout(resolve, retryDelay));
+    } finally {
+      window.clearTimeout(requestTimeout);
     }
   }
 
