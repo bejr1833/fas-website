@@ -38,8 +38,9 @@ async function fetchJsonWithRetry(path, attempts = 3, cacheKey = null) {
 
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     const controller = new AbortController();
-    // Keep the timeout active through response-body parsing, not just headers.
+    // The deadline covers both response headers and JSON body parsing.
     const requestTimeout = window.setTimeout(() => controller.abort(), 9000);
+    let shouldRetry = false;
 
     try {
       const response = await fetch(path, {
@@ -59,22 +60,23 @@ async function fetchJsonWithRetry(path, attempts = 3, cacheKey = null) {
     } catch (error) {
       lastError = error;
 
-      // A missing/unauthorized resource will not become available by retrying.
+      // Do not retry permanent client errors such as 400, 401, 403, or 404.
       const isRetryableStatus =
         !error.status ||
         error.status === 408 ||
         error.status === 429 ||
         error.status >= 500;
 
-      if (!isRetryableStatus || attempt === maxAttempts - 1) {
-        break;
-      }
-
-      const retryDelay = Math.min(700 * Math.pow(2, attempt), 2800);
-      await new Promise((resolve) => window.setTimeout(resolve, retryDelay));
+      shouldRetry = isRetryableStatus && attempt < maxAttempts - 1;
     } finally {
       window.clearTimeout(requestTimeout);
     }
+
+    if (!shouldRetry) break;
+
+    // Wait only after the previous request's timeout has been cleared.
+    const retryDelay = Math.min(700 * Math.pow(2, attempt), 2800);
+    await new Promise((resolve) => window.setTimeout(resolve, retryDelay));
   }
 
   throw lastError || new Error("Request failed");
@@ -2016,7 +2018,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/blog/`, 14, "blog")
+    fetchJsonWithRetry(`${API_BASE}/api/blog/`, 3, "blog")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -2028,7 +2030,7 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/sermons/`, 14, "sermons")
+    fetchJsonWithRetry(`${API_BASE}/api/sermons/`, 3, "sermons")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -2040,7 +2042,7 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/videos/`, 14, "videos")
+    fetchJsonWithRetry(`${API_BASE}/api/videos/`, 3, "videos")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -2053,7 +2055,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchJsonWithRetry(`${API_BASE}/api/ebooks/`, 14, "ebooks")
+    fetchJsonWithRetry(`${API_BASE}/api/ebooks/`, 3, "ebooks")
       .then((result) => {
         setData((current) => ({
           ...current,
@@ -2088,7 +2090,7 @@ function App() {
   useEffect(() => {
     if (!window.location.pathname.startsWith("/devotionals/")) return;
 
-    fetchJsonWithRetry(`${API_BASE}/api/devotionals/`, 14, "devotionals")
+    fetchJsonWithRetry(`${API_BASE}/api/devotionals/`, 3, "devotionals")
       .then((result) => {
         setDevotionalArchive(Array.isArray(result) ? result : []);
       })
