@@ -1453,6 +1453,12 @@ function App() {
     const theme = darkMode ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", theme);
 
+    // Keep the mobile browser chrome aligned with the selected website theme.
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+      themeColor.setAttribute("content", darkMode ? "#111112" : "#FFFCF8");
+    }
+
     try {
       localStorage.setItem("fas-theme", theme);
     } catch (error) {
