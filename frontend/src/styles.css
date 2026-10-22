@@ -19721,3 +19721,103 @@ html[data-theme="dark"] .heroActions .textBtn svg * {
     padding: 0 20px !important;
   }
 }
+
+
+/* Graceful recovery screen for unexpected React rendering errors */
+.appErrorFallback {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #f8f5f1;
+  color: #191718;
+}
+.appErrorFallbackCard {
+  width: min(100%, 520px);
+  padding: clamp(24px, 5vw, 42px);
+  border: 1px solid #e7d9d6;
+  border-top: 3px solid #881212;
+  border-radius: 20px;
+  background: #fffdfb;
+  box-shadow: 0 18px 48px rgba(32, 18, 18, .08);
+}
+.appErrorEyebrow {
+  margin: 0 0 14px;
+  color: #881212;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+.appErrorFallbackCard h1 {
+  margin: 0 0 12px;
+  color: #191718;
+  font-size: clamp(26px, 5vw, 36px);
+  line-height: 1.12;
+  letter-spacing: -.035em;
+}
+.appErrorFallbackCard > p:not(.appErrorEyebrow) {
+  margin: 0;
+  color: #625b59;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.appErrorActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+.appErrorActions button,
+.appErrorActions a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 16px;
+  border-radius: 11px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  text-decoration: none;
+}
+.appErrorActions button {
+  border: 1px solid #171716;
+  background: #171716;
+  color: #fffdf9;
+  cursor: pointer;
+}
+.appErrorActions a {
+  border: 1px solid #d9c9c6;
+  background: #fffdfb;
+  color: #781820;
+}
+html[data-theme="dark"] .appErrorFallback {
+  background: #111112;
+  color: #f8f5f1;
+}
+html[data-theme="dark"] .appErrorFallbackCard {
+  background: #1c1b1d;
+  border-color: #413438;
+  border-top-color: #b6535a;
+  box-shadow: 0 18px 48px rgba(0,0,0,.24);
+}
+html[data-theme="dark"] .appErrorEyebrow {
+  color: #e6b5b7;
+}
+html[data-theme="dark"] .appErrorFallbackCard h1 {
+  color: #f8f5f1;
+}
+html[data-theme="dark"] .appErrorFallbackCard > p:not(.appErrorEyebrow) {
+  color: #c7c0bd;
+}
+html[data-theme="dark"] .appErrorActions button {
+  background: #fffdf9;
+  border-color: #fffdf9;
+  color: #171716;
+}
+html[data-theme="dark"] .appErrorActions a {
+  background: #292326;
+  border-color: #574044;
+  color: #f3dfe0;
+}
