@@ -19956,3 +19956,82 @@ html[data-theme="dark"] .appErrorActions a {
     line-height: 1.65;
   }
 }
+
+
+/* Premium devotional impact statement — restrained editorial emphasis */
+.devotionalHomeImpact {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 28px 2px;
+  text-align: center;
+}
+.devotionalHomeImpact span {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #b9852f;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+.devotionalHomeImpact span::before,
+.devotionalHomeImpact span::after {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+  opacity: .55;
+}
+.devotionalHomeImpact strong {
+  display: block;
+  max-width: 600px;
+  margin: 13px auto 0;
+  color: #252321;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 600;
+  line-height: 1.48;
+  letter-spacing: -.012em;
+  text-wrap: balance;
+}
+html[data-theme="dark"] .devotionalHomeImpact span {
+  color: #d4a653;
+}
+html[data-theme="dark"] .devotionalHomeImpact strong {
+  color: #f3eee7;
+}
+html[data-theme="light"] .devotionalHomeImpact span {
+  color: #a87425;
+}
+html[data-theme="light"] .devotionalHomeImpact strong {
+  color: #262321;
+}
+@media (max-width: 700px) {
+  .devotionalHomeImpact {
+    padding: 22px 20px 2px;
+  }
+  .devotionalHomeImpact span {
+    font-size: 8px;
+    letter-spacing: .22em;
+  }
+  .devotionalHomeImpact span::before,
+  .devotionalHomeImpact span::after {
+    width: 16px;
+  }
+  .devotionalHomeImpact strong {
+    max-width: 520px;
+    margin-top: 12px;
+    font-size: 17px;
+    line-height: 1.52;
+    letter-spacing: -.008em;
+  }
+}
+@media (max-width: 380px) {
+  .devotionalHomeImpact strong {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+}
