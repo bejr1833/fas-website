@@ -20130,3 +20130,46 @@ html[data-theme="light"] .devotionalImpact strong { color: #292323; }
     line-height: 1.75;
   }
 }
+
+
+/* Cohesive premium palette for devotional feature panels */
+.devotionalImpact {
+  background: linear-gradient(135deg, #24191c 0%, #191719 68%, #211719 100%);
+  border: 1px solid rgba(183, 91, 99, .32);
+  border-top: 2px solid #a62b37;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 12px 28px rgba(0,0,0,.12);
+}
+.devotionalPrayer,
+.devotionalApplication {
+  background: linear-gradient(135deg, #201b1d 0%, #19191b 100%);
+  border: 1px solid rgba(178, 113, 119, .23);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+}
+html[data-theme="dark"] .devotionalImpact {
+  background: linear-gradient(135deg, #291a1e 0%, #1b1a1d 70%, #24191d 100%);
+  border-color: rgba(197, 104, 112, .32);
+  border-top-color: #c34b55;
+}
+html[data-theme="dark"] .devotionalPrayer,
+html[data-theme="dark"] .devotionalApplication {
+  background: linear-gradient(135deg, #241d20 0%, #1b1a1d 100%);
+  border-color: rgba(197, 104, 112, .25);
+}
+html[data-theme="light"] .devotionalImpact {
+  background: linear-gradient(135deg, #fffaf7 0%, #f7efec 100%);
+  border-color: #ead4d2;
+  border-top-color: #8d1720;
+  box-shadow: 0 10px 28px rgba(67, 32, 32, .055);
+}
+html[data-theme="light"] .devotionalPrayer,
+html[data-theme="light"] .devotionalApplication {
+  background: linear-gradient(135deg, #fffdfa 0%, #f8f1ee 100%);
+  border-color: #eadbd8;
+  box-shadow: 0 8px 22px rgba(67, 32, 32, .04);
+}
+html[data-theme="light"] .devotionalImpact span,
+html[data-theme="light"] .devotionalBodyLabel,
+html[data-theme="light"] .devotionalPrayer > span,
+html[data-theme="light"] .devotionalApplication > span {
+  color: #8d1720;
+}
