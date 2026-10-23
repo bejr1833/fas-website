@@ -19821,3 +19821,68 @@ html[data-theme="dark"] .appErrorActions a {
   border-color: #574044;
   color: #f3dfe0;
 }
+
+
+/* Scripture typography refinement: comfortable reading on dashboard and devotionals.
+   Keep this final override after older style blocks so both themes stay consistent. */
+.devotionalHomeScripture p {
+  font-size: clamp(20px, 2.15vw, 27px);
+  line-height: 1.48;
+  letter-spacing: -0.012em;
+  text-wrap: pretty;
+}
+
+.devotionalScripture p {
+  font-size: clamp(20px, 2.05vw, 26px);
+  line-height: 1.48;
+  letter-spacing: -0.012em;
+  text-wrap: pretty;
+}
+
+@media (max-width: 700px) {
+  .devotionalHomeScripture {
+    padding: 28px 18px 20px;
+  }
+
+  .devotionalHomeScripture p {
+    font-size: 17px;
+    line-height: 1.58;
+    letter-spacing: 0;
+  }
+
+  .devotionalHomeScripture::before {
+    font-size: 42px;
+  }
+
+  .devotionalHomeScripture span {
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    line-height: 1.5;
+  }
+
+  .devotionalScripture {
+    padding: 28px 18px 24px;
+  }
+
+  .devotionalScripture p {
+    font-size: 18px;
+    line-height: 1.58;
+    letter-spacing: 0;
+  }
+
+  .devotionalScripture > span:first-child {
+    font-size: 38px;
+  }
+}
+
+@media (max-width: 380px) {
+  .devotionalHomeScripture p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .devotionalScripture p {
+    font-size: 17px;
+    line-height: 1.6;
+  }
+}
