@@ -3838,10 +3838,19 @@ function App() {
                 <span className="devotionalBodyLabel">REFLECTION</span>
                 {devotionalPost.reflection.split(/\r?\n\s*\r?\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
                 <div className="devotionalPrayer">
-                  <span>PRAYER</span>
+                  <div className="devotionalPanelHeading">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z" /><path d="M8 12h8M12 8v8" /></svg>
+                    <span>PRAYER</span>
+                  </div>
                   {devotionalPost.prayer.split(/\r?\n\s*\r?\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
                 </div>
-                {devotionalPost.application && <div className="devotionalApplication"><span>LIVE IT OUT</span><p>{devotionalPost.application}</p></div>}
+                {devotionalPost.application && <div className="devotionalApplication">
+                  <div className="devotionalPanelHeading">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 17.5 9 11l4 4 8-9" /><path d="M15 6h6v6" /><path d="M4 21h16" /></svg>
+                    <span>LIVE IT OUT</span>
+                  </div>
+                  <p>{devotionalPost.application}</p>
+                </div>}
               </div>
               <DevotionalNavigation previous={previousDevotional} next={nextDevotional} placement="bottom" />
               <div className="devotionalFooter">FAITH · FELLOWSHIP · TRUTH <span>FAS</span></div>
