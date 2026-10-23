@@ -20300,3 +20300,54 @@ html[data-theme="light"] .devotionalPanelHeading > svg {
     border-radius: 16px;
   }
 }
+
+
+/* Premium editorial title treatment for the full devotional page */
+.devotionalArticle h1 {
+  max-width: 780px;
+  margin: 24px auto 12px;
+  font-family: "Playfair Display", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6.4vw, 72px);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+  color: #211b1c;
+  text-shadow: 0 1px 0 rgba(255,255,255,.12);
+}
+html[data-theme="dark"] .devotionalArticle h1,
+.devotionalPage[data-theme="dark"] .devotionalArticle h1 {
+  color: #f5eee9;
+  text-shadow: 0 2px 24px rgba(195,75,85,.08);
+}
+html[data-theme="light"] .devotionalArticle h1,
+.devotionalPage[data-theme="light"] .devotionalArticle h1 {
+  color: #211b1c;
+}
+.devotionalArticleEyebrow {
+  letter-spacing: .24em;
+  font-size: 11px;
+}
+.devotionalArticleDate {
+  letter-spacing: .11em;
+}
+@media (max-width: 700px) {
+  .devotionalArticle h1 {
+    max-width: 540px;
+    margin-top: 22px;
+    margin-bottom: 12px;
+    font-size: clamp(37px, 9.2vw, 52px);
+    line-height: 1.06;
+    letter-spacing: -.03em;
+  }
+  .devotionalArticleEyebrow {
+    font-size: 10px;
+    letter-spacing: .2em;
+  }
+}
+@media (max-width: 380px) {
+  .devotionalArticle h1 {
+    font-size: 35px;
+    line-height: 1.08;
+  }
+}
