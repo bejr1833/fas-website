@@ -20035,3 +20035,98 @@ html[data-theme="light"] .devotionalHomeImpact strong {
     line-height: 1.55;
   }
 }
+
+
+/* Devotional article: premium Impact, Prayer and Live It Out panels */
+.devotionalImpact {
+  max-width: 700px;
+  margin: 30px auto 0;
+  padding: 26px 26px 28px;
+  border: 1px solid rgba(141,23,32,.18);
+  border-top: 2px solid #8d1720;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(141,23,32,.045), rgba(255,255,255,.015));
+  text-align: center;
+}
+.devotionalImpact span,
+.devotionalBodyLabel,
+.devotionalPrayer > span,
+.devotionalApplication > span {
+  color: #8d1720;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .19em;
+}
+.devotionalImpact strong {
+  max-width: 570px;
+  margin: 13px auto 0;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: clamp(20px, 2.2vw, 25px);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -.014em;
+  text-wrap: balance;
+}
+.devotionalPrayer,
+.devotionalApplication {
+  border: 1px solid rgba(141,23,32,.15);
+  border-radius: 16px;
+  padding: 24px;
+  background: linear-gradient(145deg, rgba(141,23,32,.035), transparent 72%);
+}
+.devotionalPrayer > span,
+.devotionalApplication > span {
+  display: block;
+  margin-bottom: 12px;
+}
+.devotionalPrayer p,
+.devotionalApplication p,
+.devotionalPrayer > p,
+.devotionalApplication > p {
+  font-size: 16px;
+  line-height: 1.8;
+  letter-spacing: .002em;
+}
+html[data-theme="dark"] .devotionalImpact {
+  background: linear-gradient(145deg, rgba(141,23,32,.14), rgba(255,255,255,.012));
+  border-color: rgba(193,94,101,.25);
+  border-top-color: #bd4a53;
+}
+html[data-theme="dark"] .devotionalImpact span,
+html[data-theme="dark"] .devotionalBodyLabel,
+html[data-theme="dark"] .devotionalPrayer > span,
+html[data-theme="dark"] .devotionalApplication > span {
+  color: #e2a0a4;
+}
+html[data-theme="dark"] .devotionalImpact strong { color: #f4efeb; }
+html[data-theme="dark"] .devotionalPrayer,
+html[data-theme="dark"] .devotionalApplication {
+  background: linear-gradient(145deg, rgba(141,23,32,.12), rgba(255,255,255,.015));
+  border-color: rgba(193,94,101,.22);
+}
+html[data-theme="light"] .devotionalImpact strong { color: #292323; }
+@media (max-width: 700px) {
+  .devotionalImpact {
+    margin-top: 24px;
+    padding: 22px 18px 24px;
+    border-radius: 14px;
+  }
+  .devotionalImpact strong {
+    margin-top: 11px;
+    font-size: 19px;
+    line-height: 1.52;
+  }
+  .devotionalPrayer,
+  .devotionalApplication {
+    padding: 20px 18px;
+    border-radius: 14px;
+  }
+  .devotionalPrayer p,
+  .devotionalApplication p,
+  .devotionalPrayer > p,
+  .devotionalApplication > p {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+}
