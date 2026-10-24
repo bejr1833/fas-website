@@ -67,12 +67,10 @@ const fetchBlogs = async () => {
 };
 
 const buildSitemap = (posts, devotionals) => {
-  const today = new Date().toISOString().slice(0, 10);
-
   const urls = [
-    { loc: `${SITE_URL}/`, lastmod: today },
-    { loc: `${SITE_URL}/events`, lastmod: today },
-    { loc: `${SITE_URL}/devotions`, lastmod: today },
+    { loc: `${SITE_URL}/` },
+    { loc: `${SITE_URL}/events` },
+    { loc: `${SITE_URL}/devotions` },
     ...posts
       .filter((post) => post?.slug)
       .map((post) => ({
@@ -109,24 +107,32 @@ ${entries}
 let posts = [];
 let devotionals = [];
 
-try {
-  [posts, devotionals] = await Promise.all([
-    fetchBlogs(),
-    fetchDevotionals(),
-  ]);
-  console.log(
-    `Sitemap: found ${posts.length} blog posts and ${devotionals.length} devotionals.`
-  );
-} catch (error) {
+const [blogResult, devotionalResult] = await Promise.allSettled([
+  fetchBlogs(),
+  fetchDevotionals(),
+]);
+
+if (blogResult.status === "fulfilled") {
+  posts = blogResult.value;
+} else {
   console.error(
-    "Sitemap: could not reach the content API during build.",
-    error?.message || error
+    "Sitemap: blog API unavailable; continuing with other URLs.",
+    blogResult.reason?.message || blogResult.reason
   );
-  // Keep deployments resilient during a temporary API outage. The SPA can
-  // still serve its core routes; dynamic URLs will be added on the next build.
-  posts = [];
-  devotionals = [];
 }
+
+if (devotionalResult.status === "fulfilled") {
+  devotionals = devotionalResult.value;
+} else {
+  console.error(
+    "Sitemap: devotional API unavailable; continuing with other URLs.",
+    devotionalResult.reason?.message || devotionalResult.reason
+  );
+}
+
+console.log(
+  `Sitemap: found ${posts.length} blog posts and ${devotionals.length} devotionals.`
+);
 
 await mkdir(join(process.cwd(), "public"), { recursive: true });
 await writeFile(outputPath, buildSitemap(posts, devotionals), "utf8");
