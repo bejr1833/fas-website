@@ -2589,9 +2589,9 @@ function App() {
 
     const pageMeta = {
       "/": {
-        title: "Faith Alone Saves | FAS Fellowship",
+        title: "Christian Student Fellowship | Faith Alone Saves (FAS)",
         description:
-          "Faith Alone Saves (FAS) is a Christian student fellowship helping campus students grow in God's Word, worship, fellowship, mentorship, and service.",
+          "Grow in Christ with Faith Alone Saves (FAS), a Christian student fellowship for campus students through Bible study, prayer, worship, mentorship, and community.",
         canonical: "https://fas-fellowship.org/"
       },
       "/events": {
@@ -2607,7 +2607,7 @@ function App() {
         canonical: "https://fas-fellowship.org/devotions"
       }
     }[pathName] || {
-      title: "Faith Alone Saves | FAS Fellowship",
+      title: "Christian Student Fellowship | Faith Alone Saves (FAS)",
       description:
         "Faith Alone Saves is a Christian student fellowship helping campus students grow in God's Word, worship, fellowship, mentorship, and service.",
       canonical: "https://fas-fellowship.org/"
