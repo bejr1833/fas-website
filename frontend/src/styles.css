@@ -20351,3 +20351,30 @@ html[data-theme="light"] .devotionalArticle h1,
     line-height: 1.08;
   }
 }
+
+
+/* Weekday label for the homepage featured gathering date */
+.heroNextDate .heroNextWeekday {
+  display: block;
+  margin-bottom: 5px;
+  color: #9b343f;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+html[data-theme="dark"] .heroNextDate .heroNextWeekday {
+  color: #e2a0a4;
+}
+html[data-theme="light"] .heroNextDate .heroNextWeekday {
+  color: #8d1720;
+}
+@media (max-width: 700px) {
+  .heroNextDate .heroNextWeekday {
+    margin-bottom: 4px;
+    font-size: 9px;
+    letter-spacing: .15em;
+  }
+}
