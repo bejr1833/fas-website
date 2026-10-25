@@ -4604,6 +4604,13 @@ function App() {
               return (
                 <>
                   <div className="heroNextDate">
+                    <span className="heroNextWeekday">
+                      {new Date(
+                        featuredEvent.date + "T00:00:00"
+                      ).toLocaleDateString("en-US", {
+                        weekday: "long",
+                      })}
+                    </span>
                     <strong>
                       {new Date(
                         featuredEvent.date + "T00:00:00"
