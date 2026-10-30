@@ -212,8 +212,8 @@ class ContactMessageCreateView(generics.CreateAPIView):
         contact_message = serializer.save()
 
         if contact_message.request_type == "prayer" and contact_message.email_consent:
-            from .prayer_emails import send_prayer_acknowledgment
-            send_prayer_acknowledgment(contact_message)
+            from .prayer_emails import dispatch_prayer_acknowledgment_async
+            dispatch_prayer_acknowledgment_async(contact_message.pk)
 
         # Keep Django/Postgres as the source of truth. Google Sheets is a
         # secondary delivery channel, so a Sheets outage never loses a request.

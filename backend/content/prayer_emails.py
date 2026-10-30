@@ -1,23 +1,55 @@
+import json
 import logging
+import threading
+import urllib.error
+import urllib.request
 from datetime import timedelta
 
 from django.conf import settings
-from django.core.mail import send_mail
 from django.utils import timezone
 
 from .models import ContactMessage
 
 logger = logging.getLogger(__name__)
 
+BREVO_SEND_URL = "https://api.brevo.com/v3/smtp/email"
+
 
 def _send(prayer, subject, body):
-    return send_mail(
-        subject=subject,
-        message=body,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[prayer.email],
-        fail_silently=False,
+    """Send a transactional email through Brevo's HTTPS API (port 443)."""
+    api_key = getattr(settings, "BREVO_API_KEY", "")
+    if not api_key:
+        raise RuntimeError("BREVO_API_KEY is not configured")
+
+    payload = {
+        "sender": {
+            "name": settings.BREVO_SENDER_NAME,
+            "email": settings.BREVO_SENDER_EMAIL,
+        },
+        "to": [{"email": prayer.email, "name": prayer.name}],
+        "subject": subject,
+        "textContent": body,
+    }
+    request = urllib.request.Request(
+        BREVO_SEND_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "api-key": api_key,
+            "accept": "application/json",
+            "content-type": "application/json",
+        },
+        method="POST",
     )
+    try:
+        with urllib.request.urlopen(request, timeout=8) as response:
+            return 1 if 200 <= response.status < 300 else 0
+    except urllib.error.HTTPError as exc:
+        # Do not log request headers or the API key.
+        logger.error("Brevo transactional email failed with HTTP status %s", exc.code)
+        raise RuntimeError(f"Brevo returned HTTP {exc.code}") from None
+    except urllib.error.URLError as exc:
+        logger.error("Brevo transactional email connection failed: %s", exc.reason)
+        raise
 
 
 def send_prayer_acknowledgment(prayer):
@@ -44,6 +76,24 @@ def send_prayer_acknowledgment(prayer):
     except Exception:
         logger.exception("Prayer acknowledgment email failed for request #%s", prayer.pk)
     return False
+
+
+def dispatch_prayer_acknowledgment_async(prayer_id):
+    """Attempt the acknowledgment outside the HTTP request; scheduled retry is the fallback."""
+    def deliver():
+        try:
+            prayer = ContactMessage.objects.get(pk=prayer_id)
+            send_prayer_acknowledgment(prayer)
+        except ContactMessage.DoesNotExist:
+            return
+        except Exception:
+            logger.exception("Background prayer acknowledgment failed for request #%s", prayer_id)
+
+    threading.Thread(
+        target=deliver,
+        name=f"fas-prayer-ack-{prayer_id}",
+        daemon=True,
+    ).start()
 
 
 def send_prayer_followup(prayer):
