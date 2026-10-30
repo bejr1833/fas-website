@@ -4744,124 +4744,124 @@ function App() {
         )}
 
         {data.slides.length > 0 && (
-          <section className="homepageSlideshow reveal-section">
-                    <div className="slideshowHeader">
-                      <div>
-                        <div className="sectionLabel">
-                          FAS UPDATES
-                        </div>
-          
-                        <h2>
-                          Highlights & <em>Updates</em>
-                        </h2>
-                      </div>
-                      {data.slides.length > 1 && (
-                        <div className="slideshowCounter">
-                          {currentSlide + 1} / {data.slides.length}
-                        </div>
-                      )}
-                    </div>
-          
-                      <div
-                        className="slideshowFrame"
-                        onMouseEnter={(event) => {
-                          event.currentTarget.classList.add("isPaused");
-                        }}
-                        onMouseLeave={(event) => {
-                          event.currentTarget.classList.remove("isPaused");
-                        }}
+          <section className="homepageSlideshow reveal-section" aria-labelledby="homepage-highlights-title">
+          <div className="slideshowHeader">
+            <div>
+              <div className="sectionLabel">
+                FAS UPDATES
+              </div>
+
+              <h2>
+                Highlights & <em>Updates</em>
+              </h2>
+            </div>
+            {data.slides.length > 1 && (
+              <div className="slideshowCounter">
+                {currentSlide + 1} / {data.slides.length}
+              </div>
+            )}
+          </div>
+
+            <div
+              className="slideshowFrame"
+              onMouseEnter={(event) => {
+                event.currentTarget.classList.add("isPaused");
+              }}
+              onMouseLeave={(event) => {
+                event.currentTarget.classList.remove("isPaused");
+              }}
+            >
+              {data.slides.map((slide, index) => (
+                <article
+                  className={`slide ${
+                    index === currentSlide ? "active" : ""
+                  }`}
+                  key={slide.id}
+                >
+                  <img
+                    src={slide.image_url}
+                    alt={slide.title || "FAS update"}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                    decoding="async"
+                  />
+
+                  <div className="slideOverlay">
+                    <span className="slideCategory">
+                      {slide.category || "Update"}
+                    </span>
+
+                    {slide.title && (
+                      <h3>{slide.title}</h3>
+                    )}
+
+                    {slide.description && (
+                      <p>{slide.description}</p>
+                    )}
+
+                    {slide.button_url && (
+                      <a
+                        className="primaryBtn slideButton"
+                        href={slide.button_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        {data.slides.map((slide, index) => (
-                          <article
-                            className={`slide ${
-                              index === currentSlide ? "active" : ""
-                            }`}
-                            key={slide.id}
-                          >
-                            <img
-                              src={slide.image_url}
-                              alt={slide.title || "FAS update"}
-                              loading={index === 0 ? "eager" : "lazy"}
-                              fetchPriority={index === 0 ? "high" : "auto"}
-                              decoding="async"
-                            />
-          
-                            <div className="slideOverlay">
-                              <span className="slideCategory">
-                                {slide.category || "Update"}
-                              </span>
-          
-                              {slide.title && (
-                                <h3>{slide.title}</h3>
-                              )}
-          
-                              {slide.description && (
-                                <p>{slide.description}</p>
-                              )}
-          
-                              {slide.button_url && (
-                                <a
-                                  className="primaryBtn slideButton"
-                                  href={slide.button_url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  {slide.button_text || "Learn More"}
-                                  <ArrowRight size={16} />
-                                </a>
-                              )}
-                            </div>
-                          </article>
-                        ))}
-          
-                        {data.slides.length > 1 && (
-                          <>
-                            <button
-                              className="slideArrow slidePrevious"
-                              type="button"
-                              aria-label="Previous slide"
-                              onClick={() =>
-                                setCurrentSlide(
-                                  (currentSlide - 1 + data.slides.length) %
-                                    data.slides.length
-                                )
-                              }
-                            >
-                              <ArrowRight size={20} />
-                            </button>
-          
-                            <button
-                              className="slideArrow slideNext"
-                              type="button"
-                              aria-label="Next slide"
-                              onClick={() =>
-                                setCurrentSlide(
-                                  (currentSlide + 1) % data.slides.length
-                                )
-                              }
-                            >
-                              <ArrowRight size={20} />
-                            </button>
-          
-                            <div className="slideDots">
-                              {data.slides.map((slide, index) => (
-                                <button
-                                  key={slide.id}
-                                  type="button"
-                                  className={
-                                    index === currentSlide
-                                      ? "active"
-                                      : ""
-                                  }
-                                  aria-label={`Go to slide ${index + 1}`}
-                                  onClick={() => setCurrentSlide(index)}
-                                />
-                              ))}
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </section>
+                        {slide.button_text || "Learn More"}
+                        <ArrowRight size={16} />
+                      </a>
+                    )}
+                  </div>
+                </article>
+              ))}
+
+              {data.slides.length > 1 && (
+                <>
+                  <button
+                    className="slideArrow slidePrevious"
+                    type="button"
+                    aria-label="Previous slide"
+                    onClick={() =>
+                      setCurrentSlide(
+                        (currentSlide - 1 + data.slides.length) %
+                          data.slides.length
+                      )
+                    }
+                  >
+                    <ArrowRight size={20} />
+                  </button>
+
+                  <button
+                    className="slideArrow slideNext"
+                    type="button"
+                    aria-label="Next slide"
+                    onClick={() =>
+                      setCurrentSlide(
+                        (currentSlide + 1) % data.slides.length
+                      )
+                    }
+                  >
+                    <ArrowRight size={20} />
+                  </button>
+
+                  <div className="slideDots">
+                    {data.slides.map((slide, index) => (
+                      <button
+                        key={slide.id}
+                        type="button"
+                        className={
+                          index === currentSlide
+                            ? "active"
+                            : ""
+                        }
+                        aria-label={`Go to slide ${index + 1}`}
+                        onClick={() => setCurrentSlide(index)}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </section>
         )}
 
         {data.blog.length > 0 && (
