@@ -6,6 +6,7 @@ from .views import (
     EventListView,
     TestimonyCreateView,
     ContactMessageCreateView,
+    PrayerFollowupDispatchView,
     BlogPostListView,
     BlogPostDetailView,
     SermonPDFListView,
@@ -24,6 +25,7 @@ urlpatterns = [
     path("events/", EventListView.as_view(), name="events"),
     path("testimonies/", TestimonyCreateView.as_view(), name="testimonies"),
     path("contact/", ContactMessageCreateView.as_view(), name="contact"),
+    path("internal/send-prayer-followups/", PrayerFollowupDispatchView.as_view(), name="prayer-followups"),
 
     path("blog/", BlogPostListView.as_view(), name="blog-list"),
     path("blog/<slug:slug>/", BlogPostDetailView.as_view(), name="blog-detail"),
