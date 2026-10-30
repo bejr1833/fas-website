@@ -1691,6 +1691,7 @@ function App() {
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [contactMessage, setContactMessage] = useState("");
+  const [contactEmailConsent, setContactEmailConsent] = useState(false);
   const [contactSubmitting, setContactSubmitting] = useState(false);
   const [contactFeedback, setContactFeedback] = useState(null);
 
@@ -1716,6 +1717,7 @@ function App() {
           phone: contactPhone.trim(),
           request_type: contactRequestType,
           message: contactMessage.trim(),
+          email_consent: contactRequestType === "prayer" && contactEmailConsent,
         }),
       });
 
@@ -1741,6 +1743,7 @@ function App() {
       setContactEmail("");
       setContactPhone("");
       setContactMessage("");
+      setContactEmailConsent(false);
     } catch (error) {
       setContactFeedback({
         type: "error",
@@ -6621,6 +6624,13 @@ function App() {
                   />
                 </label>
 
+                {contactRequestType === "prayer" && (
+                  <label style={{ display: "flex", alignItems: "flex-start", gap: 10, lineHeight: 1.5 }}>
+                    <input type="checkbox" checked={contactEmailConsent} onChange={(event) => setContactEmailConsent(event.target.checked)} required style={{ marginTop: 4, width: 17, height: 17, flex: "0 0 auto" }} />
+                    <span>I agree to receive an acknowledgment email and one follow-up email from FAS about this prayer request. No marketing emails.</span>
+                  </label>
+                )}
+
                 {contactFeedback && (
                   <div
                     className={`contactFeedback ${
@@ -6639,7 +6649,7 @@ function App() {
                 <button
                   type="submit"
                   className="primaryBtn contactSubmitBtn"
-                  disabled={contactSubmitting}
+                  disabled={contactSubmitting || (contactRequestType === "prayer" && !contactEmailConsent)}
                 >
                   <span className="contactSubmitLabel">
                     {contactSubmitting
