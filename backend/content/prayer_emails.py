@@ -1,3 +1,4 @@
+import html
 import json
 import logging
 import threading
@@ -13,6 +14,23 @@ from .models import ContactMessage
 logger = logging.getLogger(__name__)
 
 BREVO_SEND_URL = "https://api.brevo.com/v3/smtp/email"
+FAS_EMAIL_LOGO_URL = "https://fas-fellowship.org/branding/fas-logo.png"
+
+
+def _html_email(body):
+    """Add the existing FAS logo above the unchanged plain-text email copy."""
+    safe_body = html.escape(body).replace("\n", "<br>")
+    return (
+        '<html><body style="margin:0;padding:24px;background:#f7f7f7;">'
+        '<div style="max-width:600px;margin:0 auto;padding:28px;background:#ffffff;'
+        'font-family:Arial,Helvetica,sans-serif;color:#222222;line-height:1.65;">'
+        '<div style="text-align:center;margin:0 0 24px;">'
+        f'<img src="{FAS_EMAIL_LOGO_URL}" alt="Faith Alone Saves — FAS" '
+        'width="220" style="display:inline-block;width:220px;max-width:100%;height:auto;border:0;">'
+        '</div>'
+        f'<div style="font-size:15px;">{safe_body}</div>'
+        '</div></body></html>'
+    )
 
 
 def _send(prayer, subject, body):
@@ -29,6 +47,7 @@ def _send(prayer, subject, body):
         "to": [{"email": prayer.email, "name": prayer.name}],
         "subject": subject,
         "textContent": body,
+        "htmlContent": _html_email(body),
     }
     request = urllib.request.Request(
         BREVO_SEND_URL,
