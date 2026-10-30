@@ -2,7 +2,7 @@ name: FAS Prayer Email Follow-ups
 
 on:
   schedule:
-    - cron: "30 3 * * *" # 9:00 AM Asia/Kolkata
+    - cron: "0 * * * *" # hourly; sends once each request reaches 24 hours
   workflow_dispatch:
 
 permissions:
