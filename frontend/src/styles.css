@@ -21153,3 +21153,39 @@ html[data-theme="light"] .slideshowCounter {
     padding-right: 15px;
   }
 }
+
+
+/* Align the Highlights & Updates heading to the left on every viewport */
+.homepageSlideshow .slideshowHeader {
+  justify-content: space-between;
+  text-align: left;
+}
+
+.homepageSlideshow .slideshowHeader > div:first-child {
+  margin-right: auto;
+  text-align: left;
+}
+
+.homepageSlideshow .slideshowHeader .sectionLabel,
+.homepageSlideshow .slideshowHeader h2 {
+  text-align: left;
+  margin-left: 0;
+}
+
+@media (max-width: 480px) {
+  .homepageSlideshow .slideshowHeader {
+    justify-content: space-between;
+    align-items: flex-end;
+    text-align: left;
+  }
+
+  .homepageSlideshow .slideshowHeader > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .homepageSlideshow .slideshowHeader h2 {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
