@@ -1,0 +1,30 @@
+name: FAS Prayer Email Follow-ups
+
+on:
+  schedule:
+    - cron: "0 * * * *" # hourly; sends once each request reaches 24 hours
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  send-prayer-emails:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger private FAS prayer email dispatcher
+        env:
+          FAS_FOLLOWUP_URL: ${{ secrets.FAS_FOLLOWUP_URL }}
+          FAS_FOLLOWUP_TOKEN: ${{ secrets.FAS_FOLLOWUP_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "$FAS_FOLLOWUP_URL" ] || [ -z "$FAS_FOLLOWUP_TOKEN" ]; then
+            echo "Required repository secrets are missing." >&2
+            exit 1
+          fi
+          curl --fail --silent --show-error \
+            --request POST \
+            --header "Authorization: Bearer $FAS_FOLLOWUP_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data '{}' \
+            "$FAS_FOLLOWUP_URL"

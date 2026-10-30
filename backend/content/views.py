@@ -211,6 +211,10 @@ class ContactMessageCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         contact_message = serializer.save()
 
+        if contact_message.request_type == "prayer" and contact_message.email_consent:
+            from .prayer_emails import send_prayer_acknowledgment
+            send_prayer_acknowledgment(contact_message)
+
         # Keep Django/Postgres as the source of truth. Google Sheets is a
         # secondary delivery channel, so a Sheets outage never loses a request.
         from .google_sheets import is_configured, sync_contact_message
@@ -224,6 +228,22 @@ class ContactMessageCreateView(generics.CreateAPIView):
                     "Google Sheets sync failed for ContactMessage #%s",
                     contact_message.pk,
                 )
+
+
+class PrayerFollowupDispatchView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
+
+    def post(self, request):
+        import hmac
+        import os
+        from rest_framework import status
+        from .prayer_emails import process_pending_prayer_emails
+        expected = os.getenv("PRAYER_FOLLOWUP_TOKEN", "")
+        supplied = request.headers.get("Authorization", "").removeprefix("Bearer ").strip()
+        if not expected or not hmac.compare_digest(supplied, expected):
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+        return Response(process_pending_prayer_emails(), status=status.HTTP_200_OK)
 
 
 class BlogPostListView(generics.ListAPIView):
