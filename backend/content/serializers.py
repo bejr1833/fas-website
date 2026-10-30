@@ -132,12 +132,17 @@ class ContactMessageSerializer(serializers.ModelSerializer):
             "phone",
             "request_type",
             "message",
+            "email_consent",
         )
         extra_kwargs = {
-            "request_type": {
-                "required": True,
-            },
+            "request_type": {"required": True},
+            "email_consent": {"required": False},
         }
+
+    def validate(self, attrs):
+        if attrs.get("request_type") == "prayer" and not attrs.get("email_consent", False):
+            raise serializers.ValidationError({"email_consent": "Please agree to receive the prayer-request acknowledgment and one follow-up email."})
+        return attrs
 
 
 class BlogPostSerializer(serializers.ModelSerializer):
