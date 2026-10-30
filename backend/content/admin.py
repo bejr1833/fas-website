@@ -147,58 +147,23 @@ class TestimonyAdmin(admin.ModelAdmin):
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
     list_display = (
-        "name",
-        "email",
-        "phone",
-        "request_type",
-        "status",
-        "created_at",
+        "name", "email", "request_type", "status", "email_consent",
+        "acknowledgment_email_sent_at", "followup_email_sent_at", "created_at",
     )
-    list_filter = (
-        "request_type",
-        "status",
-        "created_at",
-    )
-    search_fields = (
-        "name",
-        "email",
-        "message",
-        "admin_notes",
-    )
+    list_filter = ("request_type", "status", "email_consent", "created_at")
+    search_fields = ("name", "email", "message", "admin_notes")
     readonly_fields = (
-        "created_at",
+        "created_at", "acknowledgment_email_sent_at", "followup_email_sent_at",
     )
     fieldsets = (
-        (
-            "Contact",
-            {
-                "fields": (
-                    "name",
-                    "email",
-                    "phone",
-                    "request_type",
-                )
-            },
-        ),
-        (
-            "Message",
-            {
-                "fields": (
-                    "message",
-                )
-            },
-        ),
-        (
-            "Admin",
-            {
-                "fields": (
-                    "status",
-                    "admin_notes",
-                    "created_at",
-                )
-            },
-        ),
+        ("Contact", {"fields": ("name", "email", "phone", "request_type")}),
+        ("Message", {"fields": ("message",)}),
+        ("Email consent and delivery", {"fields": (
+            "email_consent", "acknowledgment_email_sent_at", "followup_email_sent_at",
+        )}),
+        ("Admin", {"fields": ("status", "admin_notes", "created_at")}),
     )
+
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
