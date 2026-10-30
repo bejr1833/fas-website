@@ -21189,3 +21189,56 @@ html[data-theme="light"] .slideshowCounter {
     margin-right: 0;
   }
 }
+
+
+/* MOBILE HIGHLIGHTS — remove unused lower card space */
+@media (max-width: 480px) {
+  .homepageSlideshow .slideshowFrame {
+    height: 470px;
+    min-height: 0;
+  }
+
+  .homepageSlideshow .slideshowFrame .slide > img {
+    height: 46%;
+    object-fit: contain !important;
+    object-position: center center;
+  }
+
+  .homepageSlideshow .slideshowFrame .slideOverlay {
+    padding: calc(46% + 10px) 18px 48px;
+  }
+
+  .homepageSlideshow .slideshowFrame .slideOverlay .slideCategory {
+    margin-top: 0;
+  }
+
+  .homepageSlideshow .slideshowFrame .slideOverlay h3 {
+    margin: 8px 0 7px;
+    font-size: 20px;
+    line-height: 1.14;
+  }
+
+  .homepageSlideshow .slideshowFrame .slideOverlay p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .homepageSlideshow .slideshowFrame .slideButton {
+    min-height: 44px;
+    margin-top: 13px;
+  }
+
+  .homepageSlideshow .slideshowFrame .slideDots {
+    bottom: 14px;
+  }
+
+  .homepageSlideshow .slideshowFrame .slideArrow {
+    top: 23%;
+  }
+}
+
+@media (max-width: 360px) {
+  .homepageSlideshow .slideshowFrame {
+    height: 485px;
+  }
+}
