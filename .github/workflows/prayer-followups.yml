@@ -2,11 +2,15 @@ name: FAS Prayer Email Follow-ups
 
 on:
   schedule:
-    - cron: "0 * * * *" # hourly; sends once each request reaches 24 hours
+    - cron: "*/5 * * * *" # retry acknowledgments and send follow-ups due after 24 hours
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: fas-prayer-email-dispatch
+  cancel-in-progress: false
 
 jobs:
   send-prayer-emails:
