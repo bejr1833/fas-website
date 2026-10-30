@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny-ps" width="512" height="512" viewBox="0 0 512 512">
+  <title>Faith Alone Saves</title>
+  <desc>FAS monogram with a red cross and an open Bible in black, deep red and white.</desc>
+  <rect x="0" y="0" width="512" height="512" fill="#FFFFFF"/>
+  <path fill="#171717" d="M64 105 H218 V151 H111 V195 H194 V240 H111 V320 H64 Z"/>
+  <path fill="#171717" fill-rule="evenodd" d="M168 320 L230 105 H286 L349 320 H299 L286 270 H229 L216 320 Z M240 226 H275 L258 164 Z"/>
+  <path fill="#171717" d="M448 142 C425 119 397 106 365 106 C315 106 286 133 286 174 C286 211 310 230 360 244 C393 253 404 260 404 275 C404 291 389 301 366 301 C337 301 312 289 291 270 L265 306 C291 333 327 347 367 347 C418 347 451 319 451 275 C451 237 427 216 378 203 C343 194 332 187 332 173 C332 159 344 150 365 150 C387 150 407 159 425 175 Z"/>
+  <path fill="#8F1720" d="M244 65 H270 V151 H350 L319 180 H270 V285 H244 V180 H193 L222 151 H244 Z"/>
+  <path fill="#171717" d="M68 350 C125 324 184 322 250 361 C316 322 375 324 444 350 L444 382 C375 353 318 356 256 397 C194 356 133 353 68 382 Z"/>
+  <path fill="#8F1720" d="M82 359 C140 341 191 345 250 379 L250 391 C190 358 139 356 82 371 Z"/>
+  <path fill="#8F1720" d="M430 359 C372 341 321 345 262 379 L262 391 C322 358 373 356 430 371 Z"/>
+</svg>
