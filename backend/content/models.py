@@ -155,6 +155,9 @@ class ContactMessage(models.Model):
         default="new",
     )
     admin_notes = models.TextField(blank=True)
+    email_consent = models.BooleanField(default=False)
+    acknowledgment_email_sent_at = models.DateTimeField(blank=True, null=True)
+    followup_email_sent_at = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
