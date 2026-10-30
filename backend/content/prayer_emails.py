@@ -19,7 +19,7 @@ FAS_EMAIL_LOGO_URL = "https://fas-fellowship.org/branding/fas-logo.png"
 
 def _html_email(body):
     """Add the existing FAS logo above the unchanged plain-text email copy."""
-    safe_body = html.escape(body).replace("\\n", "<br>")
+    safe_body = html.escape(body).replace("\n", "<br>")
     return (
         '<html><body style="margin:0;padding:24px;background:#f7f7f7;">'
         '<div style="max-width:600px;margin:0 auto;padding:28px;background:#ffffff;'
