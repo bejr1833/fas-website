@@ -21061,3 +21061,95 @@ html[data-theme="light"] .slideshowCounter {
   .slideArrow,
   .slideDots button { transition: none !important; }
 }
+
+
+/* HIGHLIGHTS FIX — show the complete poster, then place copy directly below */
+.slideshowFrame .slide > img {
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 56%;
+  object-fit: contain !important;
+  object-position: center center;
+  background: #0b0c0f;
+  opacity: 1;
+  filter: none;
+}
+
+.slideshowFrame .slideOverlay {
+  inset: 0;
+  justify-content: flex-start;
+  padding-top: calc(56% + 18px);
+  padding-bottom: 56px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 49%,
+    rgba(17,18,22,.92) 55%,
+    #111216 62%,
+    #111216 100%
+  );
+}
+
+@media (max-width: 850px) {
+  .slideshowFrame .slide > img {
+    height: 54%;
+    object-fit: contain !important;
+  }
+
+  .slideshowFrame .slideOverlay {
+    justify-content: flex-start;
+    padding: calc(54% + 16px) 24px 54px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 47%,
+      rgba(17,18,22,.94) 54%,
+      #111216 62%,
+      #111216 100%
+    );
+  }
+}
+
+@media (max-width: 480px) {
+  .slideshowFrame {
+    height: 590px;
+  }
+
+  .slideshowFrame .slide > img {
+    height: 49%;
+    object-fit: contain !important;
+    object-position: center center;
+    background: #0b0c0f;
+  }
+
+  .slideshowFrame .slideOverlay {
+    justify-content: flex-start;
+    padding: calc(49% + 15px) 18px 52px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 43%,
+      rgba(17,18,22,.96) 51%,
+      #111216 59%,
+      #111216 100%
+    );
+  }
+
+  .slideshowFrame .slideOverlay h3 {
+    margin-top: 10px;
+  }
+
+  .slideshowFrame .slideArrow {
+    top: 24%;
+  }
+}
+
+@media (max-width: 360px) {
+  .slideshowFrame { height: 610px; }
+  .slideshowFrame .slideOverlay {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
