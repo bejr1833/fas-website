@@ -23,7 +23,11 @@ test("primary section navigation targets existing sections", async ({ page }) =>
     const href = await links.nth(index).getAttribute("href");
     if (!href || href === "#") continue;
     const targetId = decodeURIComponent(href.slice(1));
-    await expect(page.locator(`#${CSS.escape(targetId)}`), `Missing navigation target: ${href}`).toHaveCount(1);
+    const matchingTargets = await page.locator("[id]").evaluateAll(
+      (elements, id) => elements.filter((element) => element.id === id).length,
+      targetId
+    );
+    expect(matchingTargets, `Missing or duplicate navigation target: ${href}`).toBe(1);
   }
 });
 
@@ -61,7 +65,6 @@ test("images with a failed source have a visible fallback or do not break layout
   // Record broken assets as test output; some third-party content may be temporarily unavailable.
   test.info().annotations.push({ type: "broken-images", description: JSON.stringify(brokenImages.slice(0, 20)) });
 });
-
 
 test("public backend health and core content endpoints respond", async ({ request }) => {
   const base = "https://fas-backend-xnhy.onrender.com";
