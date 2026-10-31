@@ -6238,7 +6238,13 @@ function App() {
                 <div className="storyModalDivider" />
 
                 <div className="storyFullText">
-                  {selectedStory.testimony}
+                  {String(selectedStory.testimony || "")
+                    .replace(/\r\n?/g, "\n")
+                    .split(/\n\s*\n/)
+                    .filter((paragraph) => paragraph.trim())
+                    .map((paragraph, index) => (
+                      <p key={index}>{paragraph.trim().replace(/\n/g, " ")}</p>
+                    ))}
                 </div>
 
                 <div className="storyModalFooter">

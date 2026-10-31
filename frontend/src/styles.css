@@ -21469,3 +21469,197 @@ html[data-theme="light"] .slideshowCounter {
   .navbar nav a,
   .menuBtn { transition: none !important; }
 }
+
+
+/* =========================================================
+   STUDENT STORIES — EDITORIAL READABILITY REFINEMENT
+   ========================================================= */
+.storiesSection .storiesIntro {
+  max-width: 650px;
+  margin-top: 14px;
+  font-size: 16px;
+  line-height: 1.75;
+  letter-spacing: 0;
+  color: var(--text-secondary);
+}
+.storiesGrid .storyCard {
+  min-width: 0;
+}
+.storiesGrid .storyCardBody {
+  padding: 22px 22px 18px;
+}
+.storiesGrid .storyIdentity h3 {
+  margin: 7px 0 5px;
+  font-size: clamp(19px, 1.7vw, 23px);
+  line-height: 1.3;
+  letter-spacing: -.025em;
+  overflow-wrap: anywhere;
+}
+.storiesGrid .storyIdentity > span {
+  display: block;
+  font-size: 13px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.storiesGrid .storyImpact {
+  margin-top: 16px;
+  padding: 13px 15px;
+}
+.storiesGrid .storyImpact span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: .13em;
+}
+.storiesGrid .storyImpact strong {
+  display: block;
+  font-size: 15px;
+  line-height: 1.65;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.storiesGrid .storyPreview {
+  margin-top: 17px;
+}
+.storiesGrid .storyPreview p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 1.8;
+  letter-spacing: .005em;
+  overflow-wrap: anywhere;
+}
+.storiesGrid .storyReadButton {
+  min-height: 48px;
+  margin-top: 16px;
+  padding-top: 14px;
+  font-size: 11px;
+  letter-spacing: .12em;
+}
+.storyModal {
+  max-height: min(90vh, 900px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.storyModalContent {
+  padding: clamp(22px, 4vw, 42px);
+}
+.storyModalContent h2 {
+  margin: 8px 0 5px;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -.035em;
+  overflow-wrap: anywhere;
+}
+.storyModalCollege {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.storyModalImpact {
+  margin-top: 20px;
+  padding: 16px 18px;
+}
+.storyModalImpact strong {
+  display: block;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.storyFullText {
+  max-width: 70ch;
+  margin: 22px auto 0;
+  color: var(--text-primary);
+  font-size: 16px;
+  line-height: 1.95;
+  letter-spacing: .002em;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.storyFullText p {
+  margin: 0 0 1.15em;
+  white-space: normal;
+}
+.storyFullText p:last-child {
+  margin-bottom: 0;
+}
+html[data-theme="dark"] .storiesIntro {
+  color: #C5C0BA !important;
+}
+html[data-theme="dark"] .storyFullText {
+  color: #F0ECE6 !important;
+}
+@media (max-width: 850px) {
+  .storiesSection .storiesIntro {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .storiesGrid {
+    gap: 16px;
+    padding: 4px 2px 16px;
+  }
+  .storiesGrid .storyCard {
+    flex: 0 0 min(390px, calc(100vw - 44px));
+    width: min(390px, calc(100vw - 44px));
+  }
+  .storiesGrid .storyCardBody {
+    padding: 20px 19px 17px;
+  }
+  .storiesGrid .storyPreview p {
+    font-size: 15px;
+    line-height: 1.8;
+    -webkit-line-clamp: 4;
+  }
+  .storyModal {
+    width: min(100% - 24px, 680px);
+    max-height: 92dvh;
+    border-radius: 20px;
+  }
+  .storyModalContent {
+    padding: 22px 20px 26px;
+  }
+  .storyFullText {
+    font-size: 16px;
+    line-height: 1.9;
+  }
+}
+@media (max-width: 480px) {
+  .storiesSection .sectionTop {
+    margin-bottom: 8px;
+  }
+  .storiesGrid .storyCard {
+    flex-basis: calc(100vw - 36px);
+    width: calc(100vw - 36px);
+  }
+  .storiesGrid .storyPreview p {
+    font-size: 14.5px;
+    line-height: 1.8;
+  }
+  .storyModal {
+    width: calc(100% - 18px);
+    max-height: 94dvh;
+    border-radius: 17px;
+  }
+  .storyModalMedia {
+    max-height: 220px;
+  }
+  .storyModalContent {
+    padding: 19px 17px 22px;
+  }
+  .storyModalContent h2 {
+    font-size: 27px;
+  }
+  .storyFullText {
+    margin-top: 18px;
+    font-size: 15.5px;
+    line-height: 1.85;
+  }
+  .storyModalFooter {
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 9px;
+  }
+}
