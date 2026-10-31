@@ -73,3 +73,16 @@ test("public backend health and core content endpoints respond", async ({ reques
     expect(response.status(), `${endpoint} should respond successfully`).toBe(200);
   }
 });
+
+
+test("homepage hero calls to action open their dedicated pages", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: /Explore Events/i }).click();
+  await expect(page).toHaveURL(/\/events\/?$/);
+  await expect(page.locator(".eventsPageMain")).toBeVisible();
+
+  await page.goto("/");
+  await page.getByRole("link", { name: /Discover FAS/i }).click();
+  await expect(page).toHaveURL(/\/about\/?$/);
+  await expect(page.locator('#top > #about')).toBeVisible();
+});
