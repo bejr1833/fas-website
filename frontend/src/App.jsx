@@ -4558,8 +4558,8 @@ function App() {
             <div className="heroActions">
               <a
                 className="primaryBtn"
-                href="#events"
-                onClick={(event) => handleSectionNavClick(event, "events")}
+                href="/events"
+                onClick={closeMenu}
               >
                 Explore Events
                 <ArrowRight size={17} />
@@ -4567,10 +4567,11 @@ function App() {
 
               <a
                 className="textBtn"
-                href="#about"
-                onClick={(event) => handleSectionNavClick(event, "about")}
+                href="/about"
+                onClick={closeMenu}
               >
                 Discover FAS
+                <ArrowRight size={17} />
               </a>
             </div>
 
