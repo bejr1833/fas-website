@@ -21578,3 +21578,51 @@ html[data-theme="light"] .slideshowCounter {
     margin-bottom: 1.1em;
   }
 }
+
+
+/* MOBILE FULL-STORY READING — stronger final overrides */
+.storyModalContent .storyFullText {
+  width: 100%;
+  max-width: 62ch;
+  margin-inline: auto;
+  font-family: "DM Sans", "Segoe UI", system-ui, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 400;
+  line-height: 1.82 !important;
+  letter-spacing: 0.005em;
+  text-align: left !important;
+  word-spacing: 0.01em;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.storyModalContent .storyFullText p {
+  margin: 0 0 1.2em !important;
+}
+.storyModalContent .storyFullText p:last-child {
+  margin-bottom: 0 !important;
+}
+html[data-theme="dark"] .storyModalContent .storyFullText {
+  color: #E5E2DC !important;
+}
+html[data-theme="light"] .storyModalContent .storyFullText {
+  color: #3C403D !important;
+}
+@media (max-width: 800px) {
+  .storyModalContent .storyFullText {
+    max-width: 58ch;
+    font-size: 16px !important;
+    line-height: 1.78 !important;
+  }
+  .storyModalContent {
+    padding: 28px 22px 34px !important;
+  }
+}
+@media (max-width: 480px) {
+  .storyModalContent .storyFullText {
+    font-size: 15.5px !important;
+    line-height: 1.78 !important;
+  }
+  .storyModalContent {
+    padding: 25px 19px 30px !important;
+  }
+}
