@@ -1298,9 +1298,10 @@ function App() {
   const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
   const isHomePage = currentPath === "/";
   const isBlogListingPage = currentPath === "/blog";
+  const isBlogRoute = isBlogListingPage || currentPath.startsWith("/blog/");
   const isMediaPage = currentPath === "/media";
   const isDevotionalPage = currentPath.startsWith("/devotionals");
-  const needsHomeContent = !isBlogListingPage && !isMediaPage && !isDevotionalPage;
+  const needsHomeContent = !isBlogRoute && !isMediaPage && !isDevotionalPage;
 
   const cachedHome = readContentCache("home");
   const cachedBlog = readContentCache("blog");
