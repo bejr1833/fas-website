@@ -21469,3 +21469,160 @@ html[data-theme="light"] .slideshowCounter {
   .navbar nav a,
   .menuBtn { transition: none !important; }
 }
+
+
+/* =========================================================
+   STUDENT TESTIMONIES — READABILITY POLISH
+   ========================================================= */
+
+/* Card previews: comfortable line length and clean sans-serif reading. */
+.storiesIntro {
+  max-width: 62ch;
+  font-size: 16px;
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+.storyIdentity h3 {
+  line-height: 1.28;
+  overflow-wrap: anywhere;
+}
+.storyIdentity > span {
+  font-size: 13px;
+  line-height: 1.65;
+}
+.storyImpact strong {
+  font-size: clamp(16px, 1.25vw, 18px);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.storyPreview p {
+  max-width: 48ch;
+  color: #454744;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  letter-spacing: 0;
+  -webkit-line-clamp: 4;
+  text-wrap: pretty;
+}
+
+/* Full testimony: clear paragraphs, generous measure, no justified rivers. */
+.storyFullText {
+  max-width: 68ch;
+  margin: 0 auto;
+  color: #343633;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.005em;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+.storyFullText p {
+  margin: 0 0 1.25em;
+}
+.storyFullText p:last-child {
+  margin-bottom: 0;
+}
+.storyModalContent {
+  padding: 58px clamp(28px, 4vw, 58px) 50px;
+}
+.storyModalContent h2 {
+  max-width: 16ch;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+.storyModalCollege {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.storyModalImpact strong {
+  font-size: 19px;
+  line-height: 1.6;
+}
+@media (max-width: 800px) {
+  .storyFullText {
+    max-width: none;
+    font-size: 16px;
+    line-height: 1.85;
+  }
+  .storyModalContent {
+    padding: 30px 24px 34px;
+  }
+}
+@media (max-width: 480px) {
+  .storiesIntro {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .storyPreview p {
+    font-size: 14px;
+    line-height: 1.75;
+    -webkit-line-clamp: 4;
+  }
+  .storyModalContent {
+    padding: 26px 20px 30px;
+  }
+  .storyModalContent h2 {
+    font-size: clamp(27px, 8vw, 32px);
+  }
+  .storyFullText {
+    font-size: 15.5px;
+    line-height: 1.82;
+    letter-spacing: 0;
+  }
+  .storyFullText p {
+    margin-bottom: 1.1em;
+  }
+}
+
+
+/* MOBILE FULL-STORY READING — stronger final overrides */
+.storyModalContent .storyFullText {
+  width: 100%;
+  max-width: 62ch;
+  margin-inline: auto;
+  font-family: "DM Sans", "Segoe UI", system-ui, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 400;
+  line-height: 1.82 !important;
+  letter-spacing: 0.005em;
+  text-align: left !important;
+  word-spacing: 0.01em;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.storyModalContent .storyFullText p {
+  margin: 0 0 1.2em !important;
+}
+.storyModalContent .storyFullText p:last-child {
+  margin-bottom: 0 !important;
+}
+html[data-theme="dark"] .storyModalContent .storyFullText {
+  color: #E5E2DC !important;
+}
+html[data-theme="light"] .storyModalContent .storyFullText {
+  color: #3C403D !important;
+}
+@media (max-width: 800px) {
+  .storyModalContent .storyFullText {
+    max-width: 58ch;
+    font-size: 16px !important;
+    line-height: 1.78 !important;
+  }
+  .storyModalContent {
+    padding: 28px 22px 34px !important;
+  }
+}
+@media (max-width: 480px) {
+  .storyModalContent .storyFullText {
+    font-size: 15.5px !important;
+    line-height: 1.78 !important;
+  }
+  .storyModalContent {
+    padding: 25px 19px 30px !important;
+  }
+}
