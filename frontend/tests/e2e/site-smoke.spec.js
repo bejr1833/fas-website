@@ -41,8 +41,8 @@ test("video cards expose safe, usable YouTube destinations when present", async 
   }
 });
 
-test("mobile layout does not create horizontal page overflow", async ({ page, isMobile }) => {
-  test.skip(!isMobile, "Mobile viewport regression check");
+test("mobile layout does not create horizontal page overflow", async ({ page }) => {
+  test.skip((page.viewportSize()?.width || 1440) > 700, "Mobile viewport regression check");
   await page.goto("/");
   await page.waitForLoadState("domcontentloaded");
   const dimensions = await page.evaluate(() => ({
@@ -60,4 +60,13 @@ test("images with a failed source have a visible fallback or do not break layout
   );
   // Record broken assets as test output; some third-party content may be temporarily unavailable.
   test.info().annotations.push({ type: "broken-images", description: JSON.stringify(brokenImages.slice(0, 20)) });
+});
+
+
+test("public backend health and core content endpoints respond", async ({ request }) => {
+  const base = "https://fas-backend-xnhy.onrender.com";
+  for (const endpoint of ["/api/health/", "/api/home/", "/api/videos/"]) {
+    const response = await request.get(`${base}${endpoint}`, { timeout: 45_000 });
+    expect(response.status(), `${endpoint} should respond successfully`).toBe(200);
+  }
 });
