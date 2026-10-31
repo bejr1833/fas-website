@@ -21682,3 +21682,10 @@ html[data-theme="light"] .slideshowCounter {
     align-items: center;
   }
 }
+
+
+/* Home page uses the compact latest-post feature only.
+   Keep the full FAS Journal listing exclusive to the /blog page. */
+.site[data-page="home"] .blogSection {
+  display: none !important;
+}
