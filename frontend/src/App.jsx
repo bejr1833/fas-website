@@ -4479,12 +4479,16 @@ function App() {
 
 
   return (
-    <div className="site">
+    <div className="site" data-page={(() => {
+      const path = window.location.pathname.replace(/\/$/, "") || "/";
+      const routes = { "/about": "about", "/events": "events", "/stories": "stories", "/blog": "blog", "/media": "media", "/gallery": "gallery", "/connect": "connect" };
+      return routes[path] || "home";
+    })()}>
       <header className="navbar">
         <a
-          href="#top"
+          href="/"
           className="brand"
-          onClick={(event) => handleSectionNavClick(event, "top")}
+          onClick={closeMenu}
         >
           <img
             src="/branding/fas-logo.png"
@@ -4495,63 +4499,17 @@ function App() {
           />
         </a>
 
-        <nav
-          id="main-navigation"
-          className={menuOpen ? "mobileOpen" : ""}
-        >
-          <a href="#about" onClick={(event) => handleSectionNavClick(event, "about")}>
-            About
+        <nav id="main-navigation" className={menuOpen ? "mobileOpen" : ""} aria-label="Main navigation">
+          <a href="/about" onClick={closeMenu}>About</a>
+          <a href="/events" onClick={closeMenu}>Events</a>
+          <a href="/stories" onClick={closeMenu}>Stories</a>
+          <a href="/blog" onClick={closeMenu}>Blog</a>
+          <a href="/devotions" onClick={closeMenu}>Devotions</a>
+          <a href="/media" onClick={closeMenu}>Media</a>
+          <a href="/gallery" onClick={closeMenu}>Gallery</a>
+          <a href="/connect" className="mobileConnectLink" onClick={closeMenu}>
+            <span>Connect with FAS</span><ArrowRight size={16} />
           </a>
-
-          <a href="#vision" onClick={(event) => handleSectionNavClick(event, "vision")}>
-            Vision
-          </a>
-
-          <a href="#mission" onClick={(event) => handleSectionNavClick(event, "mission")}>
-            Mission
-          </a>
-
-          <a href="#events" onClick={(event) => handleSectionNavClick(event, "events")}>
-            Events
-          </a>
-
-          <a href="#blog" onClick={(event) => handleSectionNavClick(event, "blog")}>
-            Blog
-          </a>
-
-          <a href="/devotions" onClick={closeMenu}>
-            Devotions
-          </a>
-
-          <a href="#sermons" onClick={(event) => handleSectionNavClick(event, "sermons")}>
-            Sermons
-          </a>
-
-          <a href="#ebooks" onClick={(event) => handleSectionNavClick(event, "ebooks")}>
-            E-Books
-          </a>
-
-          <a href="#videos" onClick={(event) => handleSectionNavClick(event, "videos")}>
-            Videos
-          </a>
-
-          <a href="#stories" onClick={(event) => handleSectionNavClick(event, "stories")}>
-            Stories
-          </a>
-
-          <a href="#gallery" onClick={(event) => handleSectionNavClick(event, "gallery")}>
-            Gallery
-          </a>
-
-          <a
-            href="#connect"
-            className="mobileConnectLink"
-            onClick={(event) => handleSectionNavClick(event, "connect")}
-          >
-            <span>Connect with FAS</span>
-            <ArrowRight size={16} />
-          </a>
-
         </nav>
 
         <div className="navActions">
@@ -4567,8 +4525,8 @@ function App() {
 
           <a
             className="navCta"
-            href="#connect"
-            onClick={(event) => handleSectionNavClick(event, "connect")}
+            href="/connect"
+            onClick={closeMenu}
           >
             Connect
             <ArrowRight size={16} />
