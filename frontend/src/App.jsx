@@ -123,6 +123,36 @@ const fallback = {
   email: ""
 };
 
+function getVideoWatchUrl(rawUrl = "") {
+  const value = String(rawUrl || "").trim();
+  if (!value) return "";
+
+  try {
+    const parsed = new URL(value);
+    const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+
+    if (host === "youtu.be") {
+      const videoId = parsed.pathname.split("/").filter(Boolean)[0];
+      return videoId ? `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}` : value;
+    }
+
+    if (host === "youtube.com" || host === "m.youtube.com" || host === "music.youtube.com") {
+      const segments = parsed.pathname.split("/").filter(Boolean);
+      const videoId =
+        parsed.searchParams.get("v") ||
+        (["shorts", "embed", "live"].includes(segments[0]) ? segments[1] : "");
+
+      return videoId
+        ? `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`
+        : value;
+    }
+  } catch {
+    return value;
+  }
+
+  return value;
+}
+
 function getTeluguScriptureReference(reference = "") {
   const value = String(reference || "").trim();
   const bookMap = [
@@ -5865,7 +5895,7 @@ function App() {
                     )}
 
                     <a
-                      href={video.video_url}
+                      href={getVideoWatchUrl(video.video_url)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="videoPlayButton"
@@ -5912,7 +5942,7 @@ function App() {
                     )}
 
                     <a
-                        href={video.video_url}
+                        href={getVideoWatchUrl(video.video_url)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="videoWatchLink"
