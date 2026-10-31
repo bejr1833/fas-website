@@ -1,0 +1,89 @@
+name: FAS frontend quality checks
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-e2e.yml"
+  push:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-e2e.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-e2e:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Commit regenerated dependency lockfile when needed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+users.noreply.github.com"
+          git add package-lock.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(frontend): refresh npm lockfile"
+            git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
+          fi
+
+      - name: Install Playwright test runner
+        run: npm install --no-save --no-audit --no-fund @playwright/test@1.55.0
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build production frontend
+        run: npm run build
+
+      - name: Run desktop and mobile E2E tests
+        run: npx playwright test
+
+      - name: Run Lighthouse production audit
+        if: success()
+        run: |
+          CHROME_PATH="$(find "$HOME/.cache/ms-playwright" -type f -name chrome | head -n 1)"
+          if [ -z "$CHROME_PATH" ]; then echo "Playwright Chromium binary not found"; exit 1; fi
+          npx --yes lighthouse@12.8.2 https://fas-fellowship.org --chrome-path="$CHROME_PATH" --chrome-flags="--headless --no-sandbox" --only-categories=performance,accessibility,best-practices,seo --output=json --output-path=./lighthouse-report.json
+          node -e "const r=require('./lighthouse-report.json'); for (const k of ['performance','accessibility','best-practices','seo']) console.log(k+': '+Math.round((r.categories[k].score||0)*100));"
+
+      - name: Audit dependency vulnerabilities
+        if: always()
+        run: |
+          npm audit --json > npm-audit.json || AUDIT_EXIT=$?
+          node -e "const r=require('./npm-audit.json'); const v=r.metadata?.vulnerabilities||{}; console.log('npm audit:', JSON.stringify(v)); if ((v.high||0)+(v.critical||0)>0) process.exit(1);"
+          if [ "${AUDIT_EXIT:-0}" -ne 0 ]; then exit "$AUDIT_EXIT"; fi
+
+      - name: Upload Playwright report and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fas-frontend-test-results
+          path: |
+            frontend/playwright-report/
+            frontend/test-results/
+            frontend/npm-audit.json
+            frontend/lighthouse-report.json
+          if-no-files-found: ignore
+          retention-days: 14
