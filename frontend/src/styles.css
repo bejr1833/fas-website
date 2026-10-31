@@ -21278,3 +21278,194 @@ html[data-theme="light"] .slideshowCounter {
     top: 50%;
   }
 }
+
+
+/* =========================================================
+   FAS MULTI-PAGE NAVIGATION + MOBILE-FIRST REFINEMENT
+   ========================================================= */
+
+/* Each primary area is a focused page; the home page stays concise. */
+.site[data-page="home"] #top > section:not(.hero):not(.devotionalHomeSection):not(.homepageSlideshow) {
+  display: none !important;
+}
+.site[data-page="about"] #top > section:not(#about):not(#vision):not(#mission):not(#story) {
+  display: none !important;
+}
+.site[data-page="stories"] #top > section:not(#stories) {
+  display: none !important;
+}
+.site[data-page="blog"] #top > section:not(#blog):not(.latestBlogStrip) {
+  display: none !important;
+}
+.site[data-page="media"] #top > section:not(#sermons):not(#videos):not(#ebooks) {
+  display: none !important;
+}
+.site[data-page="gallery"] #top > section:not(#gallery) {
+  display: none !important;
+}
+.site[data-page="connect"] #top > section:not(#connect) {
+  display: none !important;
+}
+
+/* Focused pages need less top/bottom padding than a long landing page. */
+.site[data-page]:not([data-page="home"]) #top > section {
+  scroll-margin-top: 96px;
+}
+.site[data-page="about"] #top > #about,
+.site[data-page="about"] #top > #vision,
+.site[data-page="about"] #top > #mission,
+.site[data-page="about"] #top > #story,
+.site[data-page="stories"] #top > #stories,
+.site[data-page="blog"] #top > #blog,
+.site[data-page="media"] #top > #sermons,
+.site[data-page="media"] #top > #videos,
+.site[data-page="media"] #top > #ebooks,
+.site[data-page="gallery"] #top > #gallery,
+.site[data-page="connect"] #top > #connect {
+  padding-top: clamp(36px, 5vw, 64px);
+  padding-bottom: clamp(42px, 6vw, 76px);
+}
+
+/* Navigation touch targets and a compact mobile menu. */
+.navbar {
+  min-height: 72px;
+  height: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.navbar nav a {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+}
+.navbar nav a[aria-current="page"] {
+  color: var(--red);
+}
+.menuBtn {
+  min-width: 44px;
+  min-height: 44px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  cursor: pointer;
+}
+@media (max-width: 850px) {
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    min-height: 66px;
+    padding: 8px 16px;
+    gap: 12px;
+  }
+  .brand img { width: 76px; }
+  .navbar .navActions { margin-left: auto; }
+  .navbar .navActions .navCta { display: none; }
+  .menuBtn {
+    display: inline-flex;
+    flex: 0 0 44px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--black);
+  }
+  .navbar nav,
+  .navbar nav.mobileOpen {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 12px;
+    right: 12px;
+    z-index: 110;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 12px;
+    border: 1px solid rgba(23,23,22,.10);
+    border-radius: 18px;
+    background: rgba(255,255,255,.98);
+    box-shadow: 0 18px 45px rgba(0,0,0,.16);
+    max-height: min(72vh, 560px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .navbar nav.mobileOpen { display: flex; }
+  .navbar nav a {
+    min-height: 48px;
+    padding: 0 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #24211f;
+  }
+  .navbar nav a:active,
+  .navbar nav a:hover {
+    background: #f7f2ee;
+    color: var(--red);
+  }
+  .navbar nav .mobileConnectLink {
+    justify-content: space-between;
+    margin-top: 5px;
+    background: var(--black);
+    color: #fff;
+  }
+  .site[data-page] #top > section {
+    width: 100%;
+    max-width: 100%;
+  }
+  .site[data-page="home"] #top > .hero {
+    min-height: auto;
+    padding: 48px 22px 30px !important;
+    gap: 28px !important;
+  }
+  .site[data-page="home"] .homepageSlideshow {
+    margin-top: 14px;
+  }
+  .section,
+  .darkSection,
+  .eventsSection,
+  .softSection {
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+  }
+  .eventCard {
+    grid-template-columns: 62px minmax(0,1fr);
+    gap: 14px;
+    padding: 16px;
+  }
+  .eventCard h3 { overflow-wrap: anywhere; }
+  .supportLinks { width: 100%; }
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px 22px;
+  }
+  footer div:last-child { align-items: flex-start; }
+}
+@media (max-width: 600px) {
+  body { overflow-x: hidden; }
+  .navbar { padding-left: 14px; padding-right: 14px; }
+  .themeToggle { width: 42px; height: 42px; }
+  .hero h1 { font-size: clamp(36px, 10vw, 52px) !important; }
+  .hero p { font-size: 14px !important; line-height: 1.7; }
+  h2 { font-size: clamp(28px, 8vw, 38px); }
+  .section { padding-top: 48px !important; padding-bottom: 48px !important; }
+  .introGrid { gap: 14px; }
+  .pillars, .storyGrid, .missionGrid { gap: 12px; }
+  .pillars article, .storyCard, .missionGrid > div { padding: 20px; }
+  .eventCard { align-items: start; padding: 14px; }
+  .eventDate { width: 58px; height: 62px; }
+  .eventMetaRow { flex-wrap: wrap; }
+  .supportSection { gap: 24px; }
+  .supportLinks { grid-template-columns: 1fr; }
+  .galleryGrid { gap: 8px; }
+  .homepageSlideshow { width: calc(100% - 28px); }
+  .slideshowFrame { max-width: 100%; }
+  .slideArrow { min-width: 38px; min-height: 38px; }
+  .navCta { display: none !important; }
+  img, video, canvas, iframe { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .navbar nav,
+  .navbar nav a,
+  .menuBtn { transition: none !important; }
+}
