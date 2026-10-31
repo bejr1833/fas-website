@@ -1295,6 +1295,13 @@ function EbookReader({ ebook, onClose }) {
 
 function App() {
   const ebookCarouselRef = useRef(null);
+  const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+  const isHomePage = currentPath === "/";
+  const isBlogListingPage = currentPath === "/blog";
+  const isBlogRoute = isBlogListingPage || currentPath.startsWith("/blog/");
+  const isMediaPage = currentPath === "/media";
+  const isDevotionalPage = currentPath.startsWith("/devotionals");
+  const needsHomeContent = !isBlogRoute && !isMediaPage && !isDevotionalPage;
 
   const cachedHome = readContentCache("home");
   const cachedBlog = readContentCache("blog");
@@ -1317,7 +1324,7 @@ function App() {
     devotionals: cachedHome?.devotionals || []
   });
 
-  const [loading, setLoading] = useState(!cachedHome);
+  const [loading, setLoading] = useState(needsHomeContent && !cachedHome);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [blogPost, setBlogPost] = useState(null);
@@ -2016,6 +2023,8 @@ function App() {
   }, [galleryLightboxOpen, filteredGallery.length]);
 
   useEffect(() => {
+    if (!needsHomeContent) return undefined;
+
     // Never let a slow/cold API keep desktop sections in a loading state indefinitely.
     // Cached content is rendered immediately; uncached visits fall back to the shell after 2.8s.
     const loadingFallbackTimer = window.setTimeout(() => {
@@ -2057,6 +2066,8 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!isHomePage && !isBlogListingPage) return undefined;
+
     fetchJsonWithRetry(`${API_BASE}/api/blog/`, 3, "blog")
       .then((result) => {
         setData((current) => ({
@@ -2069,6 +2080,8 @@ function App() {
       });
   }, []);
   useEffect(() => {
+    if (!isMediaPage) return undefined;
+
     fetchJsonWithRetry(`${API_BASE}/api/sermons/`, 3, "sermons")
       .then((result) => {
         setData((current) => ({
@@ -2081,6 +2094,8 @@ function App() {
       });
   }, []);
   useEffect(() => {
+    if (!isMediaPage) return undefined;
+
     fetchJsonWithRetry(`${API_BASE}/api/videos/`, 3, "videos")
       .then((result) => {
         setData((current) => ({
@@ -2094,6 +2109,8 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!isMediaPage) return undefined;
+
     fetchJsonWithRetry(`${API_BASE}/api/ebooks/`, 3, "ebooks")
       .then((result) => {
         setData((current) => ({

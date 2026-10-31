@@ -73,3 +73,40 @@ test("public backend health and core content endpoints respond", async ({ reques
     expect(response.status(), `${endpoint} should respond successfully`).toBe(200);
   }
 });
+
+
+test("blog and media routes only request the content they need", async ({ page }) => {
+  const requestedEndpoints = [];
+  await page.route("https://fas-backend-xnhy.onrender.com/api/**", async (route) => {
+    requestedEndpoints.push(new URL(route.request().url()).pathname);
+    await route.fulfill({ status: 200, contentType: "application/json", body: "[]" });
+  });
+
+  await page.goto("/blog");
+  await page.waitForTimeout(250);
+  expect(requestedEndpoints).toContain("/api/blog/");
+  expect(requestedEndpoints).not.toContain("/api/home/");
+  expect(requestedEndpoints).not.toContain("/api/sermons/");
+  expect(requestedEndpoints).not.toContain("/api/videos/");
+  expect(requestedEndpoints).not.toContain("/api/ebooks/");
+
+  requestedEndpoints.length = 0;
+  await page.goto("/media");
+  await page.waitForTimeout(250);
+  expect(requestedEndpoints).toContain("/api/sermons/");
+  expect(requestedEndpoints).toContain("/api/videos/");
+  expect(requestedEndpoints).toContain("/api/ebooks/");
+  expect(requestedEndpoints).not.toContain("/api/home/");
+  expect(requestedEndpoints).not.toContain("/api/blog/");
+});
+
+test("desktop layout does not create horizontal page overflow", async ({ page }) => {
+  test.skip((page.viewportSize()?.width || 0) < 1000, "Desktop viewport regression check");
+  await page.goto("/");
+  await page.waitForLoadState("domcontentloaded");
+  const dimensions = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    page: document.documentElement.scrollWidth,
+  }));
+  expect(dimensions.page).toBeLessThanOrEqual(dimensions.viewport + 2);
+});
