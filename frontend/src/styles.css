@@ -21469,3 +21469,216 @@ html[data-theme="light"] .slideshowCounter {
   .navbar nav a,
   .menuBtn { transition: none !important; }
 }
+
+
+/* =========================================================
+   FAS DEVOTIONAL — COMPACT, PREMIUM MOBILE READING
+   Keeps the full devotional content intact while reducing
+   oversized card padding and visual height on small screens.
+   ========================================================= */
+
+@media (max-width: 700px) {
+  /* Full devotional scripture card */
+  .devotionalScripture {
+    padding: 22px 18px 19px !important;
+    margin: 22px auto 0 !important;
+    border-radius: 20px !important;
+  }
+  .devotionalScripture > span:first-child {
+    font-size: 30px !important;
+    line-height: .8 !important;
+  }
+  .devotionalScripture > p {
+    margin: 4px 0 12px !important;
+    font-size: 16px !important;
+    line-height: 1.55 !important;
+    letter-spacing: -.01em !important;
+  }
+  .devotionalScripture > .devotionalReferenceEnglish {
+    margin-top: 10px !important;
+    font-size: 10px !important;
+    letter-spacing: .12em !important;
+  }
+  .devotionalTeluguVerse {
+    margin-top: 18px !important;
+    padding-top: 17px !important;
+  }
+  .devotionalTeluguVerse p {
+    margin: 10px 0 12px !important;
+    font-size: 16px !important;
+    line-height: 1.85 !important;
+    letter-spacing: 0 !important;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+  .devotionalTeluguLabel {
+    font-size: 10px !important;
+    letter-spacing: .1em !important;
+  }
+  .devotionalReferenceTelugu {
+    margin-top: 8px !important;
+    font-size: 12px !important;
+  }
+
+  /* Reflection: preserve paragraphs but make the reading column calmer */
+  .devotionalBody {
+    margin-top: 26px !important;
+    padding-inline: 0 !important;
+  }
+  .devotionalBodyLabel {
+    display: block;
+    margin-bottom: 14px !important;
+    font-size: 10px !important;
+    letter-spacing: .18em !important;
+  }
+  .devotionalBody > p {
+    margin: 0 0 18px !important;
+    font-size: 16px !important;
+    line-height: 1.72 !important;
+    letter-spacing: -.005em !important;
+  }
+
+  /* Prayer and practical application cards */
+  .devotionalPrayer,
+  .devotionalApplication {
+    margin-top: 20px !important;
+    padding: 18px 17px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 6px 18px rgba(42, 25, 25, .045) !important;
+  }
+  .devotionalPanelHeading {
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+    padding-bottom: 10px !important;
+  }
+  .devotionalPanelHeading > svg {
+    flex: 0 0 30px !important;
+    width: 30px !important;
+    height: 30px !important;
+    padding: 6px !important;
+  }
+  .devotionalPanelHeading > span {
+    font-size: 10px !important;
+    letter-spacing: .15em !important;
+  }
+  .devotionalPrayer p,
+  .devotionalApplication p,
+  .devotionalPrayer > p,
+  .devotionalApplication > p {
+    margin: 0 !important;
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    letter-spacing: -.003em !important;
+  }
+
+  /* Impact panel: elegant accent without excessive height */
+  .devotionalImpact {
+    margin: 20px auto 0 !important;
+    padding: 17px 16px 18px !important;
+    border-radius: 15px !important;
+  }
+  .devotionalImpact span {
+    font-size: 9px !important;
+    letter-spacing: .16em !important;
+  }
+  .devotionalImpact strong {
+    margin-top: 8px !important;
+    font-size: 17px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Previous/next navigation: tighter but still thumb-friendly */
+  .devotionalNavigation {
+    gap: 9px !important;
+    margin: 18px 0 !important;
+  }
+  .devotionalNavigation a,
+  .devotionalNavigation button {
+    min-height: 58px !important;
+    padding: 9px 11px !important;
+    border-radius: 13px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .devotionalScripture {
+    padding: 19px 15px 17px !important;
+    border-radius: 17px !important;
+  }
+  .devotionalScripture > p {
+    font-size: 15.5px !important;
+    line-height: 1.55 !important;
+  }
+  .devotionalTeluguVerse p {
+    font-size: 15px !important;
+    line-height: 1.8 !important;
+  }
+  .devotionalBody > p {
+    font-size: 15.5px !important;
+    line-height: 1.7 !important;
+  }
+  .devotionalPrayer,
+  .devotionalApplication {
+    padding: 16px 15px !important;
+  }
+}
+
+/* Homepage devotional card: compact preview; full prayer/reflection remain
+   available through the Read More devotional page. */
+@media (max-width: 700px) {
+  .devotionalHomeCard {
+    border-radius: 18px !important;
+  }
+  .devotionalHomeTop {
+    padding: 14px 16px !important;
+  }
+  .devotionalHomeMark {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .devotionalHomeScripture {
+    padding: 18px 16px 13px !important;
+  }
+  .devotionalHomeScripture p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+    font-size: 15.5px !important;
+    line-height: 1.52 !important;
+  }
+  .devotionalHomeScripture span {
+    margin-top: 9px !important;
+    font-size: 10px !important;
+  }
+  .devotionalHomeImpact {
+    padding: 13px 16px 0 !important;
+  }
+  .devotionalHomeImpact strong {
+    margin-top: 8px !important;
+    font-size: 16px !important;
+    line-height: 1.42 !important;
+  }
+  .devotionalHomePrayer {
+    margin: 14px 16px 0 !important;
+    padding: 13px 0 0 !important;
+  }
+  .devotionalHomePrayer p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin: 6px 0 0 !important;
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+  }
+  .devotionalHomeBottom {
+    margin-top: 15px !important;
+    padding: 12px 16px 14px !important;
+  }
+  .devotionalReadMore {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
