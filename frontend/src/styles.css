@@ -21715,12 +21715,7 @@ html[data-theme="light"] .slideshowCounter {
   .navbar {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
-  }
-
-  .site img {
-    content-visibility: auto;
-  }
-}
+  }}
 
 @media (prefers-reduced-motion: reduce) {
   html {
