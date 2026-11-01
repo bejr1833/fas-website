@@ -2645,31 +2645,63 @@ function App() {
       return;
     }
 
-    const pageMeta = {
+    const pageMetaByPath = {
       "/": {
         title: "Christian Student Fellowship | Faith Alone Saves (FAS)",
-        description:
-          "Grow in Christ with Faith Alone Saves (FAS), a Christian student fellowship for campus students through Bible study, prayer, worship, mentorship, and community.",
-        canonical: "https://fas-fellowship.org/"
+        description: "Grow in Christ with Faith Alone Saves (FAS), a Christian student fellowship for campus students through Bible study, prayer, worship, mentorship, and community.",
+        canonical: "https://fas-fellowship.org/",
+        schemaType: "WebPage"
+      },
+      "/about": {
+        title: "About FAS | Our Mission, Vision & Christian Fellowship",
+        description: "Discover the mission and vision of Faith Alone Saves, a Christian student fellowship helping students grow in God's Word, worship, mentorship, service, and community.",
+        canonical: "https://fas-fellowship.org/about",
+        schemaType: "AboutPage"
       },
       "/events": {
-        title: "FAS Events | Faith Alone Saves",
-        description:
-          "Explore upcoming and past Faith Alone Saves fellowship gatherings, meetings, retreats, and campus events.",
-        canonical: "https://fas-fellowship.org/events"
+        title: "FAS Events | Christian Student Fellowship Gatherings",
+        description: "Explore upcoming and past Faith Alone Saves fellowship gatherings, online Bible meetings, retreats, and student events.",
+        canonical: "https://fas-fellowship.org/events",
+        schemaType: "CollectionPage"
+      },
+      "/stories": {
+        title: "Student Testimonies & Stories | Faith Alone Saves",
+        description: "Read student testimonies and stories of faith, fellowship, spiritual growth, and God's work through Faith Alone Saves.",
+        canonical: "https://fas-fellowship.org/stories",
+        schemaType: "CollectionPage"
+      },
+      "/blog": {
+        title: "FAS Journal | Christian Articles, Faith & Discipleship",
+        description: "Explore articles, reflections, and biblical encouragement from the Faith Alone Saves student fellowship journal.",
+        canonical: "https://fas-fellowship.org/blog",
+        schemaType: "Blog"
       },
       "/devotions": {
-        title: "FAS Daily Devotional | Faith Alone Saves",
-        description:
-          "Read and explore daily devotionals from Faith Alone Saves, centered on Scripture, reflection, prayer, and practical Christian living.",
-        canonical: "https://fas-fellowship.org/devotions"
+        title: "Daily Bible Devotionals | Scripture & Prayer | FAS",
+        description: "Read daily Bible devotionals from Faith Alone Saves with Scripture, reflection, prayer, and practical steps for Christian living.",
+        canonical: "https://fas-fellowship.org/devotions",
+        schemaType: "CollectionPage"
+      },
+      "/media": {
+        title: "FAS Media | Sermons, Messages & Christian Resources",
+        description: "Watch and listen to sermons, messages, and Christian media resources shared by the Faith Alone Saves fellowship.",
+        canonical: "https://fas-fellowship.org/media",
+        schemaType: "CollectionPage"
+      },
+      "/gallery": {
+        title: "FAS Gallery | Fellowship Moments & Events",
+        description: "Explore moments from Faith Alone Saves gatherings, student fellowship, events, and community life.",
+        canonical: "https://fas-fellowship.org/gallery",
+        schemaType: "CollectionPage"
+      },
+      "/connect": {
+        title: "Connect with FAS | Prayer Requests & Contact",
+        description: "Connect with Faith Alone Saves, ask a question, share a testimony, or send a prayer request to the fellowship.",
+        canonical: "https://fas-fellowship.org/connect",
+        schemaType: "ContactPage"
       }
-    }[pathName] || {
-      title: "Christian Student Fellowship | Faith Alone Saves (FAS)",
-      description:
-        "Faith Alone Saves is a Christian student fellowship helping campus students grow in God's Word, worship, fellowship, mentorship, and service.",
-      canonical: "https://fas-fellowship.org/"
     };
+    const pageMeta = pageMetaByPath[pathName] || pageMetaByPath["/"];
 
     document.title = pageMeta.title;
 
@@ -2762,6 +2794,13 @@ function App() {
       document.head.appendChild(schema);
     }
 
+    const pageUrl = pageMeta.canonical;
+    const breadcrumbItems = pathName === "/"
+      ? []
+      : [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://fas-fellowship.org/" },
+          { "@type": "ListItem", position: 2, name: pageMeta.title.split("|")[0].trim(), item: pageUrl }
+        ];
     schema.textContent = JSON.stringify({
       "@context": "https://schema.org",
       "@graph": [
@@ -2771,8 +2810,7 @@ function App() {
           url: "https://fas-fellowship.org/",
           name: "Faith Alone Saves",
           alternateName: "FAS Fellowship",
-          description:
-            "Faith Alone Saves is a Christian student fellowship helping campus students grow in God's Word, worship, fellowship, mentorship, and service."
+          description: "Faith Alone Saves is a Christian student fellowship helping campus students grow in God's Word, worship, fellowship, mentorship, and service."
         },
         {
           "@type": "Organization",
@@ -2784,9 +2822,23 @@ function App() {
             "@type": "ImageObject",
             url: "https://fas-fellowship.org/branding/fas-logo.png"
           }
-        }
+        },
+        {
+          "@type": pageMeta.schemaType,
+          "@id": pageUrl + "#webpage",
+          url: pageUrl,
+          name: pageMeta.title,
+          description: pageMeta.description,
+          isPartOf: { "@id": "https://fas-fellowship.org/#website" },
+          about: { "@id": "https://fas-fellowship.org/#organization" },
+          inLanguage: "en-IN"
+        },
+        ...(breadcrumbItems.length ? [{
+          "@type": "BreadcrumbList",
+          itemListElement: breadcrumbItems
+        }] : [])
       ]
-    });
+    });;
   }, []);
 
   const settings = {
