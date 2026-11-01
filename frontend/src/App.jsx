@@ -2838,7 +2838,7 @@ function App() {
           itemListElement: breadcrumbItems
         }] : [])
       ]
-    });;
+    });
   }, []);
 
   const settings = {
