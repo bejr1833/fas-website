@@ -125,3 +125,41 @@ test("generated sitemap includes every public section page", async ({ request })
     );
   }
 });
+
+test("every public section has unique SEO metadata and page structured data", async ({ page }) => {
+  const routes = [
+    ["/", "Christian Student Fellowship | Faith Alone Saves (FAS)"],
+    ["/about", "About FAS | Our Mission, Vision & Christian Fellowship"],
+    ["/events", "FAS Events | Christian Student Fellowship Gatherings"],
+    ["/stories", "Student Testimonies & Stories | Faith Alone Saves"],
+    ["/blog", "FAS Journal | Christian Articles, Faith & Discipleship"],
+    ["/devotions", "Daily Bible Devotionals | Scripture & Prayer | FAS"],
+    ["/media", "FAS Media | Sermons, Messages & Christian Resources"],
+    ["/gallery", "FAS Gallery | Fellowship Moments & Events"],
+    ["/connect", "Connect with FAS | Prayer Requests & Contact"],
+  ];
+
+  for (const [route, expectedTitle] of routes) {
+    await page.goto(route);
+    await expect(page).toHaveTitle(expectedTitle);
+    const metadata = await page.evaluate(() => ({
+      description: document.querySelector('meta[name="description"]')?.content || "",
+      canonical: document.querySelector('link[rel="canonical"]')?.href || "",
+      ogUrl: document.querySelector('meta[property="og:url"]')?.content || "",
+      twitterTitle: document.querySelector('meta[name="twitter:title"]')?.content || "",
+      schema: JSON.parse(document.querySelector("#fas-website-schema")?.textContent || "{}"),
+    }));
+    expect(metadata.description.length, `${route} should have a useful meta description`).toBeGreaterThan(80);
+    expect(metadata.canonical).toBe(`https://fas-fellowship.org${route === "/" ? "/" : route}`);
+    expect(metadata.ogUrl).toBe(metadata.canonical);
+    expect(metadata.twitterTitle).toBe(expectedTitle);
+    expect(metadata.schema["@graph"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          "@type": expect.any(String),
+          url: metadata.canonical,
+        }),
+      ])
+    );
+  }
+});
