@@ -189,7 +189,10 @@ for (const page of pages) {
     "structured data"
   );
 
-  const outputPath = page.route === "/"\n    ? join(DIST, "index.html")\n    : join(DIST, page.route.slice(1), "index.html");
+  const outputPath =
+    page.route === "/"
+      ? join(DIST, "index.html")
+      : join(DIST, page.route.slice(1), "index.html");
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, html, "utf8");
 }
