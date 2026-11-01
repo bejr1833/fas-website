@@ -92,10 +92,9 @@ test("blog and media routes only request the content they need", async ({ page }
 
   requestedEndpoints.length = 0;
   await page.goto("/media");
-  await page.waitForTimeout(250);
-  expect(requestedEndpoints).toContain("/api/sermons/");
-  expect(requestedEndpoints).toContain("/api/videos/");
-  expect(requestedEndpoints).toContain("/api/ebooks/");
+  await expect.poll(() => requestedEndpoints, { timeout: 8_000 }).toEqual(
+    expect.arrayContaining(["/api/sermons/", "/api/videos/", "/api/ebooks/"])
+  );
   expect(requestedEndpoints).not.toContain("/api/home/");
   expect(requestedEndpoints).not.toContain("/api/blog/");
 });
