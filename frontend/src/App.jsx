@@ -3538,7 +3538,6 @@ function App() {
     window.location.pathname === "/devotions/" ||
     window.location.pathname === "/devotionals" ||
     window.location.pathname === "/devotionals/";
-  const isDevotionalPage = window.location.pathname.startsWith("/devotionals/");
   const isBlogArticle = window.location.pathname.startsWith("/blog/");
   const coverWords = (blogPost?.title || "Faith Alone Saves").trim().split(/\s+/);
   const coverSplit = Math.max(1, Math.ceil(coverWords.length / 2));
