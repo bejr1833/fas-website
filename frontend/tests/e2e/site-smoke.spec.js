@@ -109,3 +109,19 @@ test("desktop layout does not create horizontal page overflow", async ({ page })
   }));
   expect(dimensions.page).toBeLessThanOrEqual(dimensions.viewport + 2);
 });
+
+
+test("generated sitemap includes every public section page", async ({ request }) => {
+  const response = await request.get("/sitemap.xml");
+  expect(response.ok()).toBeTruthy();
+  const xml = await response.text();
+
+  for (const route of [
+    "/about", "/events", "/stories", "/blog",
+    "/devotions", "/media", "/gallery", "/connect",
+  ]) {
+    expect(xml, `Sitemap should include ${route}`).toContain(
+      `https://fas-fellowship.org${route}`
+    );
+  }
+});
