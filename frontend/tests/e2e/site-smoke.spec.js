@@ -212,7 +212,11 @@ test("static public route HTML contains route-specific SEO before JavaScript run
   ];
 
   for (const [route, title] of routes) {
-    const response = await request.get(route);
+    // Vite preview serves generated route index files through their directory URL.
+    // Request the trailing-slash form so /about resolves to dist/about/index.html,
+    // rather than the SPA fallback at dist/index.html.
+    const htmlRoute = route === "/" ? route : `${route}/`;
+    const response = await request.get(htmlRoute);
     expect(response.ok(), `${route} should serve its static HTML shell`).toBeTruthy();
     const html = await response.text();
     expect(html).toContain(`<title>${title}</title>`);
