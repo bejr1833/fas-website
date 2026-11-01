@@ -1295,6 +1295,13 @@ function EbookReader({ ebook, onClose }) {
 
 function App() {
   const ebookCarouselRef = useRef(null);
+  const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+  const isHomePage = currentPath === "/";
+  const isBlogListingPage = currentPath === "/blog";
+  const isBlogRoute = isBlogListingPage || currentPath.startsWith("/blog/");
+  const isMediaPage = currentPath === "/media";
+  const isDevotionalPage = currentPath.startsWith("/devotionals");
+  const needsHomeContent = !isBlogRoute && !isMediaPage && !isDevotionalPage;
 
   const cachedHome = readContentCache("home");
   const cachedBlog = readContentCache("blog");
@@ -1317,7 +1324,7 @@ function App() {
     devotionals: cachedHome?.devotionals || []
   });
 
-  const [loading, setLoading] = useState(!cachedHome);
+  const [loading, setLoading] = useState(needsHomeContent && !cachedHome);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [blogPost, setBlogPost] = useState(null);
@@ -2016,6 +2023,8 @@ function App() {
   }, [galleryLightboxOpen, filteredGallery.length]);
 
   useEffect(() => {
+    if (!needsHomeContent) return undefined;
+
     // Never let a slow/cold API keep desktop sections in a loading state indefinitely.
     // Cached content is rendered immediately; uncached visits fall back to the shell after 2.8s.
     const loadingFallbackTimer = window.setTimeout(() => {
@@ -2057,6 +2066,8 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!isHomePage && !isBlogListingPage) return undefined;
+
     fetchJsonWithRetry(`${API_BASE}/api/blog/`, 3, "blog")
       .then((result) => {
         setData((current) => ({
@@ -2069,6 +2080,8 @@ function App() {
       });
   }, []);
   useEffect(() => {
+    if (!isMediaPage) return undefined;
+
     fetchJsonWithRetry(`${API_BASE}/api/sermons/`, 3, "sermons")
       .then((result) => {
         setData((current) => ({
@@ -2081,6 +2094,8 @@ function App() {
       });
   }, []);
   useEffect(() => {
+    if (!isMediaPage) return undefined;
+
     fetchJsonWithRetry(`${API_BASE}/api/videos/`, 3, "videos")
       .then((result) => {
         setData((current) => ({
@@ -2094,6 +2109,8 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!isMediaPage) return undefined;
+
     fetchJsonWithRetry(`${API_BASE}/api/ebooks/`, 3, "ebooks")
       .then((result) => {
         setData((current) => ({
@@ -2127,14 +2144,22 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!window.location.pathname.startsWith("/devotionals/")) return;
+    const pathName = window.location.pathname;
+    const needsDevotionalArchive =
+      pathName.startsWith("/devotionals/") ||
+      pathName === "/devotions" ||
+      pathName === "/devotions/" ||
+      pathName === "/devotionals" ||
+      pathName === "/devotionals/";
+
+    if (!needsDevotionalArchive) return;
 
     fetchJsonWithRetry(`${API_BASE}/api/devotionals/`, 3, "devotionals")
       .then((result) => {
         setDevotionalArchive(Array.isArray(result) ? result : []);
       })
       .catch(() => {
-        // Keep any devotionals already available from the homepage cache.
+        // Keep cached devotionals visible if the archive endpoint is unavailable.
       });
   }, []);
 
@@ -3513,7 +3538,6 @@ function App() {
     window.location.pathname === "/devotions/" ||
     window.location.pathname === "/devotionals" ||
     window.location.pathname === "/devotionals/";
-  const isDevotionalPage = window.location.pathname.startsWith("/devotionals/");
   const isBlogArticle = window.location.pathname.startsWith("/blog/");
   const coverWords = (blogPost?.title || "Faith Alone Saves").trim().split(/\s+/);
   const coverSplit = Math.max(1, Math.ceil(coverWords.length / 2));
@@ -3527,7 +3551,13 @@ function App() {
     const devotionalStartDate = new Date(2026, 9, 7);
     const devotionalStartKey = toDateKey(devotionalStartDate);
     const devotionalHasStarted = todayKey >= devotionalStartKey;
-    const calendarDevotionals = Array.isArray(data.devotionals) ? data.devotionals : [];
+    const calendarDevotionals = [
+      ...(Array.isArray(data.devotionals) ? data.devotionals : []),
+      ...(Array.isArray(devotionalArchive) ? devotionalArchive : [])
+    ].filter((item, index, all) =>
+      item?.slug && item?.date &&
+      all.findIndex((candidate) => candidate.slug === item.slug) === index
+    );
     const devotionByDate = calendarDevotionals.reduce((map, devotional) => {
       map[devotional.date] = devotional;
       return map;
@@ -3655,7 +3685,12 @@ function App() {
                 <h2 id="devotions-calendar-title">{monthLabel}</h2>
               </div>
               <div className="devotionsCalendarControls">
-                <button type="button" onClick={() => shiftMonth(-1)} disabled={isCurrentMonth} aria-label="Previous month">
+                <button
+                  type="button"
+                  onClick={() => shiftMonth(-1)}
+                  disabled={devotionMonth.getFullYear() === 2026 && devotionMonth.getMonth() <= 9}
+                  aria-label="Previous month"
+                >
                   <ArrowRight size={18} style={{ transform: "rotate(180deg)" }} />
                 </button>
                 <button type="button" className="devotionsTodayBtn" onClick={jumpToToday}>

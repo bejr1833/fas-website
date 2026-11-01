@@ -21696,3 +21696,38 @@ html[data-theme="light"] .slideshowCounter {
 .site[data-page]:not([data-page="home"]) .latestBlogStrip {
   display: none !important;
 }
+
+
+/* Performance: defer off-screen section rendering without changing the visual design. */
+@supports (content-visibility: auto) {
+  .site main > section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 680px;
+  }
+
+  .site main > section:first-child {
+    content-visibility: visible;
+  }
+}
+
+/* Performance: keep mobile compositing inexpensive on lower-powered devices. */
+@media (max-width: 850px) {
+  .navbar {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
