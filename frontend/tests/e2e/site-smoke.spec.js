@@ -163,3 +163,13 @@ test("every public section has unique SEO metadata and page structured data", as
     );
   }
 });
+
+test("devotional AMP pages provide crawlable links to related devotionals", async ({ request }) => {
+  const response = await request.get("/devotionals/do-you-really-know-him/amp/");
+  expect(response.status()).toBe(200);
+  const html = await response.text();
+
+  expect(html).toContain('rel="canonical"');
+  expect(html).toContain("More FAS devotionals");
+  expect(html).toMatch(/href="\/devotionals\/[a-zA-Z0-9_-]+"/);
+});
