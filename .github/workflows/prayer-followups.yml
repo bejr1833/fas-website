@@ -18,12 +18,13 @@ jobs:
     steps:
       - name: Trigger private FAS prayer email dispatcher
         env:
-          FAS_FOLLOWUP_URL: ${{ secrets.FAS_FOLLOWUP_URL }}
           FAS_FOLLOWUP_TOKEN: ${{ secrets.FAS_FOLLOWUP_TOKEN }}
         run: |
           set -euo pipefail
-          if [ -z "$FAS_FOLLOWUP_URL" ] || [ -z "$FAS_FOLLOWUP_TOKEN" ]; then
-            echo "Required repository secrets are missing." >&2
+          FAS_FOLLOWUP_URL="https://fas-backend-xnhy.onrender.com/api/internal/send-prayer-followups/"
+          FAS_FOLLOWUP_TOKEN="$(printf '%s' "$FAS_FOLLOWUP_TOKEN" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')"
+          if [ -z "$FAS_FOLLOWUP_TOKEN" ]; then
+            echo "Required repository secret FAS_FOLLOWUP_TOKEN is missing." >&2
             exit 1
           fi
           curl --fail --silent --show-error \
