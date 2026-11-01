@@ -219,7 +219,8 @@ test("static public route HTML contains route-specific SEO before JavaScript run
     const response = await request.get(htmlRoute);
     expect(response.ok(), `${route} should serve its static HTML shell`).toBeTruthy();
     const html = await response.text();
-    expect(html).toContain(`<title>${title}</title>`);
+    // Raw HTML escapes ampersands in title text; compare the serialized form.
+    expect(html).toContain(`<title>${title.replaceAll("&", "&amp;")}</title>`);
     expect(html).toContain(`<link rel="canonical" href="https://fas-fellowship.org${route === "/" ? "/" : route}" />`);
     expect(html).toContain('name="description"');
     expect(html).toContain('id="fas-website-schema"');
