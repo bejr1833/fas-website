@@ -102,6 +102,11 @@ const ampStyles = `
   .impact{padding:18px;background:#f0e7e4;border-radius:8px;margin:24px 0}
   .prayer{padding:20px;background:#ece8df;border-radius:8px;margin:24px 0}
   .prayer p{font-family:Georgia,serif;font-style:italic}
+  .related{margin:36px 0 8px;padding:22px;background:#eee7d8;border-radius:10px}
+  .related h2{font-size:20px;margin:0 0 12px}
+  .related ul{margin:0;padding-left:20px}
+  .related li{margin:8px 0}
+  .related a{color:#8f2424;font-weight:700;text-decoration:underline}
   footer{border-top:1px solid #d8d5cf;margin-top:36px;padding-top:20px;color:#686d68;font-size:12px}
   footer a{color:#a52a2a;font-weight:700;text-decoration:none}
   @media(min-width:600px){main{padding:44px 32px 64px}}
@@ -168,17 +173,27 @@ const writePage = async (relativePath, html) => {
 const shell = await readFile(join(DIST, "index.html"), "utf8");
 let posts = [];
 let devotionals = [];
-try {
-  [posts, devotionals] = await Promise.all([
-    fetchList("/api/blog/"),
-    fetchList("/api/devotionals/"),
-  ]);
-} catch (error) {
-  // Do not fail the entire frontend deployment when the content API is cold
-  // or temporarily unavailable. The app and static shell remain deployable.
+
+const [blogResult, devotionalResult] = await Promise.allSettled([
+  fetchList("/api/blog/"),
+  fetchList("/api/devotionals/"),
+]);
+
+if (blogResult.status === "fulfilled") {
+  posts = blogResult.value;
+} else {
   console.warn(
-    "AMP generation: content API unavailable; skipping content-specific pages for this build.",
-    error?.message || error
+    "AMP generation: blog API unavailable; skipping blog pages for this build.",
+    blogResult.reason?.message || blogResult.reason
+  );
+}
+
+if (devotionalResult.status === "fulfilled") {
+  devotionals = devotionalResult.value;
+} else {
+  console.warn(
+    "AMP generation: devotional API unavailable; skipping devotional pages for this build.",
+    devotionalResult.reason?.message || devotionalResult.reason
   );
 }
 
@@ -253,6 +268,15 @@ for (const devotional of devotionals) {
     },
     ...(published ? { datePublished: published } : {}),
   };
+  const relatedDevotionals = devotionals
+    .filter((item) => item?.slug && item?.title && item.slug !== slug)
+    .slice(0, 6);
+  const relatedLinks = relatedDevotionals.length
+    ? `<section class="related" aria-labelledby="related-devotionals-title">
+<h2 id="related-devotionals-title">More FAS devotionals</h2>
+<ul>${relatedDevotionals.map((item) => `<li><a href="/devotionals/${encodeURIComponent(item.slug)}">${escapeHtml(plainText(item.title))}</a></li>`).join("")}</ul>
+</section>`
+    : "";
   const content = `
 <div class="eyebrow">FAS DAILY DEVOTIONAL</div>
 <h1>${escapeHtml(plainText(devotional.title))}</h1>
@@ -260,7 +284,8 @@ for (const devotional of devotionals) {
 ${devotional.scripture_reference || devotional.scripture_text ? `<section class="scripture"><div class="eyebrow">SCRIPTURE</div>${devotional.scripture_reference ? `<p><strong>${escapeHtml(plainText(devotional.scripture_reference))}</strong></p>` : ""}${devotional.scripture_text ? `<p>${escapeHtml(plainText(devotional.scripture_text))}</p>` : ""}</section>` : ""}
 ${devotional.impact_line ? `<section class="impact"><div class="eyebrow">THE IMPACT</div><p>${escapeHtml(plainText(devotional.impact_line))}</p></section>` : ""}
 <article>${renderParagraphs(devotional.reflection || devotional.content || "")}</article>
-${devotional.prayer ? `<section class="prayer"><div class="eyebrow">PRAYER</div>${renderParagraphs(devotional.prayer)}</section>` : ""}`;
+${devotional.prayer ? `<section class="prayer"><div class="eyebrow">PRAYER</div>${renderParagraphs(devotional.prayer)}</section>` : ""}
+${relatedLinks}`;
   const ampHtml = ampDocument({ title, description, canonical, image: "", schema, content });
   const canonicalHtml = injectCanonicalHead(shell, {
     title,
