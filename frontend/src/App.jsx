@@ -3973,6 +3973,36 @@ function App() {
                 </div>}
               </div>
               <DevotionalNavigation previous={previousDevotional} next={nextDevotional} placement="bottom" />
+              {devotionalNavigationItems.filter((item) => item.slug !== currentDevotionalSlug).length > 0 && (
+                <nav
+                  className="devotionalRelated"
+                  aria-label="Related devotionals"
+                  style={{ maxWidth: 680, margin: "28px auto 20px", padding: "22px 24px", borderRadius: 16, background: darkMode ? "rgba(255,255,255,.06)" : "#f5f1e9", border: darkMode ? "1px solid rgba(255,255,255,.1)" : "1px solid #e9e1d4" }}
+                >
+                  <span style={{ display: "block", fontSize: 10, fontWeight: 800, letterSpacing: ".16em", color: darkMode ? "#d8b978" : "#98702d", marginBottom: 8 }}>CONTINUE YOUR JOURNEY</span>
+                  <h2 style={{ fontFamily: "Georgia, serif", fontSize: 22, margin: "0 0 14px", color: "inherit" }}>Explore more devotionals</h2>
+                  <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 9 }}>
+                    {devotionalNavigationItems
+                      .filter((item) => item.slug !== currentDevotionalSlug)
+                      .sort((a, b) => {
+                        const currentDate = new Date(devotionalPost?.date || 0).getTime();
+                        const distanceA = Math.abs(new Date(a.date || 0).getTime() - currentDate);
+                        const distanceB = Math.abs(new Date(b.date || 0).getTime() - currentDate);
+                        return distanceA - distanceB;
+                      })
+                      .slice(0, 6)
+                      .map((item) => (
+                        <li key={item.slug}>
+                          <a href={`/devotionals/${encodeURIComponent(item.slug)}`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, padding: "10px 0", color: "inherit", textDecoration: "none", borderBottom: darkMode ? "1px solid rgba(255,255,255,.1)" : "1px solid #e5ded2" }}>
+                            <span>{item.title}</span>
+                            <span aria-hidden="true" style={{ color: darkMode ? "#d8b978" : "#98702d" }}>→</span>
+                          </a>
+                        </li>
+                      ))}
+                  </ul>
+                  <a href="/devotions" style={{ display: "inline-block", marginTop: 14, fontWeight: 750, color: darkMode ? "#e4c98e" : "#8d2929", textDecoration: "underline", textUnderlineOffset: 4 }}>Browse the full devotional calendar</a>
+                </nav>
+              )}
               <div className="devotionalFooter">FAITH · FELLOWSHIP · TRUTH <span>FAS</span></div>
             </article>
           )}
