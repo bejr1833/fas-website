@@ -181,7 +181,7 @@ for (const page of pages) {
     "canonical link"
   );
 
-  const schema = JSON.stringify(buildSchema(page)).replace(/</g, "\\\\u003c");
+  const schema = JSON.stringify(buildSchema(page));
   html = replaceTag(
     html,
     /<script type="application\/ld\+json">[\s\S]*?<\/script>/i,
@@ -189,7 +189,7 @@ for (const page of pages) {
     "structured data"
   );
 
-  const outputPath = join(DIST, page.route === "/" ? "index.html" : page.route.slice(1), "index.html");
+  const outputPath = page.route === "/"\n    ? join(DIST, "index.html")\n    : join(DIST, page.route.slice(1), "index.html");
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, html, "utf8");
 }
