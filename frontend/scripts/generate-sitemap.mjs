@@ -67,10 +67,22 @@ const fetchBlogs = async () => {
 };
 
 const buildSitemap = (posts, devotionals) => {
+  const staticRoutes = [
+    "/",
+    "/about",
+    "/events",
+    "/stories",
+    "/blog",
+    "/devotions",
+    "/media",
+    "/gallery",
+    "/connect",
+  ];
+
   const urls = [
-    { loc: `${SITE_URL}/` },
-    { loc: `${SITE_URL}/events` },
-    { loc: `${SITE_URL}/devotions` },
+    ...staticRoutes.map((route) => ({
+      loc: route === "/" ? `${SITE_URL}/` : `${SITE_URL}${route}`,
+    })),
     ...posts
       .filter((post) => post?.slug)
       .map((post) => ({
