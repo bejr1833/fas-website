@@ -197,3 +197,33 @@ test("canonical devotional pages link to related devotionals and the archive", a
   await expect(related.getByRole("link", { name: "Hope in the Lord" })).toHaveAttribute("href", "/devotionals/hope-in-the-lord");
   await expect(related.getByRole("link", { name: "Browse the full devotional calendar" })).toHaveAttribute("href", "/devotions");
 });
+
+test("static public route HTML contains route-specific SEO before JavaScript runs", async ({ request }) => {
+  const routes = [
+    ["/", "Christian Student Fellowship | Faith Alone Saves (FAS)"],
+    ["/about", "About FAS | Our Mission, Vision & Christian Fellowship"],
+    ["/events", "FAS Events | Christian Student Fellowship Gatherings"],
+    ["/stories", "Student Testimonies & Stories | Faith Alone Saves"],
+    ["/blog", "FAS Journal | Christian Articles, Faith & Discipleship"],
+    ["/devotions", "Daily Bible Devotionals | Scripture & Prayer | FAS"],
+    ["/media", "FAS Media | Sermons, Messages & Christian Resources"],
+    ["/gallery", "FAS Gallery | Fellowship Moments & Events"],
+    ["/connect", "Connect with FAS | Prayer Requests & Contact"],
+  ];
+
+  for (const [route, title] of routes) {
+    // Vite preview serves generated route index files through their directory URL.
+    // Request the trailing-slash form so /about resolves to dist/about/index.html,
+    // rather than the SPA fallback at dist/index.html.
+    const htmlRoute = route === "/" ? route : `${route}/`;
+    const response = await request.get(htmlRoute);
+    expect(response.ok(), `${route} should serve its static HTML shell`).toBeTruthy();
+    const html = await response.text();
+    // Raw HTML escapes ampersands in title text; compare the serialized form.
+    expect(html).toContain(`<title>${title.replaceAll("&", "&amp;")}</title>`);
+    expect(html).toContain(`<link rel="canonical" href="https://fas-fellowship.org${route === "/" ? "/" : route}" />`);
+    expect(html).toContain('name="description"');
+    expect(html).toContain('id="fas-website-schema"');
+    expect(html).toContain('"@type":"WebSite"');
+  }
+});
