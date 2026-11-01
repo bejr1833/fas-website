@@ -2144,14 +2144,22 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!window.location.pathname.startsWith("/devotionals/")) return;
+    const pathName = window.location.pathname;
+    const needsDevotionalArchive =
+      pathName.startsWith("/devotionals/") ||
+      pathName === "/devotions" ||
+      pathName === "/devotions/" ||
+      pathName === "/devotionals" ||
+      pathName === "/devotionals/";
+
+    if (!needsDevotionalArchive) return;
 
     fetchJsonWithRetry(`${API_BASE}/api/devotionals/`, 3, "devotionals")
       .then((result) => {
         setDevotionalArchive(Array.isArray(result) ? result : []);
       })
       .catch(() => {
-        // Keep any devotionals already available from the homepage cache.
+        // Keep cached devotionals visible if the archive endpoint is unavailable.
       });
   }, []);
 
@@ -3544,7 +3552,13 @@ function App() {
     const devotionalStartDate = new Date(2026, 9, 7);
     const devotionalStartKey = toDateKey(devotionalStartDate);
     const devotionalHasStarted = todayKey >= devotionalStartKey;
-    const calendarDevotionals = Array.isArray(data.devotionals) ? data.devotionals : [];
+    const calendarDevotionals = [
+      ...(Array.isArray(data.devotionals) ? data.devotionals : []),
+      ...(Array.isArray(devotionalArchive) ? devotionalArchive : [])
+    ].filter((item, index, all) =>
+      item?.slug && item?.date &&
+      all.findIndex((candidate) => candidate.slug === item.slug) === index
+    );
     const devotionByDate = calendarDevotionals.reduce((map, devotional) => {
       map[devotional.date] = devotional;
       return map;
@@ -3672,7 +3686,12 @@ function App() {
                 <h2 id="devotions-calendar-title">{monthLabel}</h2>
               </div>
               <div className="devotionsCalendarControls">
-                <button type="button" onClick={() => shiftMonth(-1)} disabled={isCurrentMonth} aria-label="Previous month">
+                <button
+                  type="button"
+                  onClick={() => shiftMonth(-1)}
+                  disabled={devotionMonth.getFullYear() === 2026 && devotionMonth.getMonth() <= 9}
+                  aria-label="Previous month"
+                >
                   <ArrowRight size={18} style={{ transform: "rotate(180deg)" }} />
                 </button>
                 <button type="button" className="devotionsTodayBtn" onClick={jumpToToday}>
