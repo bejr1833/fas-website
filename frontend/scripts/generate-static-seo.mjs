@@ -140,43 +140,43 @@ for (const page of pages) {
   const canonical = `${SITE_URL}${page.route === "/" ? "/" : page.route}`;
   let html = baseHtml;
 
-  html = replaceTag(html, /<title>[\\s\\S]*?<\\/title>/i, `<title>${escapeHtml(page.title)}</title>`, "title");
-  html = setMeta(html, /<meta\\s+name="description"[^>]*\\/?\\s*>/i, {
+  html = replaceTag(html, /<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(page.title)}</title>`, "title");
+  html = setMeta(html, /<meta\s+name="description"[^>]*\/?\s*>/i, {
     name: "description",
     content: page.description,
   });
-  html = setMeta(html, /<meta\\s+name="robots"[^>]*\\/?\\s*>/i, {
+  html = setMeta(html, /<meta\s+name="robots"[^>]*\/?\s*>/i, {
     name: "robots",
     content: "index, follow, max-image-preview:large",
   });
-  html = setMeta(html, /<meta\\s+property="og:type"[^>]*\\/?\\s*>/i, {
+  html = setMeta(html, /<meta\s+property="og:type"[^>]*\/?\s*>/i, {
     property: "og:type",
     content: "website",
   });
-  html = setMeta(html, /<meta\\s+property="og:title"[^>]*\\/?\\s*>/i, {
+  html = setMeta(html, /<meta\s+property="og:title"[^>]*\/?\s*>/i, {
     property: "og:title",
     content: page.title,
   });
-  html = setMeta(html, /<meta\\s+property="og:description"[^>]*\\/?\\s*>/i, {
+  html = setMeta(html, /<meta\s+property="og:description"[^>]*\/?\s*>/i, {
     property: "og:description",
     content: page.description,
   });
-  html = setMeta(html, /<meta\\s+property="og:url"[^>]*\\/?\\s*>/i, {
+  html = setMeta(html, /<meta\s+property="og:url"[^>]*\/?\s*>/i, {
     property: "og:url",
     content: canonical,
   });
-  html = setMeta(html, /<meta\\s+name="twitter:title"[^>]*\\/?\\s*>/i, {
+  html = setMeta(html, /<meta\s+name="twitter:title"[^>]*\/?\s*>/i, {
     name: "twitter:title",
     content: page.title,
   });
-  html = setMeta(html, /<meta\\s+name="twitter:description"[^>]*\\/?\\s*>/i, {
+  html = setMeta(html, /<meta\s+name="twitter:description"[^>]*\/?\s*>/i, {
     name: "twitter:description",
     content: page.description,
   });
 
   html = replaceTag(
     html,
-    /<link\\s+rel="canonical"[^>]*\\/?\\s*>/i,
+    /<link\s+rel="canonical"[^>]*\/?\s*>/i,
     `<link rel="canonical" href="${canonical}" />`,
     "canonical link"
   );
@@ -184,7 +184,7 @@ for (const page of pages) {
   const schema = JSON.stringify(buildSchema(page)).replace(/</g, "\\\\u003c");
   html = replaceTag(
     html,
-    /<script type="application\\/ld\\+json">[\\s\\S]*?<\\/script>/i,
+    /<script type="application\/ld\+json">[\s\S]*?<\/script>/i,
     `<script type="application/ld+json" id="fas-website-schema">${schema}</script>`,
     "structured data"
   );
