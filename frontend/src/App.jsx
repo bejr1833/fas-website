@@ -3128,27 +3128,55 @@ function App() {
         ctx.stroke();
       }
 
-      // Brand footer kept inside the artwork's lower safe area.
-      const footerY = 1535;
-      ctx.strokeStyle = "rgba(230,210,165,0.24)";
+      // Elegant editorial footer: centred brand signature with a refined type hierarchy.
+      const footerY = 1510;
+      ctx.strokeStyle = "rgba(230,210,165,0.28)";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(margin, footerY);
       ctx.lineTo(W - margin, footerY);
       ctx.stroke();
 
+      // Fine gold ornament beneath the divider.
+      ctx.strokeStyle = "rgba(181,138,74,0.72)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 48, footerY + 42);
+      ctx.lineTo(W / 2 - 10, footerY + 42);
+      ctx.moveTo(W / 2 + 10, footerY + 42);
+      ctx.lineTo(W / 2 + 48, footerY + 42);
+      ctx.stroke();
       ctx.fillStyle = c.goldLight;
-      ctx.font = "700 23px Arial, sans-serif";
-      tracked("FAITH   ·   FELLOWSHIP   ·   TRUTH", margin, footerY + 74, 2.4);
-      ctx.fillStyle = c.ivory;
-      ctx.font = "600 31px Arial, sans-serif";
-      ctx.fillText("FAITH ALONE SAVES", margin, footerY + 142);
-      ctx.fillStyle = c.muted;
-      ctx.font = "25px Arial, sans-serif";
-      ctx.fillText("fas-fellowship.org", margin, footerY + 194);
+      ctx.beginPath();
+      ctx.moveTo(W / 2, footerY + 36);
+      ctx.lineTo(W / 2 + 6, footerY + 42);
+      ctx.lineTo(W / 2, footerY + 48);
+      ctx.lineTo(W / 2 - 6, footerY + 42);
+      ctx.closePath();
+      ctx.fill();
 
+      // Small, letter-spaced brand motto.
+      const footerMotto = "FAITH   ·   FELLOWSHIP   ·   TRUTH";
+      ctx.font = "600 21px Arial, sans-serif";
+      let mottoWidth = 0;
+      for (const ch of footerMotto) mottoWidth += ctx.measureText(ch).width + 2.8;
+      tracked(footerMotto, (W - mottoWidth) / 2, footerY + 104, 2.8);
+
+      // The organisation name becomes the elegant signature, not another utility label.
+      ctx.textAlign = "center";
+      ctx.fillStyle = c.ivory;
+      ctx.font = '600 47px "Playfair Display", Georgia, "Times New Roman", serif';
+      ctx.fillText("FAITH ALONE SAVES", W / 2, footerY + 178);
+
+      // Website in a quieter italic serif, visually subordinate to the wordmark.
+      ctx.fillStyle = c.goldLight;
+      ctx.font = 'italic 28px "Playfair Display", Georgia, "Times New Roman", serif';
+      ctx.fillText("fas-fellowship.org", W / 2, footerY + 238);
+      ctx.textAlign = "left";
+
+      // A restrained gold signature stroke closes the composition.
       ctx.fillStyle = c.gold;
-      roundedRect(margin, footerY + 236, 92, 5, 3);
+      roundedRect(W / 2 - 48, footerY + 286, 96, 5, 3);
       ctx.fill();
 
       try {
