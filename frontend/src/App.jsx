@@ -3023,46 +3023,45 @@ function App() {
       ctx.fillStyle = c.white;
       titleLines.forEach((line, index) => ctx.fillText(line, margin, titleStartY + index * titleLineHeight));
 
-      // Key verse excerpt: opening words in a deep, softly illuminated gold-edged panel,
-      // followed by the scripture reference in a smaller italic signature.
+      // Scripture as a quiet editorial quotation: no card, just type, gold hairlines and space.
       const titleBottom = titleStartY + titleBlockHeight;
       const verseExcerpt = verseText;
-      const verseFont = '500 25px "Playfair Display", Georgia, "Times New Roman", serif';
-      const verseLines = wrap(verseExcerpt, verseFont, contentW - 88, 3);
-      const verseLineHeight = 32;
-      const versePanelH = verseLines.length ? 112 + verseLines.length * verseLineHeight : 76;
-      const versePanelY = titleBottom + 42;
+      const verseFont = 'italic 24px "Playfair Display", Georgia, "Times New Roman", serif';
+      const verseLines = wrap(verseExcerpt, verseFont, contentW - 72, 4);
+      const verseLineHeight = 31;
+      const verseY = titleBottom + 74;
+      const verseBlockHeight = verseLines.length ? 54 + verseLines.length * verseLineHeight + (verseReference ? 42 : 0) : 42;
 
       if (verseReference || verseLines.length) {
-        ctx.fillStyle = "#191a15";
-        roundedRect(margin, versePanelY, contentW, versePanelH, 14);
-        ctx.fill();
-        ctx.strokeStyle = "rgba(198,161,92,0.62)";
+        // A delicate gold hairline and oversized opening quotation mark create a refined cue.
+        ctx.strokeStyle = "rgba(198,161,92,0.72)";
         ctx.lineWidth = 1.5;
-        roundedRect(margin, versePanelY, contentW, versePanelH, 14);
+        ctx.beginPath();
+        ctx.moveTo(margin, verseY - 20);
+        ctx.lineTo(margin + 68, verseY - 20);
         ctx.stroke();
 
         ctx.fillStyle = c.brass;
-        ctx.font = "700 14px Arial, sans-serif";
-        tracked("KEY VERSE", margin + 28, versePanelY + 30, 2.8);
+        ctx.font = 'italic 76px "Playfair Display", Georgia, "Times New Roman", serif';
+        ctx.fillText("“", margin + 2, verseY + 45);
 
         ctx.fillStyle = c.white;
         ctx.font = verseFont;
         verseLines.forEach((line, index) => {
-          ctx.fillText(line, margin + 28, versePanelY + 66 + index * verseLineHeight);
+          ctx.fillText(line, margin + 48, verseY + 28 + index * verseLineHeight);
         });
 
         if (verseReference) {
-          ctx.fillStyle = c.brass;
+          ctx.fillStyle = c.brassSoft;
           ctx.font = 'italic 19px "Playfair Display", Georgia, "Times New Roman", serif';
           ctx.textAlign = "right";
-          ctx.fillText(verseReference, W - margin - 28, versePanelY + versePanelH - 16);
+          ctx.fillText(verseReference, W - margin, verseY + 28 + verseLines.length * verseLineHeight + 20);
           ctx.textAlign = "left";
         }
       }
 
       // Impact feature: a quiet inset paper panel with forest edge and brass label.
-      const impactY = (versePanelY + versePanelH + 28);
+      const impactY = verseY + verseBlockHeight + 28;
       if (impact) {
         const impactFont = '500 38px "Playfair Display", Georgia, "Times New Roman", serif';
         const impactLines = wrap(impact, impactFont, contentW - 104, 3);
