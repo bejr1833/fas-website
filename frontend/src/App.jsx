@@ -3057,35 +3057,75 @@ function App() {
       ctx.closePath();
       ctx.fill();
 
-      // Impact panel, sized to its content with generous but controlled spacing.
+      // A more luxurious impact feature: layered evergreen surface, champagne frame,
+      // delicate ornament and refined serif statement typography.
       if (impact) {
-        const impactFont = "500 42px Arial, sans-serif";
-        const impactLines = wrap(impact, impactFont, contentW - 112, 4);
-        const lineHeight = 58;
-        const panelH = 150 + impactLines.length * lineHeight;
+        const impactFont = '500 43px "Playfair Display", Georgia, "Times New Roman", serif';
+        const impactLines = wrap(impact, impactFont, contentW - 132, 4);
+        const lineHeight = 62;
+        const panelH = 190 + impactLines.length * lineHeight;
         const panelY = ornamentY + 76;
 
-        ctx.fillStyle = c.panel;
-        roundedRect(margin, panelY, contentW, panelH, 22);
+        // Soft shadow gives the panel a subtle raised, tactile finish.
+        ctx.save();
+        ctx.shadowColor = "rgba(0,0,0,0.34)";
+        ctx.shadowBlur = 34;
+        ctx.shadowOffsetY = 14;
+        const panelGradient = ctx.createLinearGradient(margin, panelY, W - margin, panelY + panelH);
+        panelGradient.addColorStop(0, "#1b211e");
+        panelGradient.addColorStop(0.52, "#151b19");
+        panelGradient.addColorStop(1, "#202019");
+        ctx.fillStyle = panelGradient;
+        roundedRect(margin, panelY, contentW, panelH, 25);
         ctx.fill();
-        ctx.strokeStyle = "rgba(202,170,111,0.40)";
+        ctx.restore();
+
+        // Double champagne outline, kept intentionally fine.
+        ctx.strokeStyle = "rgba(210,181,125,0.68)";
         ctx.lineWidth = 2;
-        roundedRect(margin, panelY, contentW, panelH, 22);
+        roundedRect(margin, panelY, contentW, panelH, 25);
+        ctx.stroke();
+        ctx.strokeStyle = "rgba(244,226,187,0.13)";
+        ctx.lineWidth = 1;
+        roundedRect(margin + 9, panelY + 9, contentW - 18, panelH - 18, 19);
         ctx.stroke();
 
-        // Restrained vertical burgundy accent.
+        // Small burgundy-and-gold signature accent.
         ctx.fillStyle = c.red;
-        roundedRect(margin, panelY + 22, 6, panelH - 44, 3);
+        roundedRect(margin, panelY + 30, 5, panelH - 60, 2);
+        ctx.fill();
+        ctx.fillStyle = c.goldLight;
+        ctx.beginPath();
+        ctx.arc(margin + 34, panelY + 46, 4, 0, Math.PI * 2);
         ctx.fill();
 
+        // Label with a fine ornamental rule, rather than a plain heading.
         ctx.fillStyle = c.goldLight;
-        ctx.font = "700 21px Arial, sans-serif";
-        tracked("THE IMPACT", margin + 42, panelY + 58, 3.5);
+        ctx.font = "700 20px Arial, sans-serif";
+        tracked("THE IMPACT", margin + 58, panelY + 64, 4);
+        ctx.strokeStyle = "rgba(230,210,165,0.42)";
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(margin + 58, panelY + 91);
+        ctx.lineTo(margin + 190, panelY + 91);
+        ctx.stroke();
+
+        // Statement: elegant serif, comfortable leading, never allowed to overflow.
         ctx.font = impactFont;
         ctx.fillStyle = c.ivory;
         impactLines.forEach((line, index) => {
-          ctx.fillText(line, margin + 42, panelY + 122 + index * lineHeight);
+          ctx.fillText(line, margin + 58, panelY + 158 + index * lineHeight);
         });
+
+        // Tiny gold corner details add a bespoke stationery feel.
+        ctx.strokeStyle = "rgba(230,210,165,0.58)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(margin + contentW - 58, panelY + 34);
+        ctx.lineTo(margin + contentW - 34, panelY + 34);
+        ctx.moveTo(margin + contentW - 34, panelY + 34);
+        ctx.lineTo(margin + contentW - 34, panelY + 58);
+        ctx.stroke();
       }
 
       // Brand footer kept inside the artwork's lower safe area.
