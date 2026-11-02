@@ -2919,16 +2919,16 @@ function App() {
       const margin = 92;
       const contentW = W - margin * 2;
       const c = {
-        paper: "#eee8d9",
-        paperInner: "#fbf8ef",
-        ink: "#292116",
-        forest: "#514027",
-        forestSoft: "#f1eadb",
-        brass: "#a77d35",
-        brassSoft: "#d8bd82",
-        muted: "#81745e",
-        border: "#cdbb91",
-        white: "#fffdf7"
+        paper: "#080b0a",
+        paperInner: "#111613",
+        ink: "#f3eee3",
+        forest: "#d4b477",
+        forestSoft: "#211e17",
+        brass: "#c6a15c",
+        brassSoft: "#e5d0a0",
+        muted: "#b5aa92",
+        border: "#80683d",
+        white: "#fffaf0"
       };
 
       const roundedRect = (x, y, w, h, r) => {
@@ -2974,7 +2974,7 @@ function App() {
         return lines;
       };
 
-      // Warm editorial paper with a quiet inner sheet and a fine double rule.
+      // Deep midnight evergreen canvas with a restrained double champagne-gold frame.
       ctx.fillStyle = c.paper;
       ctx.fillRect(0, 0, W, H);
       ctx.fillStyle = c.paperInner;
@@ -2984,16 +2984,16 @@ function App() {
       ctx.lineWidth = 2.2;
       roundedRect(28, 28, W - 56, H - 56, 22);
       ctx.stroke();
-      ctx.strokeStyle = "rgba(167,125,53,0.24)";
+      ctx.strokeStyle = "rgba(198,161,92,0.22)";
       ctx.lineWidth = 1;
       roundedRect(42, 42, W - 84, H - 84, 16);
       ctx.stroke();
 
-      // Header: compact FAS signature, not a copied category treatment.
+      // Header: compact FAS signature in warm champagne gold.
       ctx.fillStyle = c.brass;
       roundedRect(margin, 104, 54, 5, 3);
       ctx.fill();
-      ctx.fillStyle = c.forest;
+      ctx.fillStyle = c.brassSoft;
       ctx.font = "700 19px Arial, sans-serif";
       tracked("FAS  /  DAILY DEVOTIONAL", margin, 151, 3.2);
       ctx.fillStyle = c.muted;
@@ -3002,7 +3002,7 @@ function App() {
       ctx.fillText("LOVE IN FELLOWSHIP & TRUTH", W - margin, 151);
       ctx.textAlign = "left";
 
-      // Main headline: left-aligned, generous and completely clear of divider lines.
+      // Main headline: warm ivory editorial serif, left-aligned and clear of divider lines.
       const titleText = String(devotionalPost.title || "Daily Devotional").replace(/\s+/g, " ").trim();
       let titleSize = 68;
       let titleFont = "";
@@ -3020,10 +3020,10 @@ function App() {
       const titleBlockHeight = titleLines.length * titleLineHeight;
       const titleStartY = 330 - titleBlockHeight / 2;
       ctx.font = titleFont;
-      ctx.fillStyle = c.ink;
+      ctx.fillStyle = c.white;
       titleLines.forEach((line, index) => ctx.fillText(line, margin, titleStartY + index * titleLineHeight));
 
-      // Key verse excerpt: opening words in a refined gold editorial panel,
+      // Key verse excerpt: opening words in a deep, softly illuminated gold-edged panel,
       // followed by the scripture reference in a smaller italic signature.
       const titleBottom = titleStartY + titleBlockHeight;
       const verseExcerpt = verseText;
@@ -3034,10 +3034,10 @@ function App() {
       const versePanelY = titleBottom + 42;
 
       if (verseReference || verseLines.length) {
-        ctx.fillStyle = "rgba(167,125,53,0.055)";
+        ctx.fillStyle = "#191a15";
         roundedRect(margin, versePanelY, contentW, versePanelH, 14);
         ctx.fill();
-        ctx.strokeStyle = "rgba(167,125,53,0.48)";
+        ctx.strokeStyle = "rgba(198,161,92,0.62)";
         ctx.lineWidth = 1.5;
         roundedRect(margin, versePanelY, contentW, versePanelH, 14);
         ctx.stroke();
@@ -3046,7 +3046,7 @@ function App() {
         ctx.font = "700 14px Arial, sans-serif";
         tracked("KEY VERSE", margin + 28, versePanelY + 30, 2.8);
 
-        ctx.fillStyle = c.ink;
+        ctx.fillStyle = c.white;
         ctx.font = verseFont;
         verseLines.forEach((line, index) => {
           ctx.fillText(line, margin + 28, versePanelY + 66 + index * verseLineHeight);
@@ -3068,10 +3068,10 @@ function App() {
         const impactLines = wrap(impact, impactFont, contentW - 104, 3);
         const lineHeight = 49;
         const panelH = 132 + impactLines.length * lineHeight;
-        ctx.fillStyle = "#f3eddf";
+        ctx.fillStyle = "#1d1b15";
         roundedRect(margin, impactY, contentW, panelH, 18);
         ctx.fill();
-        ctx.strokeStyle = "rgba(167,125,53,0.42)";
+        ctx.strokeStyle = "rgba(198,161,92,0.55)";
         ctx.lineWidth = 1.5;
         roundedRect(margin, impactY, contentW, panelH, 18);
         ctx.stroke();
@@ -3082,14 +3082,14 @@ function App() {
         ctx.fillStyle = c.brass;
         ctx.font = "700 17px Arial, sans-serif";
         tracked("THE IMPACT", margin + 42, impactY + 52, 3.4);
-        ctx.fillStyle = c.ink;
+        ctx.fillStyle = c.white;
         ctx.font = impactFont;
         impactLines.forEach((line, index) => ctx.fillText(line, margin + 42, impactY + 112 + index * lineHeight));
       }
 
       // A restrained footer signature, smaller than the devotional message.
       const footerY = 902;
-      ctx.strokeStyle = "rgba(167,125,53,0.48)";
+      ctx.strokeStyle = "rgba(198,161,92,0.52)";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(margin, footerY);
@@ -3101,10 +3101,10 @@ function App() {
       const motto = "FAITH  ·  FELLOWSHIP  ·  TRUTH";
       ctx.textAlign = "center";
       ctx.fillText(motto, W / 2, footerY + 42);
-      ctx.fillStyle = c.ink;
+      ctx.fillStyle = c.white;
       ctx.font = '600 22px "Playfair Display", Georgia, "Times New Roman", serif';
       ctx.fillText("FAITH ALONE SAVES", W / 2, footerY + 78);
-      ctx.fillStyle = c.forest;
+      ctx.fillStyle = c.brassSoft;
       ctx.font = 'italic 18px "Playfair Display", Georgia, "Times New Roman", serif';
       ctx.fillText("fas-fellowship.org", W / 2, footerY + 108);
       ctx.textAlign = "left";
