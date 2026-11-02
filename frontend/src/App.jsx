@@ -2890,8 +2890,7 @@ function App() {
       "Faith Alone Saves · Love in Fellowship & Truth"
     ].filter(Boolean).join("\n\n");
 
-    // Minimal premium story card: only the devotional title and impact statement,
-    // framed by restrained FAS branding and a clear website destination.
+    // Luxury editorial-style story card: title + impact only, with refined FAS branding.
     const canvas = document.createElement("canvas");
     canvas.width = 1080;
     canvas.height = 1920;
@@ -2902,28 +2901,28 @@ function App() {
       if (document.fonts?.load) {
         try {
           await Promise.all([
-            document.fonts.load('700 72px "DM Sans"'),
-            document.fonts.load('700 88px "Playfair Display"')
+            document.fonts.load('700 76px "Playfair Display"'),
+            document.fonts.load('500 42px "DM Sans"')
           ]);
         } catch {
-          // Continue with browser font fallbacks.
+          // Use elegant system serif and sans-serif fallbacks.
         }
       }
 
       const W = canvas.width;
       const H = canvas.height;
-      const margin = 86;
+      const margin = 92;
       const contentW = W - margin * 2;
       const c = {
-        bg: "#0b0d0e",
-        card: "#141718",
-        panel: "#191d1c",
-        gold: "#b58a43",
-        goldLight: "#e0c58c",
-        red: "#b52a32",
-        ivory: "#f7f3eb",
-        muted: "#aeb4af",
-        border: "rgba(202,166,99,0.34)"
+        bg: "#090c0c",
+        card: "#111615",
+        panel: "#171d1b",
+        gold: "#b58a4a",
+        goldLight: "#e6d2a5",
+        red: "#9f3038",
+        ivory: "#f6f1e8",
+        muted: "#a8aaa2",
+        border: "rgba(202,170,111,0.42)"
       };
 
       const roundedRect = (x, y, w, h, r) => {
@@ -2947,117 +2946,180 @@ function App() {
         }
       };
 
-      const wrap = (text, font, maxWidth, maxLines) => {
+      const wrap = (text, font, maxWidth, maxLines = 5) => {
         ctx.font = font;
-        const words = String(text || "").split(/\\s+/).filter(Boolean);
+        const words = String(text || "").trim().split(/\s+/).filter(Boolean);
         const lines = [];
         let line = "";
         for (const word of words) {
-          const next = line ? line + " " + word : word;
-          if (line && ctx.measureText(next).width > maxWidth) {
+          const candidate = line ? line + " " + word : word;
+          if (line && ctx.measureText(candidate).width > maxWidth) {
             lines.push(line);
             line = word;
-          } else line = next;
+          } else {
+            line = candidate;
+          }
         }
         if (line) lines.push(line);
+
         if (lines.length > maxLines) {
           lines.length = maxLines;
           let last = lines[maxLines - 1];
-          while (last && ctx.measureText(last + "…").width > maxWidth) last = last.slice(0, -1);
+          while (last && ctx.measureText(last + "…").width > maxWidth) {
+            last = last.slice(0, -1);
+          }
           lines[maxLines - 1] = last.trimEnd() + "…";
         }
         return lines;
       };
 
-      const drawLines = (lines, x, y, font, color, lineHeight) => {
+      const drawCenteredLines = (lines, y, font, color, lineHeight) => {
         ctx.font = font;
         ctx.fillStyle = color;
-        lines.forEach((line, index) => ctx.fillText(line, x, y + index * lineHeight));
+        ctx.textAlign = "center";
+        lines.forEach((line, index) => ctx.fillText(line, W / 2, y + index * lineHeight));
+        ctx.textAlign = "left";
       };
 
-      // Deep charcoal canvas with a subtle warm glow and fine gold frame.
+      // Deep evergreen-charcoal base with a restrained champagne glow.
       ctx.fillStyle = c.bg;
       ctx.fillRect(0, 0, W, H);
-      const glow = ctx.createRadialGradient(W * 0.84, 300, 10, W * 0.84, 300, 850);
-      glow.addColorStop(0, "rgba(181,138,67,0.20)");
-      glow.addColorStop(1, "rgba(181,138,67,0)");
+      const glow = ctx.createRadialGradient(W * 0.5, 610, 20, W * 0.5, 610, 900);
+      glow.addColorStop(0, "rgba(181,138,74,0.16)");
+      glow.addColorStop(1, "rgba(181,138,74,0)");
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, W, H);
 
+      // Double-frame treatment gives the card a finished, invitation-like edge.
       ctx.fillStyle = c.card;
-      roundedRect(30, 30, W - 60, H - 60, 34);
+      roundedRect(28, 28, W - 56, H - 56, 34);
       ctx.fill();
       ctx.strokeStyle = c.border;
       ctx.lineWidth = 2;
-      roundedRect(30, 30, W - 60, H - 60, 34);
+      roundedRect(28, 28, W - 56, H - 56, 34);
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(230,210,165,0.12)";
+      ctx.lineWidth = 1;
+      roundedRect(43, 43, W - 86, H - 86, 25);
       ctx.stroke();
 
-      // Brand signature.
-      ctx.fillStyle = c.red;
-      roundedRect(margin, 116, 76, 7, 4);
+      // Brand header.
+      ctx.fillStyle = c.gold;
+      roundedRect(margin, 116, 62, 5, 3);
       ctx.fill();
       ctx.fillStyle = c.goldLight;
-      ctx.font = "800 25px Arial, sans-serif";
-      tracked("FAS  /  DAILY DEVOTIONAL", margin, 174, 4);
+      ctx.font = "700 24px Arial, sans-serif";
+      tracked("F A S   /   D A I L Y   D E V O T I O N A L", margin, 174, 1.1);
 
-      // Title is the sole headline, given generous breathing room.
-      const titleFont = "700 76px Georgia, 'Times New Roman', serif";
-      const titleLines = wrap(devotionalPost.title || "Daily Devotional", titleFont, contentW, 5);
-      const titleLineHeight = 94;
+      // Fine ornamental divider.
+      ctx.strokeStyle = "rgba(230,210,165,0.28)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(margin, 245);
+      ctx.lineTo(W - margin, 245);
+      ctx.stroke();
+
+      // Dynamically size and wrap long titles so no word can run off the canvas.
+      const titleText = String(devotionalPost.title || "Daily Devotional").replace(/\s+/g, " ").trim();
+      let titleSize = 82;
+      let titleFont = "";
+      let titleLines = [];
+      while (titleSize >= 54) {
+        titleFont = "700 " + titleSize + 'px "Playfair Display", Georgia, "Times New Roman", serif';
+        titleLines = wrap(titleText, titleFont, contentW - 44, 4);
+        if (titleLines.every((line) => {
+          ctx.font = titleFont;
+          return ctx.measureText(line).width <= contentW - 44;
+        })) break;
+        titleSize -= 4;
+      }
+      const titleLineHeight = Math.round(titleSize * 1.22);
       const titleBlockHeight = titleLines.length * titleLineHeight;
-      const titleY = Math.max(500, 760 - titleBlockHeight / 2);
-      drawLines(titleLines, margin, titleY, titleFont, c.ivory, titleLineHeight);
+      const titleStartY = 650 - titleBlockHeight / 2;
+      drawCenteredLines(titleLines, titleStartY, titleFont, c.ivory, titleLineHeight);
 
-      // The impact statement is the only supporting message.
+      // Gold ornamental separator between the headline and its single takeaway.
+      const ornamentY = titleStartY + titleBlockHeight + 88;
+      ctx.strokeStyle = "rgba(181,138,74,0.68)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 72, ornamentY);
+      ctx.lineTo(W / 2 - 14, ornamentY);
+      ctx.moveTo(W / 2 + 14, ornamentY);
+      ctx.lineTo(W / 2 + 72, ornamentY);
+      ctx.stroke();
+      ctx.fillStyle = c.goldLight;
+      ctx.beginPath();
+      ctx.moveTo(W / 2, ornamentY - 7);
+      ctx.lineTo(W / 2 + 7, ornamentY);
+      ctx.lineTo(W / 2, ornamentY + 7);
+      ctx.lineTo(W / 2 - 7, ornamentY);
+      ctx.closePath();
+      ctx.fill();
+
+      // Impact panel, sized to its content with generous but controlled spacing.
       if (impact) {
-        const impactLabelY = titleY + titleBlockHeight + 120;
         const impactFont = "500 42px Arial, sans-serif";
-        const impactLines = wrap(impact, impactFont, contentW - 100, 5);
-        const impactLineHeight = 60;
-        const panelH = 150 + impactLines.length * impactLineHeight;
+        const impactLines = wrap(impact, impactFont, contentW - 112, 4);
+        const lineHeight = 58;
+        const panelH = 150 + impactLines.length * lineHeight;
+        const panelY = ornamentY + 76;
 
         ctx.fillStyle = c.panel;
-        roundedRect(margin, impactLabelY, contentW, panelH, 24);
+        roundedRect(margin, panelY, contentW, panelH, 22);
         ctx.fill();
-        ctx.strokeStyle = "rgba(181,138,67,0.42)";
+        ctx.strokeStyle = "rgba(202,170,111,0.40)";
         ctx.lineWidth = 2;
-        roundedRect(margin, impactLabelY, contentW, panelH, 24);
+        roundedRect(margin, panelY, contentW, panelH, 22);
         ctx.stroke();
 
+        // Restrained vertical burgundy accent.
         ctx.fillStyle = c.red;
-        roundedRect(margin, impactLabelY, 7, panelH, 4);
+        roundedRect(margin, panelY + 22, 6, panelH - 44, 3);
         ctx.fill();
+
         ctx.fillStyle = c.goldLight;
-        ctx.font = "800 22px Arial, sans-serif";
-        tracked("THE IMPACT", margin + 42, impactLabelY + 58, 4);
-        drawLines(impactLines, margin + 42, impactLabelY + 122, impactFont, c.ivory, impactLineHeight);
+        ctx.font = "700 21px Arial, sans-serif";
+        tracked("THE IMPACT", margin + 42, panelY + 58, 3.5);
+        ctx.font = impactFont;
+        ctx.fillStyle = c.ivory;
+        impactLines.forEach((line, index) => {
+          ctx.fillText(line, margin + 42, panelY + 122 + index * lineHeight);
+        });
       }
 
-      // Quiet brand footer and destination; no scripture, date, author, reflection or prayer.
-      const footerY = 1600;
-      ctx.strokeStyle = "rgba(202,166,99,0.24)";
-      ctx.lineWidth = 2;
+      // Brand footer kept inside the artwork's lower safe area.
+      const footerY = 1535;
+      ctx.strokeStyle = "rgba(230,210,165,0.24)";
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(margin, footerY);
       ctx.lineTo(W - margin, footerY);
       ctx.stroke();
 
-      ctx.fillStyle = c.ivory;
-      ctx.font = "800 27px Arial, sans-serif";
-      tracked("FAITH  ·  FELLOWSHIP  ·  TRUTH", margin, footerY + 76, 4);
       ctx.fillStyle = c.goldLight;
-      ctx.font = "25px Arial, sans-serif";
-      ctx.fillText("Read the full devotional at", margin, footerY + 145);
+      ctx.font = "700 23px Arial, sans-serif";
+      tracked("FAITH   ·   FELLOWSHIP   ·   TRUTH", margin, footerY + 74, 2.4);
       ctx.fillStyle = c.ivory;
-      ctx.font = "700 34px Arial, sans-serif";
-      ctx.fillText("fas-fellowship.org", margin, footerY + 198);
+      ctx.font = "600 31px Arial, sans-serif";
+      ctx.fillText("FAITH ALONE SAVES", margin, footerY + 142);
+      ctx.fillStyle = c.muted;
+      ctx.font = "25px Arial, sans-serif";
+      ctx.fillText("fas-fellowship.org", margin, footerY + 194);
+
       ctx.fillStyle = c.gold;
-      roundedRect(margin, footerY + 236, 112, 6, 3);
+      roundedRect(margin, footerY + 236, 92, 5, 3);
       ctx.fill();
 
       try {
         const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-        if (blob) devotionalFile = new File([blob], "fas-devotional-" + (devotionalPost.id || "daily") + ".png", { type: "image/png" });
+        if (blob) {
+          devotionalFile = new File(
+            [blob],
+            "fas-devotional-" + (devotionalPost.id || "daily") + ".png",
+            { type: "image/png" }
+          );
+        }
       } catch {
         devotionalFile = null;
       }
