@@ -2881,14 +2881,14 @@ function App() {
 
     const url = new URL(window.location.href);
     const title = devotionalPost.title + " — FAS Daily Devotional";
-    const impact = String(devotionalPost.impact_line || "").replace(/\\s+/g, " ").trim();
+    const impact = String(devotionalPost.impact_line || "").replace(/\s+/g, " ").trim();
     const shareText = [
       "FAS DAILY DEVOTIONAL",
       devotionalPost.title,
       impact ? "THE IMPACT: " + impact : "",
       "Read the full devotional: " + url.href,
       "Faith Alone Saves · Love in Fellowship & Truth"
-    ].filter(Boolean).join("\\n\\n");
+    ].filter(Boolean).join("\n\n");
 
     // Minimal premium story card: only the devotional title and impact statement,
     // framed by restrained FAS branding and a clear website destination.
