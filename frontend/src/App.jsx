@@ -2885,6 +2885,7 @@ function App() {
     const shareText = [
       "FAS DAILY DEVOTIONAL",
       devotionalPost.title,
+      devotionalPost.scripture_reference ? "KEY VERSE: " + devotionalPost.scripture_reference : "",
       impact ? "THE IMPACT: " + impact : "",
       "Read the full devotional: " + url.href,
       "Faith Alone Saves · Love in Fellowship & Truth"
@@ -3021,10 +3022,10 @@ function App() {
 
       // Dynamically size and wrap long titles so no word can run off the canvas.
       const titleText = String(devotionalPost.title || "Daily Devotional").replace(/\s+/g, " ").trim();
-      let titleSize = 72;
+      let titleSize = 64;
       let titleFont = "";
       let titleLines = [];
-      while (titleSize >= 48) {
+      while (titleSize >= 44) {
         titleFont = "700 " + titleSize + 'px "Playfair Display", Georgia, "Times New Roman", serif';
         titleLines = wrap(titleText, titleFont, contentW - 56, 3);
         if (titleLines.every((line) => {
@@ -3035,11 +3036,41 @@ function App() {
       }
       const titleLineHeight = Math.round(titleSize * 1.22);
       const titleBlockHeight = titleLines.length * titleLineHeight;
-      const titleStartY = 355 - titleBlockHeight / 2;
+      const titleStartY = 300 - titleBlockHeight / 2;
       drawCenteredLines(titleLines, titleStartY, titleFont, c.ivory, titleLineHeight);
 
-      // Gold ornamental separator between the headline and its single takeaway.
-      const ornamentY = titleStartY + titleBlockHeight + 42;
+      // Compact scripture reference between the headline and impact panel.
+      const verseReference = String(devotionalPost.scripture_reference || "").replace(/\s+/g, " ").trim();
+      const titleBottom = titleStartY + titleBlockHeight;
+      const verseY = titleBottom + 52;
+
+      if (verseReference) {
+        const verseFont = "600 22px Arial, sans-serif";
+        ctx.font = verseFont;
+        const verseTextWidth = Math.min(ctx.measureText(verseReference).width, contentW - 120);
+        const capsuleW = Math.min(contentW - 60, verseTextWidth + 76);
+        const capsuleX = (W - capsuleW) / 2;
+        const capsuleY = verseY - 32;
+
+        ctx.fillStyle = "rgba(181,138,74,0.08)";
+        roundedRect(capsuleX, capsuleY, capsuleW, 54, 27);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(210,181,125,0.48)";
+        ctx.lineWidth = 1.5;
+        roundedRect(capsuleX, capsuleY, capsuleW, 54, 27);
+        ctx.stroke();
+
+        ctx.fillStyle = c.goldLight;
+        ctx.font = "700 15px Arial, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("✦", capsuleX + 28, verseY + 2);
+        ctx.font = verseFont;
+        ctx.fillText(verseReference, W / 2, verseY + 7, capsuleW - 70);
+        ctx.textAlign = "left";
+      }
+
+      // Delicate ornament introduces the impact panel.
+      const ornamentY = (verseReference ? verseY + 58 : titleBottom + 48);
       ctx.strokeStyle = "rgba(181,138,74,0.68)";
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -3063,8 +3094,8 @@ function App() {
         const impactFont = '500 36px "Playfair Display", Georgia, "Times New Roman", serif';
         const impactLines = wrap(impact, impactFont, contentW - 132, 3);
         const lineHeight = 48;
-        const panelH = 156 + impactLines.length * lineHeight;
-        const panelY = ornamentY + 48;
+        const panelH = 142 + impactLines.length * lineHeight;
+        const panelY = ornamentY + 34;
 
         // Soft shadow gives the panel a subtle raised, tactile finish.
         ctx.save();
@@ -3129,7 +3160,7 @@ function App() {
       }
 
       // Elegant editorial footer: centred brand signature with a refined type hierarchy.
-      const footerY = 850;
+      const footerY = 790;
       ctx.strokeStyle = "rgba(230,210,165,0.28)";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
@@ -3157,26 +3188,26 @@ function App() {
 
       // Small, letter-spaced brand motto.
       const footerMotto = "FAITH   ·   FELLOWSHIP   ·   TRUTH";
-      ctx.font = "600 21px Arial, sans-serif";
+      ctx.font = "600 16px Arial, sans-serif";
       let mottoWidth = 0;
       for (const ch of footerMotto) mottoWidth += ctx.measureText(ch).width + 2.8;
-      tracked(footerMotto, (W - mottoWidth) / 2, footerY + 72, 2.8);
+      tracked(footerMotto, (W - mottoWidth) / 2, footerY + 54, 2.2);
 
       // The organisation name becomes the elegant signature, not another utility label.
       ctx.textAlign = "center";
       ctx.fillStyle = c.ivory;
-      ctx.font = '600 47px "Playfair Display", Georgia, "Times New Roman", serif';
-      ctx.fillText("FAITH ALONE SAVES", W / 2, footerY + 126);
+      ctx.font = '600 31px "Playfair Display", Georgia, "Times New Roman", serif';
+      ctx.fillText("FAITH ALONE SAVES", W / 2, footerY + 100);
 
       // Website in a quieter italic serif, visually subordinate to the wordmark.
       ctx.fillStyle = c.goldLight;
-      ctx.font = 'italic 28px "Playfair Display", Georgia, "Times New Roman", serif';
-      ctx.fillText("fas-fellowship.org", W / 2, footerY + 174);
+      ctx.font = 'italic 20px "Playfair Display", Georgia, "Times New Roman", serif';
+      ctx.fillText("fas-fellowship.org", W / 2, footerY + 136);
       ctx.textAlign = "left";
 
       // A restrained gold signature stroke closes the composition.
       ctx.fillStyle = c.gold;
-      roundedRect(W / 2 - 48, footerY + 210, 96, 5, 3);
+      roundedRect(W / 2 - 36, footerY + 164, 72, 4, 3);
       ctx.fill();
 
       try {
