@@ -21731,3 +21731,118 @@ html[data-theme="light"] .slideshowCounter {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* =========================================================
+   HIGHLIGHTS & UPDATES — COMPACT LUXURY MOBILE COMPOSITION
+   Reduce unused vertical space while preserving the full poster
+   and keeping title, category, CTA and carousel controls readable.
+   ========================================================= */
+@media (max-width: 480px) {
+  .site[data-page="home"] .homepageSlideshow {
+    width: calc(100% - 28px);
+    margin: 6px auto 28px;
+    padding: 12px 0 14px;
+  }
+
+  .site[data-page="home"] .slideshowHeader {
+    margin-bottom: 12px;
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  .site[data-page="home"] .slideshowHeader h2 {
+    margin-top: 7px;
+    font-size: clamp(27px, 7.2vw, 32px);
+    line-height: 1.04;
+    letter-spacing: -.04em;
+  }
+
+  .site[data-page="home"] .slideshowCounter {
+    padding: 6px 9px;
+    font-size: 9px;
+  }
+
+  .site[data-page="home"] .slideshowFrame {
+    height: clamp(380px, 101vw, 405px);
+    min-height: 0;
+    border-radius: 18px;
+    box-shadow: 0 16px 38px rgba(0,0,0,.18);
+  }
+
+  .site[data-page="home"] .slideshowFrame .slide > img {
+    height: 50%;
+    object-fit: contain !important;
+    object-position: center;
+  }
+
+  .site[data-page="home"] .slideshowFrame .slideOverlay {
+    justify-content: flex-start;
+    padding: calc(50% + 11px) 17px 42px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 43%,
+      rgba(17,18,22,.94) 53%,
+      #111216 63%,
+      #111216 100%
+    );
+  }
+
+  .site[data-page="home"] .slideshowFrame .slideCategory {
+    padding: 5px 9px;
+    font-size: 7.5px;
+    letter-spacing: .18em;
+  }
+
+  .site[data-page="home"] .slideshowFrame .slideOverlay h3 {
+    margin: 7px 0 5px;
+    font-size: 19px;
+    line-height: 1.12;
+  }
+
+  .site[data-page="home"] .slideshowFrame .slideOverlay p {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.42;
+  }
+
+  .site[data-page="home"] .slideshowFrame .slideButton {
+    width: auto;
+    min-width: 205px;
+    min-height: 42px;
+    align-self: flex-start;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 0 19px;
+    font-size: 11px;
+    letter-spacing: .01em;
+  }
+
+  .site[data-page="home"] .slideshowFrame .slideArrow {
+    top: 24%;
+    width: 33px;
+    height: 33px;
+    min-width: 33px;
+    min-height: 33px;
+  }
+
+  .site[data-page="home"] .slideshowFrame .slideDots {
+    bottom: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .site[data-page="home"] .slideshowFrame {
+    height: 390px;
+  }
+
+  .site[data-page="home"] .slideshowFrame .slideOverlay {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .site[data-page="home"] .slideshowFrame .slideButton {
+    min-width: 190px;
+  }
+}
