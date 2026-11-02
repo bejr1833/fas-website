@@ -3004,7 +3004,7 @@ function App() {
 
       // Main headline: warm ivory editorial serif, left-aligned and clear of divider lines.
       const titleText = String(devotionalPost.title || "Daily Devotional").replace(/\s+/g, " ").trim();
-      let titleSize = 68;
+      let titleSize = 64;
       let titleFont = "";
       let titleLines = [];
       while (titleSize >= 48) {
@@ -3018,7 +3018,7 @@ function App() {
       }
       const titleLineHeight = Math.round(titleSize * 1.16);
       const titleBlockHeight = titleLines.length * titleLineHeight;
-      const titleStartY = 330 - titleBlockHeight / 2;
+      const titleStartY = 352 - titleBlockHeight / 2;
       ctx.font = titleFont;
       ctx.fillStyle = c.white;
       titleLines.forEach((line, index) => ctx.fillText(line, margin, titleStartY + index * titleLineHeight));
