@@ -2883,10 +2883,12 @@ function App() {
     const title = devotionalPost.title + " — FAS Daily Devotional";
     const impact = String(devotionalPost.impact_line || "").replace(/\s+/g, " ").trim();
     const verseReference = String(devotionalPost.scripture_reference || "").replace(/\s+/g, " ").trim();
+    const verseText = String(devotionalPost.scripture_text || "").replace(/\s+/g, " ").trim();
     const shareText = [
       "FAS DAILY DEVOTIONAL",
       devotionalPost.title,
       verseReference ? "KEY VERSE: " + verseReference : "",
+      verseText ? verseText : "",
       impact ? "THE IMPACT: " + impact : "",
       "Read the full devotional: " + url.href,
       "Faith Alone Saves · Love in Fellowship & Truth"
@@ -2917,16 +2919,16 @@ function App() {
       const margin = 92;
       const contentW = W - margin * 2;
       const c = {
-        paper: "#f5f3ec",
-        paperInner: "#fbfaf6",
-        ink: "#202923",
-        forest: "#29483d",
-        forestSoft: "#e8eee8",
-        brass: "#a7834d",
-        brassSoft: "#d9c7a4",
-        muted: "#777a70",
-        border: "#d8d2c3",
-        white: "#fffefa"
+        paper: "#eee8d9",
+        paperInner: "#fbf8ef",
+        ink: "#292116",
+        forest: "#514027",
+        forestSoft: "#f1eadb",
+        brass: "#a77d35",
+        brassSoft: "#d8bd82",
+        muted: "#81745e",
+        border: "#cdbb91",
+        white: "#fffdf7"
       };
 
       const roundedRect = (x, y, w, h, r) => {
@@ -2978,11 +2980,11 @@ function App() {
       ctx.fillStyle = c.paperInner;
       roundedRect(28, 28, W - 56, H - 56, 22);
       ctx.fill();
-      ctx.strokeStyle = c.border;
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = c.brass;
+      ctx.lineWidth = 2.2;
       roundedRect(28, 28, W - 56, H - 56, 22);
       ctx.stroke();
-      ctx.strokeStyle = "rgba(41,72,61,0.12)";
+      ctx.strokeStyle = "rgba(167,125,53,0.24)";
       ctx.lineWidth = 1;
       roundedRect(42, 42, W - 84, H - 84, 16);
       ctx.stroke();
@@ -2992,7 +2994,7 @@ function App() {
       roundedRect(margin, 104, 54, 5, 3);
       ctx.fill();
       ctx.fillStyle = c.forest;
-      ctx.font = "700 20px Arial, sans-serif";
+      ctx.font = "700 19px Arial, sans-serif";
       tracked("FAS  /  DAILY DEVOTIONAL", margin, 151, 3.2);
       ctx.fillStyle = c.muted;
       ctx.font = "italic 19px Georgia, serif";
@@ -3002,7 +3004,7 @@ function App() {
 
       // Main headline: left-aligned, generous and completely clear of divider lines.
       const titleText = String(devotionalPost.title || "Daily Devotional").replace(/\s+/g, " ").trim();
-      let titleSize = 72;
+      let titleSize = 68;
       let titleFont = "";
       let titleLines = [];
       while (titleSize >= 48) {
@@ -3016,49 +3018,64 @@ function App() {
       }
       const titleLineHeight = Math.round(titleSize * 1.16);
       const titleBlockHeight = titleLines.length * titleLineHeight;
-      const titleStartY = 355 - titleBlockHeight / 2;
+      const titleStartY = 330 - titleBlockHeight / 2;
       ctx.font = titleFont;
       ctx.fillStyle = c.ink;
       titleLines.forEach((line, index) => ctx.fillText(line, margin, titleStartY + index * titleLineHeight));
 
-      // Small scripture signature: understated forest-green italic with brass hairlines.
+      // Key verse excerpt: opening words in a refined gold editorial panel,
+      // followed by the scripture reference in a smaller italic signature.
       const titleBottom = titleStartY + titleBlockHeight;
-      const verseY = titleBottom + 62;
-      if (verseReference) {
-        ctx.font = 'italic 26px "Playfair Display", Georgia, "Times New Roman", serif';
-        const verseWidth = Math.min(ctx.measureText(verseReference).width, contentW - 150);
-        const lineStart = margin;
-        const verseX = margin + 2;
-        ctx.strokeStyle = c.brassSoft;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(lineStart, verseY - 12);
-        ctx.lineTo(lineStart + 34, verseY - 12);
-        ctx.stroke();
-        ctx.fillStyle = c.forest;
-        ctx.textAlign = "left";
-        ctx.fillText(verseReference, verseX, verseY + 28, contentW - 80);
-        ctx.fillStyle = c.brass;
-        ctx.beginPath();
-        ctx.arc(verseX + Math.min(verseWidth, contentW - 150) + 18, verseY + 19, 3.5, 0, Math.PI * 2);
+      const verseExcerpt = verseText;
+      const verseFont = '500 25px "Playfair Display", Georgia, "Times New Roman", serif';
+      const verseLines = wrap(verseExcerpt, verseFont, contentW - 88, 3);
+      const verseLineHeight = 32;
+      const versePanelH = verseLines.length ? 112 + verseLines.length * verseLineHeight : 76;
+      const versePanelY = titleBottom + 42;
+
+      if (verseReference || verseLines.length) {
+        ctx.fillStyle = "rgba(167,125,53,0.055)";
+        roundedRect(margin, versePanelY, contentW, versePanelH, 14);
         ctx.fill();
+        ctx.strokeStyle = "rgba(167,125,53,0.48)";
+        ctx.lineWidth = 1.5;
+        roundedRect(margin, versePanelY, contentW, versePanelH, 14);
+        ctx.stroke();
+
+        ctx.fillStyle = c.brass;
+        ctx.font = "700 14px Arial, sans-serif";
+        tracked("KEY VERSE", margin + 28, versePanelY + 30, 2.8);
+
+        ctx.fillStyle = c.ink;
+        ctx.font = verseFont;
+        verseLines.forEach((line, index) => {
+          ctx.fillText(line, margin + 28, versePanelY + 66 + index * verseLineHeight);
+        });
+
+        if (verseReference) {
+          ctx.fillStyle = c.brass;
+          ctx.font = 'italic 19px "Playfair Display", Georgia, "Times New Roman", serif';
+          ctx.textAlign = "right";
+          ctx.fillText(verseReference, W - margin - 28, versePanelY + versePanelH - 16);
+          ctx.textAlign = "left";
+        }
       }
 
       // Impact feature: a quiet inset paper panel with forest edge and brass label.
-      const impactY = (verseReference ? verseY + 88 : titleBottom + 92);
+      const impactY = (versePanelY + versePanelH + 28);
       if (impact) {
         const impactFont = '500 38px "Playfair Display", Georgia, "Times New Roman", serif';
         const impactLines = wrap(impact, impactFont, contentW - 104, 3);
         const lineHeight = 49;
         const panelH = 132 + impactLines.length * lineHeight;
-        ctx.fillStyle = c.forestSoft;
+        ctx.fillStyle = "#f3eddf";
         roundedRect(margin, impactY, contentW, panelH, 18);
         ctx.fill();
-        ctx.strokeStyle = "#d5ded4";
+        ctx.strokeStyle = "rgba(167,125,53,0.42)";
         ctx.lineWidth = 1.5;
         roundedRect(margin, impactY, contentW, panelH, 18);
         ctx.stroke();
-        ctx.fillStyle = c.forest;
+        ctx.fillStyle = c.brass;
         roundedRect(margin, impactY + 22, 6, panelH - 44, 3);
         ctx.fill();
 
@@ -3072,20 +3089,20 @@ function App() {
 
       // A restrained footer signature, smaller than the devotional message.
       const footerY = 902;
-      ctx.strokeStyle = c.border;
+      ctx.strokeStyle = "rgba(167,125,53,0.48)";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(margin, footerY);
       ctx.lineTo(W - margin, footerY);
       ctx.stroke();
 
-      ctx.fillStyle = c.muted;
-      ctx.font = "600 14px Arial, sans-serif";
+      ctx.fillStyle = c.brass;
+      ctx.font = "600 13px Arial, sans-serif";
       const motto = "FAITH  ·  FELLOWSHIP  ·  TRUTH";
       ctx.textAlign = "center";
       ctx.fillText(motto, W / 2, footerY + 42);
       ctx.fillStyle = c.ink;
-      ctx.font = '600 24px "Playfair Display", Georgia, "Times New Roman", serif';
+      ctx.font = '600 22px "Playfair Display", Georgia, "Times New Roman", serif';
       ctx.fillText("FAITH ALONE SAVES", W / 2, footerY + 78);
       ctx.fillStyle = c.forest;
       ctx.font = 'italic 18px "Playfair Display", Georgia, "Times New Roman", serif';
