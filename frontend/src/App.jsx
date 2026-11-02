@@ -3029,8 +3029,8 @@ function App() {
       const verseFont = 'italic 24px "Playfair Display", Georgia, "Times New Roman", serif';
       const verseLines = wrap(verseExcerpt, verseFont, contentW - 72, 4);
       const verseLineHeight = 31;
-      const verseY = titleBottom + 74;
-      const verseBlockHeight = verseLines.length ? 54 + verseLines.length * verseLineHeight + (verseReference ? 42 : 0) : 42;
+      const verseY = titleBottom + 48;
+      const verseBlockHeight = verseLines.length ? 30 + verseLines.length * verseLineHeight + (verseReference ? 38 : 0) : 34;
 
       if (verseReference || verseLines.length) {
         // A delicate gold hairline and oversized opening quotation mark create a refined cue.
@@ -3061,12 +3061,12 @@ function App() {
       }
 
       // Impact feature: a quiet inset paper panel with forest edge and brass label.
-      const impactY = verseY + verseBlockHeight + 28;
+      const impactY = verseY + verseBlockHeight + 16;
       if (impact) {
         const impactFont = '500 38px "Playfair Display", Georgia, "Times New Roman", serif';
         const impactLines = wrap(impact, impactFont, contentW - 104, 3);
         const lineHeight = 49;
-        const panelH = 132 + impactLines.length * lineHeight;
+        const panelH = 112 + impactLines.length * lineHeight;
         ctx.fillStyle = "#1d1b15";
         roundedRect(margin, impactY, contentW, panelH, 18);
         ctx.fill();
@@ -3080,10 +3080,10 @@ function App() {
 
         ctx.fillStyle = c.brass;
         ctx.font = "700 17px Arial, sans-serif";
-        tracked("THE IMPACT", margin + 42, impactY + 52, 3.4);
+        tracked("THE IMPACT", margin + 42, impactY + 46, 3.4);
         ctx.fillStyle = c.white;
         ctx.font = impactFont;
-        impactLines.forEach((line, index) => ctx.fillText(line, margin + 42, impactY + 112 + index * lineHeight));
+        impactLines.forEach((line, index) => ctx.fillText(line, margin + 42, impactY + 98 + index * lineHeight));
       }
 
       // A restrained footer signature, smaller than the devotional message.
