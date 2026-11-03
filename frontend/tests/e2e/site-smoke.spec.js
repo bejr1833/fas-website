@@ -164,6 +164,24 @@ test("every public section has unique SEO metadata and page structured data", as
   }
 });
 
+test("dynamic devotional HTML ships its own canonical and social metadata before JavaScript", async ({ request }) => {
+  const slug = "do-you-really-know-him";
+  const route = `/devotionals/${slug}/`;
+  const response = await request.get(route);
+  expect(response.ok(), "Devotional detail route should serve generated static HTML").toBeTruthy();
+  const html = await response.text();
+  const canonical = `https://fas-fellowship.org/devotionals/${slug}`;
+
+  expect(html).toContain(`<link rel="canonical" href="${canonical}" />`);
+  expect(html).not.toContain('<link rel="canonical" href="https://fas-fellowship.org/"');
+  expect(html).toContain('property="og:url" content="' + canonical + '"');
+  expect(html).toContain('name="twitter:title"');
+  expect(html).toContain('name="twitter:description"');
+  expect(html).toContain('"@type":"Article"');
+  expect(html).toContain(`"url":"${canonical}"`);
+  expect((html.match(/id="fas-website-schema"/g) || []).length).toBe(1);
+});
+
 test("devotional AMP pages provide crawlable links to related devotionals", async ({ request }) => {
   const response = await request.get("/devotionals/do-you-really-know-him/amp/");
   expect(response.status()).toBe(200);
