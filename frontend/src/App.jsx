@@ -1346,6 +1346,10 @@ function App() {
   });
 
   const [loading, setLoading] = useState(needsHomeContent && !cachedHome);
+  // Do not mount the homepage blog strip until async content above it has settled.
+  // This prevents the blog card from being pushed down when devotional/slideshow
+  // sections arrive from the home API on a cold visit.
+  const [homeContentSettled, setHomeContentSettled] = useState(Boolean(cachedHome));
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [blogPost, setBlogPost] = useState(null);
@@ -2082,6 +2086,7 @@ function App() {
       .finally(() => {
         window.clearTimeout(loadingFallbackTimer);
         setLoading(false);
+        setHomeContentSettled(true);
       });
 
     return () => window.clearTimeout(loadingFallbackTimer);
@@ -5006,7 +5011,8 @@ function App() {
           </section>
         )}
 
-        {(data.blog.length > 0 || (isHomePage && homeBlogLoading)) && (
+        {(!isHomePage || homeContentSettled) &&
+          (data.blog.length > 0 || (isHomePage && homeBlogLoading)) && (
           <section className="latestBlogStrip reveal-section">
             {data.blog.length > 0 ? (
             <div className="latestBlogInner">
