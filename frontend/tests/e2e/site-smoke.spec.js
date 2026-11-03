@@ -236,6 +236,7 @@ test("canonical devotional pages link to related devotionals and the archive", a
     { slug: "do-you-really-know-him", title: "Do You Really Know Him?", date: "2026-10-30", author: "FAS", scripture_text: "Know Him.", scripture_reference: "John 17:3", impact_line: "Know Christ.", reflection: "A reflection.", prayer: "A prayer." },
     { slug: "walk-by-faith", title: "Walk by Faith", date: "2026-10-29", author: "FAS", scripture_text: "Walk by faith.", scripture_reference: "2 Corinthians 5:7", impact_line: "Trust God.", reflection: "A reflection.", prayer: "A prayer." },
     { slug: "hope-in-the-lord", title: "Hope in the Lord", date: "2026-10-28", author: "FAS", scripture_text: "Hope in the Lord.", scripture_reference: "Psalm 27:14", impact_line: "Wait on God.", reflection: "A reflection.", prayer: "A prayer." },
+    { slug: "knowing-christ-through-faith", title: "Knowing Christ Through Faith", date: "2026-10-01", author: "FAS", scripture_text: "Know Christ.", scripture_reference: "John 17:3", impact_line: "Grow in knowing Christ.", reflection: "Knowing Christ through faith transforms our walk with God.", prayer: "A prayer." },
   ];
   await page.route("https://fas-backend-xnhy.onrender.com/api/devotionals/**", async (route) => {
     const url = new URL(route.request().url());
@@ -250,6 +251,7 @@ test("canonical devotional pages link to related devotionals and the archive", a
   await page.goto("/devotionals/do-you-really-know-him");
   await expect(page.getByRole("heading", { name: "Do You Really Know Him?" })).toBeVisible();
   const related = page.getByRole("navigation", { name: "Related devotionals" });
+  await expect(related.getByRole("link", { name: "Knowing Christ Through Faith" }).first()).toHaveAttribute("href", "/devotionals/knowing-christ-through-faith");
   await expect(related.getByRole("link", { name: "Walk by Faith" })).toHaveAttribute("href", "/devotionals/walk-by-faith");
   await expect(related.getByRole("link", { name: "Hope in the Lord" })).toHaveAttribute("href", "/devotionals/hope-in-the-lord");
   await expect(related.getByRole("link", { name: "Browse the full devotional calendar" })).toHaveAttribute("href", "/devotions");
