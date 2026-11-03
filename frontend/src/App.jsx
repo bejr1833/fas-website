@@ -2923,270 +2923,45 @@ function App() {
   const shareDevotional = async () => {
     if (!devotionalPost) return;
 
-    const url = new URL(window.location.href);
-    const title = devotionalPost.title + " — FAS Daily Devotional";
-    const impact = String(devotionalPost.impact_line || "").replace(/\s+/g, " ").trim();
-    const verseReference = String(devotionalPost.scripture_reference || "").replace(/\s+/g, " ").trim();
-    const verseText = String(devotionalPost.scripture_text || "").replace(/\s+/g, " ").trim();
+    const devotionalUrl = new URL(window.location.href).href;
+    const chronologicalArchive = [...devotionalArchive].sort((a, b) =>
+      String(a.date || "").localeCompare(String(b.date || ""))
+    );
+    const devotionalIndex = chronologicalArchive.findIndex((item) =>
+      item.slug === devotionalPost.slug ||
+      (item.id != null && item.id === devotionalPost.id)
+    );
+    const dayNumber = devotionalPost.day_number || (
+      devotionalIndex >= 0 ? devotionalIndex + 1 : "—"
+    );
     const shareText = [
       "FAS DAILY DEVOTIONAL",
-      devotionalPost.title,
-      verseReference ? "KEY VERSE: " + verseReference : "",
-      verseText ? verseText : "",
-      impact ? "THE IMPACT: " + impact : "",
-      "Read the full devotional: " + url.href,
-      "Faith Alone Saves · Love in Fellowship & Truth"
-    ].filter(Boolean).join("\n\n");
-
-    // Original FAS editorial card: warm paper, forest-ink typography and restrained brass details.
-    const canvas = document.createElement("canvas");
-    canvas.width = 1080;
-    canvas.height = 1080;
-    const ctx = canvas.getContext("2d");
-    let devotionalFile = null;
-
-    if (ctx) {
-      if (document.fonts?.load) {
-        try {
-          await Promise.all([
-            document.fonts.load('700 72px "Playfair Display"'),
-            document.fonts.load('500 38px "DM Sans"'),
-            document.fonts.load('italic 26px "Playfair Display"')
-          ]);
-        } catch {
-          // Keep the composition graceful with browser serif and sans-serif fallbacks.
-        }
-      }
-
-      const W = canvas.width;
-      const H = canvas.height;
-      const margin = 92;
-      const contentW = W - margin * 2;
-      const c = {
-        paper: "#080b0a",
-        paperInner: "#111613",
-        ink: "#f3eee3",
-        forest: "#d4b477",
-        forestSoft: "#211e17",
-        brass: "#c6a15c",
-        brassSoft: "#e5d0a0",
-        muted: "#b5aa92",
-        border: "#80683d",
-        white: "#fffaf0"
-      };
-
-      const roundedRect = (x, y, w, h, r) => {
-        ctx.beginPath();
-        if (typeof ctx.roundRect === "function") ctx.roundRect(x, y, w, h, r);
-        else {
-          ctx.moveTo(x + r, y);
-          ctx.arcTo(x + w, y, x + w, y + h, r);
-          ctx.arcTo(x + w, y + h, x, y + h, r);
-          ctx.arcTo(x, y + h, x, y, r);
-          ctx.closePath();
-        }
-        ctx.closePath();
-      };
-
-      const tracked = (text, x, y, spacing) => {
-        let cursor = x;
-        for (const ch of text) {
-          ctx.fillText(ch, cursor, y);
-          cursor += ctx.measureText(ch).width + spacing;
-        }
-      };
-
-      const wrap = (text, font, maxWidth, maxLines = 5) => {
-        ctx.font = font;
-        const words = String(text || "").trim().split(/\s+/).filter(Boolean);
-        const lines = [];
-        let line = "";
-        for (const word of words) {
-          const candidate = line ? line + " " + word : word;
-          if (line && ctx.measureText(candidate).width > maxWidth) {
-            lines.push(line);
-            line = word;
-          } else line = candidate;
-        }
-        if (line) lines.push(line);
-        if (lines.length > maxLines) {
-          lines.length = maxLines;
-          let last = lines[maxLines - 1];
-          while (last && ctx.measureText(last + "…").width > maxWidth) last = last.slice(0, -1);
-          lines[maxLines - 1] = last.trimEnd() + "…";
-        }
-        return lines;
-      };
-
-      // Deep midnight evergreen canvas with a restrained double champagne-gold frame.
-      ctx.fillStyle = c.paper;
-      ctx.fillRect(0, 0, W, H);
-      ctx.fillStyle = c.paperInner;
-      roundedRect(28, 28, W - 56, H - 56, 22);
-      ctx.fill();
-      ctx.strokeStyle = c.brass;
-      ctx.lineWidth = 2.2;
-      roundedRect(28, 28, W - 56, H - 56, 22);
-      ctx.stroke();
-      ctx.strokeStyle = "rgba(198,161,92,0.22)";
-      ctx.lineWidth = 1;
-      roundedRect(42, 42, W - 84, H - 84, 16);
-      ctx.stroke();
-
-      // Header: compact FAS signature in warm champagne gold.
-      ctx.fillStyle = c.brass;
-      roundedRect(margin, 104, 54, 5, 3);
-      ctx.fill();
-      ctx.fillStyle = c.brassSoft;
-      ctx.font = "700 19px Arial, sans-serif";
-      tracked("FAS  /  DAILY DEVOTIONAL", margin, 151, 3.2);
-      ctx.fillStyle = c.muted;
-      ctx.font = "italic 19px Georgia, serif";
-      ctx.textAlign = "right";
-      ctx.fillText("LOVE IN FELLOWSHIP & TRUTH", W - margin, 151);
-      ctx.textAlign = "left";
-
-      // Main headline: warm ivory editorial serif, left-aligned and clear of divider lines.
-      const titleText = String(devotionalPost.title || "Daily Devotional").replace(/\s+/g, " ").trim();
-      let titleSize = 64;
-      let titleFont = "";
-      let titleLines = [];
-      while (titleSize >= 48) {
-        titleFont = '700 ' + titleSize + 'px "Playfair Display", Georgia, "Times New Roman", serif';
-        titleLines = wrap(titleText, titleFont, contentW, 3);
-        if (titleLines.every(line => {
-          ctx.font = titleFont;
-          return ctx.measureText(line).width <= contentW;
-        })) break;
-        titleSize -= 4;
-      }
-      const titleLineHeight = Math.round(titleSize * 1.16);
-      const titleBlockHeight = titleLines.length * titleLineHeight;
-      const titleStartY = 352 - titleBlockHeight / 2;
-      ctx.font = titleFont;
-      ctx.fillStyle = c.white;
-      titleLines.forEach((line, index) => ctx.fillText(line, margin, titleStartY + index * titleLineHeight));
-
-      // Scripture as a quiet editorial quotation: no card, just type, gold hairlines and space.
-      const titleBottom = titleStartY + titleBlockHeight;
-      const verseExcerpt = verseText;
-      const verseFont = 'italic 24px "Playfair Display", Georgia, "Times New Roman", serif';
-      const verseLines = wrap(verseExcerpt, verseFont, contentW - 72, 4);
-      const verseLineHeight = 31;
-      const verseY = titleBottom + 48;
-      const verseBlockHeight = verseLines.length ? 30 + verseLines.length * verseLineHeight + (verseReference ? 38 : 0) : 34;
-
-      if (verseReference || verseLines.length) {
-        // A delicate gold hairline and oversized opening quotation mark create a refined cue.
-        ctx.strokeStyle = "rgba(198,161,92,0.72)";
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(margin, verseY - 20);
-        ctx.lineTo(margin + 68, verseY - 20);
-        ctx.stroke();
-
-        ctx.fillStyle = c.brass;
-        ctx.font = 'italic 76px "Playfair Display", Georgia, "Times New Roman", serif';
-        ctx.fillText("“", margin + 2, verseY + 45);
-
-        ctx.fillStyle = c.white;
-        ctx.font = verseFont;
-        verseLines.forEach((line, index) => {
-          ctx.fillText(line, margin + 48, verseY + 28 + index * verseLineHeight);
-        });
-
-        if (verseReference) {
-          ctx.fillStyle = c.brassSoft;
-          ctx.font = 'italic 19px "Playfair Display", Georgia, "Times New Roman", serif';
-          ctx.textAlign = "right";
-          ctx.fillText(verseReference, W - margin, verseY + 28 + verseLines.length * verseLineHeight + 20);
-          ctx.textAlign = "left";
-        }
-      }
-
-      // Impact feature: a quiet inset paper panel with forest edge and brass label.
-      const impactY = verseY + verseBlockHeight + 16;
-      if (impact) {
-        const impactFont = '500 38px "Playfair Display", Georgia, "Times New Roman", serif';
-        const impactLines = wrap(impact, impactFont, contentW - 104, 3);
-        const lineHeight = 49;
-        const panelH = 112 + impactLines.length * lineHeight;
-        ctx.fillStyle = "#1d1b15";
-        roundedRect(margin, impactY, contentW, panelH, 18);
-        ctx.fill();
-        ctx.strokeStyle = "rgba(198,161,92,0.55)";
-        ctx.lineWidth = 1.5;
-        roundedRect(margin, impactY, contentW, panelH, 18);
-        ctx.stroke();
-        ctx.fillStyle = c.brass;
-        roundedRect(margin, impactY + 22, 6, panelH - 44, 3);
-        ctx.fill();
-
-        ctx.fillStyle = c.brass;
-        ctx.font = "700 17px Arial, sans-serif";
-        tracked("THE IMPACT", margin + 42, impactY + 46, 3.4);
-        ctx.fillStyle = c.white;
-        ctx.font = impactFont;
-        impactLines.forEach((line, index) => ctx.fillText(line, margin + 42, impactY + 98 + index * lineHeight));
-      }
-
-      // A restrained footer signature, smaller than the devotional message.
-      const footerY = 902;
-      ctx.strokeStyle = "rgba(198,161,92,0.52)";
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(margin, footerY);
-      ctx.lineTo(W - margin, footerY);
-      ctx.stroke();
-
-      ctx.fillStyle = c.brass;
-      ctx.font = "600 13px Arial, sans-serif";
-      const motto = "FAITH  ·  FELLOWSHIP  ·  TRUTH";
-      ctx.textAlign = "center";
-      ctx.fillText(motto, W / 2, footerY + 42);
-      ctx.fillStyle = c.white;
-      ctx.font = '600 22px "Playfair Display", Georgia, "Times New Roman", serif';
-      ctx.fillText("FAITH ALONE SAVES", W / 2, footerY + 78);
-      ctx.fillStyle = c.brassSoft;
-      ctx.font = 'italic 18px "Playfair Display", Georgia, "Times New Roman", serif';
-      ctx.fillText("fas-fellowship.org", W / 2, footerY + 108);
-      ctx.textAlign = "left";
-
-      try {
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-        if (blob) devotionalFile = new File(
-          [blob],
-          "fas-devotional-" + (devotionalPost.id || "daily") + ".png",
-          { type: "image/png" }
-        );
-      } catch {
-        devotionalFile = null;
-      }
-    }
+      `Day #${dayNumber}: ${String(devotionalPost.title || "").replace(/\\s+/g, " ").trim()}`,
+      "Read the full devotional: " + devotionalUrl
+    ].join("\\n\\n");
 
     try {
-      if (devotionalFile && navigator.canShare?.({ files: [devotionalFile] }) && navigator.share) {
-        await navigator.share({ files: [devotionalFile], title, text: shareText });
-        setDevotionalShareStatus("Shared");
-        window.setTimeout(() => setDevotionalShareStatus(""), 2200);
-        return;
-      }
-
       if (navigator.share) {
-        await navigator.share({ title, text: shareText, url: url.href });
+        await navigator.share({
+          title: "FAS Daily Devotional",
+          text: shareText
+        });
         setDevotionalShareStatus("Shared");
         window.setTimeout(() => setDevotionalShareStatus(""), 2200);
         return;
       }
 
-      if (navigator.clipboard) {
+      if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(shareText);
-        setDevotionalShareStatus("Link copied");
+        setDevotionalShareStatus("Message copied");
         window.setTimeout(() => setDevotionalShareStatus(""), 2200);
+        return;
       }
     } catch (error) {
       if (error?.name === "AbortError") return;
     }
+
+    window.prompt("Copy this devotional message:", shareText);
   };
 
   const shareStory = async (story) => {
