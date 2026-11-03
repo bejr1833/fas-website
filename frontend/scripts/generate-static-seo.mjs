@@ -7,8 +7,8 @@ const DIST = join(process.cwd(), "dist");
 const pages = [
   {
     route: "/",
-    title: "Christian Student Fellowship | Faith Alone Saves (FAS)",
-    description: "Grow in Christ with Faith Alone Saves (FAS), a Christian student fellowship for campus students through Bible study, prayer, worship, mentorship, and community.",
+    title: "FAS Fellowship | Faith Alone Saves",
+    description: "Faith Alone Saves (FAS) is a Christian student fellowship helping students grow in Christ through Bible study, prayer, worship, mentorship, and community.",
     schemaType: "WebPage",
   },
   {
