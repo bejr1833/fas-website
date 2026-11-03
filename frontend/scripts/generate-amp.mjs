@@ -161,18 +161,18 @@ const injectCanonicalHead = (shell, { title, description, canonical, ampUrl, ima
     html = html.replace(/<meta property="og:image" content="[^"]*"\s*\/?\s*>/i, `<meta property="og:image" content="${escapeHtml(image)}" />`);
   }
   html = html
-    .replace(/<meta name="twitter:title" content="[^"]*"\s*\/?\s*>/i, \`<meta name="twitter:title" content="\${escapeHtml(title)}" />\`)
-    .replace(/<meta name="twitter:description" content="[^"]*"\s*\/?\s*>/i, \`<meta name="twitter:description" content="\${escapeHtml(description)}" />\`);
+    .replace(/<meta name="twitter:title" content="[^"]*"\s*\/?\s*>/i, `<meta name="twitter:title" content="\${escapeHtml(title)}" />`)
+    .replace(/<meta name="twitter:description" content="[^"]*"\s*\/?\s*>/i, `<meta name="twitter:description" content="\${escapeHtml(description)}" />`);
 
-  const schemaTag = \`<script type="application/ld+json" id="fas-website-schema">\${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>\`;
+  const schemaTag = `<script type="application/ld+json" id="fas-website-schema">\${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>`;
   const schemaPattern = /<script type="application\/ld\+json" id="fas-website-schema">[\s\S]*?<\/script>/i;
   if (schemaPattern.test(html)) {
     html = html.replace(schemaPattern, schemaTag);
   } else {
-    html = html.replace("</head>", \`\${schemaTag}\n</head>\`);
+    html = html.replace("</head>", `\${schemaTag}\n</head>`);
   }
 
-  html = html.replace("</head>", \`<link rel="amphtml" href="\${escapeHtml(ampUrl)}" />\n</head>\`);
+  html = html.replace("</head>", `<link rel="amphtml" href="\${escapeHtml(ampUrl)}" />\n</head>`);
   return html;
 };
 
