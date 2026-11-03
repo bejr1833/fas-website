@@ -140,7 +140,7 @@ const selectRelatedDevotionals = (source, items, limit = 6) => items
     const score = titleOverlap * 8 + contentOverlap + (sourceBook && sourceBook === itemBook ? 12 : 0);
     return { item, index, score, date: new Date(item.date || 0).getTime() || 0 };
   })
-  .sort((a, b) => b.score - a.score || Math.abs(b.date - (new Date(source?.date || 0).getTime() || 0)) - Math.abs(a.date - (new Date(source?.date || 0).getTime() || 0)) || a.index - b.index)
+  .sort((a, b) => { const sourceDate = new Date(source?.date || 0).getTime() || 0; return b.score - a.score || Math.abs(a.date - sourceDate) - Math.abs(b.date - sourceDate) || a.index - b.index; })
   .slice(0, limit)
   .map(({ item }) => item);
 
