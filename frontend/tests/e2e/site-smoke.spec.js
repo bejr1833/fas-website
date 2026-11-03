@@ -128,7 +128,7 @@ test("generated sitemap includes every public section page", async ({ request })
 
 test("every public section has unique SEO metadata and page structured data", async ({ page }) => {
   const routes = [
-    ["/", "Christian Student Fellowship | Faith Alone Saves (FAS)"],
+    ["/", "FAS Fellowship | Faith Alone Saves"],
     ["/about", "About FAS | Our Mission, Vision & Christian Fellowship"],
     ["/events", "FAS Events | Christian Student Fellowship Gatherings"],
     ["/stories", "Student Testimonies & Stories | Faith Alone Saves"],
@@ -259,7 +259,7 @@ test("canonical devotional pages link to related devotionals and the archive", a
 
 test("static public route HTML contains route-specific SEO before JavaScript runs", async ({ request }) => {
   const routes = [
-    ["/", "Christian Student Fellowship | Faith Alone Saves (FAS)"],
+    ["/", "FAS Fellowship | Faith Alone Saves"],
     ["/about", "About FAS | Our Mission, Vision & Christian Fellowship"],
     ["/events", "FAS Events | Christian Student Fellowship Gatherings"],
     ["/stories", "Student Testimonies & Stories | Faith Alone Saves"],
