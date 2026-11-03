@@ -210,6 +210,10 @@ test("all six Search Console devotional examples ship readable canonical HTML be
     expect(response.ok(), `${slug} should serve a generated canonical page`).toBeTruthy();
     const html = await response.text();
     expect(html).toContain(`<link rel="canonical" href="https://fas-fellowship.org/devotionals/${slug}" />`);
+    const descriptionMatch = html.match(/<meta name="description" content="([^"]*)"\s*\/?\s*>/);
+    expect(descriptionMatch, `${slug} should have a generated meta description`).toBeTruthy();
+    expect(descriptionMatch[1].length, `${slug} description should be substantial`).toBeGreaterThan(80);
+    expect(descriptionMatch[1].length, `${slug} description should stay within snippet length`).toBeLessThanOrEqual(160);
     expect(html).toContain('id="fas-prerendered-content"');
     expect(html).toContain("<h1>");
     expect(html).toContain('href="/devotions"');
