@@ -3677,7 +3677,7 @@ function App() {
       <div className={`site devotionsPage ${darkMode ? "devotionsPageDark" : "devotionsPageLight"}`}>
         <header className="navbar">
           <a href="/" className="brand" aria-label="Faith Alone Saves home">
-            <img src="/branding/fas-logo.png" alt="Faith Alone Saves" />
+            <img src="/branding/fas-logo.png" alt="Faith Alone Saves" width="1536" height="1024" />
           </a>
           <div className="navActions">
             <button
@@ -3913,7 +3913,7 @@ function App() {
       <div className={`site devotionalPage ${darkMode ? "devotionalPageDark" : "devotionalPageLight"}`}>
         <header className="navbar">
           <a href="/" className="brand" aria-label="Faith Alone Saves home">
-            <img src="/branding/fas-logo.png" alt="Faith Alone Saves" />
+            <img src="/branding/fas-logo.png" alt="Faith Alone Saves" width="1536" height="1024" />
           </a>
           <div className="navActions">
             <button type="button" className="themeToggle" onClick={toggleDarkMode}
@@ -4027,7 +4027,7 @@ function App() {
       <div className={`site eventsPage ${darkMode ? "eventsPageDark" : "eventsPageLight"}`}>
         <header className="navbar">
           <a href="/" className="brand" aria-label="Faith Alone Saves home">
-            <img src="/branding/fas-logo.png" alt="Faith Alone Saves" />
+            <img src="/branding/fas-logo.png" alt="Faith Alone Saves" width="1536" height="1024" />
           </a>
           <div className="navActions">
             <button type="button" className="themeToggle" onClick={toggleDarkMode}
@@ -4173,6 +4173,8 @@ function App() {
             <img
               src="/branding/fas-logo.png"
               alt="Faith Alone Saves"
+              width="1536"
+              height="1024"
             />
           </a>
 
@@ -4621,6 +4623,8 @@ function App() {
           <img
             src="/branding/fas-logo.png"
             alt="Faith Alone Saves"
+            width="1536"
+            height="1024"
             fetchPriority="high"
             loading="eager"
             decoding="async"
@@ -4903,6 +4907,15 @@ function App() {
                 >
                   <img
                     src={slide.image_url}
+                    srcSet={
+                      slide.image_url?.includes("res.cloudinary.com") &&
+                      slide.image_url.includes("w_1200")
+                        ? `${slide.image_url.replace("w_1200", "w_800")} 800w, ${slide.image_url} 1200w`
+                        : undefined
+                    }
+                    sizes="(max-width: 850px) 100vw, 778px"
+                    width="1200"
+                    height="676"
                     alt={slide.title || "FAS update"}
                     loading={index === 0 ? "eager" : "lazy"}
                     fetchPriority={index === 0 ? "high" : "auto"}
@@ -6867,6 +6880,8 @@ function App() {
           <img
             src="/branding/fas-logo.png"
             alt="FAS"
+            width="1536"
+            height="1024"
           />
 
           <p>{settings.tagline}</p>
