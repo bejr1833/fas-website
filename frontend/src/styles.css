@@ -22216,3 +22216,33 @@ footer > div:first-child > img {
     max-width: 72px;
   }
 }
+
+
+/* CLS protection: reserve the latest-blog card footprint before API content arrives. */
+.latestBlogInner {
+  min-height: 250px;
+}
+
+.latestBlogSkeleton {
+  pointer-events: none;
+}
+
+.latestBlogCopy h2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.latestBlogCopy p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .latestBlogInner {
+    min-height: 290px;
+  }
+}
