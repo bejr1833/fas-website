@@ -23,6 +23,28 @@ const safeSlug = (value) => {
 const plainText = (value = "") =>
   String(value).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 
+const buildDevotionalDescription = (devotional) => {
+  const title = plainText(devotional.title);
+  const scripture = plainText(devotional.scripture_reference);
+  const impact = plainText(devotional.impact_line);
+  const reflection = plainText(devotional.reflection || devotional.content || "");
+  const firstReflectionSentence = reflection.match(/^.{1,220}?(?:[.!?](?:\s|$)|$)/)?.[0] || reflection;
+
+  const parts = [
+    title ? `${title}.` : "",
+    scripture ? `A Bible devotional based on ${scripture}.` : "A Scripture-led Christian devotional.",
+    impact && impact.length > 12 ? impact : "",
+    firstReflectionSentence,
+  ].filter(Boolean);
+
+  const fullDescription = parts.join(" ").replace(/\s+/g, " ").trim();
+  if (fullDescription.length <= 160) return fullDescription;
+
+  const shortened = fullDescription.slice(0, 157);
+  const lastSpace = shortened.lastIndexOf(" ");
+  return `${shortened.slice(0, lastSpace > 110 ? lastSpace : 157).replace(/[.,;:!?-]+$/, "")}…`;
+};
+
 const dateLabel = (value) => {
   if (!value) return "";
   const date = new Date(value);
@@ -306,10 +328,8 @@ for (const devotional of devotionals) {
   if (!slug || !devotional?.title) continue;
   const canonical = `${SITE_URL}/devotionals/${encodeURIComponent(slug)}`;
   const ampUrl = `${canonical}/amp/`;
-  const title = `${plainText(devotional.title)} | FAS Daily Devotional | Faith Alone Saves`;
-  const description = plainText(
-    devotional.impact_line || devotional.reflection || devotional.scripture_reference
-  ).slice(0, 160) || "A daily Scripture-led devotional from Faith Alone Saves.";
+  const title = `${plainText(devotional.title)} | FAS Devotional`;
+  const description = buildDevotionalDescription(devotional);
   const published = devotional.date || devotional.published_at || devotional.created_at || undefined;
   const schema = {
     "@context": "https://schema.org",
