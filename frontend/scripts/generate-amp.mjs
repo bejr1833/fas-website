@@ -160,7 +160,18 @@ const injectCanonicalHead = (shell, { title, description, canonical, ampUrl, ima
   if (image) {
     html = html.replace(/<meta property="og:image" content="[^"]*"\s*\/?\s*>/i, `<meta property="og:image" content="${escapeHtml(image)}" />`);
   }
-  html = html.replace("</head>", `<link rel="amphtml" href="${escapeHtml(ampUrl)}" />\n<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>\n</head>`);
+  html = html
+    .replace(/<meta name="twitter:title" content="[^"]*"\\s*\\/?\\s*>/i, `<meta name="twitter:title" content="${escapeHtml(title)}" />`)
+    .replace(/<meta name="twitter:description" content="[^"]*"\\s*\\/?\\s*>/i, `<meta name="twitter:description" content="${escapeHtml(description)}" />`);
+
+  const schemaTag = `<script type="application/ld+json" id="fas-website-schema">${JSON.stringify(schema).replace(/</g, "\\\\u003c")}</script>`;
+  if (/<script type="application\\/ld\\+json" id="fas-website-schema">[\\s\\S]*?<\\/script>/i.test(html)) {
+    html = html.replace(/<script type="application\\/ld\\+json" id="fas-website-schema">[\\s\\S]*?<\\/script>/i, schemaTag);
+  } else {
+    html = html.replace("</head>", `${schemaTag}\\n</head>`);
+  }
+
+  html = html.replace("</head>", `<link rel="amphtml" href="${escapeHtml(ampUrl)}" />\\n</head>`);
   return html;
 };
 
