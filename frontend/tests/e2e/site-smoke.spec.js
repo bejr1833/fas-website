@@ -192,6 +192,29 @@ test("dynamic devotional HTML ships page-specific canonical and structured data 
   expect(articleSchema.url).toBe(canonical);
   expect(articleSchema.mainEntityOfPage["@id"]).toBe(canonical);
   expect((html.match(/type="application\/ld\+json"/g) || []).length).toBe(2);
+  expect(html).toContain('id="fas-prerendered-content"');
+  expect(html).toContain('href="/devotions"');
+});
+
+test("all six Search Console devotional examples ship readable canonical HTML before JavaScript", async ({ request }) => {
+  const slugs = [
+    "do-you-really-know-him",
+    "the-danger-of-denying-our-sin",
+    "the-old-commandment-the-new-light",
+    "when-fellowship-becomes-real",
+    "when-you-sin-remember-your-advocate",
+    "why-should-i-know-christ",
+  ];
+  for (const slug of slugs) {
+    const response = await request.get(`/devotionals/${slug}/`);
+    expect(response.ok(), `${slug} should serve a generated canonical page`).toBeTruthy();
+    const html = await response.text();
+    expect(html).toContain(`<link rel="canonical" href="https://fas-fellowship.org/devotionals/${slug}" />`);
+    expect(html).toContain('id="fas-prerendered-content"');
+    expect(html).toMatch(/<main id="fas-prerendered-content"[\\s\\S]*?<h1>[\\s\\S]*?<\\/h1>/);
+    expect(html).toContain('href="/devotions"');
+    expect(html).not.toContain('<link rel="canonical" href="https://fas-fellowship.org/"');
+  }
 });
 
 test("devotional AMP pages provide crawlable links to related devotionals", async ({ request }) => {
