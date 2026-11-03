@@ -370,6 +370,9 @@ for (const devotional of devotionals) {
       logo: { "@type": "ImageObject", url: `${SITE_URL}/branding/fas-logo.png` },
     },
     ...(published ? { datePublished: published } : {}),
+    ...(devotional.updated_at ? { dateModified: devotional.updated_at } : {}),
+    ...(devotional.author ? { author: { "@type": "Person", name: plainText(devotional.author) } } : {}),
+    inLanguage: "en",
   };
   const relatedDevotionals = selectRelatedDevotionals(devotional, devotionals, 6);
   const relatedLinks = relatedDevotionals.length
@@ -385,6 +388,7 @@ for (const devotional of devotionals) {
 ${devotional.scripture_reference || devotional.scripture_text ? `<section class="scripture"><div class="eyebrow">SCRIPTURE</div>${devotional.scripture_reference ? `<p><strong>${escapeHtml(plainText(devotional.scripture_reference))}</strong></p>` : ""}${devotional.scripture_text ? `<p>${escapeHtml(plainText(devotional.scripture_text))}</p>` : ""}</section>` : ""}
 ${devotional.impact_line ? `<section class="impact"><div class="eyebrow">THE IMPACT</div><p>${escapeHtml(plainText(devotional.impact_line))}</p></section>` : ""}
 <article>${renderParagraphs(devotional.reflection || devotional.content || "")}</article>
+${devotional.application ? `<section class="application"><div class="eyebrow">PRACTICAL APPLICATION</div>${renderParagraphs(devotional.application)}</section>` : ""}
 ${devotional.prayer ? `<section class="prayer"><div class="eyebrow">PRAYER</div>${renderParagraphs(devotional.prayer)}</section>` : ""}
 ${relatedLinks}`;
   const ampHtml = ampDocument({ title, description, canonical, image: "", schema, content });
@@ -395,6 +399,7 @@ ${relatedLinks}`;
 ${devotional.scripture_reference || devotional.scripture_text ? `<section class="scripture"><h2>Scripture</h2>${devotional.scripture_reference ? `<p><strong>${escapeHtml(plainText(devotional.scripture_reference))}</strong></p>` : ""}${devotional.scripture_text ? `<p>${escapeHtml(plainText(devotional.scripture_text))}</p>` : ""}</section>` : ""}
 ${devotional.impact_line ? `<section class="impact"><h2>The impact</h2><p>${escapeHtml(plainText(devotional.impact_line))}</p></section>` : ""}
 <article>${renderParagraphs(devotional.reflection || devotional.content || "")}</article>
+${devotional.application ? `<section class="application"><h2>Practical application</h2>${renderParagraphs(devotional.application)}</section>` : ""}
 ${devotional.prayer ? `<section class="prayer"><h2>Prayer</h2>${renderParagraphs(devotional.prayer)}</section>` : ""}
 ${relatedLinks}
 <nav class="seo-prerendered-related" aria-label="Devotional archive"><a href="/devotions">Browse the full devotional calendar</a></nav>`;
