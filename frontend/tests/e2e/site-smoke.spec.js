@@ -178,20 +178,20 @@ test("dynamic devotional HTML ships page-specific canonical and structured data 
   expect(html).toContain('name="twitter:title"');
   expect(html).toContain('name="twitter:description"');
 
-  const websiteSchemaMatch = html.match(/<script type="application\\/ld\\+json" id="fas-website-schema">([\\s\\S]*?)<\\/script>/);
+  const websiteSchemaMatch = html.match(/<script type="application\/ld\+json" id="fas-website-schema">([\s\S]*?)<\/script>/);
   expect(websiteSchemaMatch, "Page-specific website graph should be present").toBeTruthy();
   const websiteSchema = JSON.parse(websiteSchemaMatch[1]);
   const webPage = websiteSchema["@graph"].find((item) => item["@type"] === "WebPage");
   expect(webPage?.url).toBe(canonical);
   expect(webPage?.["@id"]).toBe(`${canonical}#webpage`);
 
-  const articleSchemaMatch = html.match(/<script type="application\\/ld\\+json" id="fas-devotional-article-schema">([\\s\\S]*?)<\\/script>/);
+  const articleSchemaMatch = html.match(/<script type="application\/ld\+json" id="fas-devotional-article-schema">([\s\S]*?)<\/script>/);
   expect(articleSchemaMatch, "Article schema should be separate from the site graph").toBeTruthy();
   const articleSchema = JSON.parse(articleSchemaMatch[1]);
   expect(articleSchema["@type"]).toBe("Article");
   expect(articleSchema.url).toBe(canonical);
   expect(articleSchema.mainEntityOfPage["@id"]).toBe(canonical);
-  expect((html.match(/type="application\\/ld\\+json"/g) || []).length).toBe(2);
+  expect((html.match(/type="application\/ld\+json"/g) || []).length).toBe(2);
 });
 
 test("devotional AMP pages provide crawlable links to related devotionals", async ({ request }) => {
