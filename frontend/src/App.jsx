@@ -123,6 +123,27 @@ const fallback = {
   email: ""
 };
 
+const RELATED_STOP_WORDS = new Set(["about","after","again","also","been","being","between","could","does","each","from","have","here","into","just","more","most","only","other","over","same","some","such","than","that","their","them","then","there","these","they","this","those","through","under","very","what","when","where","which","while","with","would","your","you","the","and","for","are","was","were","but","not","our","his","her","him","who","why","how","can","all","any","its","out","unto","god","lord"]);
+const devotionalTokens = (value = "") => new Set(String(value).toLowerCase().match(/[a-z0-9]{3,}/g)?.filter((word) => !RELATED_STOP_WORDS.has(word)) || []);
+const devotionalBook = (reference = "") => String(reference).toLowerCase().replace(/[^a-z0-9 ]/g, " ").trim().replace(/\\s+/g, " ").replace(/^\\d+ /, "");
+const selectRelatedDevotionals = (source, items, limit = 6) => items
+  .filter((item) => item?.slug && item?.title && item.slug !== source?.slug)
+  .map((item, index) => {
+    const sourceTitle = devotionalTokens(source?.title || "");
+    const itemTitle = devotionalTokens(item.title);
+    const sourceContent = devotionalTokens([source?.impact_line, source?.reflection || source?.content || ""].join(" "));
+    const itemContent = devotionalTokens([item.title, item.impact_line, item.reflection || item.content || ""].join(" "));
+    const titleOverlap = [...sourceTitle].filter((word) => itemTitle.has(word)).length;
+    const contentOverlap = [...sourceContent].filter((word) => itemContent.has(word)).length;
+    const sourceBook = devotionalBook(source?.scripture_reference);
+    const itemBook = devotionalBook(item.scripture_reference);
+    const score = titleOverlap * 8 + contentOverlap + (sourceBook && sourceBook === itemBook ? 12 : 0);
+    return { item, index, score, date: new Date(item.date || 0).getTime() || 0 };
+  })
+  .sort((a, b) => b.score - a.score || Math.abs(b.date - (new Date(source?.date || 0).getTime() || 0)) - Math.abs(a.date - (new Date(source?.date || 0).getTime() || 0)) || a.index - b.index)
+  .slice(0, limit)
+  .map(({ item }) => item);
+
 function getVideoWatchUrl(rawUrl = "") {
   const value = String(rawUrl || "").trim();
   if (!value) return "";
@@ -3980,15 +4001,7 @@ function App() {
                   <span style={{ display: "block", fontSize: 10, fontWeight: 800, letterSpacing: ".16em", color: darkMode ? "#d8b978" : "#98702d", marginBottom: 8 }}>CONTINUE YOUR JOURNEY</span>
                   <h2 style={{ fontFamily: "Georgia, serif", fontSize: 22, margin: "0 0 14px", color: "inherit" }}>Explore more devotionals</h2>
                   <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 9 }}>
-                    {devotionalNavigationItems
-                      .filter((item) => item.slug !== currentDevotionalSlug)
-                      .sort((a, b) => {
-                        const currentDate = new Date(devotionalPost?.date || 0).getTime();
-                        const distanceA = Math.abs(new Date(a.date || 0).getTime() - currentDate);
-                        const distanceB = Math.abs(new Date(b.date || 0).getTime() - currentDate);
-                        return distanceA - distanceB;
-                      })
-                      .slice(0, 6)
+                    {selectRelatedDevotionals(devotionalPost, devotionalNavigationItems, 6)
                       .map((item) => (
                         <li key={item.slug}>
                           <a href={`/devotionals/${encodeURIComponent(item.slug)}`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, padding: "10px 0", color: "inherit", textDecoration: "none", borderBottom: darkMode ? "1px solid rgba(255,255,255,.1)" : "1px solid #e5ded2" }}>
