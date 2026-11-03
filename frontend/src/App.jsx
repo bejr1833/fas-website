@@ -125,7 +125,7 @@ const fallback = {
 
 const RELATED_STOP_WORDS = new Set(["about","after","again","also","been","being","between","could","does","each","from","have","here","into","just","more","most","only","other","over","same","some","such","than","that","their","them","then","there","these","they","this","those","through","under","very","what","when","where","which","while","with","would","your","you","the","and","for","are","was","were","but","not","our","his","her","him","who","why","how","can","all","any","its","out","unto","god","lord"]);
 const devotionalTokens = (value = "") => new Set(String(value).toLowerCase().match(/[a-z0-9]{3,}/g)?.filter((word) => !RELATED_STOP_WORDS.has(word)) || []);
-const devotionalBook = (reference = "") => String(reference).toLowerCase().replace(/[^a-z0-9 ]/g, " ").trim().replace(/\\s+/g, " ").replace(/^\\d+ /, "");
+const devotionalBook = (reference = "") => String(reference).toLowerCase().replace(/[^a-z0-9 ]/g, " ").trim().replace(/\s+/g, " ").replace(/^\d+ /, "");
 const selectRelatedDevotionals = (source, items, limit = 6) => items
   .filter((item) => item?.slug && item?.title && item.slug !== source?.slug)
   .map((item, index) => {
