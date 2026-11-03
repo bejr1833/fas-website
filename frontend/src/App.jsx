@@ -5000,38 +5000,41 @@ function App() {
           </section>
         )}
 
-        {data.blog.length > 0 && (
-          <section className="latestBlogStrip reveal-section">
-            <div className="latestBlogInner">
-              <div className="latestBlogLabel">
-                <span className="latestBlogPulse"></span>
-                LATEST FROM FAS BLOG
-              </div>
-
-              <div className="latestBlogContent">
-                <div className="latestBlogCopy">
-                  <span className="latestBlogCategory">
-                    {(data.blog[0].category || "FAS BLOG").replace("-", " ")}
-                  </span>
-
-                  <h2>{data.blog[0].title}</h2>
-
-                  {data.blog[0].excerpt && (
-                    <p>{data.blog[0].excerpt}</p>
-                  )}
-                </div>
-
-                <a
-                  href={`/blog/${data.blog[0].slug}`}
-                  className="latestBlogButton"
-                >
-                  Read article
-                  <ArrowRight size={16} />
-                </a>
-              </div>
+        <section className="latestBlogStrip reveal-section" aria-label="Latest from the FAS blog">
+          <div className={`latestBlogInner ${data.blog.length === 0 ? "latestBlogEmpty" : ""}`}>
+            <div className="latestBlogLabel">
+              <span className="latestBlogPulse"></span>
+              LATEST FROM FAS BLOG
             </div>
-          </section>
-        )}
+
+            <div className="latestBlogContent">
+              <div className="latestBlogCopy">
+                <span className="latestBlogCategory">
+                  {data.blog[0]
+                    ? (data.blog[0].category || "FAS BLOG").replace("-", " ")
+                    : "FAITH & REFLECTION"}
+                </span>
+
+                <h2>
+                  {data.blog[0]?.title || "Faith, truth and life together."}
+                </h2>
+
+                <p>
+                  {data.blog[0]?.excerpt ||
+                    "Explore biblical reflections and stories from the FAS fellowship."}
+                </p>
+              </div>
+
+              <a
+                href={data.blog[0]?.slug ? `/blog/${data.blog[0].slug}` : "/blog"}
+                className="latestBlogButton"
+              >
+                {data.blog[0] ? "Read article" : "Explore the blog"}
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+        </section>
 
         <section
           id="about"
