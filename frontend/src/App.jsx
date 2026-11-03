@@ -2396,13 +2396,25 @@ function App() {
     const canonicalUrl = `https://fas-fellowship.org/devotionals/${encodeURIComponent(
       devotionalPost.slug || window.location.pathname.replace("/devotionals/", "").replace(/\/+$/, "")
     )}`;
-    const description =
-      devotionalPost.impact_line ||
-      devotionalPost.reflection?.replace(/\s+/g, " ").trim().slice(0, 160) ||
-      devotionalPost.scripture_reference ||
-      "Read a daily devotional from Faith Alone Saves.";
+    const plainText = (value = "") =>
+      String(value).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    const title = plainText(devotionalPost.title);
+    const scripture = plainText(devotionalPost.scripture_reference);
+    const impact = plainText(devotionalPost.impact_line);
+    const reflection = plainText(devotionalPost.reflection || devotionalPost.content || "");
+    const firstReflectionSentence = reflection.match(/^.{1,220}?(?:[.!?](?:\s|$)|$)/)?.[0] || reflection;
+    const descriptionParts = [
+      title ? `${title}.` : "",
+      scripture ? `A Bible devotional based on ${scripture}.` : "A Scripture-led Christian devotional.",
+      impact && impact.length > 12 ? impact : "",
+      firstReflectionSentence,
+    ].filter(Boolean);
+    const fullDescription = descriptionParts.join(" ").replace(/\s+/g, " ").trim();
+    const description = fullDescription.length <= 160
+      ? fullDescription
+      : `${fullDescription.slice(0, 157).replace(/\s+\S*$/, "").replace(/[.,;:!?-]+$/, "")}…`;
 
-    document.title = `${devotionalPost.title} | FAS Daily Devotional | Faith Alone Saves`;
+    document.title = `${title} | FAS Devotional`;
 
     const setMeta = (selector, attributes) => {
       let element = document.head.querySelector(selector);
