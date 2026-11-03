@@ -21846,3 +21846,77 @@ html[data-theme="light"] .slideshowCounter {
     min-width: 190px;
   }
 }
+
+
+/* ACCESSIBILITY: maintain readable hero event labels in both themes. */
+.heroNext .heroNextType {
+  color: #4b381b !important;
+  background: #fbf3df !important;
+  border-color: #d9c391 !important;
+  -webkit-text-fill-color: #4b381b !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="dark"] .heroNext .heroNextType {
+  color: #f4dfaa !important;
+  background: #302a20 !important;
+  border-color: #8c7547 !important;
+  -webkit-text-fill-color: #f4dfaa !important;
+}
+
+/* ACCESSIBILITY: enlarge the clickable carousel targets without enlarging
+   the visible pagination dots. The 44px hit area improves touch accuracy. */
+.slideDots {
+  gap: 4px !important;
+}
+
+.slideDots button {
+  box-sizing: border-box !important;
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 44px !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  touch-action: manipulation;
+}
+
+.slideDots button::before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.72);
+  transition: width .25s ease, background-color .25s ease;
+}
+
+.slideDots button.active::before {
+  width: 24px;
+  background: #881212;
+}
+
+html[data-theme="dark"] .slideDots button::before {
+  background: rgba(245,243,239,.72);
+}
+
+html[data-theme="dark"] .slideDots button.active::before {
+  background: #c83a3a;
+}
+
+.slideDots button:focus-visible {
+  outline: 2px solid currentColor !important;
+  outline-offset: -3px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slideDots button::before {
+    transition: none !important;
+  }
+}
