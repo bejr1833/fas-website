@@ -11383,21 +11383,7 @@ html[data-theme="dark"] .blogFallbackFooter {
 }
 
 
-/* =========================================================
-   PERFORMANCE — defer rendering of below-the-fold sections
-   ========================================================= */
-.site > section:not(.hero) {
-  content-visibility: auto;
-  contain-intrinsic-size: 760px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .site > section:not(.hero) {
-    content-visibility: visible;
-    contain-intrinsic-size: auto;
-  }
-}
-
+/* Removed intrinsic-size placeholders: they caused measurable CLS as sections rendered. */
 
 /* =========================================================
    FAS JOURNAL — premium community engagement
@@ -21699,18 +21685,6 @@ html[data-theme="light"] .slideshowCounter {
   display: none !important;
 }
 
-
-/* Performance: defer off-screen section rendering without changing the visual design. */
-@supports (content-visibility: auto) {
-  .site main > section {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 680px;
-  }
-
-  .site main > section:first-child {
-    content-visibility: visible;
-  }
-}
 
 /* Performance: keep mobile compositing inexpensive on lower-powered devices. */
 @media (max-width: 850px) {
