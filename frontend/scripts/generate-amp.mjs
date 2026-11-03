@@ -189,17 +189,14 @@ const injectCanonicalHead = (shell, { title, description, canonical, ampUrl, ima
   } else {
     html = html.replace("</head>", `${websiteSchemaTag}\\n</head>`);
   }
-  const contentSchemaPattern = new RegExp(
-    `<script type="application/ld\\\\+json" id="${contentSchemaId}">[\\\\s\\\\S]*?<\\\\/script>`,
-    "i"
-  );
+  const contentSchemaPattern = /<script type="application\\/ld\\+json" id="(?:fas-devotional-article-schema|fas-blog-posting-schema)">[\\s\\S]*?<\\/script>/i;
   if (contentSchemaPattern.test(html)) {
     html = html.replace(contentSchemaPattern, contentSchemaTag);
   } else {
-    html = html.replace("</head>", `${contentSchemaTag}\\n</head>`);
+    html = html.replace("</head>", `${contentSchemaTag}\n</head>`);
   }
 
-  html = html.replace("</head>", `<link rel="amphtml" href="${escapeHtml(ampUrl)}" />\\n</head>`);
+  html = html.replace("</head>", `<link rel="amphtml" href="${escapeHtml(ampUrl)}" />\n</head>`);
   return html;
 };
 
