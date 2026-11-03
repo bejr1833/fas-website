@@ -148,7 +148,7 @@ ${boilerplate}
 </html>`;
 };
 
-const injectCanonicalHead = (shell, { title, description, canonical, ampUrl, image, schema }) => {
+const injectCanonicalHead = (shell, { title, description, canonical, ampUrl, image, schema, bodyContent }) => {
   let html = shell
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`)
     .replace(/<link rel="canonical" href="[^"]*"\s*\/?\s*>/i, `<link rel="canonical" href="${escapeHtml(canonical)}" />`)
@@ -196,7 +196,21 @@ const injectCanonicalHead = (shell, { title, description, canonical, ampUrl, ima
     html = html.replace("</head>", `${contentSchemaTag}\n</head>`);
   }
 
-  html = html.replace("</head>", `<link rel="amphtml" href="${escapeHtml(ampUrl)}" />\n</head>`);
+  const prerenderStyles = `<style id="fas-prerendered-content-styles">
+    #fas-prerendered-content{max-width:900px;margin:0 auto;padding:clamp(24px,5vw,64px) clamp(18px,4vw,36px);color:#252824;font-family:Arial,Helvetica,sans-serif;line-height:1.75}
+    #fas-prerendered-content h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.12;letter-spacing:-.035em;margin:.5em 0 .7em}
+    #fas-prerendered-content h2{font-size:1.55rem;line-height:1.25;margin:1.7em 0 .65em}
+    #fas-prerendered-content p{font-size:1.05rem;margin:0 0 1.15em}
+    #fas-prerendered-content a{color:#8f2424;text-underline-offset:3px}
+    #fas-prerendered-content .seo-prerendered-eyebrow{font-size:.72rem;letter-spacing:.16em;font-weight:800;text-transform:uppercase;color:#9b2929}
+    #fas-prerendered-content .seo-prerendered-related{margin:2.5rem 0;padding:1.25rem;background:#f3eee5;border-radius:12px}
+    #fas-prerendered-content .seo-prerendered-related li{margin:.5rem 0}
+    #fas-prerendered-content .seo-prerendered-meta{font-size:.85rem;color:#666;margin-bottom:1.5rem}
+  </style>`;
+  html = html.replace("</head>", `${prerenderStyles}\n<link rel="amphtml" href="${escapeHtml(ampUrl)}" />\n</head>`);
+  if (!html.includes('<div id="root"></div>')) throw new Error(`Missing React root for ${canonical}`);
+  const prerenderedBody = `<main id="fas-prerendered-content" aria-label="Article content">${bodyContent}</main>`;
+  html = html.replace('<div id="root"></div>', `<div id="root">${prerenderedBody}</div>`);
   return html;
 };
 
@@ -271,7 +285,15 @@ ${image ? `<div class="cover"><amp-img src="${escapeHtml(image)}" alt="${escapeH
 ${post.excerpt ? `<div class="summary">${escapeHtml(plainText(post.excerpt))}</div>` : ""}
 <article>${renderBlogContent(post.content || post.body || "")}</article>`;
   const ampHtml = ampDocument({ title, description, canonical, image, schema, content });
-  const canonicalHtml = injectCanonicalHead(shell, { title, description, canonical, ampUrl, image, schema });
+  const canonicalContent = `
+<div class="seo-prerendered-eyebrow">FAS JOURNAL</div>
+<h1>${escapeHtml(plainText(post.title))}</h1>
+<div class="seo-prerendered-meta">${escapeHtml(dateLabel(published))}${post.author ? ` · ${escapeHtml(plainText(post.author))}` : ""}</div>
+${image ? `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(plainText(post.title))}" width="1200" height="675" loading="eager" style="display:block;width:100%;height:auto;border-radius:14px" /></figure>` : ""}
+${post.excerpt ? `<p><strong>${escapeHtml(plainText(post.excerpt))}</strong></p>` : ""}
+<article>${renderBlogContent(post.content || post.body || "")}</article>
+<nav class="seo-prerendered-related" aria-label="Blog navigation"><a href="/blog">Browse all FAS articles</a></nav>`;
+  const canonicalHtml = injectCanonicalHead(shell, { title, description, canonical, ampUrl, image, schema, bodyContent: canonicalContent });
   await Promise.all([
     writePage(`blog/${slug}/index.html`, canonicalHtml),
     writePage(`blog/${slug}/amp/index.html`, ampHtml),
@@ -323,13 +345,20 @@ ${devotional.impact_line ? `<section class="impact"><div class="eyebrow">THE IMP
 ${devotional.prayer ? `<section class="prayer"><div class="eyebrow">PRAYER</div>${renderParagraphs(devotional.prayer)}</section>` : ""}
 ${relatedLinks}`;
   const ampHtml = ampDocument({ title, description, canonical, image: "", schema, content });
+  const canonicalContent = `
+<div class="seo-prerendered-eyebrow">FAS DAILY DEVOTIONAL</div>
+<h1>${escapeHtml(plainText(devotional.title))}</h1>
+<div class="seo-prerendered-meta">${escapeHtml(dateLabel(published))}</div>
+${devotional.scripture_reference || devotional.scripture_text ? `<section class="scripture"><h2>Scripture</h2>${devotional.scripture_reference ? `<p><strong>${escapeHtml(plainText(devotional.scripture_reference))}</strong></p>` : ""}${devotional.scripture_text ? `<p>${escapeHtml(plainText(devotional.scripture_text))}</p>` : ""}</section>` : ""}
+${devotional.impact_line ? `<section class="impact"><h2>The impact</h2><p>${escapeHtml(plainText(devotional.impact_line))}</p></section>` : ""}
+<article>${renderParagraphs(devotional.reflection || devotional.content || "")}</article>
+${devotional.prayer ? `<section class="prayer"><h2>Prayer</h2>${renderParagraphs(devotional.prayer)}</section>` : ""}
+${relatedLinks}
+<nav class="seo-prerendered-related" aria-label="Devotional archive"><a href="/devotions">Browse the full devotional calendar</a></nav>`;
   const canonicalHtml = injectCanonicalHead(shell, {
-    title,
-    description,
-    canonical,
-    ampUrl,
+    title, description, canonical, ampUrl,
     image: `${SITE_URL}/branding/fas-logo.png`,
-    schema,
+    schema, bodyContent: canonicalContent,
   });
   await Promise.all([
     writePage(`devotionals/${slug}/index.html`, canonicalHtml),

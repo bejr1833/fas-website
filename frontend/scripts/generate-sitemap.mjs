@@ -39,7 +39,8 @@ const fetchDevotionals = async () => {
     }
 
     const payload = await response.json();
-    return Array.isArray(payload) ? payload : [];
+    if (!Array.isArray(payload)) throw new Error("Devotional API did not return a JSON array");
+    return payload;
   } finally {
     clearTimeout(timeout);
   }
@@ -60,7 +61,8 @@ const fetchBlogs = async () => {
     }
 
     const payload = await response.json();
-    return Array.isArray(payload) ? payload : [];
+    if (!Array.isArray(payload)) throw new Error("Blog API did not return a JSON array");
+    return payload;
   } finally {
     clearTimeout(timeout);
   }
@@ -119,28 +121,12 @@ ${entries}
 let posts = [];
 let devotionals = [];
 
-const [blogResult, devotionalResult] = await Promise.allSettled([
+// Do not publish a partial sitemap when either content source is unavailable.
+// A failed build leaves the previous successful Render deployment untouched.
+[posts, devotionals] = await Promise.all([
   fetchBlogs(),
   fetchDevotionals(),
 ]);
-
-if (blogResult.status === "fulfilled") {
-  posts = blogResult.value;
-} else {
-  console.error(
-    "Sitemap: blog API unavailable; continuing with other URLs.",
-    blogResult.reason?.message || blogResult.reason
-  );
-}
-
-if (devotionalResult.status === "fulfilled") {
-  devotionals = devotionalResult.value;
-} else {
-  console.error(
-    "Sitemap: devotional API unavailable; continuing with other URLs.",
-    devotionalResult.reason?.message || devotionalResult.reason
-  );
-}
 
 console.log(
   `Sitemap: found ${posts.length} blog posts and ${devotionals.length} devotionals.`
