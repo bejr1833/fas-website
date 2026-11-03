@@ -1359,6 +1359,7 @@ function App() {
     return new Date(now.getFullYear(), now.getMonth(), 1);
   });
   const [blogLoading, setBlogLoading] = useState(false);
+  const [homeBlogLoading, setHomeBlogLoading] = useState(isHomePage && !(cachedBlog?.length));
   const [blogEngagement, setBlogEngagement] = useState({
     comments: [],
     reaction_counts: { like: 0, amen: 0, encouraged: 0 },
@@ -2089,6 +2090,8 @@ function App() {
   useEffect(() => {
     if (!isHomePage && !isBlogListingPage) return undefined;
 
+    if (isHomePage && !(cachedBlog?.length)) setHomeBlogLoading(true);
+
     fetchJsonWithRetry(`${API_BASE}/api/blog/`, 3, "blog")
       .then((result) => {
         setData((current) => ({
@@ -2098,6 +2101,9 @@ function App() {
       })
       .catch(() => {
         // Preserve previously loaded content when the API is temporarily unavailable.
+      })
+      .finally(() => {
+        if (isHomePage) setHomeBlogLoading(false);
       });
   }, []);
   useEffect(() => {
@@ -5000,8 +5006,9 @@ function App() {
           </section>
         )}
 
-        {data.blog.length > 0 && (
+        {(data.blog.length > 0 || (isHomePage && homeBlogLoading)) && (
           <section className="latestBlogStrip reveal-section">
+            {data.blog.length > 0 ? (
             <div className="latestBlogInner">
               <div className="latestBlogLabel">
                 <span className="latestBlogPulse"></span>
@@ -5030,6 +5037,9 @@ function App() {
                 </a>
               </div>
             </div>
+            ) : (
+              <div className="latestBlogInner latestBlogSkeleton" aria-hidden="true" />
+            )}
           </section>
         )}
 
