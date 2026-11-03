@@ -21920,3 +21920,294 @@ html[data-theme="dark"] .slideDots button.active::before {
     transition: none !important;
   }
 }
+
+
+/* =========================================================
+   FAS HOMEPAGE — LUXURY EDITORIAL CAROUSEL
+   A quieter, more considered presentation: narrower frame,
+   restrained controls, compact indicators and refined spacing.
+   ========================================================= */
+
+.site[data-page="home"] .homepageSlideshow {
+  width: min(980px, calc(100% - 48px)) !important;
+  max-width: 980px !important;
+  margin: 42px auto 64px !important;
+  padding: 22px 0 24px !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowHeader {
+  margin: 0 0 18px !important;
+  padding: 0 3px !important;
+  align-items: flex-end !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowHeader .sectionLabel {
+  font-size: 9px !important;
+  letter-spacing: .24em !important;
+  color: #c7a77b !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowHeader h2 {
+  margin-top: 8px !important;
+  font-size: clamp(30px, 3.5vw, 43px) !important;
+  line-height: 1.04 !important;
+  letter-spacing: -.045em !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowCounter {
+  padding: 7px 11px !important;
+  border: 1px solid rgba(214, 190, 157, .22) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.035) !important;
+  color: #e8dfd2 !important;
+  font-size: 10px !important;
+  letter-spacing: .12em !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame {
+  height: clamp(350px, 38vw, 440px) !important;
+  min-height: 0 !important;
+  border: 1px solid rgba(214, 190, 157, .20) !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  background: #101012 !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,.22) !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slide > img {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #101012 !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideOverlay {
+  justify-content: flex-end !important;
+  padding: 30px 42px 48px !important;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(12,12,14,.04) 48%,
+    rgba(12,12,14,.42) 72%,
+    rgba(12,12,14,.88) 100%
+  ) !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideCategory {
+  padding: 5px 9px !important;
+  border: 1px solid rgba(225, 202, 171, .28) !important;
+  border-radius: 999px !important;
+  background: rgba(24,22,21,.62) !important;
+  color: #e8d4b8 !important;
+  font-size: 8px !important;
+  letter-spacing: .18em !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideOverlay h3 {
+  margin: 9px 0 5px !important;
+  font-size: clamp(21px, 2.4vw, 29px) !important;
+  line-height: 1.12 !important;
+  letter-spacing: -.025em !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideOverlay p {
+  max-width: 520px !important;
+  margin: 0 !important;
+  color: rgba(250,246,239,.82) !important;
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideButton {
+  min-height: 40px !important;
+  min-width: 0 !important;
+  margin-top: 12px !important;
+  padding: 0 17px !important;
+  border-radius: 999px !important;
+  font-size: 10px !important;
+  letter-spacing: .02em !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideArrow {
+  top: 50% !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  border: 1px solid rgba(238,226,208,.24) !important;
+  border-radius: 50% !important;
+  background: rgba(16,16,18,.42) !important;
+  color: #f4eee5 !important;
+  opacity: .82 !important;
+  backdrop-filter: blur(8px);
+  transition: background .2s ease, opacity .2s ease, border-color .2s ease !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideArrow:hover {
+  background: rgba(16,16,18,.78) !important;
+  border-color: rgba(238,226,208,.52) !important;
+  opacity: 1 !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slidePrevious {
+  left: 16px !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideNext {
+  right: 16px !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideDots {
+  bottom: 13px !important;
+  left: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  transform: translateX(-50%) !important;
+  z-index: 8 !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideDots button {
+  box-sizing: border-box !important;
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 44px !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideDots button::before {
+  content: "" !important;
+  display: block !important;
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 999px !important;
+  background: rgba(246,238,226,.48) !important;
+  transition: width .22s ease, background-color .22s ease !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideDots button.active::before {
+  width: 18px !important;
+  background: #c58b72 !important;
+}
+
+.site[data-page="home"] .homepageSlideshow .slideshowFrame .slideDots button:focus-visible {
+  outline: 2px solid #e4c8a7 !important;
+  outline-offset: -4px !important;
+}
+
+@media (max-width: 850px) {
+  .site[data-page="home"] .homepageSlideshow {
+    width: calc(100% - 36px) !important;
+    margin: 30px auto 46px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame {
+    height: clamp(340px, 62vw, 410px) !important;
+    border-radius: 16px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slideOverlay {
+    padding: 24px 25px 45px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .site[data-page="home"] .homepageSlideshow {
+    width: calc(100% - 30px) !important;
+    margin: 22px auto 36px !important;
+    padding: 12px 0 14px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowHeader {
+    margin-bottom: 12px !important;
+    gap: 8px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowHeader h2 {
+    font-size: clamp(26px, 7vw, 32px) !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame {
+    height: clamp(320px, 94vw, 370px) !important;
+    border-radius: 15px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slide > img {
+    height: 48% !important;
+    object-fit: contain !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slideOverlay {
+    justify-content: flex-start !important;
+    padding: calc(48% + 10px) 16px 43px !important;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(12,12,14,.88) 54%,
+      #101012 68%,
+      #101012 100%
+    ) !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slideOverlay h3 {
+    margin: 7px 0 5px !important;
+    font-size: 19px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slideOverlay p {
+    font-size: 11px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slideButton {
+    min-height: 38px !important;
+    margin-top: 9px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slideArrow {
+    top: 24% !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slidePrevious {
+    left: 9px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slideNext {
+    right: 9px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slideDots {
+    bottom: 7px !important;
+    gap: 3px !important;
+  }
+
+  .site[data-page="home"] .homepageSlideshow .slideshowFrame .slideDots button {
+    flex-basis: 42px !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site[data-page="home"] .homepageSlideshow .slideArrow,
+  .site[data-page="home"] .homepageSlideshow .slideDots button::before {
+    transition: none !important;
+  }
+}
