@@ -164,8 +164,8 @@ test("every public section has unique SEO metadata and page structured data", as
   }
 });
 
-test("dynamic devotional HTML ships its own canonical and social metadata before JavaScript", async ({ request }) => {
-  const slug = "do-you-really-know-him";
+test("dynamic devotional HTML ships page-specific canonical and structured data before JavaScript", async ({ request }) => {
+  const slug = "the-danger-of-denying-our-sin";
   const route = `/devotionals/${slug}/`;
   const response = await request.get(route);
   expect(response.ok(), "Devotional detail route should serve generated static HTML").toBeTruthy();
@@ -174,12 +174,24 @@ test("dynamic devotional HTML ships its own canonical and social metadata before
 
   expect(html).toContain(`<link rel="canonical" href="${canonical}" />`);
   expect(html).not.toContain('<link rel="canonical" href="https://fas-fellowship.org/"');
-  expect(html).toContain('property="og:url" content="' + canonical + '"');
+  expect(html).toContain(`property="og:url" content="${canonical}"`);
   expect(html).toContain('name="twitter:title"');
   expect(html).toContain('name="twitter:description"');
-  expect(html).toContain('"@type":"Article"');
-  expect(html).toContain(`"url":"${canonical}"`);
-  expect((html.match(/id="fas-website-schema"/g) || []).length).toBe(1);
+
+  const websiteSchemaMatch = html.match(/<script type="application\\/ld\\+json" id="fas-website-schema">([\\s\\S]*?)<\\/script>/);
+  expect(websiteSchemaMatch, "Page-specific website graph should be present").toBeTruthy();
+  const websiteSchema = JSON.parse(websiteSchemaMatch[1]);
+  const webPage = websiteSchema["@graph"].find((item) => item["@type"] === "WebPage");
+  expect(webPage?.url).toBe(canonical);
+  expect(webPage?.["@id"]).toBe(`${canonical}#webpage`);
+
+  const articleSchemaMatch = html.match(/<script type="application\\/ld\\+json" id="fas-devotional-article-schema">([\\s\\S]*?)<\\/script>/);
+  expect(articleSchemaMatch, "Article schema should be separate from the site graph").toBeTruthy();
+  const articleSchema = JSON.parse(articleSchemaMatch[1]);
+  expect(articleSchema["@type"]).toBe("Article");
+  expect(articleSchema.url).toBe(canonical);
+  expect(articleSchema.mainEntityOfPage["@id"]).toBe(canonical);
+  expect((html.match(/type="application\\/ld\\+json"/g) || []).length).toBe(2);
 });
 
 test("devotional AMP pages provide crawlable links to related devotionals", async ({ request }) => {
