@@ -22216,3 +22216,38 @@ footer > div:first-child > img {
     max-width: 72px;
   }
 }
+
+
+/* CLS: reserve the latest-blog feature before the asynchronous blog API resolves.
+   Clamp variable copy so a long title/excerpt cannot expand the reserved card. */
+.latestBlogInner {
+  min-height: 178px;
+}
+
+.latestBlogCopy h2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.latestBlogCopy p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.latestBlogEmpty .latestBlogContent {
+  min-height: 74px;
+}
+
+@media (max-width: 700px) {
+  .latestBlogInner {
+    min-height: 280px;
+  }
+
+  .latestBlogEmpty .latestBlogContent {
+    min-height: 0;
+  }
+}
