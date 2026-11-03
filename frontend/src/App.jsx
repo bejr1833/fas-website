@@ -4853,7 +4853,14 @@ function App() {
               </div>
               <div className="devotionalHomeBottom">
                 <span>By {data.devotional.author}</span>
-                <a href={`/devotionals/${data.devotional.slug}`} className="devotionalReadMore">Read More <ArrowRight size={16} /></a>
+                <a
+                  href={`/devotionals/${data.devotional.slug}`}
+                  className="devotionalReadMore"
+                  aria-label={`Read the ${data.devotional.slug.split("-").join(" ")} devotional`}
+                >
+                  Read: {data.devotional.slug.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                  <ArrowRight size={16} aria-hidden="true" />
+                </a>
               </div>
             </div>
           </section>
