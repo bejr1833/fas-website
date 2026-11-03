@@ -183,13 +183,13 @@ const injectCanonicalHead = (shell, { title, description, canonical, ampUrl, ima
   const websiteSchemaTag = `<script type="application/ld+json" id="fas-website-schema">${JSON.stringify(pageSchema).replace(/</g, "\\u003c")}</script>`;
   const contentSchemaId = isDevotional ? "fas-devotional-article-schema" : "fas-blog-posting-schema";
   const contentSchemaTag = `<script type="application/ld+json" id="${contentSchemaId}">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>`;
-  const schemaPattern = /<script type="application\\/ld\\+json"(?:\\s+id="[^"]+")?\\s*>[\\s\\S]*?<\\/script>/i;
+  const schemaPattern = /<script type="application\/ld\+json"(?:\s+id="[^"]+")?\s*>[\s\S]*?<\/script>/i;
   if (schemaPattern.test(html)) {
     html = html.replace(schemaPattern, websiteSchemaTag);
   } else {
-    html = html.replace("</head>", `${websiteSchemaTag}\\n</head>`);
+    html = html.replace("</head>", `${websiteSchemaTag}\n</head>`);
   }
-  const contentSchemaPattern = /<script type="application\\/ld\\+json" id="(?:fas-devotional-article-schema|fas-blog-posting-schema)">[\\s\\S]*?<\\/script>/i;
+  const contentSchemaPattern = /<script type="application\/ld\+json" id="(?:fas-devotional-article-schema|fas-blog-posting-schema)">[\s\S]*?<\/script>/i;
   if (contentSchemaPattern.test(html)) {
     html = html.replace(contentSchemaPattern, contentSchemaTag);
   } else {
