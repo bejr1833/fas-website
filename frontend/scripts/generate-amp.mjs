@@ -164,15 +164,42 @@ const injectCanonicalHead = (shell, { title, description, canonical, ampUrl, ima
     .replace(/<meta name="twitter:title" content="[^"]*"\s*\/?\s*>/i, `<meta name="twitter:title" content="${escapeHtml(title)}" />`)
     .replace(/<meta name="twitter:description" content="[^"]*"\s*\/?\s*>/i, `<meta name="twitter:description" content="${escapeHtml(description)}" />`);
 
-  const schemaTag = `<script type="application/ld+json" id="fas-website-schema">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>`;
-  const schemaPattern = /<script type="application\/ld\+json" id="fas-website-schema">[\s\S]*?<\/script>/i;
+  const isDevotional = canonical.includes("/devotionals/");
+  const pageName = plainText(title).split("|")[0].trim();
+  const sectionName = isDevotional ? "FAS Daily Devotional" : "FAS Journal";
+  const pageSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "WebSite", "@id": `${SITE_URL}/#website`, url: `${SITE_URL}/`, name: "Faith Alone Saves", alternateName: "FAS Fellowship", description: "Faith Alone Saves is a Christian student fellowship helping campus students grow in God's Word, worship, fellowship, mentorship, and service.", inLanguage: "en-IN" },
+      { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Faith Alone Saves", alternateName: "FAS Fellowship", url: `${SITE_URL}/`, logo: { "@type": "ImageObject", url: `${SITE_URL}/branding/fas-logo.png` } },
+      { "@type": "WebPage", "@id": `${canonical}#webpage`, url: canonical, name: pageName, description, isPartOf: { "@id": `${SITE_URL}/#website` }, about: { "@id": `${SITE_URL}/#organization` }, inLanguage: "en-IN" },
+      { "@type": "BreadcrumbList", itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Faith Alone Saves", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: sectionName, item: `${SITE_URL}/${isDevotional ? "devotions" : "blog"}` },
+        { "@type": "ListItem", position: 3, name: pageName, item: canonical }
+      ] }
+    ]
+  };
+  const websiteSchemaTag = `<script type="application/ld+json" id="fas-website-schema">${JSON.stringify(pageSchema).replace(/</g, "\\u003c")}</script>`;
+  const contentSchemaId = isDevotional ? "fas-devotional-article-schema" : "fas-blog-posting-schema";
+  const contentSchemaTag = `<script type="application/ld+json" id="${contentSchemaId}">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>`;
+  const schemaPattern = /<script type="application\\/ld\\+json"(?:\\s+id="[^"]+")?\\s*>[\\s\\S]*?<\\/script>/i;
   if (schemaPattern.test(html)) {
-    html = html.replace(schemaPattern, schemaTag);
+    html = html.replace(schemaPattern, websiteSchemaTag);
   } else {
-    html = html.replace("</head>", `${schemaTag}\n</head>`);
+    html = html.replace("</head>", `${websiteSchemaTag}\\n</head>`);
+  }
+  const contentSchemaPattern = new RegExp(
+    `<script type="application/ld\\\\+json" id="${contentSchemaId}">[\\\\s\\\\S]*?<\\\\/script>`,
+    "i"
+  );
+  if (contentSchemaPattern.test(html)) {
+    html = html.replace(contentSchemaPattern, contentSchemaTag);
+  } else {
+    html = html.replace("</head>", `${contentSchemaTag}\\n</head>`);
   }
 
-  html = html.replace("</head>", `<link rel="amphtml" href="${escapeHtml(ampUrl)}" />\n</head>`);
+  html = html.replace("</head>", `<link rel="amphtml" href="${escapeHtml(ampUrl)}" />\\n</head>`);
   return html;
 };
 
