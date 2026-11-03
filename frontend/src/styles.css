@@ -22211,3 +22211,23 @@ html[data-theme="dark"] .slideDots button.active::before {
     transition: none !important;
   }
 }
+
+
+/* CLS FIX: keep the footer logo at its intrinsic 3:2 ratio.
+   The HTML width/height attributes reserve the source ratio; the rendered
+   footer width is 78px, so the height must scale automatically to 52px. */
+footer img {
+  display: block;
+  width: 78px;
+  height: auto !important;
+  max-width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+}
+
+@media (max-width: 600px) {
+  footer img {
+    width: 72px;
+    height: auto !important;
+  }
+}
