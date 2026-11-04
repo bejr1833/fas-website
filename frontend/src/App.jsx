@@ -239,16 +239,16 @@ function getCleanTeluguScriptureText(text = "", reference = "") {
 }
 
 async function shareEbook(ebook) {
-  const ebookUrl = ebook?.ebook_file_url || ebook?.epub_file_url;
-  if (!ebookUrl) {
-    window.alert("This eBook does not have a shareable link yet.");
-    return;
-  }
+  // Share the FAS library destination, not the underlying PDF/EPUB file.
+  // This keeps visitors on the website and takes them to the eBook section.
+  const libraryUrl = new URL(window.location.href);
+  libraryUrl.hash = "ebooks";
+  libraryUrl.search = "";
 
   const shareData = {
-    title: ebook.title || "FAS eBook",
-    text: `Read "${ebook.title || "this eBook"}" from Faith Alone Saves.`,
-    url: ebookUrl,
+    title: ebook?.title ? `${ebook.title} | FAS eBook Library` : "FAS eBook Library",
+    text: `Explore "${ebook?.title || "this eBook"}" in the Faith Alone Saves eBook library.`,
+    url: libraryUrl.href,
   };
 
   if (typeof navigator.share === "function") {
@@ -271,7 +271,7 @@ async function shareEbook(ebook) {
     // Use the manual copy fallback below when clipboard permission is denied.
   }
 
-  window.prompt("Copy this eBook link to share it:", ebookUrl);
+  window.prompt("Copy the FAS eBook library link to share it:", libraryUrl.href);
 }
 
 function scrollToSection(id) {
@@ -6183,7 +6183,7 @@ function App() {
                           title={`Share ${ebook.title}`}
                           onClick={() => shareEbook(ebook)}
                         >
-                          <ExternalLink size={22} strokeWidth={2} />
+                          <Share2 size={22} strokeWidth={2} />
                         </button>
                       )}
                     </div>
