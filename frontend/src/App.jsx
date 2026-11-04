@@ -465,6 +465,27 @@ async function shareEbook(ebook) {
   window.prompt("Copy the FAS eBook library link to share it:", libraryUrl.href);
 }
 
+async function shareSermon(sermon) {
+  if (!sermon) return;
+  const libraryUrl = new URL("/study-resources/#study-pdfs", window.location.origin);
+  const title = String(sermon.title || "FAS sermon resource").replace(/\\s+/g, " ").trim();
+  const author = String(sermon.speaker || "Faith Alone Saves").replace(/\\s+/g, " ").trim();
+  const shareTitle = title + " | FAS Study Resources";
+  const shareText = ["FAS SERMON RESOURCE", title, "By " + author, "Explore this teaching resource in the FAS Study Resources library:", libraryUrl.href].join("\\n");
+  if (typeof navigator.share === "function") {
+    try { await navigator.share({ title: shareTitle, text: shareText }); return; }
+    catch (error) { if (error?.name === "AbortError") return; }
+  }
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(libraryUrl.href);
+      window.alert("FAS Study Resources link copied. You can now paste and share it.");
+      return;
+    }
+  } catch { /* Use the manual copy fallback below. */ }
+  window.prompt("Copy the FAS Study Resources link to share it:", libraryUrl.href);
+}
+
 function scrollToSection(id) {
   const element = document.getElementById(id);
   if (!element) return false;
@@ -1616,11 +1637,14 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode }) {
             </div>
           </article>)}</div> : <div className="emptyState"><p>No video teachings match this search yet.</p></div>}
         </section>}
-        {showPdfs && <section className="resourceCollection">
+        {showPdfs && <section className="resourceCollection" id="study-pdfs">
           <div className="resourceCollectionHeading resourcePdfHeading"><div><span className="sectionLabel">READ & REFLECT</span><h2>Sermon notes & PDFs</h2><p className="resourceCopyrightNote">Downloadable notes and study documents from FAS messages, gathered in one place.</p></div><div className="resourceCarouselControls"><button type="button" onClick={() => scrollPdfs(-1)} aria-label="Previous sermon PDFs"><ArrowLeft size={18} /></button><button type="button" onClick={() => scrollPdfs(1)} aria-label="Next sermon PDFs"><ArrowRight size={18} /></button></div></div>
           {sermons.length ? <div className="resourcePdfGrid resourcePdfCarousel" ref={pdfTrackRef} aria-label="Sermon PDF collection" tabIndex={0}>{sermons.map((sermon) => <article className="resourcePdfCard" key={sermon.id}>
             <div className="resourcePdfIcon"><span>PDF</span></div><div className="resourcePdfContent"><span className="resourcePdfCategory">{(sermon.category || "sermon").replace(/-/g, " ")}</span><h3>{sermon.title}</h3><p>{sermon.description || "A sermon resource from Faith Alone Saves."}</p><div className="resourcePdfMeta"><span>{sermon.speaker || "FAS"}</span>{sermon.published_at && <time>{new Date(sermon.published_at).toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"})}</time>}</div>
-              {sermon.pdf_file_url && <a href={sermon.pdf_file_url} target="_blank" rel="noopener noreferrer" className="primaryBtn">Open PDF <ExternalLink size={15} /></a>}
+              {sermon.pdf_file_url && <div className="resourcePdfActions">
+                <a href={sermon.pdf_file_url} target="_blank" rel="noopener noreferrer" className="primaryBtn">Open PDF <ExternalLink size={15} /></a>
+                <button type="button" className="resourceShareIcon" onClick={() => shareSermon(sermon)} aria-label={`Share ${sermon.title}`} title={`Share ${sermon.title}`}><Share2 size={18} strokeWidth={2} /></button>
+              </div>}
             </div>
           </article>)}</div> : <div className="emptyState"><p>No sermon PDFs match this search yet.</p></div>}
         </section>}
@@ -1633,7 +1657,7 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode }) {
                 {ebook.ebook_file_url && <button type="button" className="ebookReadLink" onClick={() => setSelectedBook(ebook)}>Read online <ArrowRight size={15} /></button>}
                 {ebook.ebook_file_url && <a className="ebookReadLink" href={ebook.ebook_file_url} target="_blank" rel="noopener noreferrer">Read PDF <ExternalLink size={14} /></a>}
                 {ebook.epub_file_url && <a className="ebookReadLink" href={ebook.epub_file_url} target="_blank" rel="noopener noreferrer">EPUB <ExternalLink size={14} /></a>}
-                <button type="button" className="ebookReadLink ebookShareAction" onClick={() => shareEbook(ebook)} aria-label={`Share ${ebook.title}`} title={`Share ${ebook.title}`}><Share2 size={16} /> Share</button>
+                <button type="button" className="ebookReadLink ebookShareAction" onClick={() => shareEbook(ebook)} aria-label={`Share ${ebook.title}`} title={`Share ${ebook.title}`}><Share2 size={19} strokeWidth={2} /></button>
               </div>
             </div>
           </article>)}</div> : <div className="emptyState"><p>New eBooks will be added to the library soon.</p></div>}
