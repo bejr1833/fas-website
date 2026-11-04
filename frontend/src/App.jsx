@@ -1560,8 +1560,13 @@ function ImpactCounter({ value, suffix = "", label, index = 0 }) {
 
 function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode, onReadEbook }) {
   const [query, setQuery] = useState("");
-  const [activeType, setActiveType] = useState("all");
   const [selectedBook, setSelectedBook] = useState(null);
+  const ebookSliderRef = useRef(null);
+  const scrollEbooks = (direction) => {
+    const slider = ebookSliderRef.current;
+    if (!slider) return;
+    slider.scrollBy({ left: direction * Math.max(280, slider.clientWidth * 0.82), behavior: "smooth" });
+  };
   const title = kind === "ebooks" ? "The eBook Library" : kind === "study" ? "Study Resources" : "Sermons & Teachings";
   const eyebrow = kind === "ebooks" ? "READ · REFLECT · GROW" : kind === "study" ? "SCRIPTURE · STUDY · GROWTH" : "LISTEN · LEARN · LIVE THE WORD";
   const description = kind === "ebooks"
@@ -1573,8 +1578,9 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode, onReadEbook
   const videos = (data.videos || []).filter(matches);
   const sermons = (data.sermons || []).filter(matches);
   const ebooks = (data.ebooks || []).filter(matches);
-  const showVideos = kind === "sermons" && activeType !== "pdf";
-  const showPdfs = (kind === "study" || kind === "sermons") && activeType !== "video";
+  // Keep each collection distinct: video teachings live under Sermons; PDFs live under Study Resources.
+  const showVideos = kind === "sermons";
+  const showPdfs = kind === "study";
   const showBooks = kind === "ebooks";
   return (
     <div className={`site resourceLibraryPage ${darkMode ? "resourceLibraryDark" : "resourceLibraryLight"}`}>
@@ -1598,11 +1604,7 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode, onReadEbook
         </div>
         <div className="resourceLibraryToolbar">
           <label className="resourceSearch"><span className="sr-only">Search resources</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by title, speaker, author or topic..." /></label>
-          {kind === "sermons" && <div className="resourceTypeFilters" aria-label="Filter resources">
-            <button type="button" className={activeType === "all" ? "active" : ""} onClick={() => setActiveType("all")}>All</button>
-            <button type="button" className={activeType === "video" ? "active" : ""} onClick={() => setActiveType("video")}>Videos</button>
-            <button type="button" className={activeType === "pdf" ? "active" : ""} onClick={() => setActiveType("pdf")}>Sermon PDFs</button>
-          </div>}
+
         </div>
         {showVideos && <section className="resourceCollection">
           <div className="resourceCollectionHeading"><span className="sectionLabel">WATCH & LISTEN</span><h2>Video teachings</h2></div>
@@ -1626,8 +1628,14 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode, onReadEbook
           </article>)}</div> : <div className="emptyState"><p>No sermon PDFs match this search yet.</p></div>}
         </section>}
         {showBooks && <section className="resourceCollection">
-          <div className="resourceCollectionHeading"><span className="sectionLabel">CURATED CHRISTIAN READING</span><h2>Books for the journey</h2><p className="resourceCopyrightNote">FAS shares works it owns, verified public-domain editions, or books distributed with permission or an appropriate licence.</p></div>
-          {ebooks.length ? <div className="ebookGrid resourceEbookGrid">{ebooks.map((ebook) => <article className="ebookCard" key={ebook.id}>
+          <div className="resourceCollectionHeading resourceEbookHeading">
+            <div><span className="sectionLabel">CURATED CHRISTIAN READING</span><h2>Books for the journey</h2><p className="resourceCopyrightNote">FAS shares works it owns, verified public-domain editions, or books distributed with permission or an appropriate licence.</p></div>
+            {ebooks.length > 1 && <div className="resourceSliderControls" aria-label="eBook slider controls">
+              <button type="button" onClick={() => scrollEbooks(-1)} aria-label="Scroll eBooks left"><ArrowLeft size={18} /></button>
+              <button type="button" onClick={() => scrollEbooks(1)} aria-label="Scroll eBooks right"><ArrowRight size={18} /></button>
+            </div>}
+          </div>
+          {ebooks.length ? <div className="resourceEbookSlider" ref={ebookSliderRef} aria-label="eBook collection" tabIndex={0}>{ebooks.map((ebook) => <article className="ebookCard resourceEbookSlide" key={ebook.id}>
             <div className="ebookCover">{ebook.cover_image_url ? <img src={ebook.cover_image_url} alt={ebook.title} loading="lazy" /> : <div className="ebookCoverPlaceholder"><span className="ebookCoverKicker">FAITH · FELLOWSHIP · TRUTH</span><strong className="ebookCoverBrand">FAS</strong><small>CHRISTIAN READING</small></div>}</div>
             <div className="ebookCardBody"><span className="ebookCategory">{(ebook.category || "Christian reading").replace(/-/g," ")}</span><h3>{ebook.title}</h3><div className="ebookAuthor"><span>Author</span><strong>{ebook.author || "Unknown"}</strong></div>{ebook.description && <p>{ebook.description}</p>}
               <div className="ebookFormatActions">{ebook.ebook_file_url && <button type="button" className="ebookReadLink" onClick={() => setSelectedBook(ebook)}>Read online <ArrowRight size={15} /></button>}{ebook.epub_file_url && <a className="ebookReadLink" href={ebook.epub_file_url} target="_blank" rel="noopener noreferrer">EPUB <ExternalLink size={14} /></a>}</div>
