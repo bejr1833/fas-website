@@ -19,10 +19,23 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // Keep framework code stable and cacheable between content releases.
           if (id.includes("/node_modules/react/") ||
               id.includes("/node_modules/react-dom/") ||
               id.includes("/node_modules/scheduler/")) {
             return "react-vendor";
+          }
+
+          // Icon components are used throughout the site; isolate their
+          // implementation so application updates do not invalidate React.
+          if (id.includes("/node_modules/lucide-react/")) {
+            return "icons-vendor";
+          }
+
+          // PDF rendering is only needed after a visitor opens the eBook
+          // reader. Keep PDF.js out of the initial homepage JavaScript.
+          if (id.includes("/node_modules/pdfjs-dist/")) {
+            return "pdf-viewer";
           }
         }
       }
