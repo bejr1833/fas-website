@@ -23130,3 +23130,63 @@ html[data-theme="dark"] .ebookCard .ebookCardBody .ebookFormatActions > .ebookRe
     box-sizing: border-box;
   }
 }
+
+
+/* Compact resource search on phones: keep the label visually hidden and
+   prevent the input placeholder from competing with the icon. */
+@media (max-width: 760px) {
+  .resourceLibraryToolbar {
+    padding: 10px;
+    gap: 0;
+    margin-bottom: 30px;
+    border-radius: 16px;
+  }
+  .resourceLibraryToolbar .resourceSearch {
+    position: relative;
+    min-height: 54px;
+    height: 54px;
+    gap: 10px;
+    padding: 0 14px;
+    border-radius: 12px;
+  }
+  .resourceLibraryToolbar .resourceSearch > .sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+  .resourceLibraryToolbar .resourceSearch::before {
+    flex-basis: 19px;
+    width: 19px;
+    font-size: 23px;
+  }
+  .resourceLibraryToolbar .resourceSearch input {
+    flex: 1 1 auto;
+    width: 0;
+    min-width: 0;
+    min-height: 50px;
+    height: 50px;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  .resourceLibraryToolbar .resourceSearch input::placeholder {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+@media (max-width: 380px) {
+  .resourceLibraryToolbar .resourceSearch {
+    gap: 8px;
+    padding: 0 11px;
+  }
+  .resourceLibraryToolbar .resourceSearch input {
+    font-size: 12px;
+  }
+}
