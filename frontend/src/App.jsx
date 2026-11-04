@@ -817,7 +817,9 @@ function EbookReader({ ebook, onClose }) {
         if (cancelled) return;
 
         const viewport = page.getViewport({ scale });
-        // Cap backing-store resolution on dense mobile screens. CSS dimensions\n        // stay exact while this prevents oversized canvases and memory spikes.\n        const outputScale = Math.min(window.devicePixelRatio || 1, 2);
+        // Cap backing-store resolution on dense mobile screens. CSS dimensions
+        // stay exact while this prevents oversized canvases and memory spikes.
+        const outputScale = Math.min(window.devicePixelRatio || 1, 2);
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
         canvas.style.transform = "scale(1)";
@@ -2899,7 +2901,9 @@ function App() {
       "FAS DAILY DEVOTIONAL",
       `Day #${dayNumber}: ${String(devotionalPost.title || "").replace(/\s+/g, " ").trim()}`,
       "Read the full devotional: " + url.href
-    ].join("\n\n");
+    ].join("
+
+");
 
     // Original FAS editorial card: warm paper, forest-ink typography and restrained brass details.
     const canvas = document.createElement("canvas");
@@ -3167,7 +3171,9 @@ function App() {
       impact ? "“" + impact + "”" : "",
       "Read the full story: " + storyUrl,
       "Faith Alone Saves · Love in Fellowship & Truth"
-    ].filter(Boolean).join("\n\n");
+    ].filter(Boolean).join("
+
+");
 
     // Match the live website story card's dark-mode colors, type hierarchy,
     // red accent, impact panel, quote preview and Read Full Story divider.
@@ -3949,13 +3955,17 @@ function App() {
               <div className="devotionalImpact"><span>THE IMPACT</span><strong>{devotionalPost.impact_line}</strong></div>
               <div className="devotionalBody">
                 <span className="devotionalBodyLabel">REFLECTION</span>
-                {devotionalPost.reflection.split(/\r?\n\s*\r?\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
+                {devotionalPost.reflection.split(/\r?
+\s*\r?
+/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
                 <div className="devotionalPrayer">
                   <div className="devotionalPanelHeading">
                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z" /><path d="M8 12h8M12 8v8" /></svg>
                     <span>PRAYER</span>
                   </div>
-                  {devotionalPost.prayer.split(/\r?\n\s*\r?\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
+                  {devotionalPost.prayer.split(/\r?
+\s*\r?
+/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
                 </div>
                 {devotionalPost.application && <div className="devotionalApplication">
                   <div className="devotionalPanelHeading">
@@ -4262,7 +4272,9 @@ function App() {
                 </div>
 
                 {blogPost.content
-                  ?.split(/\r?\n\s*\r?\n/)
+                  ?.split(/\r?
+\s*\r?
+/)
                   .filter((paragraph) => paragraph.trim())
                   .map((paragraph, index) => {
                     const cleanParagraph = paragraph.trim();
@@ -4286,7 +4298,8 @@ function App() {
                     return (
                       <p key={index}>
                         {paragraph
-                          .split(/\r?\n/)
+                          .split(/\r?
+/)
                           .map((line, lineIndex, lines) => (
                             <Fragment key={lineIndex}>
                               {line}
