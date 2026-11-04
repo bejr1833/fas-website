@@ -5064,7 +5064,7 @@ function App() {
               <ImpactCounter value={6} label="One-day retreats" index={0} />
               <ImpactCounter value={2} label="Christmas celebrations" index={1} />
               <ImpactCounter value={10} suffix="+" label="Cottage prayers" index={2} />
-              <ImpactCounter value={130} suffix="+" label="Participants" index={3} />
+              <ImpactCounter value={130} suffix="+" label="Fellowship Members" index={3} />
               <ImpactCounter value={2} label="Colleges reached" index={4} />
             </div>
           </div>
