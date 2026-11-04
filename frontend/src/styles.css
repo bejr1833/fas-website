@@ -22576,3 +22576,79 @@ html[data-theme="dark"] .fasImpactItem::after { color: rgba(223,189,120,.72); }
   .fasImpactNumber { font-size: clamp(40px, 11vw, 48px); }
   .fasImpactLabel { font-size: 10px; letter-spacing: .085em; }
 }
+
+
+/* Compact mobile impact layout: keep all five metrics visually balanced
+   without a full-width oversized final card or excessive vertical padding. */
+@media (max-width: 560px) {
+  .fasImpactSection {
+    padding: 38px 18px 42px !important;
+  }
+  .fasImpactHeading {
+    max-width: 520px;
+    margin: 0 auto 22px !important;
+  }
+  .fasImpactHeading .sectionLabel {
+    font-size: 10px;
+    letter-spacing: .16em;
+    gap: 8px;
+  }
+  .fasImpactHeading .sectionLabel::before,
+  .fasImpactHeading .sectionLabel::after {
+    width: 16px;
+  }
+  .fasImpactHeading h2 {
+    margin: 11px 0 8px;
+    font-size: clamp(25px, 7vw, 31px);
+    line-height: 1.12;
+  }
+  .fasImpactHeading p {
+    max-width: 420px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .fasImpactGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+  }
+  .fasImpactItem {
+    min-height: 108px !important;
+    padding: 15px 8px !important;
+    gap: 8px !important;
+    border-radius: 15px !important;
+  }
+  .fasImpactItem::before {
+    inset: 5px;
+    border-radius: 10px;
+  }
+  .fasImpactItem::after {
+    top: 9px;
+    right: 11px;
+    font-size: 9px;
+  }
+  .fasImpactNumber {
+    font-size: clamp(35px, 9vw, 42px) !important;
+    line-height: .98;
+  }
+  .fasImpactLabel {
+    max-width: 100%;
+    padding: 0 5px;
+    font-size: 9px !important;
+    line-height: 1.35;
+    letter-spacing: .075em !important;
+    overflow-wrap: anywhere;
+  }
+  .fasImpactItem:last-child {
+    grid-column: auto !important;
+    grid-column: 1 / -1 !important;
+    justify-self: center;
+    width: calc(50% - 5px);
+    min-height: 100px !important;
+  }
+}
+@media (max-width: 360px) {
+  .fasImpactSection { padding-left: 14px !important; padding-right: 14px !important; }
+  .fasImpactGrid { gap: 7px !important; }
+  .fasImpactItem { min-height: 100px !important; }
+  .fasImpactLabel { font-size: 8px !important; }
+}
