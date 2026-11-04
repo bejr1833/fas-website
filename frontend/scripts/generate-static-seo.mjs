@@ -7,8 +7,8 @@ const DIST = join(process.cwd(), "dist");
 const pages = [
   {
     route: "/",
-    title: "FAS Fellowship | Faith Alone Saves",
-    description: "Faith Alone Saves (FAS) is a Christian student fellowship helping students grow in Christ through Bible study, prayer, worship, mentorship, and community.",
+    title: "FAS Fellowship | Christian Student Community, Bible Study & Prayer",
+    description: "Faith Alone Saves (FAS) is a Christian student fellowship building faith through Bible study, prayer, worship, devotionals, retreats and student community.",
     schemaType: "WebPage",
   },
   {
@@ -106,7 +106,7 @@ const buildSchema = (page) => {
         url: `${SITE_URL}/`,
         name: "Faith Alone Saves",
         alternateName: "FAS Fellowship",
-        description: "Faith Alone Saves is a Christian student fellowship helping campus students grow in God's Word, worship, fellowship, mentorship, and service.",
+        description: "Faith Alone Saves is a Christian student fellowship building faith through Bible study, prayer, worship, devotionals, retreats, and student community.",
         inLanguage: "en-IN",
       },
       {
