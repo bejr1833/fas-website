@@ -22246,3 +22246,60 @@ footer > div:first-child > img {
     min-height: 290px;
   }
 }
+
+
+/* Keep the FAS ebook library as a true horizontal carousel on every breakpoint.
+   These final overrides supersede legacy grid/featured-card sizing rules above. */
+.ebookSection .ebookCarouselTrack {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  gap: 22px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ebookSection .ebookCarouselTrack > .ebookCard {
+  flex: 0 0 min(420px, 78vw) !important;
+  width: min(420px, 78vw) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-columns: none !important;
+  scroll-snap-align: start;
+}
+
+.ebookSection .ebookCarouselTrack > .ebookCard .ebookCover {
+  flex: 0 0 auto;
+  width: 100%;
+  height: auto !important;
+  aspect-ratio: 16 / 10;
+}
+
+@media (max-width: 700px) {
+  .ebookSection .ebookCarouselTrack {
+    gap: 14px !important;
+    margin-right: -18px !important;
+    padding-right: 18px !important;
+    padding-left: 2px !important;
+  }
+
+  .ebookSection .ebookCarouselTrack > .ebookCard {
+    flex-basis: min(84vw, 340px) !important;
+    width: min(84vw, 340px) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ebookSection .ebookCarouselTrack {
+    scroll-behavior: auto;
+  }
+}
