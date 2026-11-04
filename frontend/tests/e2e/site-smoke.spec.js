@@ -16,9 +16,13 @@ test("homepage renders its main content without a React crash", async ({ page })
 
 test("homepage clearly identifies Faith Alone Saves as FAS Fellowship", async ({ page }) => {
   await page.goto("/");
-  await expect(
-    page.getByText("Faith Alone Saves (FAS Fellowship) is a Christ-centered", { exact: false })
-  ).toBeVisible();
+  const identityIntro = page.getByText(
+    "Faith Alone Saves (FAS Fellowship) is a Christ-centered",
+    { exact: false }
+  );
+  // This intro is inside a scroll-reveal section; bring it into view first.
+  await identityIntro.scrollIntoViewIfNeeded();
+  await expect(identityIntro).toBeVisible();
   await expect(page.getByRole("heading", { name: /A fellowship for students who want to know, grow and serve/i })).toBeVisible();
 });
 
