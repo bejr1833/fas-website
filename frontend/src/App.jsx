@@ -680,7 +680,7 @@ function EbookReader({ ebook, onClose }) {
     }
   });
   const [scale, setScale] = useState(1.05);
-  const [fitPageMode, setFitPageMode] = useState(false);
+  const [fitPageMode, setFitPageMode] = useState(true);
   const [loading, setLoading] = useState(true);
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState("");
