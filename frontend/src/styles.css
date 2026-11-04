@@ -22390,3 +22390,110 @@ footer > div:first-child > img {
     align-items: center !important;
   }
 }
+
+
+/* FAS three-year impact: editorial statistics with subtle reveal motion. */
+.fasImpactSection {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(64px, 8vw, 108px) 6vw;
+  background: linear-gradient(135deg, #f8f6f0 0%, #fff 52%, #f3eee4 100%);
+  border-top: 1px solid rgba(151, 119, 62, .18);
+  border-bottom: 1px solid rgba(151, 119, 62, .18);
+}
+.fasImpactInner { max-width: 1240px; margin: 0 auto; }
+.fasImpactHeading { max-width: 680px; margin: 0 auto 42px; text-align: center; }
+.fasImpactHeading .sectionLabel { color: #9a7440; }
+.fasImpactHeading h2 {
+  margin: 16px 0 12px;
+  color: #20231f;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -.035em;
+}
+.fasImpactHeading p {
+  max-width: 590px;
+  margin: 0 auto;
+  color: #68675f;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.fasImpactGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+.fasImpactItem {
+  min-height: 166px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  padding: 24px 14px;
+  text-align: center;
+  background: rgba(255,255,255,.78);
+  border: 1px solid rgba(161, 128, 70, .25);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(37, 31, 20, .045);
+  transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+  animation: fasImpactRise .7s both;
+  animation-delay: calc(var(--impact-index, 0) * 90ms);
+}
+.fasImpactItem:hover {
+  transform: translateY(-5px);
+  border-color: rgba(161, 128, 70, .58);
+  box-shadow: 0 18px 42px rgba(37, 31, 20, .09);
+}
+.fasImpactNumber {
+  color: #9a7138;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(42px, 4vw, 58px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -.045em;
+  font-variant-numeric: tabular-nums;
+}
+.fasImpactLabel {
+  max-width: 150px;
+  color: #4e504a;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: .075em;
+  text-transform: uppercase;
+}
+@keyframes fasImpactRise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+html[data-theme="dark"] .fasImpactSection {
+  background: linear-gradient(135deg, #101411 0%, #171b17 55%, #111410 100%);
+  border-color: rgba(198, 161, 92, .2);
+}
+html[data-theme="dark"] .fasImpactHeading h2 { color: #f2eee5; }
+html[data-theme="dark"] .fasImpactHeading p { color: #b8b2a5; }
+html[data-theme="dark"] .fasImpactItem {
+  background: linear-gradient(145deg, rgba(34, 39, 33, .96), rgba(22, 26, 22, .98));
+  border-color: rgba(198, 161, 92, .28);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, .18);
+}
+html[data-theme="dark"] .fasImpactNumber { color: #dfbd78; }
+html[data-theme="dark"] .fasImpactLabel { color: #d2cabb; }
+@media (max-width: 900px) {
+  .fasImpactGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .fasImpactSection { padding: 58px 5vw 64px; }
+  .fasImpactHeading { margin-bottom: 28px; }
+  .fasImpactGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .fasImpactItem { min-height: 132px; padding: 20px 10px; border-radius: 15px; }
+  .fasImpactNumber { font-size: 43px; }
+  .fasImpactLabel { font-size: 10px; letter-spacing: .06em; }
+  .fasImpactItem:last-child { grid-column: 1 / -1; min-height: 116px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fasImpactItem { animation: none; transition: none; }
+}
