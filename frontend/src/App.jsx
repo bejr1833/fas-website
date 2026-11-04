@@ -245,8 +245,8 @@ async function shareEbook(ebook) {
   // The link always leads to the eBook section, never directly to the PDF.
   const libraryUrl = new URL(window.location.origin + "/");
   libraryUrl.hash = "ebooks";
-  const bookTitle = String(ebook.title || "A FAS Christian eBook").replace(/\\s+/g, " ").trim();
-  const author = String(ebook.author || "Faith Alone Saves").replace(/\\s+/g, " ").trim();
+  const bookTitle = String(ebook.title || "A FAS Christian eBook").replace(/\s+/g, " ").trim();
+  const author = String(ebook.author || "Faith Alone Saves").replace(/\s+/g, " ").trim();
   const category = String(ebook.category || "Christian reading").replace(/[-_]+/g, " ").toUpperCase();
 
   const canvas = document.createElement("canvas");
@@ -286,7 +286,7 @@ async function shareEbook(ebook) {
     };
     const wrapText = (value, font, maxWidth, maxLines = 4) => {
       ctx.font = font;
-      const words = String(value || "").split(/\\s+/).filter(Boolean);
+      const words = String(value || "").split(/\s+/).filter(Boolean);
       const lines = [];
       let line = "";
       for (const word of words) {
@@ -427,11 +427,10 @@ async function shareEbook(ebook) {
     "By " + author,
     "Explore the book and read it in the FAS library:",
     libraryUrl.href
-  ].join("\\n");
+  ].join("\n");
   const shareData = {
     title,
     text: shareText,
-    url: libraryUrl.href,
     ...(shareCardFile ? { files: [shareCardFile] } : {})
   };
 
@@ -440,7 +439,7 @@ async function shareEbook(ebook) {
       if (shareCardFile && navigator.canShare?.({ files: [shareCardFile] })) {
         await navigator.share(shareData);
       } else {
-        await navigator.share({ title, text: shareText, url: libraryUrl.href });
+        await navigator.share({ title, text: shareText });
       }
       return;
     } catch (error) {
