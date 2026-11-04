@@ -61,8 +61,8 @@ const pages = [
   },
   {
     route: "/media",
-    title: "FAS Media | Sermons, Messages & Christian Resources",
-    description: "Watch and listen to sermons, messages, and Christian media resources shared by the Faith Alone Saves fellowship.",
+    title: "FAS Media | Fellowship Moments, Worship & Highlights",
+    description: "Explore worship, fellowship gatherings, event highlights, and shared moments from the Faith Alone Saves community.",
     schemaType: "CollectionPage",
   },
   {
