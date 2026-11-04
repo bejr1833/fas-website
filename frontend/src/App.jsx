@@ -1558,9 +1558,8 @@ function ImpactCounter({ value, suffix = "", label, index = 0 }) {
   );
 }
 
-function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode, onReadEbook }) {
+function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode }) {
   const [query, setQuery] = useState("");
-  const [activeType, setActiveType] = useState("all");
   const [selectedBook, setSelectedBook] = useState(null);
   const ebookSliderRef = useRef(null);
   const scrollEbooks = (direction) => ebookSliderRef.current?.scrollBy({ left: direction * Math.max(280, ebookSliderRef.current.clientWidth * 0.82), behavior: "smooth" });
@@ -1570,12 +1569,12 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode, onReadEbook
     ? "Explore Christian books and carefully curated reading resources to deepen your walk with Christ."
     : kind === "study"
       ? "Revisit biblical teaching with sermon notes and downloadable study material."
-      : "Watch FAS messages and explore sermon notes shared to encourage a life rooted in Scripture.";
+      : "Watch recorded FAS messages and video teachings that encourage a life rooted in Scripture.";
   const matches = (item) => [item.title, item.speaker, item.author, item.category, item.description].join(" ").toLowerCase().includes(query.toLowerCase());
   const videos = (data.videos || []).filter(matches);
   const sermons = (data.sermons || []).filter(matches);
   const ebooks = (data.ebooks || []).filter(matches);
-  const showVideos = kind === "sermons" && activeType !== "pdf";
+  const showVideos = kind === "sermons";
   const showPdfs = kind === "study";
   const showBooks = kind === "ebooks";
   return (
@@ -4378,7 +4377,7 @@ function App() {
 
   const resourceKind = currentPath === "/ebooks" ? "ebooks" : currentPath === "/study-resources" ? "study" : currentPath === "/sermons" ? "sermons" : null;
   if (resourceKind) {
-    return <ResourceLibraryPage kind={resourceKind} data={data} darkMode={darkMode} toggleDarkMode={toggleDarkMode} onReadEbook={setSelectedEbook} />;
+    return <ResourceLibraryPage kind={resourceKind} data={data} darkMode={darkMode} toggleDarkMode={toggleDarkMode} />;
   }
 
   if (isEventsPage) {
