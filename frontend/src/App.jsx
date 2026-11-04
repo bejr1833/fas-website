@@ -1644,11 +1644,13 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode }) {
 function MediaPage({ data, darkMode, toggleDarkMode }) {
   const [query, setQuery] = useState("");
   const trackRef = useRef(null);
-  const videos = (Array.isArray(data.videos) ? data.videos : [])
+  const matchingVideos = (Array.isArray(data.videos) ? data.videos : [])
     .filter((video) => [video.title, video.speaker, video.category, video.description].join(" ").toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => Number(Boolean(b.is_featured)) - Number(Boolean(a.is_featured)) || new Date(b.published_at || 0) - new Date(a.published_at || 0));
+  const featured = matchingVideos[0];
+  // The featured item has its own large presentation above; never repeat it in the carousel.
+  const videos = matchingVideos.filter((video) => video !== featured && (featured?.id == null || video.id !== featured.id));
   const moments = (Array.isArray(data.gallery) ? data.gallery : []).slice(0, 6);
-  const featured = videos[0];
   const scrollVideos = (direction) => trackRef.current?.scrollBy({ left: direction * Math.max(280, trackRef.current.clientWidth * 0.78), behavior: "smooth" });
 
   return (
@@ -1664,14 +1666,14 @@ function MediaPage({ data, darkMode, toggleDarkMode }) {
         .fasMediaFeatureVisual{position:relative;min-height:360px;background:#202720;overflow:hidden}.fasMediaFeatureVisual img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;transition:transform .7s}.fasMediaFeature:hover .fasMediaFeatureVisual img{transform:scale(1.035)}
         .fasMediaFeatureVisual:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.55),transparent 55%);pointer-events:none}
         .fasMediaPlay{position:absolute;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#182019;text-decoration:none;font-size:24px;box-shadow:0 8px 30px #0004}
-        .fasMediaFeatureCopy{padding:clamp(26px,4vw,48px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start}.fasMediaFeatureCopy h2{font:clamp(28px,3vw,40px)/1.12 Georgia,serif;margin:15px 0}.fasMediaFeatureCopy p{color:var(--media-muted);line-height:1.75}.fasMediaMeta{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--media-accent);font-weight:800}
+        .fasMediaFeatureCopy{padding:clamp(26px,4vw,48px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start}.fasMediaFeatureCopy h2{font:clamp(28px,3vw,40px)/1.12 Georgia,serif;margin:15px 0}.fasMediaFeatureCopy p{color:var(--media-muted);line-height:1.75;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;line-clamp:4;overflow:hidden;margin:0 0 12px}.fasMediaMeta{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--media-accent);font-weight:800}
         .fasMediaWatch{display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:13px 18px;border-radius:30px;background:#202820;color:white;text-decoration:none;font-size:13px;font-weight:700}.fasMediaDark .fasMediaWatch{background:#e7dfce;color:#20251f}
         .fasMediaSection{margin-top:76px}.fasMediaSectionHead{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:24px}.fasMediaSectionHead h2{font:clamp(30px,4vw,44px)/1.1 Georgia,serif;margin:9px 0 0}.fasMediaSectionHead p{color:var(--media-muted);margin:10px 0 0;line-height:1.6}
         .fasMediaControls{display:flex;gap:8px}.fasMediaControls button{width:42px;height:42px;border-radius:50%;border:1px solid var(--media-line);background:var(--media-card);color:var(--media-text);cursor:pointer;font-size:20px}
         .fasMediaSearch{width:min(360px,100%);margin:0 0 22px}.fasMediaSearch input{width:100%;padding:14px 17px;border-radius:30px;border:1px solid var(--media-line);background:var(--media-card);color:var(--media-text);font:inherit;outline-offset:3px}
         .fasMediaVideoTrack{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,32%);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin;padding:2px 2px 18px;overscroll-behavior-x:contain}
         .fasMediaVideoCard{scroll-snap-align:start;border:1px solid var(--media-line);border-radius:17px;overflow:hidden;background:var(--media-card);min-width:0}.fasMediaVideoThumb{height:190px;position:relative;background:#283129}.fasMediaVideoThumb img{width:100%;height:100%;object-fit:cover}.fasMediaVideoThumb span{position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:30px;text-shadow:0 2px 10px #000}
-        .fasMediaVideoBody{padding:19px}.fasMediaVideoBody h3{font:23px/1.2 Georgia,serif;margin:10px 0}.fasMediaVideoBody p{font-size:13px;line-height:1.65;color:var(--media-muted)}.fasMediaVideoBody a{color:var(--media-accent);font-weight:800;text-decoration:none;font-size:13px}
+        .fasMediaVideoBody{padding:19px}.fasMediaVideoBody h3{font:23px/1.2 Georgia,serif;margin:10px 0}.fasMediaVideoBody p{font-size:13px;line-height:1.65;color:var(--media-muted);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;margin:9px 0 14px}.fasMediaVideoBody a{color:var(--media-accent);font-weight:800;text-decoration:none;font-size:13px}
         .fasMediaMoments{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.fasMediaMoment{position:relative;min-height:220px;border-radius:16px;overflow:hidden;background:#29332c}.fasMediaMoment img{width:100%;height:100%;min-height:220px;object-fit:cover;transition:transform .6s}.fasMediaMoment:hover img{transform:scale(1.04)}.fasMediaMoment span{position:absolute;left:0;right:0;bottom:0;padding:40px 17px 16px;color:white;font-weight:700;background:linear-gradient(transparent,rgba(0,0,0,.72))}
         .fasMediaEmpty{padding:36px;border:1px dashed var(--media-line);border-radius:16px;color:var(--media-muted);text-align:center}
         .fasMediaEnd{margin-top:72px;padding:34px;border-top:1px solid var(--media-line);display:flex;justify-content:space-between;gap:20px;align-items:center;color:var(--media-muted);font-size:12px;letter-spacing:.12em}.fasMediaEnd a{color:var(--media-text);text-decoration:none;font-weight:700;letter-spacing:0}
