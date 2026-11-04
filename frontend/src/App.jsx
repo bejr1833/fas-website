@@ -801,7 +801,7 @@ function EbookReader({ ebook, onClose }) {
 
     keepPageInView();
     return () => { cancelled = true; };
-  }, [currentPage, isFullscreen, fitPageMode, pdf]);
+  }, [isFullscreen, fitPageMode, pdf]);
 
   useEffect(() => {
     if (!pdf || !canvasRef.current) return;
@@ -817,7 +817,7 @@ function EbookReader({ ebook, onClose }) {
         if (cancelled) return;
 
         const viewport = page.getViewport({ scale });
-        const outputScale = window.devicePixelRatio || 1;
+        // Cap backing-store resolution on dense mobile screens. CSS dimensions\n        // stay exact while this prevents oversized canvases and memory spikes.\n        const outputScale = Math.min(window.devicePixelRatio || 1, 2);
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
         canvas.style.transform = "scale(1)";
