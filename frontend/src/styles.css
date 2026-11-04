@@ -22497,3 +22497,82 @@ html[data-theme="dark"] .fasImpactLabel { color: #d2cabb; }
 @media (prefers-reduced-motion: reduce) {
   .fasImpactItem { animation: none; transition: none; }
 }
+
+/* Refined FAS impact cards: editorial, restrained and quietly luxurious. */
+.fasImpactSection {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.fasImpactSection::before,
+.fasImpactSection::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: min(42vw, 520px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(190, 153, 91, .10);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.fasImpactSection::before { top: -58%; left: -16%; box-shadow: 0 0 0 24px rgba(190,153,91,.025), 0 0 0 48px rgba(190,153,91,.018); }
+.fasImpactSection::after { right: -18%; bottom: -62%; box-shadow: 0 0 0 24px rgba(190,153,91,.025), 0 0 0 48px rgba(190,153,91,.018); }
+.fasImpactHeading .sectionLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  letter-spacing: .22em;
+}
+.fasImpactHeading .sectionLabel::before,
+.fasImpactHeading .sectionLabel::after {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b99758);
+}
+.fasImpactHeading .sectionLabel::after { transform: scaleX(-1); }
+.fasImpactItem {
+  position: relative;
+  overflow: hidden;
+  min-height: 178px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(255,255,255,.94), rgba(247,243,234,.82));
+  border-color: rgba(181, 145, 82, .34);
+  box-shadow: 0 16px 38px rgba(44, 36, 22, .055), inset 0 1px 0 rgba(255,255,255,.9);
+}
+.fasImpactItem::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(181,145,82,.13);
+  border-radius: 14px;
+  pointer-events: none;
+}
+.fasImpactItem::after {
+  content: "✦";
+  position: absolute;
+  top: 13px;
+  right: 17px;
+  color: rgba(181,145,82,.58);
+  font-size: 12px;
+}
+.fasImpactNumber {
+  font-size: clamp(46px, 4.3vw, 62px);
+  text-shadow: 0 2px 18px rgba(185,151,88,.12);
+}
+.fasImpactLabel {
+  letter-spacing: .12em;
+  font-size: 11px;
+}
+html[data-theme="dark"] .fasImpactItem {
+  background: linear-gradient(145deg, rgba(34,40,34,.98), rgba(17,22,18,.98));
+  border-color: rgba(213,177,112,.36);
+  box-shadow: 0 18px 44px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.035);
+}
+html[data-theme="dark"] .fasImpactItem::before { border-color: rgba(213,177,112,.16); }
+html[data-theme="dark"] .fasImpactItem::after { color: rgba(223,189,120,.72); }
+@media (max-width: 560px) {
+  .fasImpactItem { min-height: 140px; padding: 22px 10px; }
+  .fasImpactNumber { font-size: clamp(40px, 11vw, 48px); }
+  .fasImpactLabel { font-size: 10px; letter-spacing: .085em; }
+}
