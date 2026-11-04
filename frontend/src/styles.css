@@ -22859,3 +22859,13 @@ html[data-theme="dark"] .fasImpactItem {
 @media(max-width:480px){.resourceEbookHeading{align-items:flex-end}.resourceCarouselControls button{width:38px;height:38px}.resourceEbookGrid{grid-auto-columns:84%;gap:14px;padding-right:14px}.resourceEbookGrid>.ebookCard{width:100%}}
 .resourceLibraryDark .resourceCarouselControls button{border-color:rgba(216,189,131,.55)}
 .resourceLibraryDark .resourceCarouselControls button:hover{background:#d8bd83;color:#172019}
+
+
+/* Horizontal sermon PDF carousel */
+.resourcePdfHeading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.resourcePdfCarousel{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 18px)/2);grid-template-columns:none;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(216,189,131,.65) transparent;padding:2px 2px 18px;gap:18px}
+.resourcePdfCarousel>.resourcePdfCard{min-width:0;height:100%;scroll-snap-align:start}
+.resourcePdfCarousel .resourcePdfContent{display:flex;flex-direction:column;align-items:flex-start}
+.resourcePdfCarousel .resourcePdfContent .primaryBtn{margin-top:auto}
+@media(max-width:760px){.resourcePdfCarousel{grid-auto-columns:88%;gap:14px;padding-right:14px}}
+@media(max-width:480px){.resourcePdfHeading{align-items:flex-end}.resourcePdfCarousel{grid-auto-columns:92%}}
