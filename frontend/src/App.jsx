@@ -5070,10 +5070,9 @@ function App() {
             </h2>
 
             <p>
-              FAS exists to build a Christ-centered
-              student community where God's Word shapes
-              faith, worship, leadership and everyday
-              campus life.
+              Faith Alone Saves (FAS Fellowship) is a Christ-centered
+              student community where God's Word shapes faith,
+              worship, leadership and everyday campus life.
             </p>
           </div>
 
