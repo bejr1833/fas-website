@@ -22303,3 +22303,78 @@ footer > div:first-child > img {
     scroll-behavior: auto;
   }
 }
+
+
+/* Stable, premium mobile PDF reading surface */
+@media (max-width:700px){
+  .ebookReaderStage{
+    padding:14px 10px 22px;
+    overflow:auto;
+    overscroll-behavior:contain;
+    scrollbar-width:none;
+    background:
+      radial-gradient(ellipse at 50% 0%,rgba(184,137,50,.10),transparent 48%),
+      #111210;
+  }
+  .ebookReaderStage::-webkit-scrollbar{display:none}
+  .ebookReaderBookScene{
+    display:flex;
+    width:100%;
+    min-width:100%;
+    min-height:100%;
+    justify-content:center;
+    align-items:flex-start;
+    padding:4px 0 22px;
+    perspective:none;
+  }
+  .ebookReaderPageSheet,
+  .ebookReaderPageSheet.isTurning{
+    flex:0 0 auto;
+    width:max-content;
+    max-width:none;
+    min-width:0;
+    overflow:visible;
+    border-radius:3px;
+    transform:none !important;
+    transform-style:flat;
+    animation:fasMobilePageSettle .18s ease-out both;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.55),
+      0 14px 34px rgba(0,0,0,.34),
+      0 2px 8px rgba(0,0,0,.18);
+  }
+  .ebookReaderPageSheet::before{width:7px;opacity:.45}
+  .ebookReaderPageEdge{right:-4px;opacity:.65}
+  .ebookReaderCanvasWrap{
+    display:block;
+    width:max-content;
+    max-width:none;
+    min-width:0;
+    min-height:0;
+    overflow:visible;
+    border-radius:3px;
+  }
+  .ebookReaderCanvas{
+    display:block;
+    max-width:none !important;
+    height:auto;
+    object-fit:initial;
+    box-shadow:none;
+  }
+  .ebookReaderPageNumber{
+    padding:7px 0 9px;
+    font-size:11px;
+    letter-spacing:.04em;
+  }
+  .ebookReaderToolbar{
+    box-shadow:0 8px 22px rgba(0,0,0,.14);
+  }
+}
+@keyframes fasMobilePageSettle{
+  from{opacity:.92}
+  to{opacity:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .ebookReaderPageSheet,
+  .ebookReaderPageSheet.isTurning{animation:none !important}
+}
