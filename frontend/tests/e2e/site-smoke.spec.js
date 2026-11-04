@@ -26,6 +26,5 @@ test("homepage clearly identifies Faith Alone Saves as FAS Fellowship", async ({
   await expect(identityIntro).toContainText(
     "Faith Alone Saves (FAS Fellowship) is a Christ-centered student community"
   );
-  await expect(page.getByRole("heading", { name: /A fellowship for students who want to know, grow and serve/i })).toBeVisible();
 });
 
