@@ -1561,6 +1561,7 @@ function ImpactCounter({ value, suffix = "", label, index = 0 }) {
 function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode, onReadEbook }) {
   const [query, setQuery] = useState("");
   const [activeType, setActiveType] = useState("all");
+  const [selectedBook, setSelectedBook] = useState(null);
   const title = kind === "ebooks" ? "The eBook Library" : kind === "study" ? "Study Resources" : "Sermons & Teachings";
   const eyebrow = kind === "ebooks" ? "READ · REFLECT · GROW" : kind === "study" ? "SCRIPTURE · STUDY · GROWTH" : "LISTEN · LEARN · LIVE THE WORD";
   const description = kind === "ebooks"
@@ -1629,12 +1630,13 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode, onReadEbook
           {ebooks.length ? <div className="ebookGrid resourceEbookGrid">{ebooks.map((ebook) => <article className="ebookCard" key={ebook.id}>
             <div className="ebookCover">{ebook.cover_image_url ? <img src={ebook.cover_image_url} alt={ebook.title} loading="lazy" /> : <div className="ebookCoverPlaceholder"><span className="ebookCoverKicker">FAITH · FELLOWSHIP · TRUTH</span><strong className="ebookCoverBrand">FAS</strong><small>CHRISTIAN READING</small></div>}</div>
             <div className="ebookCardBody"><span className="ebookCategory">{(ebook.category || "Christian reading").replace(/-/g," ")}</span><h3>{ebook.title}</h3><div className="ebookAuthor"><span>Author</span><strong>{ebook.author || "Unknown"}</strong></div>{ebook.description && <p>{ebook.description}</p>}
-              <div className="ebookFormatActions">{ebook.ebook_file_url && <button type="button" className="ebookReadLink" onClick={() => onReadEbook(ebook)}>Read online <ArrowRight size={15} /></button>}{ebook.epub_file_url && <a className="ebookReadLink" href={ebook.epub_file_url} target="_blank" rel="noopener noreferrer">EPUB <ExternalLink size={14} /></a>}</div>
+              <div className="ebookFormatActions">{ebook.ebook_file_url && <button type="button" className="ebookReadLink" onClick={() => setSelectedBook(ebook)}>Read online <ArrowRight size={15} /></button>}{ebook.epub_file_url && <a className="ebookReadLink" href={ebook.epub_file_url} target="_blank" rel="noopener noreferrer">EPUB <ExternalLink size={14} /></a>}</div>
             </div>
           </article>)}</div> : <div className="emptyState"><p>New eBooks will be added to the library soon.</p></div>}
         </section>}
         <div className="resourceLibraryFooter"><span>FAITH · FELLOWSHIP · TRUTH</span><a href="/">Return to the FAS homepage <ArrowRight size={15} /></a></div>
       </main>
+      {selectedBook && <EbookReader ebook={selectedBook} onClose={() => setSelectedBook(null)} />}
     </div>
   );
 }
