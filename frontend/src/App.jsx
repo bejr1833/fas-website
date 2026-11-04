@@ -1562,7 +1562,9 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode }) {
   const [query, setQuery] = useState("");
   const [selectedBook, setSelectedBook] = useState(null);
   const ebookTrackRef = useRef(null);
+  const pdfTrackRef = useRef(null);
   const scrollBooks = (direction) => ebookTrackRef.current?.scrollBy({ left: direction * (ebookTrackRef.current.clientWidth * 0.82), behavior: "smooth" });
+  const scrollPdfs = (direction) => pdfTrackRef.current?.scrollBy({ left: direction * (pdfTrackRef.current.clientWidth * 0.82), behavior: "smooth" });
   const title = kind === "ebooks" ? "The eBook Library" : kind === "study" ? "Study Resources" : "Sermons & Teachings";
   const eyebrow = kind === "ebooks" ? "READ · REFLECT · GROW" : kind === "study" ? "SCRIPTURE · STUDY · GROWTH" : "LISTEN · LEARN · LIVE THE WORD";
   const description = kind === "ebooks"
@@ -1615,8 +1617,8 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode }) {
           </article>)}</div> : <div className="emptyState"><p>No video teachings match this search yet.</p></div>}
         </section>}
         {showPdfs && <section className="resourceCollection">
-          <div className="resourceCollectionHeading"><span className="sectionLabel">READ & REFLECT</span><h2>Sermon notes & PDFs</h2><p className="resourceCopyrightNote">Downloadable notes and study documents from FAS messages, gathered in one place.</p></div>
-          {sermons.length ? <div className="resourcePdfGrid">{sermons.map((sermon) => <article className="resourcePdfCard" key={sermon.id}>
+          <div className="resourceCollectionHeading resourcePdfHeading"><div><span className="sectionLabel">READ & REFLECT</span><h2>Sermon notes & PDFs</h2><p className="resourceCopyrightNote">Downloadable notes and study documents from FAS messages, gathered in one place.</p></div><div className="resourceCarouselControls"><button type="button" onClick={() => scrollPdfs(-1)} aria-label="Previous sermon PDFs"><ArrowLeft size={18} /></button><button type="button" onClick={() => scrollPdfs(1)} aria-label="Next sermon PDFs"><ArrowRight size={18} /></button></div></div>
+          {sermons.length ? <div className="resourcePdfGrid resourcePdfCarousel" ref={pdfTrackRef} aria-label="Sermon PDF collection" tabIndex={0}>{sermons.map((sermon) => <article className="resourcePdfCard" key={sermon.id}>
             <div className="resourcePdfIcon"><span>PDF</span></div><div className="resourcePdfContent"><span className="resourcePdfCategory">{(sermon.category || "sermon").replace(/-/g, " ")}</span><h3>{sermon.title}</h3><p>{sermon.description || "A sermon resource from Faith Alone Saves."}</p><div className="resourcePdfMeta"><span>{sermon.speaker || "FAS"}</span>{sermon.published_at && <time>{new Date(sermon.published_at).toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"})}</time>}</div>
               {sermon.pdf_file_url && <a href={sermon.pdf_file_url} target="_blank" rel="noopener noreferrer" className="primaryBtn">Open PDF <ExternalLink size={15} /></a>}
             </div>
@@ -1627,7 +1629,7 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode }) {
           {ebooks.length ? <div className="ebookGrid resourceEbookGrid" ref={ebookTrackRef} aria-label="eBook collection" tabIndex={0}>{ebooks.map((ebook) => <article className="ebookCard" key={ebook.id}>
             <div className="ebookCover">{ebook.cover_image_url ? <img src={ebook.cover_image_url} alt={ebook.title} loading="lazy" /> : <div className="ebookCoverPlaceholder"><span className="ebookCoverKicker">FAITH · FELLOWSHIP · TRUTH</span><strong className="ebookCoverBrand">FAS</strong><small>CHRISTIAN READING</small></div>}</div>
             <div className="ebookCardBody"><span className="ebookCategory">{(ebook.category || "Christian reading").replace(/-/g," ")}</span><h3>{ebook.title}</h3><div className="ebookAuthor"><span>Author</span><strong>{ebook.author || "Unknown"}</strong></div>{ebook.description && <p>{ebook.description}</p>}
-              <div className="ebookFormatActions">{ebook.ebook_file_url && <button type="button" className="ebookReadLink" onClick={() => setSelectedBook(ebook)}>Read online <ArrowRight size={15} /></button>}{ebook.epub_file_url && <a className="ebookReadLink" href={ebook.epub_file_url} target="_blank" rel="noopener noreferrer">EPUB <ExternalLink size={14} /></a>}</div>
+              <div className="ebookFormatActions">{ebook.ebook_file_url && <><button type="button" className="ebookReadLink" onClick={() => setSelectedBook(ebook)}>Read online <ArrowRight size={15} /></button><a className="ebookReadLink" href={ebook.ebook_file_url} target="_blank" rel="noopener noreferrer">Read PDF <ExternalLink size={14} /></a></>}{ebook.epub_file_url && <a className="ebookReadLink" href={ebook.epub_file_url} target="_blank" rel="noopener noreferrer">EPUB <ExternalLink size={14} /></a>}</div>
             </div>
           </article>)}</div> : <div className="emptyState"><p>New eBooks will be added to the library soon.</p></div>}
         </section>}
