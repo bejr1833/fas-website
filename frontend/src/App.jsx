@@ -4821,6 +4821,23 @@ function App() {
               </div>
             </article>
           )}
+        <section className="fasImpactSection reveal-section" aria-labelledby="fas-impact-title">
+          <div className="fasImpactInner">
+            <div className="fasImpactHeading">
+              <span className="sectionLabel">THREE YEARS OF FELLOWSHIP</span>
+              <h2 id="fas-impact-title">A little glimpse of what God has done.</h2>
+              <p>Every gathering, prayer and connection is part of a story God continues to write through FAS.</p>
+            </div>
+            <div className="fasImpactGrid">
+              <ImpactCounter value={6} label="One-day retreats" index={0} />
+              <ImpactCounter value={2} label="Christmas celebrations" index={1} />
+              <ImpactCounter value={10} suffix="+" label="Cottage prayers" index={2} />
+              <ImpactCounter value={130} suffix="+" label="Fellowship members" index={3} />
+              <ImpactCounter value={2} label="Colleges reached" index={4} />
+            </div>
+          </div>
+        </section>
+
         </main>
       </div>
     );
@@ -5053,22 +5070,7 @@ function App() {
           </div>
         </section>
 
-        <section className="fasImpactSection reveal-section" aria-labelledby="fas-impact-title">
-          <div className="fasImpactInner">
-            <div className="fasImpactHeading">
-              <span className="sectionLabel">THREE YEARS OF FELLOWSHIP</span>
-              <h2 id="fas-impact-title">A little glimpse of what God has done.</h2>
-              <p>Every gathering, prayer and connection is part of a story God continues to write through FAS.</p>
-            </div>
-            <div className="fasImpactGrid">
-              <ImpactCounter value={6} label="One-day retreats" index={0} />
-              <ImpactCounter value={2} label="Christmas celebrations" index={1} />
-              <ImpactCounter value={10} suffix="+" label="Cottage prayers" index={2} />
-              <ImpactCounter value={130} suffix="+" label="Fellowship members" index={3} />
-              <ImpactCounter value={2} label="Colleges reached" index={4} />
-            </div>
-          </div>
-        </section>
+
 
         {data.devotional && (
           <section className="devotionalHomeSection reveal-section" aria-labelledby="daily-devotional-title">
