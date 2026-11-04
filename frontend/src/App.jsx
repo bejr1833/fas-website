@@ -239,24 +239,211 @@ function getCleanTeluguScriptureText(text = "", reference = "") {
 }
 
 async function shareEbook(ebook) {
-  // Share the FAS library destination, not the underlying PDF/EPUB file.
-  // This keeps visitors on the website and takes them to the eBook section.
-  const libraryUrl = new URL(window.location.href);
-  libraryUrl.hash = "ebooks";
-  libraryUrl.search = "";
+  if (!ebook) return;
 
+  // Share a designed FAS book card together with the library destination.
+  // The link always leads to the eBook section, never directly to the PDF.
+  const libraryUrl = new URL(window.location.origin + "/");
+  libraryUrl.hash = "ebooks";
+  const bookTitle = String(ebook.title || "A FAS Christian eBook").replace(/\\s+/g, " ").trim();
+  const author = String(ebook.author || "Faith Alone Saves").replace(/\\s+/g, " ").trim();
+  const category = String(ebook.category || "Christian reading").replace(/[-_]+/g, " ").toUpperCase();
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 1080;
+  canvas.height = 1080;
+  const ctx = canvas.getContext("2d");
+  let shareCardFile = null;
+
+  if (ctx) {
+    try {
+      if (document.fonts?.load) {
+        await Promise.all([
+          document.fonts.load('700 68px "Playfair Display"'),
+          document.fonts.load('500 32px "DM Sans"'),
+          document.fonts.load('700 20px "DM Sans"')
+        ]);
+      }
+    } catch {
+      // Use graceful serif and sans-serif fallbacks if web fonts are unavailable.
+    }
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const margin = 86;
+    const contentWidth = W - margin * 2;
+    const roundedRect = (x, y, w, h, radius) => {
+      ctx.beginPath();
+      if (typeof ctx.roundRect === "function") ctx.roundRect(x, y, w, h, radius);
+      else {
+        ctx.moveTo(x + radius, y);
+        ctx.arcTo(x + w, y, x + w, y + h, radius);
+        ctx.arcTo(x + w, y + h, x, y + h, radius);
+        ctx.arcTo(x, y + h, x, y, radius);
+        ctx.closePath();
+      }
+      ctx.closePath();
+    };
+    const wrapText = (value, font, maxWidth, maxLines = 4) => {
+      ctx.font = font;
+      const words = String(value || "").split(/\\s+/).filter(Boolean);
+      const lines = [];
+      let line = "";
+      for (const word of words) {
+        const candidate = line ? line + " " + word : word;
+        if (line && ctx.measureText(candidate).width > maxWidth) {
+          lines.push(line);
+          line = word;
+        } else line = candidate;
+      }
+      if (line) lines.push(line);
+      if (lines.length > maxLines) {
+        lines.length = maxLines;
+        let last = lines[maxLines - 1];
+        while (last.length && ctx.measureText(last + "…").width > maxWidth) last = last.slice(0, -1);
+        lines[maxLines - 1] = last.trimEnd() + "…";
+      }
+      return lines;
+    };
+    const tracked = (value, x, y, spacing) => {
+      let cursor = x;
+      for (const character of value) {
+        ctx.fillText(character, cursor, y);
+        cursor += ctx.measureText(character).width + spacing;
+      }
+    };
+
+    // Deep charcoal-green editorial background and a double champagne frame.
+    ctx.fillStyle = "#080b0a";
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "#121713";
+    roundedRect(28, 28, W - 56, H - 56, 26);
+    ctx.fill();
+    ctx.strokeStyle = "#b99758";
+    ctx.lineWidth = 2;
+    roundedRect(28, 28, W - 56, H - 56, 26);
+    ctx.stroke();
+    ctx.strokeStyle = "rgba(198,161,92,.28)";
+    ctx.lineWidth = 1;
+    roundedRect(46, 46, W - 92, H - 92, 19);
+    ctx.stroke();
+
+    // Restrained library masthead.
+    ctx.fillStyle = "#c6a15c";
+    roundedRect(margin, 112, 72, 6, 3);
+    ctx.fill();
+    ctx.fillStyle = "#e5d0a0";
+    ctx.font = '700 20px "DM Sans", Arial, sans-serif';
+    tracked("FAS  /  E-BOOK COLLECTION", margin, 166, 3.2);
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#b5aa92";
+    ctx.font = '500 17px "DM Sans", Arial, sans-serif';
+    ctx.fillText("LOVE IN FELLOWSHIP & TRUTH", W - margin, 166);
+    ctx.textAlign = "left";
+
+    // A subtle framed book-cover panel makes the shared artwork feel like a publication.
+    const panelX = margin;
+    const panelY = 226;
+    const panelW = contentWidth;
+    const panelH = 590;
+    ctx.fillStyle = "#1b211d";
+    roundedRect(panelX, panelY, panelW, panelH, 20);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(198,161,92,.62)";
+    ctx.lineWidth = 1.5;
+    roundedRect(panelX, panelY, panelW, panelH, 20);
+    ctx.stroke();
+
+    ctx.fillStyle = "#c6a15c";
+    ctx.font = '700 17px "DM Sans", Arial, sans-serif';
+    tracked(category.slice(0, 42), panelX + 58, panelY + 82, 2.5);
+
+    ctx.fillStyle = "#f3eee3";
+    ctx.font = '700 76px "Playfair Display", Georgia, serif';
+    ctx.fillText("FAS", panelX + 58, panelY + 190);
+    ctx.fillStyle = "#b99758";
+    roundedRect(panelX + 58, panelY + 228, 100, 5, 3);
+    ctx.fill();
+
+    let titleSize = 62;
+    let titleFont = "";
+    let titleLines = [];
+    while (titleSize >= 42) {
+      titleFont = '700 ' + titleSize + 'px "Playfair Display", Georgia, serif';
+      titleLines = wrapText(bookTitle, titleFont, panelW - 116, 4);
+      if (titleLines.every(line => {
+        ctx.font = titleFont;
+        return ctx.measureText(line).width <= panelW - 116;
+      })) break;
+      titleSize -= 4;
+    }
+    const lineHeight = Math.round(titleSize * 1.15);
+    const titleStartY = panelY + 340;
+    ctx.font = titleFont;
+    ctx.fillStyle = "#fffaf0";
+    titleLines.forEach((line, index) => ctx.fillText(line, panelX + 58, titleStartY + index * lineHeight));
+
+    ctx.fillStyle = "#b5aa92";
+    ctx.font = '500 25px "DM Sans", Arial, sans-serif';
+    ctx.fillText("BY  " + author.slice(0, 58), panelX + 58, panelY + panelH - 64);
+
+    // Publisher signature and invitation.
+    ctx.strokeStyle = "rgba(198,161,92,.52)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(margin, 884);
+    ctx.lineTo(W - margin, 884);
+    ctx.stroke();
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#e5d0a0";
+    ctx.font = '700 18px "DM Sans", Arial, sans-serif';
+    tracked("FAITH  ·  FELLOWSHIP  ·  TRUTH", W / 2 - 205, 934, 1.5);
+    ctx.fillStyle = "#fffaf0";
+    ctx.font = '600 25px "Playfair Display", Georgia, serif';
+    ctx.fillText("Explore the FAS eBook Library", W / 2, 982);
+    ctx.fillStyle = "#c6a15c";
+    ctx.font = '500 18px "DM Sans", Arial, sans-serif';
+    ctx.fillText("fas-fellowship.org", W / 2, 1020);
+    ctx.textAlign = "left";
+
+    try {
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+      if (blob) {
+        shareCardFile = new File(
+          [blob],
+          "fas-ebook-" + String(ebook.id || "book") + ".png",
+          { type: "image/png" }
+        );
+      }
+    } catch {
+      shareCardFile = null;
+    }
+  }
+
+  const title = bookTitle + " | FAS eBook Library";
+  const shareText = [
+    "FAS E-BOOK LIBRARY",
+    bookTitle,
+    "By " + author,
+    "Explore the book and read it in the FAS library:",
+    libraryUrl.href
+  ].join("\\n");
   const shareData = {
-    title: ebook?.title ? `${ebook.title} | FAS eBook Library` : "FAS eBook Library",
-    text: `Explore "${ebook?.title || "this eBook"}" in the Faith Alone Saves eBook library.`,
+    title,
+    text: shareText,
     url: libraryUrl.href,
+    ...(shareCardFile ? { files: [shareCardFile] } : {})
   };
 
   if (typeof navigator.share === "function") {
     try {
-      await navigator.share(shareData);
+      if (shareCardFile && navigator.canShare?.({ files: [shareCardFile] })) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.share({ title, text: shareText, url: libraryUrl.href });
+      }
       return;
     } catch (error) {
-      // A user cancelling the native share sheet is not an error to recover from.
       if (error?.name === "AbortError") return;
     }
   }
