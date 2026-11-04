@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./styles.css";\nimport "./ebook-reader-polish.css";
+import "./styles.css";
+import "./ebook-reader-polish.css";
 
 class AppErrorBoundary extends React.Component {
   constructor(props) {
