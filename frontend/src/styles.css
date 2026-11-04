@@ -22845,3 +22845,17 @@ html[data-theme="dark"] .fasImpactItem {
 .resourceEbookGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:760px){.resourceLibraryMain{width:min(100% - 28px,1160px);padding:48px 0 36px}.resourceLibraryToolbar{align-items:stretch;flex-direction:column}.resourcePdfGrid{grid-template-columns:1fr}.resourceLibraryFooter{align-items:flex-start;flex-direction:column}.resourceEbookGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.resourceLibraryHero h1{font-size:42px}.resourceLibraryHero>p{font-size:14px}.resourcePdfCard{padding:16px;gap:13px}.resourcePdfIcon{width:45px;height:56px;flex-basis:45px}.resourceEbookGrid{grid-template-columns:1fr}.resourceLibraryLinks a{font-size:11px;padding:9px 12px}}
+
+/* Horizontal eBook carousel */
+.resourceEbookHeading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+.resourceSliderControls{display:flex;gap:8px;flex:0 0 auto}
+.resourceSliderControls button{width:42px;height:42px;border:1px solid rgba(216,189,131,.5);border-radius:50%;display:grid;place-items:center;background:transparent;color:inherit;cursor:pointer;transition:background .2s,color .2s,transform .2s}
+.resourceSliderControls button:hover{background:#d8bd83;color:#182019;transform:translateY(-2px)}
+.resourceEbookSlider{display:flex;gap:18px;overflow-x:auto;overflow-y:hidden;padding:4px 2px 20px;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#b99a61 transparent}
+.resourceEbookSlide{flex:0 0 clamp(260px,31%,340px);min-width:0;scroll-snap-align:start}
+.resourceEbookSlider:focus-visible{outline:2px solid #d8bd83;outline-offset:4px;border-radius:12px}
+.resourceEbookSlide .ebookCover{aspect-ratio:1.15/1}
+.resourceEbookSlide .ebookCardBody{height:100%;display:flex;flex-direction:column}
+.resourceEbookSlide .ebookFormatActions{margin-top:auto;padding-top:18px}
+@media(max-width:760px){.resourceEbookHeading{align-items:flex-start}.resourceEbookSlide{flex-basis:min(82vw,360px)}.resourceSliderControls button{width:38px;height:38px}}
+@media(max-width:480px){.resourceEbookHeading{gap:10px}.resourceEbookSlide{flex-basis:84vw}}
