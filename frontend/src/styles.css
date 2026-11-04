@@ -22378,3 +22378,15 @@ footer > div:first-child > img {
   .ebookReaderPageSheet,
   .ebookReaderPageSheet.isTurning{animation:none !important}
 }
+
+/* Desktop fullscreen: center portrait PDF pages in the available viewport.
+   Safe centering falls back to the left edge when a manually zoomed page
+   becomes wider than the screen, preserving access to its left-hand content. */
+@media (min-width: 701px) {
+  .ebookReader.isFullscreen .ebookReaderBookScene {
+    width: 100% !important;
+    min-width: 100% !important;
+    justify-content: safe center !important;
+    align-items: center !important;
+  }
+}
