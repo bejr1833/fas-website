@@ -21273,7 +21273,7 @@ html[data-theme="light"] .slideshowCounter {
    ========================================================= */
 
 /* Each primary area is a focused page; the home page stays concise. */
-.site[data-page="home"] #top > section:not(.hero):not(.devotionalHomeSection):not(.homepageSlideshow):not(.latestBlogStrip) {
+.site[data-page="home"] #top > section:not(.hero):not(.fasImpactSection):not(.devotionalHomeSection):not(.homepageSlideshow):not(.latestBlogStrip) {
   display: none !important;
 }
 .site[data-page="about"] #top > section:not(#about):not(#vision):not(#mission):not(#story) {
