@@ -22781,3 +22781,26 @@ html[data-theme="dark"] .homeQuickLink {
 @media (max-width: 850px) {
   .homeQuickLink { min-height: 38px; padding: 0 12px; font-size: 11px; }
 }
+
+
+/* Match the FAS impact strip to the charcoal editorial cards above it.
+   Keep the warm gold typography while removing the green cast in dark mode. */
+html[data-theme="dark"] .fasImpactSection {
+  background:
+    radial-gradient(ellipse at 8% 0%, rgba(139, 35, 43, .12), transparent 38%),
+    linear-gradient(112deg, #111216 0%, #1b1d23 52%, #111216 100%) !important;
+  border-top-color: rgba(198, 161, 92, .22);
+  border-bottom-color: rgba(198, 161, 92, .22);
+}
+html[data-theme="dark"] .fasImpactSection::before,
+html[data-theme="dark"] .fasImpactSection::after {
+  border-color: rgba(198, 161, 92, .075);
+  box-shadow: 0 0 0 24px rgba(198, 161, 92, .018), 0 0 0 48px rgba(198, 161, 92, .012);
+}
+html[data-theme="dark"] .fasImpactGrid {
+  border-top-color: rgba(198, 161, 92, .24);
+  border-bottom-color: rgba(198, 161, 92, .24);
+}
+html[data-theme="dark"] .fasImpactItem {
+  border-right-color: rgba(198, 161, 92, .17) !important;
+}
