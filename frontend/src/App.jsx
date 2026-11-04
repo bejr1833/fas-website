@@ -1483,36 +1483,71 @@ function ImpactCounter({ value, suffix = "", label, index = 0 }) {
   useEffect(() => {
     const node = counterRef.current;
     if (!node) return undefined;
+
     let frameId = 0;
-    let started = false;
+    let delayId = 0;
     let observer;
+    let hasAnimated = false;
+
     const animate = () => {
-      if (started) return;
-      started = true;
+      if (hasAnimated) return;
+      hasAnimated = true;
+
       const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-      if (reduceMotion) { setCount(target); return; }
-      const duration = 1500;
-      const startTime = performance.now();
-      const tick = (now) => {
-        const progress = Math.min((now - startTime) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 4);
-        setCount(Math.round(target * eased));
-        if (progress < 1) frameId = window.requestAnimationFrame(tick);
-      };
-      frameId = window.requestAnimationFrame(tick);
+      if (reduceMotion) {
+        setCount(target);
+        return;
+      }
+
+      // Stagger the cards slightly so the whole row feels intentional.
+      delayId = window.setTimeout(() => {
+        const duration = 2100;
+        const startTime = performance.now();
+        const tick = (now) => {
+          const progress = Math.min((now - startTime) / duration, 1);
+          // Smooth ease-out with a clear count-up from zero to the target.
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.min(target, Math.round(target * eased)));
+          if (progress < 1) {
+            frameId = window.requestAnimationFrame(tick);
+          } else {
+            setCount(target);
+          }
+        };
+        frameId = window.requestAnimationFrame(tick);
+      }, index * 140);
     };
+
     if ("IntersectionObserver" in window) {
       observer = new IntersectionObserver((entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) { animate(); observer?.disconnect(); }
-      }, { threshold: 0.35 });
+        if (entries.some((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.08)) {
+          animate();
+          observer?.disconnect();
+        }
+      }, {
+        threshold: [0, 0.08, 0.2],
+        rootMargin: "0px 0px -4% 0px"
+      });
       observer.observe(node);
-    } else animate();
-    return () => { observer?.disconnect(); if (frameId) window.cancelAnimationFrame(frameId); };
-  }, [target]);
+    } else {
+      animate();
+    }
+
+    return () => {
+      observer?.disconnect();
+      window.clearTimeout(delayId);
+      if (frameId) window.cancelAnimationFrame(frameId);
+    };
+  }, [target, index]);
 
   return (
-    <div className="fasImpactItem" ref={counterRef} style={{ "--impact-index": index }}>
-      <span className="fasImpactNumber">{count}{suffix}</span>
+    <div
+      className="fasImpactItem"
+      ref={counterRef}
+      style={{ "--impact-index": index }}
+      aria-label={`${label}: ${target}${suffix}`}
+    >
+      <span className="fasImpactNumber" aria-hidden="true">{count}{suffix}</span>
       <span className="fasImpactLabel">{label}</span>
     </div>
   );
