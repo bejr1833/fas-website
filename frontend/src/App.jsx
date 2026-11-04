@@ -4288,7 +4288,7 @@ function App() {
                     return (
                       <p key={index}>
                         {paragraph
-                          .split(/\r?\n)
+                          .split(/\r?\n/)
                           .map((line, lineIndex, lines) => (
                             <Fragment key={lineIndex}>
                               {line}
