@@ -77,6 +77,9 @@ const buildSitemap = (posts, devotionals) => {
     "/blog",
     "/devotions",
     "/media",
+    "/sermons",
+    "/study-resources",
+    "/ebooks",
     "/gallery",
     "/connect",
   ];
@@ -136,5 +139,5 @@ await mkdir(join(process.cwd(), "public"), { recursive: true });
 await writeFile(outputPath, buildSitemap(posts, devotionals), "utf8");
 
 console.log(
-  `Sitemap written to ${outputPath} with ${posts.length + devotionals.length + 9} URL(s).`
+  `Sitemap written to ${outputPath} with ${posts.length + devotionals.length + 12} URL(s).`
 );

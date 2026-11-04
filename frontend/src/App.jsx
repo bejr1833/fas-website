@@ -243,8 +243,7 @@ async function shareEbook(ebook) {
 
   // Share a designed FAS book card together with the library destination.
   // The link always leads to the eBook section, never directly to the PDF.
-  const libraryUrl = new URL(window.location.origin + "/");
-  libraryUrl.hash = "ebooks";
+  const libraryUrl = new URL("/ebooks/", window.location.origin);
   const bookTitle = String(ebook.title || "A FAS Christian eBook").replace(/\s+/g, " ").trim();
   const author = String(ebook.author || "Faith Alone Saves").replace(/\s+/g, " ").trim();
   const category = String(ebook.category || "Christian reading").replace(/[-_]+/g, " ").toUpperCase();
@@ -1558,13 +1557,97 @@ function ImpactCounter({ value, suffix = "", label, index = 0 }) {
     </div>
   );
 }
+
+function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode, onReadEbook }) {
+  const [query, setQuery] = useState("");
+  const [activeType, setActiveType] = useState("all");
+  const [selectedBook, setSelectedBook] = useState(null);
+  const title = kind === "ebooks" ? "The eBook Library" : kind === "study" ? "Study Resources" : "Sermons & Teachings";
+  const eyebrow = kind === "ebooks" ? "READ · REFLECT · GROW" : kind === "study" ? "SCRIPTURE · STUDY · GROWTH" : "LISTEN · LEARN · LIVE THE WORD";
+  const description = kind === "ebooks"
+    ? "Explore Christian books and carefully curated reading resources to deepen your walk with Christ."
+    : kind === "study"
+      ? "Revisit biblical teaching with sermon notes and downloadable study material."
+      : "Watch FAS messages and explore sermon notes shared to encourage a life rooted in Scripture.";
+  const matches = (item) => [item.title, item.speaker, item.author, item.category, item.description].join(" ").toLowerCase().includes(query.toLowerCase());
+  const videos = (data.videos || []).filter(matches);
+  const sermons = (data.sermons || []).filter(matches);
+  const ebooks = (data.ebooks || []).filter(matches);
+  const showVideos = kind === "sermons" && activeType !== "pdf";
+  const showPdfs = (kind === "study" || kind === "sermons") && activeType !== "video";
+  const showBooks = kind === "ebooks";
+  return (
+    <div className={`site resourceLibraryPage ${darkMode ? "resourceLibraryDark" : "resourceLibraryLight"}`}>
+      <header className="navbar">
+        <a href="/" className="brand" aria-label="Faith Alone Saves home"><img src="/branding/fas-logo.png" alt="Faith Alone Saves" width="1536" height="1024" /></a>
+        <div className="navActions">
+          <button type="button" className="themeToggle" onClick={toggleDarkMode} aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}>{darkMode ? <Sun size={18} /> : <Moon size={18} />}</button>
+          <a href="/" className="textBtn"><ArrowLeft size={16} /> Back to FAS</a>
+        </div>
+      </header>
+      <main className="resourceLibraryMain">
+        <div className="resourceLibraryHero">
+          <span className="sectionLabel">{eyebrow}</span>
+          <h1>{title}</h1>
+          <p>{description}</p>
+          <div className="resourceLibraryLinks" aria-label="FAS resource collections">
+            <a className={kind === "sermons" ? "active" : ""} href="/sermons">Sermons & Videos</a>
+            <a className={kind === "study" ? "active" : ""} href="/study-resources">Study PDFs</a>
+            <a className={kind === "ebooks" ? "active" : ""} href="/ebooks">eBooks</a>
+          </div>
+        </div>
+        <div className="resourceLibraryToolbar">
+          <label className="resourceSearch"><span className="sr-only">Search resources</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by title, speaker, author or topic..." /></label>
+          {kind === "sermons" && <div className="resourceTypeFilters" aria-label="Filter resources">
+            <button type="button" className={activeType === "all" ? "active" : ""} onClick={() => setActiveType("all")}>All</button>
+            <button type="button" className={activeType === "video" ? "active" : ""} onClick={() => setActiveType("video")}>Videos</button>
+            <button type="button" className={activeType === "pdf" ? "active" : ""} onClick={() => setActiveType("pdf")}>Sermon PDFs</button>
+          </div>}
+        </div>
+        {showVideos && <section className="resourceCollection">
+          <div className="resourceCollectionHeading"><span className="sectionLabel">WATCH & LISTEN</span><h2>Video teachings</h2></div>
+          {videos.length ? <div className="videoGrid">{videos.map((video) => <article className="videoCard" key={video.id}>
+            <div className="videoThumbnail">{video.thumbnail_url ? <img src={video.thumbnail_url} alt={video.title} loading="lazy" /> : <div className="videoThumbnailPlaceholder"><span>FAS</span></div>}
+              <a href={getVideoWatchUrl(video.video_url)} target="_blank" rel="noopener noreferrer" className="videoPlayButton" aria-label={`Watch ${video.title}`}><Play size={20} fill="currentColor" /></a>
+              {video.is_featured && <span className="videoFeaturedLabel">FEATURED</span>}
+            </div>
+            <div className="videoCardBody"><div className="videoCardTop"><span className="videoCategory">{(video.category || "teaching").replace(/-/g, " ")}</span>{video.published_at && <time className="videoDate">{new Date(video.published_at).toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"})}</time>}</div>
+              <h3>{video.title}</h3><div className="videoSpeaker"><span>Speaker</span><strong>{video.speaker || "FAS"}</strong></div>{video.description && <p>{video.description}</p>}
+              <a href={getVideoWatchUrl(video.video_url)} target="_blank" rel="noopener noreferrer" className="videoWatchLink">Watch teaching <ArrowRight size={16} /></a>
+            </div>
+          </article>)}</div> : <div className="emptyState"><p>No video teachings match this search yet.</p></div>}
+        </section>}
+        {showPdfs && <section className="resourceCollection">
+          <div className="resourceCollectionHeading"><span className="sectionLabel">READ & REFLECT</span><h2>Sermon notes & PDFs</h2></div>
+          {sermons.length ? <div className="resourcePdfGrid">{sermons.map((sermon) => <article className="resourcePdfCard" key={sermon.id}>
+            <div className="resourcePdfIcon"><span>PDF</span></div><div className="resourcePdfContent"><span className="resourcePdfCategory">{(sermon.category || "sermon").replace(/-/g, " ")}</span><h3>{sermon.title}</h3><p>{sermon.description || "A sermon resource from Faith Alone Saves."}</p><div className="resourcePdfMeta"><span>{sermon.speaker || "FAS"}</span>{sermon.published_at && <time>{new Date(sermon.published_at).toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"})}</time>}</div>
+              {sermon.pdf_file_url && <a href={sermon.pdf_file_url} target="_blank" rel="noopener noreferrer" className="primaryBtn">Open PDF <ExternalLink size={15} /></a>}
+            </div>
+          </article>)}</div> : <div className="emptyState"><p>No sermon PDFs match this search yet.</p></div>}
+        </section>}
+        {showBooks && <section className="resourceCollection">
+          <div className="resourceCollectionHeading"><span className="sectionLabel">CURATED CHRISTIAN READING</span><h2>Books for the journey</h2><p className="resourceCopyrightNote">FAS shares works it owns, verified public-domain editions, or books distributed with permission or an appropriate licence.</p></div>
+          {ebooks.length ? <div className="ebookGrid resourceEbookGrid">{ebooks.map((ebook) => <article className="ebookCard" key={ebook.id}>
+            <div className="ebookCover">{ebook.cover_image_url ? <img src={ebook.cover_image_url} alt={ebook.title} loading="lazy" /> : <div className="ebookCoverPlaceholder"><span className="ebookCoverKicker">FAITH · FELLOWSHIP · TRUTH</span><strong className="ebookCoverBrand">FAS</strong><small>CHRISTIAN READING</small></div>}</div>
+            <div className="ebookCardBody"><span className="ebookCategory">{(ebook.category || "Christian reading").replace(/-/g," ")}</span><h3>{ebook.title}</h3><div className="ebookAuthor"><span>Author</span><strong>{ebook.author || "Unknown"}</strong></div>{ebook.description && <p>{ebook.description}</p>}
+              <div className="ebookFormatActions">{ebook.ebook_file_url && <button type="button" className="ebookReadLink" onClick={() => setSelectedBook(ebook)}>Read online <ArrowRight size={15} /></button>}{ebook.epub_file_url && <a className="ebookReadLink" href={ebook.epub_file_url} target="_blank" rel="noopener noreferrer">EPUB <ExternalLink size={14} /></a>}</div>
+            </div>
+          </article>)}</div> : <div className="emptyState"><p>New eBooks will be added to the library soon.</p></div>}
+        </section>}
+        <div className="resourceLibraryFooter"><span>FAITH · FELLOWSHIP · TRUTH</span><a href="/">Return to the FAS homepage <ArrowRight size={15} /></a></div>
+      </main>
+      {selectedBook && <EbookReader ebook={selectedBook} onClose={() => setSelectedBook(null)} />}
+    </div>
+  );
+}
+
 function App() {
   const ebookCarouselRef = useRef(null);
   const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
   const isHomePage = currentPath === "/";
   const isBlogListingPage = currentPath === "/blog";
   const isBlogRoute = isBlogListingPage || currentPath.startsWith("/blog/");
-  const isMediaPage = currentPath === "/media";
+  const isMediaPage = ["/media", "/sermons", "/study-resources", "/ebooks"].includes(currentPath);
   const isDevotionalPage = currentPath.startsWith("/devotionals");
   const needsHomeContent = !isBlogRoute && !isMediaPage && !isDevotionalPage;
 
@@ -3147,7 +3230,7 @@ function App() {
     const shareSermon = async (sermon) => {
     if (!sermon) return;
 
-    const url = window.location.origin + "/#sermons";
+    const url = window.location.origin + "/sermons/";
     const title = sermon.title + " — FAS Sermon Library";
     const text = sermon.speaker
       ? sermon.title + " · " + sermon.speaker + " · Faith Alone Saves"
@@ -4293,6 +4376,11 @@ function App() {
     );
   }
 
+  const resourceKind = currentPath === "/ebooks" ? "ebooks" : currentPath === "/study-resources" ? "study" : currentPath === "/sermons" ? "sermons" : null;
+  if (resourceKind) {
+    return <ResourceLibraryPage kind={resourceKind} data={data} darkMode={darkMode} toggleDarkMode={toggleDarkMode} onReadEbook={setSelectedEbook} />;
+  }
+
   if (isEventsPage) {
     return (
       <div className={`site eventsPage ${darkMode ? "eventsPageDark" : "eventsPageLight"}`}>
@@ -4911,7 +4999,7 @@ function App() {
           <a href="/stories" onClick={closeMenu}>Stories</a>
           <a href="/blog" onClick={closeMenu}>Blog</a>
           <a href="/devotions" onClick={closeMenu}>Devotions</a>
-          <a href="/media" onClick={closeMenu}>Media</a>
+          <a href="/sermons" onClick={closeMenu}>Resources</a>
           <a href="/gallery" onClick={closeMenu}>Gallery</a>
           <a href="/connect" className="mobileConnectLink" onClick={closeMenu}>
             <span>Connect with FAS</span><ArrowRight size={16} />

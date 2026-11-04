@@ -42,6 +42,24 @@ const pages = [
     schemaType: "CollectionPage",
   },
   {
+    route: "/sermons",
+    title: "Sermons & Teachings | FAS Fellowship",
+    description: "Watch Christian teachings and explore sermon PDFs from Faith Alone Saves. Grow through Scripture, biblical reflection and fellowship resources.",
+    schemaType: "CollectionPage",
+  },
+  {
+    route: "/study-resources",
+    title: "Bible Study Resources & Sermon PDFs | FAS",
+    description: "Explore sermon notes, downloadable PDFs and biblical study resources from Faith Alone Saves.",
+    schemaType: "CollectionPage",
+  },
+  {
+    route: "/ebooks",
+    title: "Christian eBook Library | Faith Alone Saves",
+    description: "Read Christian books and curated eBook resources from Faith Alone Saves. Explore reading resources for faith, discipleship and spiritual growth.",
+    schemaType: "CollectionPage",
+  },
+  {
     route: "/media",
     title: "FAS Media | Sermons, Messages & Christian Resources",
     description: "Watch and listen to sermons, messages, and Christian media resources shared by the Faith Alone Saves fellowship.",

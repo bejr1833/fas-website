@@ -22804,3 +22804,44 @@ html[data-theme="dark"] .fasImpactGrid {
 html[data-theme="dark"] .fasImpactItem {
   border-right-color: rgba(198, 161, 92, .17) !important;
 }
+
+
+/* FAS Digital Resource Centre */
+.resourceLibraryPage{min-height:100vh;background:var(--paper,#f8f7f3);color:var(--ink,#20231f)}
+.resourceLibraryMain{width:min(1160px,calc(100% - 40px));margin:0 auto;padding:72px 0 54px}
+.resourceLibraryHero{max-width:790px;margin:0 auto 38px;text-align:center}
+.resourceLibraryHero h1{font-family:Georgia,serif;font-size:clamp(42px,6vw,72px);font-weight:500;letter-spacing:-.045em;line-height:1.05;margin:14px 0 18px}
+.resourceLibraryHero>p{max-width:650px;margin:0 auto;color:var(--muted,#77766f);font-size:16px;line-height:1.8}
+.resourceLibraryLinks{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:28px}
+.resourceLibraryLinks a,.resourceTypeFilters button{border:1px solid var(--line,#dedbd2);border-radius:999px;padding:10px 16px;color:inherit;text-decoration:none;font-size:12px;font-weight:750;background:transparent;transition:background .2s,border-color .2s,color .2s}
+.resourceLibraryLinks a.active,.resourceTypeFilters button.active{background:#202820;color:#f7f1e4;border-color:#202820}
+.resourceLibraryToolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px;border:1px solid var(--line,#dedbd2);border-radius:18px;background:rgba(255,255,255,.68);margin-bottom:42px}
+.resourceSearch{display:block;flex:1;min-width:220px}
+.resourceSearch input{width:100%;border:0;outline:0;background:transparent;color:inherit;padding:9px 10px;font:inherit;font-size:14px}
+.resourceTypeFilters{display:flex;gap:7px;flex-wrap:wrap}
+.resourceTypeFilters button{cursor:pointer;padding:9px 13px}
+.resourceCollection{margin:0 0 52px}
+.resourceCollectionHeading{margin-bottom:22px}
+.resourceCollectionHeading h2{font-family:Georgia,serif;font-size:clamp(28px,4vw,40px);font-weight:500;letter-spacing:-.025em;margin:8px 0}
+.resourceCopyrightNote{max-width:760px;color:var(--muted,#77766f);line-height:1.7;font-size:13px}
+.resourcePdfGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.resourcePdfCard{display:flex;gap:18px;padding:22px;border:1px solid var(--line,#dedbd2);border-radius:18px;background:rgba(255,255,255,.72);min-width:0}
+.resourcePdfIcon{width:54px;height:66px;flex:0 0 54px;border-radius:10px;background:#202820;color:#e4c98e;display:grid;place-items:center;font-size:11px;font-weight:850;letter-spacing:.12em}
+.resourcePdfContent{min-width:0;flex:1}
+.resourcePdfCategory{font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#9a7840}
+.resourcePdfContent h3{font-family:Georgia,serif;font-size:21px;font-weight:500;margin:7px 0}
+.resourcePdfContent p{color:var(--muted,#77766f);font-size:13px;line-height:1.65;margin:0 0 12px}
+.resourcePdfMeta{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted,#77766f);font-size:11px;margin-bottom:14px}
+.resourcePdfContent .primaryBtn{display:inline-flex}
+.resourceLibraryFooter{display:flex;justify-content:space-between;gap:16px;align-items:center;padding-top:26px;border-top:1px solid var(--line,#dedbd2);font-size:11px;letter-spacing:.1em;color:var(--muted,#77766f);font-weight:800}
+.resourceLibraryFooter a{display:inline-flex;align-items:center;gap:8px;color:inherit;text-decoration:none;letter-spacing:0}
+.resourceLibraryDark{background:#111713;color:#f3eee3}
+.resourceLibraryDark .resourceLibraryToolbar,.resourceLibraryDark .resourcePdfCard{background:#1a211c;border-color:rgba(226,207,164,.18)}
+.resourceLibraryDark .resourceLibraryLinks a,.resourceLibraryDark .resourceTypeFilters button{border-color:rgba(226,207,164,.22)}
+.resourceLibraryDark .resourceLibraryLinks a.active,.resourceLibraryDark .resourceTypeFilters button.active{background:#d8bd83;color:#1c211c;border-color:#d8bd83}
+.resourceLibraryDark .resourceSearch input{color:#f3eee3}
+.resourceLibraryDark .resourcePdfIcon{background:#d8bd83;color:#1c211c}
+.resourceLibraryDark .resourceLibraryFooter{border-color:rgba(226,207,164,.18)}
+.resourceEbookGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:760px){.resourceLibraryMain{width:min(100% - 28px,1160px);padding:48px 0 36px}.resourceLibraryToolbar{align-items:stretch;flex-direction:column}.resourcePdfGrid{grid-template-columns:1fr}.resourceLibraryFooter{align-items:flex-start;flex-direction:column}.resourceEbookGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.resourceLibraryHero h1{font-size:42px}.resourceLibraryHero>p{font-size:14px}.resourcePdfCard{padding:16px;gap:13px}.resourcePdfIcon{width:45px;height:56px;flex-basis:45px}.resourceEbookGrid{grid-template-columns:1fr}.resourceLibraryLinks a{font-size:11px;padding:9px 12px}}
