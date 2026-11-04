@@ -306,11 +306,22 @@ async function shareEbook(ebook) {
       return lines;
     };
     const tracked = (value, x, y, spacing) => {
-      let cursor = x;
-      for (const character of value) {
+      const previousAlign = ctx.textAlign;
+      const text = String(value || "");
+      const textWidth = [...text].reduce(
+        (width, character) => width + ctx.measureText(character).width + spacing,
+        0
+      ) - (text.length ? spacing : 0);
+
+      // When the caller requests centered text, center the complete tracked
+      // phrase rather than centering every character independently.
+      let cursor = previousAlign === "center" ? x - textWidth / 2 : x;
+      ctx.textAlign = "left";
+      for (const character of text) {
         ctx.fillText(character, cursor, y);
         cursor += ctx.measureText(character).width + spacing;
       }
+      ctx.textAlign = previousAlign;
     };
 
     // Deep charcoal-green editorial background and a double champagne frame.
