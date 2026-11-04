@@ -1475,6 +1475,48 @@ function EbookReader({ ebook, onClose }) {
   );
 }
 
+function ImpactCounter({ value, suffix = "", label, index = 0 }) {
+  const [count, setCount] = useState(0);
+  const counterRef = useRef(null);
+  const target = Number(value) || 0;
+
+  useEffect(() => {
+    const node = counterRef.current;
+    if (!node) return undefined;
+    let frameId = 0;
+    let started = false;
+    let observer;
+    const animate = () => {
+      if (started) return;
+      started = true;
+      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      if (reduceMotion) { setCount(target); return; }
+      const duration = 1500;
+      const startTime = performance.now();
+      const tick = (now) => {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        setCount(Math.round(target * eased));
+        if (progress < 1) frameId = window.requestAnimationFrame(tick);
+      };
+      frameId = window.requestAnimationFrame(tick);
+    };
+    if ("IntersectionObserver" in window) {
+      observer = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) { animate(); observer?.disconnect(); }
+      }, { threshold: 0.35 });
+      observer.observe(node);
+    } else animate();
+    return () => { observer?.disconnect(); if (frameId) window.cancelAnimationFrame(frameId); };
+  }, [target]);
+
+  return (
+    <div className="fasImpactItem" ref={counterRef} style={{ "--impact-index": index }}>
+      <span className="fasImpactNumber">{count}{suffix}</span>
+      <span className="fasImpactLabel">{label}</span>
+    </div>
+  );
+}
 function App() {
   const ebookCarouselRef = useRef(null);
   const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
@@ -5008,6 +5050,23 @@ function App() {
             )}
 
             <div className="heroNextWatermark">FAS</div>
+          </div>
+        </section>
+
+        <section className="fasImpactSection reveal-section" aria-labelledby="fas-impact-title">
+          <div className="fasImpactInner">
+            <div className="fasImpactHeading">
+              <span className="sectionLabel">THREE YEARS OF FELLOWSHIP</span>
+              <h2 id="fas-impact-title">A little glimpse of what God has done.</h2>
+              <p>Every gathering, prayer and connection is part of a story God continues to write through FAS.</p>
+            </div>
+            <div className="fasImpactGrid">
+              <ImpactCounter value={6} label="One-day retreats" index={0} />
+              <ImpactCounter value={2} label="Christmas celebrations" index={1} />
+              <ImpactCounter value={10} suffix="+" label="Cottage prayers" index={2} />
+              <ImpactCounter value={130} suffix="+" label="Participants" index={3} />
+              <ImpactCounter value={2} label="Colleges reached" index={4} />
+            </div>
           </div>
         </section>
 
