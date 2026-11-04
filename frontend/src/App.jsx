@@ -2901,9 +2901,7 @@ function App() {
       "FAS DAILY DEVOTIONAL",
       `Day #${dayNumber}: ${String(devotionalPost.title || "").replace(/\s+/g, " ").trim()}`,
       "Read the full devotional: " + url.href
-    ].join("
-
-");
+    ].join("\n");
 
     // Original FAS editorial card: warm paper, forest-ink typography and restrained brass details.
     const canvas = document.createElement("canvas");
