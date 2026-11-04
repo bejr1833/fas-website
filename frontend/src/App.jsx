@@ -263,8 +263,8 @@ async function shareEbook(ebook) {
 
   try {
     if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(ebookUrl);
-      window.alert("eBook link copied. You can now paste and share it.");
+      await navigator.clipboard.writeText(libraryUrl.href);
+      window.alert("FAS eBook library link copied. You can now paste and share it.");
       return;
     }
   } catch {
