@@ -307,12 +307,16 @@ async function shareEbook(ebook) {
     };
     const tracked = (value, x, y, spacing) => {
       const previousAlign = ctx.textAlign;
-      let cursor = x;
+      const characters = [...String(value || "")];
+      const textWidth = characters.reduce(
+        (width, character) => width + ctx.measureText(character).width,
+        0
+      ) + Math.max(0, characters.length - 1) * spacing;
 
-      // Draw each glyph from a consistent left edge. The caller supplies the
-      // phrase's measured starting position, so the complete line stays centered.
+      // x is the anchor point: center the entire tracked phrase around it.
+      let cursor = previousAlign === "center" ? x - textWidth / 2 : x;
       ctx.textAlign = "left";
-      for (const character of String(value || "")) {
+      for (const character of characters) {
         ctx.fillText(character, cursor, y);
         cursor += ctx.measureText(character).width + spacing;
       }
@@ -403,7 +407,7 @@ async function shareEbook(ebook) {
     ctx.textAlign = "center";
     ctx.fillStyle = "#e5d0a0";
     ctx.font = '700 18px "DM Sans", Arial, sans-serif';
-    tracked("FAITH  ·  FELLOWSHIP  ·  TRUTH", W / 2 - 205, 934, 1.5);
+    tracked("FAITH  ·  FELLOWSHIP  ·  TRUTH", W / 2, 934, 1.5);
     ctx.fillStyle = "#fffaf0";
     ctx.font = '600 25px "Playfair Display", Georgia, serif';
     ctx.fillText("Explore the FAS eBook Library", W / 2, 982);
