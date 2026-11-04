@@ -700,13 +700,27 @@ function EbookReader({ ebook, onClose }) {
     if (!pdf) return scale;
     if (pageWidthRef.current.pdf !== pdf || !pageWidthRef.current.width) {
       let widestPage = 0;
+      let tallestPage = 0;
       for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
         const page = await pdf.getPage(pageNumber);
-        widestPage = Math.max(widestPage, page.getViewport({ scale: 1 }).width);
+        const viewport = page.getViewport({ scale: 1 });
+        widestPage = Math.max(widestPage, viewport.width);
+        tallestPage = Math.max(tallestPage, viewport.height);
       }
-      pageWidthRef.current = { pdf, width: widestPage };
+      pageWidthRef.current = { pdf, width: widestPage, height: tallestPage };
     }
     return availableWidth / pageWidthRef.current.width;
+  };
+
+  // Immersive mobile reading prioritizes the full available screen height.
+  // The page may extend beyond the phone width, where native horizontal
+  // panning remains available, instead of leaving a large unused area below.
+  const getFullscreenFitScale = async (availableHeight) => {
+    if (!pdf) return scale;
+    if (pageWidthRef.current.pdf !== pdf || !pageWidthRef.current.height) {
+      await getStableFitScale(Math.max(240, readerRef.current?.querySelector(".ebookReaderStage")?.clientWidth || 240));
+    }
+    return availableHeight / pageWidthRef.current.height;
   };
 
   useEffect(() => {
@@ -934,11 +948,12 @@ function EbookReader({ ebook, onClose }) {
             }
             if (!pdf || !stage) return;
             try {
-              const availableWidth = Math.max(240, stage.clientWidth - 24);
-              // Fit against the widest page so every page keeps identical
-              // physical width when the document contains mixed page sizes.
-              const immersiveScale = await getStableFitScale(availableWidth);
-              setFitPageMode(true);
+              const availableHeight = Math.max(320, stage.clientHeight - 32);
+              // Fill the phone's usable height in immersive mode. On portrait
+              // PDFs this can create horizontal overflow, which the stage
+              // supports with native touch panning.
+              const immersiveScale = await getFullscreenFitScale(availableHeight);
+              setFitPageMode(false);
               setScale(Math.max(0.25, Math.min(3, Number(immersiveScale.toFixed(3)))));
             } catch (fullscreenFitError) {
               console.error("FAS eBook fullscreen fit error:", fullscreenFitError);
