@@ -1657,7 +1657,9 @@ function App() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  // Automatically rotate Highlights & Updates while preserving manual controls.
+  // Automatically rotate Highlights & Updates on desktop, even while the
+  // pointer rests over the banner. Pause only for direct touch/keyboard
+  // interaction or when the browser tab is hidden.
   useEffect(() => {
     if (data.slides.length <= 1) return;
 
@@ -1669,11 +1671,11 @@ function App() {
     );
     if (reduceMotionQuery.matches) return;
 
-    let paused = false;
+    let paused = document.hidden;
     let timer = null;
 
     const advance = () => {
-      if (!paused) {
+      if (!paused && !document.hidden) {
         setCurrentSlide((current) =>
           (current + 1) % data.slides.length
         );
@@ -1682,7 +1684,9 @@ function App() {
 
     const start = () => {
       window.clearInterval(timer);
-      timer = window.setInterval(advance, 5200);
+      if (!paused && !document.hidden) {
+        timer = window.setInterval(advance, 5200);
+      }
     };
 
     const pause = () => {
@@ -1695,23 +1699,29 @@ function App() {
       start();
     };
 
-    frame.addEventListener("mouseenter", pause);
-    frame.addEventListener("mouseleave", resume);
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        window.clearInterval(timer);
+      } else {
+        start();
+      }
+    };
+
     frame.addEventListener("touchstart", pause, { passive: true });
     frame.addEventListener("touchend", resume, { passive: true });
     frame.addEventListener("focusin", pause);
     frame.addEventListener("focusout", resume);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     start();
 
     return () => {
       window.clearInterval(timer);
-      frame.removeEventListener("mouseenter", pause);
-      frame.removeEventListener("mouseleave", resume);
       frame.removeEventListener("touchstart", pause);
       frame.removeEventListener("touchend", resume);
       frame.removeEventListener("focusin", pause);
       frame.removeEventListener("focusout", resume);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [data.slides.length]);
 
