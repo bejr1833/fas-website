@@ -3951,17 +3951,13 @@ function App() {
               <div className="devotionalImpact"><span>THE IMPACT</span><strong>{devotionalPost.impact_line}</strong></div>
               <div className="devotionalBody">
                 <span className="devotionalBodyLabel">REFLECTION</span>
-                {devotionalPost.reflection.split(/\r?
-\s*\r?
-/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
+                {devotionalPost.reflection.split(/\r?\n\s*\r?\n/)                {devotionalPost.reflection.split(/\r?
                 <div className="devotionalPrayer">
                   <div className="devotionalPanelHeading">
                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z" /><path d="M8 12h8M12 8v8" /></svg>
                     <span>PRAYER</span>
                   </div>
-                  {devotionalPost.prayer.split(/\r?
-\s*\r?
-/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
+                  {devotionalPost.prayer.split(/\r?\n\s*\r?\n/)                  {devotionalPost.prayer.split(/\r?
                 </div>
                 {devotionalPost.application && <div className="devotionalApplication">
                   <div className="devotionalPanelHeading">
@@ -4268,9 +4264,7 @@ function App() {
                 </div>
 
                 {blogPost.content
-                  ?.split(/\r?
-\s*\r?
-/)
+                  ?.split(/\r?\n/)                  ?.split(/\r?
                   .filter((paragraph) => paragraph.trim())
                   .map((paragraph, index) => {
                     const cleanParagraph = paragraph.trim();
