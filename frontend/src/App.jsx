@@ -402,7 +402,10 @@ async function shareEbook(ebook) {
     ctx.textAlign = "center";
     ctx.fillStyle = "#e5d0a0";
     ctx.font = '700 18px "DM Sans", Arial, sans-serif';
-    tracked("FAITH  ·  FELLOWSHIP  ·  TRUTH", W / 2 - 205, 934, 1.5);
+    const footerMotto = "FAITH  ·  FELLOWSHIP  ·  TRUTH";
+    ctx.font = '700 18px "DM Sans", Arial, sans-serif';
+    const footerMottoWidth = ctx.measureText(footerMotto).width + (footerMotto.length - 1) * 1.5;
+    tracked(footerMotto, (W - footerMottoWidth) / 2, 934, 1.5);
     ctx.fillStyle = "#fffaf0";
     ctx.font = '600 25px "Playfair Display", Georgia, serif';
     ctx.fillText("Explore the FAS eBook Library", W / 2, 982);
