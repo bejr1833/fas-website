@@ -1619,7 +1619,7 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode }) {
           <p>{description}</p>
           <div className="resourceLibraryLinks" aria-label="FAS resource collections">
             <a className={kind === "sermons" ? "active" : ""} href="/sermons">Video Teachings</a>
-            <a className={kind === "study" ? "active" : ""} href="/study-resources">Study PDFs</a>
+            <a className={kind === "study" ? "active" : ""} href="/study-resources">Sermon notes</a>
             <a className={kind === "ebooks" ? "active" : ""} href="/ebooks">eBooks</a>
           </div>
         </div>
