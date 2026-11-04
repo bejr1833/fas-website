@@ -3169,9 +3169,7 @@ function App() {
       impact ? "“" + impact + "”" : "",
       "Read the full story: " + storyUrl,
       "Faith Alone Saves · Love in Fellowship & Truth"
-    ].filter(Boolean).join("
-
-");
+    ].filter(Boolean).join("\n");
 
     // Match the live website story card's dark-mode colors, type hierarchy,
     // red accent, impact panel, quote preview and Read Full Story divider.
