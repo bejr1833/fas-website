@@ -22246,3 +22246,89 @@ footer > div:first-child > img {
     min-height: 290px;
   }
 }
+
+
+/* Final eBook carousel layout overrides.
+   Keep the library horizontal at every breakpoint; earlier .ebookGrid rules
+   and desktop featured-card sizing must not turn the track back into a grid. */
+.ebookSection .ebookCarouselTrack {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  align-items: stretch;
+  gap: 22px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ebookSection .ebookCarouselTrack > .ebookCard,
+.ebookSection .ebookCarouselTrack > .ebookCard.isFeatured {
+  flex: 0 0 clamp(280px, 32vw, 360px) !important;
+  width: clamp(280px, 32vw, 360px) !important;
+  max-width: min(360px, 86vw) !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  grid-column: auto !important;
+  scroll-snap-align: start;
+}
+
+.ebookSection .ebookCarouselTrack > .ebookCard .ebookCover {
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 0 !important;
+  height: auto !important;
+  aspect-ratio: 16 / 10 !important;
+}
+
+.ebookSection .ebookCarouselTrack > .ebookCard .ebookCardBody {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 22px !important;
+}
+
+.ebookSection .ebookCarouselTrack > .ebookCard .ebookCardBody h3 {
+  font-size: clamp(21px, 2.1vw, 28px);
+}
+
+@media (max-width: 850px) {
+  .ebookSection .ebookCarouselTrack {
+    gap: 16px;
+  }
+
+  .ebookSection .ebookCarouselTrack > .ebookCard,
+  .ebookSection .ebookCarouselTrack > .ebookCard.isFeatured {
+    flex-basis: min(44vw, 340px) !important;
+    width: min(44vw, 340px) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .ebookSection .ebookCarouselTrack {
+    gap: 14px;
+    margin-right: -18px;
+    padding: 8px 18px 22px 2px;
+  }
+
+  .ebookSection .ebookCarouselTrack > .ebookCard,
+  .ebookSection .ebookCarouselTrack > .ebookCard.isFeatured {
+    flex-basis: min(84vw, 340px) !important;
+    width: min(84vw, 340px) !important;
+  }
+
+  .ebookSection .ebookCarouselTrack > .ebookCard .ebookCardBody {
+    padding: 20px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ebookSection .ebookCarouselTrack {
+    scroll-behavior: auto;
+  }
+}
