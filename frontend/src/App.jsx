@@ -3062,6 +3062,24 @@ function App() {
         canonical: "https://fas-fellowship.org/devotions",
         schemaType: "CollectionPage"
       },
+      "/sermons": {
+        title: "Christian Sermons & Video Teachings | FAS Fellowship",
+        description: "Watch Christian sermons, Bible messages and video teachings from Faith Alone Saves. Explore biblical encouragement and teaching for everyday Christian living.",
+        canonical: "https://fas-fellowship.org/sermons",
+        schemaType: "CollectionPage"
+      },
+      "/study-resources": {
+        title: "Bible Study Resources & Sermon Notes PDFs | FAS",
+        description: "Explore Bible study resources, sermon notes and downloadable Christian study PDFs from Faith Alone Saves. Read, reflect and grow in Scripture.",
+        canonical: "https://fas-fellowship.org/study-resources",
+        schemaType: "CollectionPage"
+      },
+      "/ebooks": {
+        title: "Christian eBooks & Books Online | Faith Alone Saves",
+        description: "Discover Christian eBooks and curated books for faith, discipleship and spiritual growth. Read online or access available PDF editions from FAS.",
+        canonical: "https://fas-fellowship.org/ebooks",
+        schemaType: "CollectionPage"
+      },
       "/media": {
         title: "FAS Media | Sermons, Messages & Christian Resources",
         description: "Watch and listen to sermons, messages, and Christian media resources shared by the Faith Alone Saves fellowship.",
