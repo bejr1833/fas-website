@@ -4899,6 +4899,7 @@ function App() {
         </a>
 
         <nav id="main-navigation" className={menuOpen ? "mobileOpen" : ""} aria-label="Main navigation">
+          <a href="/" onClick={closeMenu} aria-label="Go to FAS homepage">Home</a>
           <a href="/about" onClick={closeMenu}>About</a>
           <a href="/events" onClick={closeMenu}>Events</a>
           <a href="/stories" onClick={closeMenu}>Stories</a>
