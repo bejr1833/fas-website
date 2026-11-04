@@ -243,7 +243,7 @@ async function shareEbook(ebook) {
 
   // Share a designed FAS book card together with the library destination.
   // The link always leads to the eBook section, never directly to the PDF.
-  const libraryUrl = new URL("/ebooks/", window.location.origin);
+  const libraryUrl = new URL("/ebooks/#ebook-collection", window.location.origin);
   const bookTitle = String(ebook.title || "A FAS Christian eBook").replace(/\s+/g, " ").trim();
   const author = String(ebook.author || "Faith Alone Saves").replace(/\s+/g, " ").trim();
   const category = String(ebook.category || "Christian reading").replace(/[-_]+/g, " ").toUpperCase();
@@ -1624,12 +1624,17 @@ function ResourceLibraryPage({ kind, data, darkMode, toggleDarkMode }) {
             </div>
           </article>)}</div> : <div className="emptyState"><p>No sermon PDFs match this search yet.</p></div>}
         </section>}
-        {showBooks && <section className="resourceCollection">
+        {showBooks && <section className="resourceCollection" id="ebook-collection">
           <div className="resourceCollectionHeading resourceEbookHeading"><div><span className="sectionLabel">CURATED CHRISTIAN READING</span><h2>Books for the journey</h2><p className="resourceCopyrightNote">FAS shares works it owns, verified public-domain editions, or books distributed with permission or an appropriate licence.</p></div><div className="resourceCarouselControls"><button type="button" onClick={() => scrollBooks(-1)} aria-label="Previous books"><ArrowLeft size={18} /></button><button type="button" onClick={() => scrollBooks(1)} aria-label="Next books"><ArrowRight size={18} /></button></div></div>
           {ebooks.length ? <div className="ebookGrid resourceEbookGrid" ref={ebookTrackRef} aria-label="eBook collection" tabIndex={0}>{ebooks.map((ebook) => <article className="ebookCard" key={ebook.id}>
             <div className="ebookCover">{ebook.cover_image_url ? <img src={ebook.cover_image_url} alt={ebook.title} loading="lazy" /> : <div className="ebookCoverPlaceholder"><span className="ebookCoverKicker">FAITH · FELLOWSHIP · TRUTH</span><strong className="ebookCoverBrand">FAS</strong><small>CHRISTIAN READING</small></div>}</div>
             <div className="ebookCardBody"><span className="ebookCategory">{(ebook.category || "Christian reading").replace(/-/g," ")}</span><h3>{ebook.title}</h3><div className="ebookAuthor"><span>Author</span><strong>{ebook.author || "Unknown"}</strong></div>{ebook.description && <p>{ebook.description}</p>}
-              <div className="ebookFormatActions">{ebook.ebook_file_url && <><button type="button" className="ebookReadLink" onClick={() => setSelectedBook(ebook)}>Read online <ArrowRight size={15} /></button><a className="ebookReadLink" href={ebook.ebook_file_url} target="_blank" rel="noopener noreferrer">Read PDF <ExternalLink size={14} /></a></>}{ebook.epub_file_url && <a className="ebookReadLink" href={ebook.epub_file_url} target="_blank" rel="noopener noreferrer">EPUB <ExternalLink size={14} /></a>}</div>
+              <div className="ebookFormatActions" aria-label={`Actions for ${ebook.title}`}>
+                {ebook.ebook_file_url && <button type="button" className="ebookReadLink" onClick={() => setSelectedBook(ebook)}>Read online <ArrowRight size={15} /></button>}
+                {ebook.ebook_file_url && <a className="ebookReadLink" href={ebook.ebook_file_url} target="_blank" rel="noopener noreferrer">Read PDF <ExternalLink size={14} /></a>}
+                {ebook.epub_file_url && <a className="ebookReadLink" href={ebook.epub_file_url} target="_blank" rel="noopener noreferrer">EPUB <ExternalLink size={14} /></a>}
+                <button type="button" className="ebookReadLink ebookShareAction" onClick={() => shareEbook(ebook)} aria-label={`Share ${ebook.title}`} title={`Share ${ebook.title}`}><Share2 size={16} /> Share</button>
+              </div>
             </div>
           </article>)}</div> : <div className="emptyState"><p>New eBooks will be added to the library soon.</p></div>}
         </section>}
