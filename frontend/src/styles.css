@@ -22845,3 +22845,17 @@ html[data-theme="dark"] .fasImpactItem {
 .resourceEbookGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:760px){.resourceLibraryMain{width:min(100% - 28px,1160px);padding:48px 0 36px}.resourceLibraryToolbar{align-items:stretch;flex-direction:column}.resourcePdfGrid{grid-template-columns:1fr}.resourceLibraryFooter{align-items:flex-start;flex-direction:column}.resourceEbookGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.resourceLibraryHero h1{font-size:42px}.resourceLibraryHero>p{font-size:14px}.resourcePdfCard{padding:16px;gap:13px}.resourcePdfIcon{width:45px;height:56px;flex-basis:45px}.resourceEbookGrid{grid-template-columns:1fr}.resourceLibraryLinks a{font-size:11px;padding:9px 12px}}
+
+
+/* Horizontal eBook carousel */
+.resourceEbookHeading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.resourceCarouselControls{display:flex;gap:9px;flex:0 0 auto}
+.resourceCarouselControls button{width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(216,189,131,.48);border-radius:50%;background:transparent;color:inherit;cursor:pointer;transition:background .2s ease,color .2s ease,transform .2s ease}
+.resourceCarouselControls button:hover{background:#d8bd83;color:#172019;transform:translateY(-2px)}
+.resourceEbookGrid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);grid-template-columns:none;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(216,189,131,.65) transparent;padding:2px 2px 18px;gap:18px}
+.resourceEbookGrid>.ebookCard{min-width:0;scroll-snap-align:start}
+@media(min-width:761px){.resourceEbookGrid{grid-auto-columns:calc((100% - 36px)/3)}}
+@media(min-width:481px) and (max-width:760px){.resourceEbookGrid{grid-auto-columns:calc((100% - 18px)/2)}}
+@media(max-width:480px){.resourceEbookHeading{align-items:flex-end}.resourceCarouselControls button{width:38px;height:38px}.resourceEbookGrid{grid-auto-columns:84%;gap:14px;padding-right:14px}.resourceEbookGrid>.ebookCard{width:100%}}
+.resourceLibraryDark .resourceCarouselControls button{border-color:rgba(216,189,131,.55)}
+.resourceLibraryDark .resourceCarouselControls button:hover{background:#d8bd83;color:#172019}
