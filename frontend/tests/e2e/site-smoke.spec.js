@@ -14,6 +14,14 @@ test("homepage renders its main content without a React crash", async ({ page })
   expect(pageErrors, "Unexpected uncaught browser errors").toEqual([]);
 });
 
+test("homepage clearly identifies Faith Alone Saves as FAS Fellowship", async ({ page }) => {
+  await page.goto("/");
+  await expect(
+    page.getByText("Faith Alone Saves (FAS Fellowship) is a Christ-centered", { exact: false })
+  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: /A fellowship for students who want to know, grow and serve/i })).toBeVisible();
+});
+
 test("primary section navigation targets existing sections", async ({ page }) => {
   await page.goto("/");
   const links = page.locator('header a[href^="#"], nav a[href^="#"]');
