@@ -1,0 +1,166 @@
+/* FAS eBook Reader — responsive stability and premium reading surface */
+.ebookReader,
+.ebookReader * {
+  box-sizing: border-box;
+}
+.ebookReader {
+  --reader-gold: #c5a66b;
+  --reader-ink: #171816;
+  --reader-paper: #f2eee4;
+  isolation: isolate;
+}
+.ebookReaderStage {
+  min-width: 0;
+  min-height: 0;
+  contain: layout paint;
+  overscroll-behavior: contain;
+}
+.ebookReaderBookScene {
+  min-width: 100%;
+  box-sizing: border-box;
+}
+.ebookReaderPageSheet {
+  flex-shrink: 0;
+  backface-visibility: hidden;
+}
+.ebookReaderCanvasWrap {
+  flex: 0 0 auto;
+  line-height: 0;
+}
+.ebookReaderCanvas {
+  display: block;
+  height: auto;
+  image-rendering: auto;
+}
+.ebookReader button,
+.ebookReader a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.ebookReader button:focus-visible,
+.ebookReader a:focus-visible,
+.ebookReader input:focus-visible {
+  outline: 2px solid var(--reader-gold);
+  outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .ebookReaderOverlay {
+    padding: 0 !important;
+    overflow: hidden !important;
+    overscroll-behavior: none;
+  }
+  .ebookReader:not(.isFullscreen) {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .ebookReaderHeader {
+    flex: 0 0 auto;
+    padding-top: max(10px, env(safe-area-inset-top)) !important;
+    padding-left: max(14px, env(safe-area-inset-left)) !important;
+    padding-right: max(14px, env(safe-area-inset-right)) !important;
+    gap: 10px !important;
+  }
+  .ebookReaderTitle {
+    min-width: 0;
+  }
+  .ebookReaderTitle h2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+  .ebookReaderHeaderActions {
+    flex: 0 0 auto;
+    gap: 6px !important;
+  }
+  .ebookReaderToolbar {
+    flex: 0 0 auto;
+    padding-left: max(12px, env(safe-area-inset-left)) !important;
+    padding-right: max(12px, env(safe-area-inset-right)) !important;
+    gap: 10px !important;
+  }
+  .ebookReaderStage {
+    flex: 1 1 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    overflow: auto !important;
+    padding: 12px 8px max(18px, env(safe-area-inset-bottom)) !important;
+    scroll-padding: 12px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ebookReaderStage::-webkit-scrollbar { display: none; }
+  .ebookReaderBookScene {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+  }
+  .ebookReaderPageSheet,
+  .ebookReaderPageSheet.isTurning {
+    flex: 0 0 auto !important;
+    margin: 0 auto !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  .ebookReaderCanvasWrap {
+    margin: 0 auto !important;
+  }
+  .ebookReaderFooter {
+    flex: 0 0 auto;
+    padding-bottom: max(8px, env(safe-area-inset-bottom)) !important;
+  }
+  .ebookReader.isFullscreen .ebookReaderStage {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    overflow: auto !important;
+    touch-action: pan-x pan-y pinch-zoom !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+  }
+  .ebookReader.isFullscreen .ebookReaderBookScene {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    padding: 0 !important;
+  }
+  .ebookReader.isFullscreen .ebookReaderPageSheet {
+    margin: 0 auto !important;
+    animation: none !important;
+  }
+  .ebookReader.isFullscreen .ebookReaderHeader,
+  .ebookReader.isFullscreen .ebookReaderToolbar,
+  .ebookReader.isFullscreen .ebookReaderFooter {
+    padding-left: max(12px, env(safe-area-inset-left)) !important;
+    padding-right: max(12px, env(safe-area-inset-right)) !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ebookReader *,
+  .ebookReader *::before,
+  .ebookReader *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
