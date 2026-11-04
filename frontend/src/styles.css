@@ -2674,14 +2674,16 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   margin-top: 8px;
 }
 
-/* Compact, balanced eBook actions with a premium FAS share treatment. */
+/* Premium, aligned eBook actions: two full controls plus a compact share control. */
 .ebookCardBody .ebookFormatActions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 46px;
+  align-items: stretch;
   gap: 10px;
   margin-top: 18px;
 }
 .ebookCardBody .ebookFormatActions .ebookReadLink {
+  box-sizing: border-box;
   min-width: 0;
   min-height: 46px;
   margin: 0;
@@ -2705,24 +2707,52 @@ footer{padding:35px 6vw;display:flex;justify-content:space-between;gap:30px;bord
   transform: translateY(-2px);
   border-color: #d4b36f;
   background: rgba(190, 157, 96, .16);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, .16);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .12);
   color: #f0d69f;
 }
-.ebookCardBody .ebookFormatActions .ebookShareAction {
-  grid-column: auto;justify-self:end;width:46px;min-width:46px;height:46px;min-height:46px;padding:0;border-radius:50%;
-  border-color:rgba(212,179,111,.9);background:linear-gradient(135deg,#e4d0a1 0%,#b18a4b 100%);color:#171713;
-  box-shadow:0 7px 20px rgba(177,138,75,.2),inset 0 1px 0 rgba(255,255,255,.45);
+.ebookCardBody .ebookFormatActions .ebookShareAction,
+.ebookCard.isFeatured .ebookFormatActions .ebookShareAction {
+  justify-self: stretch;
+  align-self: stretch;
+  width: 46px;
+  min-width: 46px;
+  height: 46px;
+  min-height: 46px;
+  padding: 0;
+  border: 1px solid rgba(190, 157, 96, .82);
+  border-radius: 12px;
+  background: linear-gradient(145deg, #f4ead4 0%, #d7bd8a 100%);
+  color: #3a3020;
+  box-shadow: 0 4px 12px rgba(89, 68, 34, .12), inset 0 1px 0 rgba(255, 255, 255, .8);
 }
-.ebookCardBody .ebookFormatActions .ebookShareAction:hover {
-  transform:translateY(-2px);border-color:#ead29d;background:linear-gradient(135deg,#ead29d 0%,#c49b59 100%);color:#11130f;box-shadow:0 10px 26px rgba(177,138,75,.28);
+.ebookCardBody .ebookFormatActions .ebookShareAction:hover,
+.ebookCard.isFeatured .ebookFormatActions .ebookShareAction:hover {
+  transform: translateY(-2px);
+  border-color: #b18a4b;
+  background: linear-gradient(145deg, #fff5df 0%, #e5c990 100%);
+  color: #241d12;
+  box-shadow: 0 8px 18px rgba(89, 68, 34, .18);
 }
 .ebookCardBody .ebookFormatActions .ebookReadLink:focus-visible {
-  outline: 2px solid #e4c27c;
+  outline: 2px solid #b88932;
   outline-offset: 3px;
+}
+@media (max-width: 680px) {
+  .ebookCardBody .ebookFormatActions {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 9px;
+  }
+  .ebookCardBody .ebookFormatActions .ebookReadLink:first-child {
+    grid-column: 1 / -1;
+  }
+  .ebookCardBody .ebookFormatActions .ebookShareAction {
+    justify-self: end;
+  }
 }
 @media (max-width: 420px) {
   .ebookCardBody .ebookFormatActions { gap: 8px; }
   .ebookCardBody .ebookFormatActions .ebookReadLink { min-height: 44px; padding: 9px 8px; font-size: 12px; }
+  .ebookCardBody .ebookFormatActions .ebookShareAction { width: 44px; min-width: 44px; height: 44px; min-height: 44px; }
 }
 
 .ebookCard.isFeatured .ebookReadLink {
