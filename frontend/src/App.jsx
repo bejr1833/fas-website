@@ -667,6 +667,7 @@ function EbookReader({ ebook, onClose }) {
   const pinchDistanceRef = useRef(0);
   const renderTaskRef = useRef(null);
   const loadingTaskRef = useRef(null);
+  const pageWidthRef = useRef({ pdf: null, width: 0 });
   const [pdf, setPdf] = useState(null);
   const [currentPage, setCurrentPage] = useState(() => {
     try {
@@ -679,7 +680,7 @@ function EbookReader({ ebook, onClose }) {
     }
   });
   const [scale, setScale] = useState(1.05);
-  const [fitPageMode, setFitPageMode] = useState(false);
+  const [fitPageMode, setFitPageMode] = useState(true);
   const [loading, setLoading] = useState(true);
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState("");
@@ -692,6 +693,21 @@ function EbookReader({ ebook, onClose }) {
       return false;
     }
   });
+
+  // Use one width scale for the entire document. PDFs can mix page sizes;
+  // fitting each page independently makes the reader visibly jump on turns.
+  const getStableFitScale = async (availableWidth) => {
+    if (!pdf) return scale;
+    if (pageWidthRef.current.pdf !== pdf || !pageWidthRef.current.width) {
+      let widestPage = 0;
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+        const page = await pdf.getPage(pageNumber);
+        widestPage = Math.max(widestPage, page.getViewport({ scale: 1 }).width);
+      }
+      pageWidthRef.current = { pdf, width: widestPage };
+    }
+    return availableWidth / pageWidthRef.current.width;
+  };
 
   useEffect(() => {
     try {
@@ -758,41 +774,15 @@ function EbookReader({ ebook, onClose }) {
   useEffect(() => {
     let cancelled = false;
 
-    // When Fit Page is active, recalculate the width for every new PDF page.
-    // Some PDFs contain pages with slightly different dimensions; retaining
-    // the previous page's scale can crop the next page on a phone.
+    // Keep the same page scale while navigating mixed-size PDF documents.
     const keepPageInView = async () => {
       if (fitPageMode && pdf) {
         try {
           const stage = readerRef.current?.querySelector(".ebookReaderStage");
-          const page = await pdf.getPage(currentPage);
-          if (cancelled || !stage) return;
-          const baseViewport = page.getViewport({ scale: 1 });
-          const availableWidth = Math.max(
-            240,
-            (isFullscreen ? stage.clientWidth : stage.clientWidth || window.innerWidth) - 8
-          );
-          // In mobile fullscreen, the stage can temporarily report its old modal height.
-          // Prefer the actual viewport and use the largest trustworthy measurement.
-          const fullscreenViewportHeight = isFullscreen
-            ? Math.max(
-                window.screen?.height || 0,
-                window.outerHeight || 0,
-                window.innerHeight || 0,
-                window.visualViewport?.height || 0,
-                stage.clientHeight || 0,
-                readerRef.current?.clientHeight || 0
-              )
-            : window.innerHeight || 0;
-          const availableHeight = Math.max(
-            320,
-            (isFullscreen ? fullscreenViewportHeight : window.innerHeight) - 36
-          );
-          const widthScale = availableWidth / baseViewport.width;
-          const heightScale = availableHeight / baseViewport.height;
-          // Fit the PDF to the phone's width by default. This matches the
-          // reference screenshot without cutting off the right side.
-          const targetScale = widthScale;
+          if (!stage) return;
+          const availableWidth = Math.max(240, stage.clientWidth - 24);
+          const targetScale = await getStableFitScale(availableWidth);
+          if (cancelled) return;
           setScale(Math.max(0.25, Math.min(3, Number(targetScale.toFixed(3)))));
         } catch (pageFitError) {
           console.error("FAS eBook page fit error:", pageFitError);
@@ -942,28 +932,10 @@ function EbookReader({ ebook, onClose }) {
             }
             if (!pdf || !stage) return;
             try {
-              const page = await pdf.getPage(currentPage);
-              const baseViewport = page.getViewport({ scale: 1 });
-              const availableWidth = Math.max(240, window.innerWidth - 8);
-              // Do not trust stage.clientHeight alone here: on Android it can still
-              // reflect the pre-fullscreen modal size during the fullscreenchange event.
-              // Android fullscreen can leave innerHeight/visualViewport at the
-              // pre-fullscreen layout size. screen.height is the stable display
-              // measurement; take the largest CSS-pixel viewport candidate.
-              const fullscreenViewportHeight = Math.max(
-                window.screen?.height || 0,
-                window.outerHeight || 0,
-                window.innerHeight || 0,
-                window.visualViewport?.height || 0,
-                stage.clientHeight || 0,
-                readerRef.current?.clientHeight || 0
-              );
-              const availableHeight = Math.max(320, fullscreenViewportHeight - 36);
-              const widthScale = availableWidth / baseViewport.width;
-              const heightScale = availableHeight / baseViewport.height;
-              // Match the reference screenshot: fit page width and preserve
-              // the PDF's proportions, keeping the whole page visible initially.
-              const immersiveScale = widthScale;
+              const availableWidth = Math.max(240, stage.clientWidth - 24);
+              // Fit against the widest page so every page keeps identical
+              // physical width when the document contains mixed page sizes.
+              const immersiveScale = await getStableFitScale(availableWidth);
               setFitPageMode(true);
               setScale(Math.max(0.25, Math.min(3, Number(immersiveScale.toFixed(3)))));
             } catch (fullscreenFitError) {
@@ -1015,24 +987,9 @@ function EbookReader({ ebook, onClose }) {
     try {
       const stage = readerRef.current?.querySelector(".ebookReaderStage");
       if (!stage) return;
-      const page = await pdf.getPage(currentPage);
-      const viewport = page.getViewport({ scale: 1 });
-      // Fit the complete page inside both viewport dimensions. This preserves
-      // the PDF's aspect ratio and prevents text or page edges from cropping.
-      const availableWidth = Math.max(240, stage.clientWidth - 8);
-      const availableHeight = Math.max(
-        isFullscreen ? window.screen?.height || 0 : 0,
-        window.outerHeight || 0,
-        window.innerHeight || 0,
-        window.visualViewport?.height || 0,
-        stage.clientHeight || 0,
-        readerRef.current?.clientHeight || 0
-      ) - 36;
-      const widthFitScale = availableWidth / viewport.width;
-      const heightFitScale = Math.max(320, availableHeight) / viewport.height;
-      // Fit page width by default so the page is not cropped.
-      // Users can then zoom manually and pan horizontally.
-      const nextScale = widthFitScale;
+      const availableWidth = Math.max(240, stage.clientWidth - 24);
+      // Use the widest page as the shared fit reference, not the current page.
+      const nextScale = await getStableFitScale(availableWidth);
       setFitPageMode(true);
       setScale(Math.max(0.25, Math.min(3, Number(nextScale.toFixed(2)))));
     } catch (fitError) {
