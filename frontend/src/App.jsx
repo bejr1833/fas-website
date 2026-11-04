@@ -306,11 +306,17 @@ async function shareEbook(ebook) {
       return lines;
     };
     const tracked = (value, x, y, spacing) => {
+      const previousAlign = ctx.textAlign;
       let cursor = x;
-      for (const character of value) {
+
+      // Draw each glyph from a consistent left edge. The caller supplies the
+      // phrase's measured starting position, so the complete line stays centered.
+      ctx.textAlign = "left";
+      for (const character of String(value || "")) {
         ctx.fillText(character, cursor, y);
         cursor += ctx.measureText(character).width + spacing;
       }
+      ctx.textAlign = previousAlign;
     };
 
     // Deep charcoal-green editorial background and a double champagne frame.
