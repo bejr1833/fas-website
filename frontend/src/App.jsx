@@ -790,7 +790,7 @@ function EbookReader({ ebook, onClose }) {
 
     // Keep the same page scale while navigating mixed-size PDF documents.
     const keepPageInView = async () => {
-      if (fitPageMode && pdf) {
+      if (fitPageMode && pdf && !isFullscreen) {
         try {
           const stage = readerRef.current?.querySelector(".ebookReaderStage");
           if (!stage) return;
@@ -930,6 +930,7 @@ function EbookReader({ ebook, onClose }) {
       const active = document.fullscreenElement === readerRef.current;
       setIsFullscreen(active);
       setFullscreenControlsVisible(!active);
+      if (!active) setFitPageMode(true);
       if (active) {
         // Re-measure after the browser has applied fullscreen dimensions.
         // A scale calculated in the smaller modal can otherwise leave the page
