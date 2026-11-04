@@ -5175,9 +5175,6 @@ function App() {
         </nav>
 
         <div className="navActions">
-          <a className="homeQuickLink" href="/" aria-label="Return to FAS homepage">
-            Home
-          </a>
           <button
             type="button"
             className="themeToggle"
