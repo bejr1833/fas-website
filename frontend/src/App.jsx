@@ -307,17 +307,12 @@ async function shareEbook(ebook) {
     };
     const tracked = (value, x, y, spacing) => {
       const previousAlign = ctx.textAlign;
-      const text = String(value || "");
-      const textWidth = [...text].reduce(
-        (width, character) => width + ctx.measureText(character).width + spacing,
-        0
-      ) - (text.length ? spacing : 0);
+      let cursor = x;
 
-      // When the caller requests centered text, center the complete tracked
-      // phrase rather than centering every character independently.
-      let cursor = previousAlign === "center" ? x - textWidth / 2 : x;
+      // Draw each glyph from a consistent left edge. The caller supplies the
+      // phrase's measured starting position, so the complete line stays centered.
       ctx.textAlign = "left";
-      for (const character of text) {
+      for (const character of String(value || "")) {
         ctx.fillText(character, cursor, y);
         cursor += ctx.measureText(character).width + spacing;
       }
