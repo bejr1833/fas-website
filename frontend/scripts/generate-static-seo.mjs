@@ -148,6 +148,7 @@ const buildSchema = (page) => {
         alternateName: "FAS Fellowship",
         url: `${SITE_URL}/`,
         logo: `${SITE_URL}/branding/fas-logo.png`,
+        description: "Faith Alone Saves (FAS) is a Christian student fellowship helping students grow in God’s Word through Bible study, prayer, worship, discipleship, and community.",
       },
       {
         "@type": page.schemaType,
