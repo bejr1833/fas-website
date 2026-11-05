@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
+import { PUBLIC_ROUTES } from "./public-routes.mjs";
 
 const SITE_URL = "https://fas-fellowship.org";
 const DIST = join(process.cwd(), "dist");
@@ -78,6 +79,19 @@ const pages = [
     schemaType: "ContactPage",
   },
 ];
+
+// Keep static SEO output and the XML sitemap in lockstep.
+const seoRoutes = pages.map((page) => page.route);
+const missingSeoRoutes = PUBLIC_ROUTES.filter((route) => !seoRoutes.includes(route));
+const unregisteredSeoRoutes = seoRoutes.filter((route) => !PUBLIC_ROUTES.includes(route));
+if (missingSeoRoutes.length || unregisteredSeoRoutes.length) {
+  throw new Error(
+    [
+      missingSeoRoutes.length ? `Missing static SEO metadata for: ${missingSeoRoutes.join(", ")}` : "",
+      unregisteredSeoRoutes.length ? `Static SEO routes missing from public route registry: ${unregisteredSeoRoutes.join(", ")}` : "",
+    ].filter(Boolean).join("\n")
+  );
+}
 
 const escapeHtml = (value) =>
   String(value)

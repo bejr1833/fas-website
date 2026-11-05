@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { PUBLIC_ROUTES } from "./public-routes.mjs";
 
 const SITE_URL = "https://fas-fellowship.org";
 const API_BASE_URL =
@@ -69,20 +70,7 @@ const fetchBlogs = async () => {
 };
 
 const buildSitemap = (posts, devotionals) => {
-  const staticRoutes = [
-    "/",
-    "/about",
-    "/events",
-    "/stories",
-    "/blog",
-    "/devotions",
-    "/media",
-    "/sermons",
-    "/study-resources",
-    "/ebooks",
-    "/gallery",
-    "/connect",
-  ];
+  const staticRoutes = PUBLIC_ROUTES;
 
   const urls = [
     ...staticRoutes.map((route) => ({
@@ -139,5 +127,5 @@ await mkdir(join(process.cwd(), "public"), { recursive: true });
 await writeFile(outputPath, buildSitemap(posts, devotionals), "utf8");
 
 console.log(
-  `Sitemap written to ${outputPath} with ${posts.length + devotionals.length + 12} URL(s).`
+  `Sitemap written to ${outputPath} with ${PUBLIC_ROUTES.length + posts.length + devotionals.length} URL(s).`
 );
