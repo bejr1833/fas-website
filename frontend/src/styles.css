@@ -23257,3 +23257,222 @@ html[data-theme="dark"] .ebookCard .ebookCardBody .ebookFormatActions > .ebookRe
     display: flex !important;
   }
 }
+
+/* =========================================================
+   FAS JOURNAL — COMPACT COMMENT EXPERIENCE
+   Tighten the engagement panel on desktop and mobile while
+   preserving the existing light/dark article themes.
+   ========================================================= */
+.blogArticlePage .blogEngagement {
+  margin: 42px auto 38px !important;
+  padding: 24px !important;
+  border-radius: 24px !important;
+  box-shadow: 0 16px 42px rgba(0,0,0,.12) !important;
+}
+.blogArticlePage .blogEngagementHeader {
+  align-items: center !important;
+  gap: 18px !important;
+  padding-bottom: 17px !important;
+}
+.blogArticlePage .blogEngagementHeader h2 {
+  margin: 6px 0 5px !important;
+  font-size: clamp(25px, 3vw, 34px) !important;
+  line-height: 1.08 !important;
+}
+.blogArticlePage .blogEngagementHeader p {
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+}
+.blogArticlePage .blogEngagementCount {
+  min-width: 72px !important;
+  padding: 10px 13px !important;
+  border-radius: 14px !important;
+}
+.blogArticlePage .blogEngagementCount strong { font-size: 23px !important; }
+.blogArticlePage .blogEngagementCount span {
+  margin-top: 4px !important;
+  font-size: 6px !important;
+}
+.blogArticlePage .blogReactionBar {
+  gap: 12px !important;
+  padding: 14px 0 !important;
+}
+.blogArticlePage .blogReactionPrompt {
+  font-size: 9px !important;
+  letter-spacing: .09em !important;
+}
+.blogArticlePage .blogReactionActions { gap: 7px !important; }
+.blogArticlePage .blogReactionBtn {
+  min-height: 36px !important;
+  padding: 0 11px !important;
+  gap: 6px !important;
+  font-size: 10px !important;
+}
+.blogArticlePage .blogReactionBtn svg { width: 14px !important; height: 14px !important; }
+.blogArticlePage .blogReactionBtn strong { font-size: 9px !important; }
+.blogArticlePage .blogCommentsLayout {
+  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr) !important;
+  gap: 14px !important;
+}
+.blogArticlePage .blogCommentForm,
+.blogArticlePage .blogCommentsList {
+  border-radius: 17px !important;
+}
+.blogArticlePage .blogCommentForm { padding: 17px !important; }
+.blogArticlePage .blogCommentFormTop { margin-bottom: 13px !important; }
+.blogArticlePage .blogCommentFormTop h3 {
+  margin-top: 5px !important;
+  font-size: 20px !important;
+}
+.blogArticlePage .blogCommentFormTop > svg { width: 18px !important; height: 18px !important; }
+.blogArticlePage .blogFormGrid { gap: 9px !important; }
+.blogArticlePage .blogCommentForm label { margin-bottom: 10px !important; }
+.blogArticlePage .blogCommentForm label > span {
+  margin-bottom: 5px !important;
+  font-size: 8px !important;
+}
+.blogArticlePage .blogCommentForm input,
+.blogArticlePage .blogCommentForm textarea {
+  min-height: 38px !important;
+  padding: 9px 10px !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+}
+.blogArticlePage .blogCommentForm textarea {
+  min-height: 82px !important;
+  height: 82px !important;
+}
+.blogArticlePage .blogCommentSubmitRow { gap: 10px !important; }
+.blogArticlePage .blogCommentSubmitRow small {
+  max-width: 180px !important;
+  font-size: 8px !important;
+  line-height: 1.4 !important;
+}
+.blogArticlePage .blogCommentSubmitRow .primaryBtn {
+  min-height: 38px !important;
+  padding: 9px 14px !important;
+  font-size: 11px !important;
+}
+.blogArticlePage .blogCommentSubmitRow .primaryBtn svg {
+  width: 13px !important;
+  height: 13px !important;
+}
+.blogArticlePage .blogCommentsList {
+  min-height: 0 !important;
+  padding: 4px 8px !important;
+}
+.blogArticlePage .blogCommentCard {
+  grid-template-columns: 34px minmax(0,1fr) !important;
+  gap: 10px !important;
+  padding: 12px 8px !important;
+}
+.blogArticlePage .blogCommentAvatar {
+  width: 34px !important;
+  height: 34px !important;
+  font-size: 14px !important;
+}
+.blogArticlePage .blogCommentMeta { gap: 7px !important; }
+.blogArticlePage .blogCommentMeta strong { font-size: 11px !important; }
+.blogArticlePage .blogCommentMeta time { font-size: 8px !important; }
+.blogArticlePage .blogCommentCard p {
+  margin-top: 5px !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+}
+.blogArticlePage .blogCommentsEmpty {
+  min-height: 150px !important;
+  padding: 20px !important;
+}
+.blogArticlePage .blogCommentsEmpty p { font-size: 11px !important; }
+
+@media (max-width: 760px) {
+  .blogArticlePage .blogEngagement {
+    margin: 32px 0 28px !important;
+    padding: 17px !important;
+    border-radius: 20px !important;
+  }
+  .blogArticlePage .blogEngagementHeader {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding-bottom: 13px !important;
+  }
+  .blogArticlePage .blogEngagementHeader h2 {
+    font-size: clamp(21px, 5.5vw, 28px) !important;
+  }
+  .blogArticlePage .blogEngagementHeader p { font-size: 11px !important; }
+  .blogArticlePage .blogEngagementCount {
+    display: grid !important;
+    flex: 0 0 58px !important;
+    width: auto !important;
+    min-width: 58px !important;
+    padding: 8px 5px !important;
+    text-align: center !important;
+    gap: 0 !important;
+  }
+  .blogArticlePage .blogEngagementCount strong { font-size: 21px !important; }
+  .blogArticlePage .blogEngagementCount span {
+    margin-top: 3px !important;
+    font-size: 5px !important;
+  }
+  .blogArticlePage .blogReactionBar {
+    align-items: center !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    padding: 12px 0 !important;
+  }
+  .blogArticlePage .blogReactionActions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 6px !important;
+  }
+  .blogArticlePage .blogReactionBtn {
+    min-width: 0 !important;
+    min-height: 34px !important;
+    flex: initial !important;
+    justify-content: center !important;
+    padding: 0 6px !important;
+    gap: 4px !important;
+  }
+  .blogArticlePage .blogReactionBtn span { font-size: 9px !important; }
+  .blogArticlePage .blogCommentsLayout {
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 10px !important;
+  }
+  .blogArticlePage .blogCommentForm,
+  .blogArticlePage .blogCommentsList { border-radius: 15px !important; }
+  .blogArticlePage .blogCommentForm { padding: 14px !important; }
+  .blogArticlePage .blogFormGrid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+  .blogArticlePage .blogCommentForm input,
+  .blogArticlePage .blogCommentForm textarea { font-size: 13px !important; }
+  .blogArticlePage .blogCommentForm textarea {
+    min-height: 72px !important;
+    height: 72px !important;
+  }
+  .blogArticlePage .blogCommentSubmitRow {
+    align-items: center !important;
+    flex-direction: row !important;
+  }
+  .blogArticlePage .blogCommentSubmitRow small { max-width: 55% !important; }
+  .blogArticlePage .blogCommentSubmitRow .primaryBtn {
+    width: auto !important;
+    white-space: nowrap !important;
+  }
+  .blogArticlePage .blogCommentsEmpty { min-height: 105px !important; }
+}
+
+@media (max-width: 380px) {
+  .blogArticlePage .blogEngagement { padding: 13px !important; }
+  .blogArticlePage .blogEngagementHeader h2 { font-size: 20px !important; }
+  .blogArticlePage .blogFormGrid { grid-template-columns: minmax(0,1fr) !important; gap: 0 !important; }
+  .blogArticlePage .blogCommentSubmitRow {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+  .blogArticlePage .blogCommentSubmitRow small { max-width: none !important; }
+  .blogArticlePage .blogCommentSubmitRow .primaryBtn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
