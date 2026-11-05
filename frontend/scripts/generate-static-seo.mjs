@@ -89,7 +89,7 @@ if (missingSeoRoutes.length || unregisteredSeoRoutes.length) {
     [
       missingSeoRoutes.length ? `Missing static SEO metadata for: ${missingSeoRoutes.join(", ")}` : "",
       unregisteredSeoRoutes.length ? `Static SEO routes missing from public route registry: ${unregisteredSeoRoutes.join(", ")}` : "",
-    ].filter(Boolean).join("\\n")
+    ].filter(Boolean).join("\n")
   );
 }
 
