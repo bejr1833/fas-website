@@ -4449,6 +4449,15 @@ function App() {
             <div className="devotionalState"><span className="sectionLabel">FAS DAILY DEVOTIONAL</span><h1>Devotional not found</h1><p>This devotional is no longer published or could not be loaded.</p><a href="/" className="primaryBtn">Back to FAS <ArrowRight size={17} /></a></div>
           ) : (
             <article className="devotionalArticle">
+              <nav aria-label="Breadcrumb" style={{ maxWidth: 680, margin: "0 auto 22px", fontSize: 13, color: darkMode ? "#c8c0b2" : "#71685c" }}>
+                <ol style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, listStyle: "none", margin: 0, padding: 0 }}>
+                  <li><a href="/" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: 3 }}>Home</a></li>
+                  <li aria-hidden="true">/</li>
+                  <li><a href="/devotions" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: 3 }}>Daily Devotionals</a></li>
+                  <li aria-hidden="true">/</li>
+                  <li aria-current="page" style={{ fontWeight: 700 }}>{devotionalPost.title}</li>
+                </ol>
+              </nav>
               <div className="devotionalArticleEyebrow">FAS DAILY DEVOTIONAL</div>
               <div className="devotionalArticleDate">
                 {new Date(devotionalPost.date + "T00:00:00").toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })}
