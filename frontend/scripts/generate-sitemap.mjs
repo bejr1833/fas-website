@@ -127,5 +127,5 @@ await mkdir(join(process.cwd(), "public"), { recursive: true });
 await writeFile(outputPath, buildSitemap(posts, devotionals), "utf8");
 
 console.log(
-  `Sitemap written to ${outputPath} with ${posts.length + devotionals.length + 12} URL(s).`
+  `Sitemap written to ${outputPath} with ${PUBLIC_ROUTES.length + posts.length + devotionals.length} URL(s).`
 );
