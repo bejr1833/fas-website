@@ -2580,7 +2580,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!isHomePage && !isBlogRoute) return undefined;
+    if (!isHomePage && !isBlogRoute && !isDevotionalPage) return undefined;
 
     if (isHomePage && !(cachedBlog?.length)) setHomeBlogLoading(true);
 
