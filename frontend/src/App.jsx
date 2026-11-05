@@ -144,6 +144,25 @@ const selectRelatedDevotionals = (source, items, limit = 6) => items
   .slice(0, limit)
   .map(({ item }) => item);
 
+const selectRelatedBlogPosts = (source, items, limit = 3) => items
+  .filter((item) => item?.slug && item?.title && item.slug !== source?.slug)
+  .map((item, index) => {
+    const sourceTitle = devotionalTokens(source?.title || "");
+    const itemTitle = devotionalTokens(item.title);
+    const sourceContent = devotionalTokens([source?.excerpt, source?.impact_line, source?.reflection || source?.content || ""].join(" "));
+    const itemContent = devotionalTokens([item.title, item.excerpt, item.content || ""].join(" "));
+    const titleOverlap = [...sourceTitle].filter((word) => itemTitle.has(word)).length;
+    const contentOverlap = [...sourceContent].filter((word) => itemContent.has(word)).length;
+    const sourceCategory = devotionalTokens(source?.category || "");
+    const itemCategory = devotionalTokens(item?.category || "");
+    const categoryOverlap = [...sourceCategory].filter((word) => itemCategory.has(word)).length;
+    return { item, index, score: titleOverlap * 8 + contentOverlap + categoryOverlap * 3 };
+  })
+  .filter(({ score }) => score > 0)
+  .sort((a, b) => b.score - a.score || a.index - b.index)
+  .slice(0, limit)
+  .map(({ item }) => item);
+
 function getVideoWatchUrl(rawUrl = "") {
   const value = String(rawUrl || "").trim();
   if (!value) return "";
@@ -2561,7 +2580,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!isHomePage && !isBlogListingPage) return undefined;
+    if (!isHomePage && !isBlogRoute) return undefined;
 
     if (isHomePage && !(cachedBlog?.length)) setHomeBlogLoading(true);
 
@@ -2665,7 +2684,8 @@ function App() {
       pathName === "/devotions" ||
       pathName === "/devotions/" ||
       pathName === "/devotionals" ||
-      pathName === "/devotionals/";
+      pathName === "/devotionals/" ||
+      pathName.startsWith("/blog/");
 
     if (!needsDevotionalArchive) return;
 
@@ -4541,6 +4561,23 @@ function App() {
                   <a href="/devotions" style={{ display: "inline-block", marginTop: 14, fontWeight: 750, color: darkMode ? "#e4c98e" : "#8d2929", textDecoration: "underline", textUnderlineOffset: 4 }}>Browse the full devotional calendar</a>
                 </nav>
               )}
+              {selectRelatedBlogPosts(devotionalPost, data.blog, 3).length > 0 && (
+                <nav className="devotionalRelated" aria-label="Related FAS journal articles" style={{ maxWidth: 680, margin: "20px auto 28px", padding: "22px 24px", borderRadius: 16, background: darkMode ? "rgba(255,255,255,.06)" : "#f5f1e9", border: darkMode ? "1px solid rgba(255,255,255,.1)" : "1px solid #e9e1d4" }}>
+                  <span style={{ display: "block", fontSize: 10, fontWeight: 800, letterSpacing: ".16em", color: darkMode ? "#d8b978" : "#98702d", marginBottom: 8 }}>FROM THE FAS JOURNAL</span>
+                  <h2 style={{ fontFamily: "Georgia, serif", fontSize: 22, margin: "0 0 14px", color: "inherit" }}>Read further on this theme</h2>
+                  <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 9 }}>
+                    {selectRelatedBlogPosts(devotionalPost, data.blog, 3).map((post) => (
+                      <li key={post.slug}>
+                        <a href={`/blog/${encodeURIComponent(post.slug)}`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, padding: "10px 0", color: "inherit", textDecoration: "none", borderBottom: darkMode ? "1px solid rgba(255,255,255,.1)" : "1px solid #e5ded2" }}>
+                          <span>{post.title}</span>
+                          <span aria-hidden="true" style={{ color: darkMode ? "#d8b978" : "#98702d" }}>→</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  <a href="/blog" style={{ display: "inline-block", marginTop: 14, fontWeight: 750, color: darkMode ? "#e4c98e" : "#8d2929", textDecoration: "underline", textUnderlineOffset: 4 }}>Explore the FAS Journal</a>
+                </nav>
+              )}
               <div className="devotionalFooter">FAITH · FELLOWSHIP · TRUTH <span>FAS</span></div>
             </article>
           )}
@@ -5000,6 +5037,25 @@ function App() {
                 </section>
               )}
 
+              {selectRelatedDevotionals(blogPost, devotionalArchive, 3).length > 0 && (
+                <section className="relatedArticles" aria-labelledby="related-devotionals-title">
+                  <div className="sectionLabel">SCRIPTURE & REFLECTION</div>
+                  <h2 id="related-devotionals-title">Continue with a daily devotional</h2>
+                  <div className="relatedArticlesGrid">
+                    {selectRelatedDevotionals(blogPost, devotionalArchive, 3).map((item) => (
+                      <article className="relatedArticleCard" key={item.slug}>
+                        <span className="blogCategory">{item.scripture_reference || "FAS DAILY DEVOTIONAL"}</span>
+                        <h3>{item.title}</h3>
+                        {item.impact_line && <p>{item.impact_line}</p>}
+                        <a href={`/devotionals/${encodeURIComponent(item.slug)}`} className="textBtn">
+                          Read devotional <ArrowRight size={16} />
+                        </a>
+                      </article>
+                    ))}
+                  </div>
+                  <a href="/devotions" className="textBtn">Browse all devotionals <ArrowRight size={16} /></a>
+                </section>
+              )}
               <div className="blogArticleFooter">
                 <div className="blogShare">
                   <div className="blogShareLabel">
