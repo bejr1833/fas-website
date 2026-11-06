@@ -2901,7 +2901,7 @@ function App() {
             "@type": "ListItem",
             position: 2,
             name: "FAS Blog",
-            item: "https://fas-fellowship.org/#blog"
+            item: "https://fas-fellowship.org/blog"
           },
           {
             "@type": "ListItem",
@@ -4788,7 +4788,7 @@ function App() {
               <nav className="blogBreadcrumbs" aria-label="Breadcrumb">
                 <a href="/">Faith Alone Saves</a>
                 <span aria-hidden="true">/</span>
-                <a href="/#blog">FAS Blog</a>
+                <a href="/blog">FAS Blog</a>
                 <span aria-hidden="true">/</span>
                 <span>{blogPost.title}</span>
               </nav>
