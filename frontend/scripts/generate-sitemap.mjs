@@ -5,7 +5,7 @@ import { PUBLIC_ROUTES } from "./public-routes.mjs";
 const SITE_URL = "https://fas-fellowship.org";
 const API_BASE_URL =
   process.env.VITE_API_BASE_URL ||
-  "https://fas-backend-xnhy.onrender.com";
+  "https://fas-backend-eta.vercel.app";
 
 const outputPath = join(process.cwd(), "public", "sitemap.xml");
 
