@@ -86,6 +86,11 @@ class HomeDataView(APIView):
             is_published=True
         ).order_by("-uploaded_at")
 
+        # The homepage only needs a small visual preview. Keep the full gallery
+        # available to routes that request the complete home payload.
+        if request.query_params.get("gallery_preview") == "1":
+            gallery = gallery[:8]
+
         stories = Testimony.objects.filter(
             is_approved=True
         ).order_by("-submitted_at")[:6]
