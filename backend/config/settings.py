@@ -75,7 +75,6 @@ if DATABASE_URL:
     # Transaction-mode poolers (Supabase port 6543) do not preserve cursors
     # across transactions, so disable Django server-side cursors.
     DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = True
-    }
 else:
     if not DEBUG:
         raise ImproperlyConfigured(
