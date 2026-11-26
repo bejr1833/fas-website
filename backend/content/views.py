@@ -279,11 +279,11 @@ class DevotionalListView(generics.ListAPIView):
     serializer_class = DevotionalSerializer
 
     def get_queryset(self):
-        # Return scheduled and published devotionals so the calendar can
-        # display future readings as soon as they are prepared in admin.
-        return devotional_is_released().order_by(
-            "date", "-created_at"
-        )
+        # The archive/calendar may show scheduled readings, but the detail
+        # endpoint below continues to enforce the release date and time.
+        return Devotional.objects.filter(
+            is_published=True
+        ).order_by("date", "-created_at")
 
 
 class DevotionalDetailView(generics.RetrieveAPIView):
