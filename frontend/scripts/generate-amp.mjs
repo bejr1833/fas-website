@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 const SITE_URL = "https://fas-fellowship.org";
 const API_BASE_URL =
   process.env.VITE_API_BASE_URL ||
-  "https://fas-backend-xnhy.onrender.com";
+  "https://fas-backend-eta.vercel.app";
 const DIST = join(process.cwd(), "dist");
 
 const escapeHtml = (value = "") =>
