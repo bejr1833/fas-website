@@ -20,7 +20,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          URL="https://fas-backend-xnhy.onrender.com/api/health/"
+          URL="https://fas-backend-eta.vercel.app/api/health/"
           echo "Checking $URL"
 
           for i in {1..12}; do
