@@ -1801,7 +1801,7 @@ function App() {
   const isDevotionalPage = currentPath.startsWith("/devotionals");
   const needsHomeContent = !isBlogRoute && !isMediaPage && !isDevotionalPage;
 
-  const cachedHome = readContentCache("home");
+  const cachedHome = readContentCache(isHomePage ? "home-preview" : "home");
   const cachedBlog = readContentCache("blog");
   const cachedSermons = readContentCache("sermons");
   const cachedVideos = readContentCache("videos");
@@ -2544,7 +2544,10 @@ function App() {
       setLoading(false);
     }, 2800);
 
-    fetchJsonWithRetry(`${API_BASE}/api/home/`, 2, "home")
+    const homeUrl = isHomePage
+      ? `${API_BASE}/api/home/?gallery_preview=1`
+      : `${API_BASE}/api/home/`;
+    fetchJsonWithRetry(homeUrl, 2, isHomePage ? "home-preview" : "home")
       .then((result) => {
         setData((current) => ({
           settings: result.settings || fallback,
