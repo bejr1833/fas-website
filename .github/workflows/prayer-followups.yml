@@ -21,7 +21,7 @@ jobs:
           FAS_FOLLOWUP_TOKEN: ${{ secrets.FAS_FOLLOWUP_TOKEN }}
         run: |
           set -euo pipefail
-          FAS_FOLLOWUP_URL="https://fas-backend-xnhy.onrender.com/api/internal/send-prayer-followups/"
+          FAS_FOLLOWUP_URL="https://fas-backend-eta.vercel.app/api/internal/send-prayer-followups/"
           FAS_FOLLOWUP_TOKEN="$(printf '%s' "$FAS_FOLLOWUP_TOKEN" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')"
           if [ -z "$FAS_FOLLOWUP_TOKEN" ]; then
             echo "Required repository secret FAS_FOLLOWUP_TOKEN is missing." >&2
