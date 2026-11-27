@@ -37,6 +37,7 @@ from .serializers import (
     BlogCommentSerializer,
     BlogReactionSerializer,
     DevotionalSerializer,
+    DevotionalListSerializer,
 )
 
 
@@ -101,9 +102,6 @@ class HomeDataView(APIView):
             "-date", "-created_at"
         ).first()
 
-        devotional_calendar = released_devotionals.order_by(
-            "date", "-created_at"
-        )
 
         now = timezone.localtime()
         next_devotional = Devotional.objects.filter(
@@ -162,14 +160,12 @@ class HomeDataView(APIView):
                 else None
             ),
 
-            "devotionals": DevotionalSerializer(
-                devotional_calendar,
-                many=True,
-                context={"request": request}
-            ).data,
+            # The homepage only needs the current devotional. The archive
+            # is fetched separately through the lightweight devotional list API.
+            "devotionals": [],
 
             "next_devotional": (
-                DevotionalSerializer(
+                DevotionalListSerializer(
                     next_devotional,
                     context={"request": request}
                 ).data
@@ -276,7 +272,7 @@ class BlogPostDetailView(generics.RetrieveAPIView):
 
 
 class DevotionalListView(generics.ListAPIView):
-    serializer_class = DevotionalSerializer
+    serializer_class = DevotionalListSerializer
 
     def get_queryset(self):
         # The archive/calendar may show scheduled readings, but the detail
