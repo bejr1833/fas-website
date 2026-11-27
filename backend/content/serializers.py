@@ -313,6 +313,23 @@ class DevotionalSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class DevotionalListSerializer(serializers.ModelSerializer):
+    """Small payload for calendars and navigation; full text stays on detail pages."""
+    class Meta:
+        model = Devotional
+        fields = (
+            "id",
+            "title",
+            "slug",
+            "date",
+            "release_time",
+            "author",
+            "scripture_reference",
+            "scripture_text",
+            "impact_line",
+        )
+
+
 class BlogCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogComment
