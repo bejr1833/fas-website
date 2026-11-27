@@ -2690,15 +2690,45 @@ function App() {
       pathName === "/devotionals/" ||
       pathName.startsWith("/blog/");
 
-    if (!needsDevotionalArchive) return;
+    if (!needsDevotionalArchive) return undefined;
 
-    fetchJsonWithRetry(`${API_BASE}/api/devotionals/`, 3, "devotionals")
-      .then((result) => {
-        setDevotionalArchive(Array.isArray(result) ? result : []);
-      })
-      .catch(() => {
+    let isActive = true;
+    let isRefreshing = false;
+
+    const refreshDevotionals = async () => {
+      if (isRefreshing || document.visibilityState === "hidden") return;
+      isRefreshing = true;
+
+      try {
+        const result = await fetchJsonWithRetry(
+          `${API_BASE}/api/devotionals/`,
+          2,
+          "devotionals"
+        );
+        if (isActive) {
+          setDevotionalArchive(Array.isArray(result) ? result : []);
+        }
+      } catch {
         // Keep cached devotionals visible if the archive endpoint is unavailable.
-      });
+      } finally {
+        isRefreshing = false;
+      }
+    };
+
+    // Load immediately, then refresh periodically while the page is open.
+    refreshDevotionals();
+    const refreshTimer = window.setInterval(refreshDevotionals, 30000);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") refreshDevotionals();
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      isActive = false;
+      window.clearInterval(refreshTimer);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   useEffect(() => {
