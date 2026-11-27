@@ -1831,7 +1831,7 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [blogPost, setBlogPost] = useState(null);
   const [devotionalPost, setDevotionalPost] = useState(null);
-  const [devotionalArchive, setDevotionalArchive] = useState([]);
+  const [devotionalArchive, setDevotionalArchive] = useState(() => readContentCache("devotionals") || []);
   const [devotionalLoading, setDevotionalLoading] = useState(false);
   const [devotionalShareStatus, setDevotionalShareStatus] = useState("");
   const [sermonShareStatus, setSermonShareStatus] = useState("");
