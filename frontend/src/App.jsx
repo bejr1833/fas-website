@@ -2686,8 +2686,6 @@ function App() {
       pathName.startsWith("/devotionals/") ||
       pathName === "/devotions" ||
       pathName === "/devotions/" ||
-      pathName === "/devotional" ||
-      pathName === "/devotional/" ||
       pathName === "/devotionals" ||
       pathName === "/devotionals/" ||
       pathName.startsWith("/blog/");
