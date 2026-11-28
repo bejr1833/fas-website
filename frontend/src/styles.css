@@ -23702,3 +23702,91 @@ body { background: #fff; color: var(--ink); }
   }
   .hero.reveal-section .heroNext { padding: 24px !important; }
 }
+
+
+/* FAS luxury finish: coherent dark surfaces and accessible contrast. */
+html[data-theme="dark"] .hero.reveal-section {
+  background: #111111 !important;
+}
+html[data-theme="dark"] .hero.reveal-section::before,
+html[data-theme="dark"] .hero.reveal-section::after { display: none !important; }
+html[data-theme="dark"] .hero.reveal-section .heroCopy h1 { color: #f4f0e8 !important; }
+html[data-theme="dark"] .hero.reveal-section .heroCopy p { color: #c9c3b9 !important; }
+html[data-theme="dark"] .hero.reveal-section .eyebrow,
+html[data-theme="dark"] .hero.reveal-section .heroMeta { color: #c6a978 !important; }
+html[data-theme="dark"] .hero.reveal-section .goldDot { background: #c6a978 !important; }
+html[data-theme="dark"] .hero.reveal-section .heroNext {
+  background: #1c1b19 !important;
+  border-color: #39352e !important;
+  border-top-color: #b89a66 !important;
+  color: #f4f0e8 !important;
+  box-shadow: none !important;
+}
+html[data-theme="dark"] .hero.reveal-section .heroNextLabel,
+html[data-theme="dark"] .hero.reveal-section .heroNextDate span { color: #c6a978 !important; }
+html[data-theme="dark"] .hero.reveal-section .heroNextDate strong,
+html[data-theme="dark"] .hero.reveal-section .heroNextContent h2,
+html[data-theme="dark"] .hero.reveal-section .heroNextEmpty h2 { color: #f4f0e8 !important; }
+html[data-theme="dark"] .hero.reveal-section .heroNextContent p,
+html[data-theme="dark"] .hero.reveal-section .heroNextEmpty p,
+html[data-theme="dark"] .hero.reveal-section .heroNextTime { color: #c9c3b9 !important; }
+html[data-theme="dark"] .hero.reveal-section .heroNextType {
+  color: #d7c6a3 !important;
+  background: #29251f !important;
+  border-color: #4b4030 !important;
+}
+html[data-theme="dark"] .hero.reveal-section .heroNextLink {
+  color: #171511 !important;
+  background: #c6a978 !important;
+  border-color: #c6a978 !important;
+}
+html[data-theme="dark"] .devotionalHomeCard {
+  color: #f4f0e8 !important;
+  background: #1b1a18 !important;
+  border-color: #39352e !important;
+  border-top-color: #b89a66 !important;
+  box-shadow: none !important;
+}
+html[data-theme="dark"] .devotionalHomeCard .sectionLabel,
+html[data-theme="dark"] .devotionalHomeCard span,
+html[data-theme="dark"] .devotionalHomeCard strong { color: #d0b47f !important; }
+html[data-theme="dark"] .devotionalHomeCard p,
+html[data-theme="dark"] .devotionalHomeCard a { color: #e4ded3 !important; }
+html[data-theme="dark"] .devotionalHomeCard .devotionalHomeScripture p { color: #f4f0e8 !important; }
+html[data-theme="dark"] .devotionalHomeCard .devotionalHomeImpact,
+html[data-theme="dark"] .devotionalHomeCard .devotionalHomePrayer { border-color: #39352e !important; }
+
+/* Warm editorial palette for the light theme. */
+html:not([data-theme="dark"]) .hero.reveal-section {
+  background: #fbfaf7 !important;
+}
+html:not([data-theme="dark"]) .hero.reveal-section::before,
+html:not([data-theme="dark"]) .hero.reveal-section::after { display: none !important; }
+html:not([data-theme="dark"]) .hero.reveal-section .heroCopy h1 { color: #22211f !important; }
+html:not([data-theme="dark"]) .hero.reveal-section .heroCopy p { color: #625f59 !important; }
+html:not([data-theme="dark"]) .hero.reveal-section .eyebrow,
+html:not([data-theme="dark"]) .hero.reveal-section .heroMeta { color: #795b3c !important; }
+html:not([data-theme="dark"]) .hero.reveal-section .heroNext {
+  background: #f2efe8 !important;
+  border-color: #e0d9cb !important;
+  border-top-color: #9b8054 !important;
+  box-shadow: none !important;
+}
+html:not([data-theme="dark"]) .hero.reveal-section .heroNextLabel,
+html:not([data-theme="dark"]) .hero.reveal-section .heroNextDate span { color: #806744 !important; }
+html:not([data-theme="dark"]) .devotionalHomeCard {
+  background: #f7f5ef !important;
+  border-color: #e2dccf !important;
+  border-top-color: #9b8054 !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+
+/* More comfortable spacing on narrow phones; prevent oversized stacked CTAs. */
+@media (max-width: 640px) {
+  .hero.reveal-section { padding: 48px 22px 38px !important; gap: 28px !important; }
+  .hero.reveal-section .heroActions { flex-direction: row !important; align-items: center !important; }
+  .hero.reveal-section .heroActions .primaryBtn { min-height: 46px; padding: 12px 15px; font-size: 12px; }
+  .hero.reveal-section .heroActions .textBtn { min-height: 46px; }
+  .hero.reveal-section .heroNext { margin-top: 4px; }
+}
