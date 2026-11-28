@@ -23566,3 +23566,85 @@ html[data-theme="dark"] .homeDevotionalLink { border-color: var(--border-color);
   }
   .homeDevotionalLink:last-child { border-bottom: 0; }
 }
+
+/* =========================================================
+   FAS DEVOTIONAL CARDS — LUXURY LIGHT-MODE EDGE DEFINITION
+   Clear champagne-bronze outlines, warm ivory surfaces and
+   restrained shadows. Dark mode keeps its existing palette.
+   ========================================================= */
+html[data-theme="light"] .devotionalHomeCard {
+  border: 1.5px solid #c5a66a !important;
+  border-top: 3px solid #a9823e !important;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(197,166,106,.16), transparent 27%),
+    linear-gradient(145deg, #fffefa 0%, #f5f0e5 100%) !important;
+  box-shadow:
+    0 0 0 1px rgba(169,130,62,.10),
+    0 22px 55px rgba(48,39,22,.12),
+    0 4px 12px rgba(48,39,22,.06) !important;
+}
+html[data-theme="light"] .devotionalHomeCard:hover {
+  border-color: #a9823e !important;
+  box-shadow:
+    0 0 0 2px rgba(169,130,62,.10),
+    0 28px 65px rgba(48,39,22,.15) !important;
+}
+html[data-theme="light"] .devotionalScripture {
+  border: 1.5px solid #c5a66a !important;
+  background:
+    radial-gradient(circle at 96% 0%, rgba(197,166,106,.13), transparent 32%),
+    linear-gradient(145deg, #fffefa 0%, #f8f4eb 100%) !important;
+  box-shadow: 0 14px 36px rgba(48,39,22,.09), inset 0 1px 0 #fff !important;
+}
+html[data-theme="light"] .devotionalPrayer,
+html[data-theme="light"] .devotionalApplication {
+  border: 1.5px solid #c7ad79 !important;
+  background: linear-gradient(145deg, #faf6ed 0%, #f1e9d9 100%) !important;
+  box-shadow: 0 10px 26px rgba(48,39,22,.055) !important;
+}
+html[data-theme="light"] .devotionalApplication {
+  background: linear-gradient(145deg, #fffefa 0%, #f7f2e8 100%) !important;
+  border-color: #c5a66a !important;
+}
+html[data-theme="light"] .homeDevotionalLinks {
+  gap: 12px;
+  border: 0 !important;
+}
+html[data-theme="light"] .homeDevotionalLink,
+html[data-theme="light"] .homeDevotionalLink + .homeDevotionalLink {
+  padding: 20px 22px !important;
+  border: 1px solid #d5c29c !important;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #fffefa 0%, #f7f2e8 100%);
+  box-shadow: 0 8px 22px rgba(48,39,22,.055);
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+html[data-theme="light"] .homeDevotionalLink:hover {
+  transform: translateY(-3px);
+  border-color: #a9823e !important;
+  box-shadow: 0 14px 30px rgba(48,39,22,.10);
+}
+html[data-theme="light"] .devotionsTodayCard,
+html[data-theme="light"] .devotionsCalendarShell,
+html[data-theme="light"] .devotionsUpcomingItem {
+  border: 1.5px solid #c9b487 !important;
+  background: linear-gradient(145deg, #fffefa 0%, #f7f3ea 100%) !important;
+  box-shadow: 0 14px 36px rgba(48,39,22,.075) !important;
+}
+html[data-theme="light"] .devotionDay {
+  border-color: #e0d4bb !important;
+}
+html[data-theme="light"] .devotionDay--published {
+  border-color: #b99a5d !important;
+  background: #fbf6e9 !important;
+}
+html[data-theme="dark"] .homeDevotionalLink {
+  border-color: rgba(197,166,106,.28);
+}
+@media (max-width: 760px) {
+  html[data-theme="light"] .homeDevotionalLink,
+  html[data-theme="light"] .homeDevotionalLink + .homeDevotionalLink {
+    padding: 17px 16px !important;
+  }
+}
+
