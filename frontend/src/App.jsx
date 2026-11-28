@@ -2681,8 +2681,95 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!devotionalPost || !window.location.pathname.startsWith("/devotionals/")) {
+      return;
+    }
+
+    const canonicalUrl = `https://fas-fellowship.org/devotionals/${encodeURIComponent(
+      devotionalPost.slug || window.location.pathname.replace("/devotionals/", "").replace(/\\/+$/, "")
+    )}`;
+    const plainText = (value) => String(value || "").replace(/<[^>]*>/g, " ").replace(/\\s+/g, " ").trim();
+    const descriptionSource = plainText(devotionalPost.reflection || devotionalPost.scripture_text || "");
+    const description = (descriptionSource || `A daily Bible devotional on ${devotionalPost.scripture_reference || "God's Word"} from Faith Alone Saves.`).slice(0, 158);
+    const setMeta = (selector, attributes) => {
+      let element = document.head.querySelector(selector);
+      if (!element) {
+        element = document.createElement("meta");
+        document.head.appendChild(element);
+      }
+      Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+    };
+    const setLink = (selector, attributes) => {
+      let element = document.head.querySelector(selector);
+      if (!element) {
+        element = document.createElement("link");
+        document.head.appendChild(element);
+      }
+      Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+    };
+
+    document.title = `${devotionalPost.title} | FAS Daily Devotional`;
+    setMeta('meta[name="description"]', { name: "description", content: description });
+    setMeta('meta[name="robots"]', { name: "robots", content: "index, follow, max-image-preview:large" });
+    setMeta('meta[property="og:type"]', { property: "og:type", content: "article" });
+    setMeta('meta[property="og:site_name"]', { property: "og:site_name", content: "Faith Alone Saves" });
+    setMeta('meta[property="og:title"]', { property: "og:title", content: `${devotionalPost.title} | FAS Daily Devotional` });
+    setMeta('meta[property="og:description"]', { property: "og:description", content: description });
+    setMeta('meta[property="og:url"]', { property: "og:url", content: canonicalUrl });
+    setMeta('meta[name="twitter:card"]', { name: "twitter:card", content: "summary" });
+    setMeta('meta[name="twitter:title"]', { name: "twitter:title", content: `${devotionalPost.title} | FAS Daily Devotional` });
+    setMeta('meta[name="twitter:description"]', { name: "twitter:description", content: description });
+    setLink('link[rel="canonical"]', { rel: "canonical", href: canonicalUrl });
+
+    const datePublished = devotionalPost.date ? new Date(`${devotionalPost.date}T00:00:00Z`).toISOString() : undefined;
+    const schemaId = "fas-devotional-schema";
+    let schema = document.getElementById(schemaId);
+    if (!schema) {
+      schema = document.createElement("script");
+      schema.id = schemaId;
+      schema.type = "application/ld+json";
+      document.head.appendChild(schema);
+    }
+    schema.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": `${canonicalUrl}#article`,
+          headline: devotionalPost.title,
+          description,
+          url: canonicalUrl,
+          mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+          ...(datePublished ? { datePublished } : {}),
+          author: { "@type": "Person", name: devotionalPost.author || "FAS Fellowship" },
+          publisher: {
+            "@type": "Organization",
+            name: "Faith Alone Saves",
+            url: "https://fas-fellowship.org/"
+          },
+          articleSection: "Daily Devotionals",
+          about: [
+            { "@type": "Thing", name: devotionalPost.scripture_reference || "Bible study" },
+            { "@type": "Thing", name: "Christian daily devotional" },
+            { "@type": "Thing", name: "Prayer and Scripture reflection" }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://fas-fellowship.org/" },
+            { "@type": "ListItem", position: 2, name: "Daily Devotionals", item: "https://fas-fellowship.org/devotions" },
+            { "@type": "ListItem", position: 3, name: devotionalPost.title, item: canonicalUrl }
+          ]
+        }
+      ]
+    });
+  }, [devotionalPost]);
+
+  useEffect(() => {
     const pathName = window.location.pathname;
     const needsDevotionalArchive =
+      isHomePage ||
       pathName.startsWith("/devotionals/") ||
       pathName === "/devotions" ||
       pathName === "/devotions/" ||
@@ -5497,6 +5584,37 @@ function App() {
                 </a>
               </div>
             </div>
+          </section>
+        )}
+
+        {data.devotional && (
+          <section className="homeDevotionalLibrary reveal-section" aria-labelledby="home-devotional-library-title">
+            <div className="homeDevotionalLibraryHeader">
+              <div>
+                <span className="sectionLabel">GROW IN THE WORD</span>
+                <h2 id="home-devotional-library-title">Continue your <em>daily walk.</em></h2>
+                <p>Explore Scripture-led reflections, practical applications and prayers from the FAS Daily Devotional series.</p>
+              </div>
+              <a href="/devotions" className="homeDevotionalArchiveLink">
+                Explore all daily devotionals <ArrowRight size={16} aria-hidden="true" />
+              </a>
+            </div>
+            {devotionalArchive.length > 0 && (
+              <div className="homeDevotionalLinks" aria-label="Recent FAS daily devotionals">
+                {[...devotionalArchive]
+                  .filter((item) => item.slug !== data.devotional.slug)
+                  .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")))
+                  .slice(0, 3)
+                  .map((item) => (
+                    <a className="homeDevotionalLink" href={`/devotionals/${encodeURIComponent(item.slug)}`} key={item.slug}>
+                      <span className="homeDevotionalLinkDate">{new Date(`${item.date}T00:00:00`).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</span>
+                      <strong>{item.title}</strong>
+                      <span className="homeDevotionalLinkReference">{item.scripture_reference}</span>
+                      <ArrowRight size={16} aria-hidden="true" />
+                    </a>
+                  ))}
+              </div>
+            )}
           </section>
         )}
 
