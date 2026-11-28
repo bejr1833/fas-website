@@ -2686,9 +2686,9 @@ function App() {
     }
 
     const canonicalUrl = `https://fas-fellowship.org/devotionals/${encodeURIComponent(
-      devotionalPost.slug || window.location.pathname.replace("/devotionals/", "").replace(/\\/+$/, "")
+      devotionalPost.slug || window.location.pathname.replace("/devotionals/", "").replace(/\/+$/, "")
     )}`;
-    const plainText = (value) => String(value || "").replace(/<[^>]*>/g, " ").replace(/\\s+/g, " ").trim();
+    const plainText = (value) => String(value || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
     const descriptionSource = plainText(devotionalPost.reflection || devotionalPost.scripture_text || "");
     const description = (descriptionSource || `A daily Bible devotional on ${devotionalPost.scripture_reference || "God's Word"} from Faith Alone Saves.`).slice(0, 158);
     const setMeta = (selector, attributes) => {
